@@ -1,0 +1,101 @@
+﻿
+@{
+    ViewData["Title"] = "AddCustomer";
+}
+
+<main>
+    <div class="container-fluid project-creator">
+        <div class="row">
+            <div class="col-12">
+
+                <h1>Firma Oluştur</h1>
+                <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
+                    <ol class="breadcrumb pt-0">
+                        <li class="breadcrumb-item">
+                            <a href="#">Firmalar</a>
+                        </li>
+                        <li class="breadcrumb-item active">
+                            <a href="#">Yeni Firma</a>
+                        </li>
+                    </ol>
+                </nav>
+                <div class="separator mb-5"></div>
+            </div>
+        </div>
+
+        <form>
+            <div class="row">
+                <div class="col-12 col-xl-8 mb-8">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="mb-4">Yeni Firma</h5>
+                            <div>
+                                <label class="form-group has-top-label">
+                                    <input class="form-control" />
+                                    <span>Firma Adı</span>
+                                </label>
+                                <label class="form-group has-top-label">
+                                    <input class="form-control" />
+                                    <span>Firma Sektörü</span>
+                                </label>
+                                <label class="form-group has-top-label">
+                                    <input class="form-control" />
+                                    <span>Firma Yetkilisi</span>
+                                </label>
+                                <label class="form-group has-top-label">
+                                    <input class="form-control" />
+                                    <span>Firma E-posta</span>
+                                </label>
+                                <label class="form-group has-top-label">
+                                    <input class="form-control" />
+                                    <span>Firma Telefon</span>
+                                </label>
+                                <div class="input-group mb-3 file-avatar ">
+                                    <label class="custom-select custom-select-label" for="file-upload" class="form-control">
+                                    </label>
+                                    <input type="file" class="d-none" name="file-upload" id="file-upload" />
+                                    <div class="input-group-append">
+                                        <label class="input-group-text" for="file-upload">Firma Logosu Yükle</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-xl-4 mb-4 ">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="mb-4">Firma Dosyaları</h5>
+                            <form action="/file-upload">
+                                <div class="dropzone">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-body ">
+                            <h5 class="mb-4">Firma Açıklaması</h5>
+                            <div class="html-editor" id="quillEditor" style="min-height: 10rem;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex flex-row-reverse">
+                <a href="index.php"><button class="btn btn-danger btn-lg"><i class="iconsminds-close"></i>İptal Et</button></a>
+                <button class="btn btn-primary btn-lg mr-3" type="submit"><i class="iconsminds-add"></i>Firma Oluştur</button>
+
+            </div>
+        </form>
+    </div>
+</main>
+
+@section scripts
+{
+    <script src="/js/vendor/quill.min.js"></script>
+    <script src="/js/vendor/datatables.min.js"></script>
+
+}

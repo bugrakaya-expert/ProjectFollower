@@ -1,0 +1,73 @@
+﻿
+@{
+    ViewData["Title"] = "NewUser";
+}
+
+
+<main>
+    <div class="container-fluid project-creator">
+        <div class="row">
+            <div class="col-12">
+                <h1>Yeni Kullanıcı</h1>
+                <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
+                    <ol class="breadcrumb pt-0">
+                        <li class="breadcrumb-item">
+                            <a href="#">Kullanıcılar</a>
+                        </li>
+                        <li class="breadcrumb-item active">
+                            <a href="#">Yeni Kullanıcı</a>
+                        </li>
+                    </ol>
+                </nav>
+                <div class="separator mb-5"></div>
+            </div>
+        </div>
+        <form>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="mb-4">Yeni Kullanıcı</h5>
+                            <div>
+                                <label class="form-group has-top-label">
+                                    <input class="form-control" />
+                                    <span>Adın</span>
+                                </label>
+                                <label class="form-group has-top-label">
+                                    <input class="form-control" />
+                                    <span>Soyadın</span>
+                                </label>
+                                <label class="form-group has-top-label">
+                                    <select class="form-control select-single" data-width="100%">
+                                        <option value="AK">Many Points</option>
+                                        <option value="HI">Expert</option>
+                                    </select>
+                                    <span>Firma Adı</span>
+                                </label>
+                                <label class="form-group has-top-label">
+                                    <input class="form-control" />
+                                    <span>E-posta adresi</span>
+                                </label>
+                                <label class="form-group has-top-label">
+                                    <input class="form-control" />
+                                    <span>Pozisyonun</span>
+                                </label>
+                                <div class="input-group mb-3 file-avatar ">
+                                    <label class="custom-select custom-select-label" for="file-upload" class="form-control"></label>
+                                    <input type="file" class="d-none" name="file-upload" id="file-upload" />
+                                    <div class="input-group-append">
+                                        <label class="input-group-text" for="file-upload">Fotoğraf Yükle</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex flex-row-reverse">
+                <a href="index.php"><button class="btn btn-danger btn-lg"><i class="iconsminds-close"></i>İptal Et</button></a>
+                <button class="btn btn-primary btn-lg mr-3" type="submit"><i class="iconsminds-add"></i> Kullanıcı Oluştur</button>
+            </div>
+        </form>
+    </div>
+</main>

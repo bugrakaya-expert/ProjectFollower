@@ -1,0 +1,223 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<main>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <h1>Yönetim</h1>
+                <div class="text-zero top-right-button-container">
+                    <a asp-action="NewUser" asp-controller="Users"><button type="button" class="btn btn-primary btn-lg top-right-button mr-1">YENİ KİŞİ</button></a>
+                </div>
+            </div>
+        </div>
+        <div class="separator"></div>
+        <div class="row mt-3">
+            <div class="col-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Kullanıcılar</h5>
+                        <div class="scroll dashboard-list-with-user h-100">
+                            <div class="d-flex flex-row mb-3 pb-3 border-bottom">
+                                <a href="#">
+                                    <img src="img/orj/users/egul.jpg" alt="Emre Gül"
+                                        class="img-thumbnail border-0 rounded-circle list-thumbnail align-self-center xsmall" />
+                                </a>
+                                <div class="pl-3 w-50">
+                                    <a href="#">
+                                        <p class="font-weight-medium mb-0 ">Emre Gül</p>
+                                        <p class="text-muted mb-0 text-small">Web Developer</p>
+                                    </a>
+                                </div>
+                                <div class="pl-3 w-50 d-flex justify-content-end">
+                                    <a href="#">
+                                        <button type="button" class="btn btn-success btn-sm mb-1 upgrade-user"><i class="glyph-icon simple-icon-badge mr-1"></i>Rütbe Yükselt</button>
+                                        <button type="button" class="btn btn-danger btn-sm mb-1 delete-user"><i class="glyph-icon simple-icon-trash mr-1"></i>Sil</button>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-row mb-3 pb-3 border-bottom">
+                                <a href="#">
+                                    <img src="img/profiles/l-1.jpg" alt="Mayra Sibley"
+                                        class="img-thumbnail border-0 rounded-circle list-thumbnail align-self-center xsmall" />
+                                </a>
+                                <div class="pl-3 w-50">
+                                    <a href="#">
+                                        <p class="font-weight-medium mb-0 ">Mayra Sibley</p>
+                                        <p class="text-muted mb-0 text-small">Web Developer</p>
+                                    </a>
+                                </div>
+                                <div class="pl-3 w-50 d-flex justify-content-end">
+                                    <a href="#">
+                                        <button type="button" class="btn btn-success btn-sm mb-1 upgrade-user"><i class="glyph-icon simple-icon-badge mr-1"></i>Rütbe Yükselt</button>
+                                        <button type="button" class="btn btn-danger btn-sm mb-1 delete-user"><i class="glyph-icon simple-icon-trash mr-1"></i>Sil</button>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-row mb-3 pb-3 border-bottom">
+                                <a href="#">
+                                    <img src="img/profiles/l-7.jpg" alt="Mimi Carreira"
+                                        class="img-thumbnail border-0 rounded-circle list-thumbnail align-self-center xsmall" />
+                                </a>
+                                <div class="pl-3 w-50">
+                                    <a href="#">
+                                        <p class="font-weight-medium mb-0 ">Mimi Carreira</p>
+                                        <p class="text-muted mb-0 text-small">Web Developer</p>
+                                    </a>
+                                </div>
+                                <div class="pl-3 w-50 d-flex justify-content-end">
+                                    <a href="#">
+                                        <button type="button" class="btn btn-success btn-sm mb-1 upgrade-user"><i class="glyph-icon simple-icon-badge mr-1"></i>Rütbe Yükselt</button>
+                                        <button type="button" class="btn btn-danger btn-sm mb-1 delete-user"><i class="glyph-icon simple-icon-trash mr-1"></i>Sil</button>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-row mb-3 pb-3 border-bottom">
+                                <a href="#">
+                                    <img src="img/profiles/l-6.jpg" alt="Philip Nelms"
+                                        class="img-thumbnail border-0 rounded-circle list-thumbnail align-self-center xsmall" />
+                                </a>
+                                <div class="pl-3 w-50">
+                                    <a href="#">
+                                        <p class="font-weight-medium mb-0 ">Philip Nelms</p>
+                                        <p class="text-muted mb-0 text-small">Video Creator</p>
+                                    </a>
+                                </div>
+                                <div class="pl-3 w-50 d-flex justify-content-end">
+                                    <a href="#">
+                                        <button type="button" class="btn btn-success btn-sm mb-1 upgrade-user"><i class="glyph-icon simple-icon-badge mr-1"></i>Rütbe Yükselt</button>
+                                        <button type="button" class="btn btn-danger btn-sm mb-1 delete-user"><i class="glyph-icon simple-icon-trash mr-1"></i>Sil</button>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-row mb-3 pb-3 border-bottom">
+                                <a href="#">
+                                    <img src="img/profiles/l-3.jpg" alt="Terese Threadgill"
+                                        class="img-thumbnail border-0 rounded-circle list-thumbnail align-self-center xsmall" />
+                                </a>
+                                <div class="pl-3 w-50">
+                                    <a href="#">
+                                        <p class="font-weight-medium mb-0 ">Terese Threadgill</p>
+                                        <p class="text-muted mb-0 text-small">Graphic Designer</p>
+                                    </a>
+                                </div>
+                                <div class="pl-3 w-50 d-flex justify-content-end">
+                                    <a href="#">
+                                        <button type="button" class="btn btn-success btn-sm mb-1 upgrade-user"><i class="glyph-icon simple-icon-badge mr-1"></i>Rütbe Yükselt</button>
+                                        <button type="button" class="btn btn-danger btn-sm mb-1 delete-user"><i class="glyph-icon simple-icon-trash mr-1"></i>Sil</button>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-row mb-3 pb-3 border-bottom">
+                                <a href="#">
+                                    <img src="img/profiles/l-5.jpg" alt="Kathryn Mengel"
+                                        class="img-thumbnail border-0 rounded-circle list-thumbnail align-self-center xsmall" />
+                                </a>
+                                <div class="pl-3 w-50">
+                                    <a href="#">
+                                        <p class="font-weight-medium mb-0 ">Kathryn Mengel</p>
+                                        <p class="text-muted mb-0 text-small">Social Media Manager</p>
+                                    </a>
+                                </div>
+                                <div class="pl-3 w-50 d-flex justify-content-end">
+                                    <a href="#">
+                                        <button type="button" class="btn btn-success btn-sm mb-1 upgrade-user"><i class="glyph-icon simple-icon-badge mr-1"></i>Rütbe Yükselt</button>
+                                        <button type="button" class="btn btn-danger btn-sm mb-1 delete-user"><i class="glyph-icon simple-icon-trash mr-1"></i>Sil</button>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-row mb-3 pb-3 border-bottom">
+                                <a href="#">
+                                    <img src="img/profiles/l-4.jpg" alt="Esperanza Lodge"
+                                        class="img-thumbnail border-0 rounded-circle list-thumbnail align-self-center xsmall" />
+                                </a>
+                                <div class="pl-3 w-50">
+                                    <a href="#">
+                                        <p class="font-weight-medium mb-0 ">Esperanza Lodge</p>
+                                        <p class="text-muted mb-0 text-small">Graphic Designer</p>
+                                    </a>
+                                </div>
+                                <div class="pl-3 w-50 d-flex justify-content-end">
+                                    <a href="#">
+                                        <button type="button" class="btn btn-success btn-sm mb-1"><i class="glyph-icon simple-icon-badge mr-1"></i>Rütbe Yükselt</button>
+                                        <button type="button" class="btn btn-danger btn-sm mb-1 delete-user"><i class="glyph-icon simple-icon-trash mr-1"></i>Sil</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Yöneticiler</h5>
+                        <div class="scroll dashboard-list-with-user h-100">
+                            <div class="d-flex flex-row mb-3 pb-3 border-bottom">
+                                <a href="#">
+                                    <img src="img/orj/users/egul.jpg" alt="Emre Gül"
+                                        class="img-thumbnail border-0 rounded-circle list-thumbnail align-self-center xsmall" />
+                                </a>
+                                <div class="pl-3 w-50">
+                                    <a href="#">
+                                        <p class="font-weight-medium mb-0 ">Emre Gül</p>
+                                        <p class="text-muted mb-0 text-small">Web Developer</p>
+                                    </a>
+                                </div>
+                                <div class="pl-3 w-50 d-flex justify-content-end">
+                                    <a href="#">
+                                        <button type="button" class="btn btn-warning btn-sm mb-1 fall-user"><i class="glyph-icon simple-icon-fire mr-1"></i>Rütbe Düşür</button>
+                                        <button type="button" class="btn btn-danger btn-sm mb-1 delete-user"><i class="glyph-icon simple-icon-trash mr-1"></i>Sil</button>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-row mb-3 pb-3 border-bottom">
+                                <a href="#">
+                                    <img src="img/profiles/l-3.jpg" alt="Erkut Yalçın"
+                                        class="img-thumbnail border-0 rounded-circle list-thumbnail align-self-center xsmall" />
+                                </a>
+                                <div class="pl-3 w-50">
+                                    <a href="#">
+                                        <p class="font-weight-medium mb-0 ">Erkut Yalçın</p>
+                                        <p class="text-muted mb-0 text-small">-</p>
+                                    </a>
+                                </div>
+                                <div class="pl-3 w-50 d-flex justify-content-end">
+                                    <a href="#">
+                                        <button type="button" disabled class="btn btn-info btn-sm mb-1"><i class="glyph-icon simple-icon-trophy mr-1"></i>Rütbe Düşürülemez</button>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-row mb-3 pb-3 border-bottom">
+                                <a href="#">
+                                    <img src="img/profiles/l-3.jpg" alt="Uğurcan Çengel"
+                                        class="img-thumbnail border-0 rounded-circle list-thumbnail align-self-center xsmall" />
+                                </a>
+                                <div class="pl-3 w-50">
+                                    <a href="#">
+                                        <p class="font-weight-medium mb-0 ">Uğurcan Çengel</p>
+                                        <p class="text-muted mb-0 text-small">-</p>
+                                    </a>
+                                </div>
+                                <div class="pl-3 w-50 d-flex justify-content-end">
+                                    <a href="#">
+                                        <button type="button" disabled class="btn btn-info btn-sm mb-1"><i class="glyph-icon simple-icon-trophy mr-1"></i>Rütbe Düşürülemez</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

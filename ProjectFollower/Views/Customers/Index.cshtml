@@ -1,0 +1,132 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<main>
+    <div class="container-fluid">
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="mb-3">
+                    <h1>Firmalar</h1>
+                    <div class="text-zero top-right-button-container">
+                        <a asp-controller="Customers" asp-action="AddCustomer"><button type="button" class="btn btn-primary btn-lg top-right-button mr-1">YENİ EKLE</button></a>
+                    </div>
+                </div>
+
+                <div class="mb-2">
+                    <a class="btn pt-0 pl-0 d-inline-block d-md-none" data-toggle="collapse" href="#displayOptions"
+                       role="button" aria-expanded="true" aria-controls="displayOptions">
+                        Display Options
+                        <i class="simple-icon-arrow-down align-middle"></i>
+                    </a>
+                    <div class="collapse d-md-block" id="displayOptions">
+                        <div class="d-block d-md-inline-block">
+                            <div class="search-sm d-inline-block float-md-left mr-1 mb-1 align-top">
+                                <input placeholder="Ara...">
+                            </div>
+                        </div>
+                        <div class="float-md-right">
+                            <span class="text-muted text-small">210 Projeden 1-10 arasındakiler gösteriliyor. </span>
+                            <button class="btn btn-outline-dark btn-xs dropdown-toggle" type="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                20
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="#">10</a>
+                                <a class="dropdown-item active" href="#">20</a>
+                                <a class="dropdown-item" href="#">30</a>
+                                <a class="dropdown-item" href="#">50</a>
+                                <a class="dropdown-item" href="#">100</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="separator"></div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="data-table-rows data-tables-hide-filter">
+                    <table id="datatableRow" class="data-table data-tables-pagination responsive nowrap"
+                           data-order="[[ 1, &quot;desc&quot; ]]">
+                        <thead>
+                            <tr>
+                                <th style="visibility: hidden;"></th>
+                                <th>Firma Adı</th>
+                                <th>Firma Yetkilisi</th>
+                                <th>Sektör</th>
+                                <th style="visibility: hidden;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <img src="img/orj/firmalar/elitdijital.png" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
+                                </td>
+                                <td>
+                                    <p class="list-item-heading">Elit Dijital</p>
+                                </td>
+                                <td>
+                                    <p class="text-muted">Alp</p>
+                                </td>
+                                <td>
+                                    <p class="text-muted">Baskı Dizayn</p>
+                                </td>
+                                <td class="text-right">
+                                    <a asp-controller="Customers" asp-action="Details" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
+                                    <button type="button" class="btn btn-danger btn-sm mb-1 delete-project"><i class="glyph-icon simple-icon-trash mr-1"></i>Sil</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="img/orj/firmalar/poligon.jpg" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
+                                </td>
+                                <td>
+                                    <p class="list-item-heading">Poligon</p>
+                                </td>
+                                <td>
+                                    <p class="text-muted">Ercan</p>
+                                </td>
+                                <td>
+                                    <p class="text-muted">Mühendislik</p>
+                                </td>
+                                <td class="text-right">
+                                    <a asp-controller="Customers" asp-action="Details" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
+                                    <button type="button" class="btn btn-danger btn-sm mb-1 delete-project"><i class="glyph-icon simple-icon-trash mr-1"></i>Sil</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="img/orj/firmalar/manypoints.png" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
+                                </td>
+                                <td>
+                                    <p class="list-item-heading">Many Points</p>
+                                </td>
+                                <td>
+                                    <p class="text-muted">Many Points</p>
+                                </td>
+                                <td>
+                                    <p class="text-muted">-</p>
+                                </td>
+                                <td class="text-right">
+                                    <a asp-controller="Customers" asp-action="Details" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
+                                    <button type="button" class="btn btn-danger btn-sm mb-1 delete-project"><i class="glyph-icon simple-icon-trash mr-1"></i>Sil</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section scripts
+{
+    <script src="/js/vendor/jquery.validate/jquery.validate.min.js"></script>
+    <script src="/js/vendor/jquery.validate/additional-methods.min.js"></script>
+    <script src="/js/vendor/datatables-index.min.js"></script>
+}
