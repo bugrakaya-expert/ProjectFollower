@@ -22,16 +22,23 @@
         padding: 14px;
     }
 
-    .showtime-preview > div:first-child {
+/*    .showtime-preview > div:first-child {
         font-size: 12px;
         white-space: normal;
+
+    }
+    .showtime-preview {
+        width: 100%;
+        border-radius: 5px;
+        padding-left: 5px;
     }
 
-    .showtime-preview > div:not(:first-child) {
+
+   .showtime-preview > div:not(:first-child) {
         font-size: 11px;
         white-space: normal;
     }
-
+        */
     .movie-tooltip .movie-info {
         margin-left: 10px;
         vertical-align: top;
@@ -70,11 +77,11 @@
             $('#scheduler').dxScheduler({
                 timeZone: 'America/Los_Angeles',
                 dataSource: data,
-                views: [{ type: 'month', name: 'Auto Mode', maxAppointmentsPerCell: 3, }],
-                currentView: 'month',
+                views: ['month', 'agenda'],
+                currentView: 'agenda',
                 currentDate: new Date(2021, 3, 27),
                 showAllDayPanel: false,
-                height: 1200,
+                height: 600,
                 crossScrollingEnabled: true,
                 cellDuration: 20,
                 editing: {
@@ -85,19 +92,33 @@
                     allowDragging: true,
                 },
                 onAppointmentAdded(e) {
-                    showToast('Added', e.appointmentData.movieId, 'success');
+                    showToast('Eklendi', e.appointmentData.movieId, 'success');
+                    $.each(data, function (index, val) {
+                        console.log(val.price);
+                    });
                 },
                 onAppointmentUpdated(e) {
-                    showToast('Updated', e.appointmentData.movieId, 'info');
+                    showToast('Güncellendi', e.appointmentData.movieId, 'info');
+                    $.each(data, function (index, val) {
+                        console.log(val.price);
+                    });
                 },
                 onAppointmentDeleted(e) {
-                    showToast('Deleted', e.appointmentData.movieId, 'warning');
+                    showToast('Silindi', e.appointmentData.movieId, 'warning');
+                    $.each(data, function (index, val) {
+                        console.log(val.price);
+                    });
                 },
                 resources: [{
                     fieldExpr: 'movieId',
                     dataSource: moviesData,
-                    useColorAsDefault: true,
-                }, {
+                },
+                    {
+                        fieldExpr: 'priortyId',
+                        dataSource: priortyData,
+                        useColorAsDefault: true,
+                    },
+                   {
                     fieldExpr: 'theatreId',
                     dataSource: theatreData,
                 }],
@@ -107,8 +128,11 @@
                 appointmentTemplate(model) {
                     const movieInfo = getMovieById(model.appointmentData.movieId) || {};
 
-                    return $(`${"<div class='showtime-preview'>"
-                        + '<div>'}${movieInfo.text}</div>`);
+                    return $(`${"<div class='dx-scheduler-agenda-appointment-left-layout'><div class='dx-scheduler-agenda-appointment-marker';>"
+                        + '</div></div><div class="dx-scheduler-agenda-appointment-right-layout"><div class="dx-scheduler-appointment-title">'}${model.appointmentData.price}</div>`
+                        + `<div>${movieInfo.text}`
+                        + '</div>'
+                        + '</div>');
                 },
                 onAppointmentFormOpening(data) {
                     const { form } = data;
@@ -134,13 +158,19 @@
                         },
                     }, {
                         label: {
-                            text: 'Director',
+                            text: 'Konu',
                         },
-                        name: 'director',
+                        name: 'price',
                         editorType: 'dxTextBox',
                         editorOptions: {
-                            value: movieInfo.director,
-                            readOnly: true,
+                            items: moviesData,
+                            displayExpr: 'text',
+                            valueExpr: 'id',
+                            onValueChanged(args) {
+                                movieInfo = getMovieById(args.value);
+
+                                form.updateData('konu', movieInfo.konu);
+                            },
                         },
                     }, {
                         dataField: 'startDate',
@@ -160,25 +190,18 @@
                         editorType: 'dxDateBox',
                         editorOptions: {
                             width: '100%',
-                            type: 'date',
+                            type: 'datetime',
+                            readOnly: true,
                         },
                     }, {
-                        dataField: 'Sosyal Medya',
-                        editorType: 'dxRadioGroup',
-                        editorOptions: {
-                            dataSource: ["Instagram", "Facebook", "Youtube", "Twitter"],
-                            itemTemplate(itemData) {
-                                return `${itemData}`;
-                            },
-                        },
-                    },
-                    {
                         dataField: 'Öncelik',
                         editorType: 'dxRadioGroup',
                         editorOptions: {
-                            dataSource: ["Acil", "Normal",],
+                            value: movieInfo.priortyId,
+                            dataSource: ['Normal', 'Acil'],
                             itemTemplate(itemData) {
                                 return `${itemData}`;
+                                
                             },
                         },
                     },
@@ -198,31 +221,30 @@
                     + `<div class='movie-title'>${movieData.text} (${movieData.year})`
                     + '</div>'
                     + '<div>'
-                    + `Firma Adı: ${movieData.director
+                    + `Status:${movieData.director
                     }</div>`
                     + '<div>'
-                    + `Medya: ${movieData.duration}`
+                    + `Duration: ${movieData.duration} minutes`
                     + '</div>'
                     + '</div>'
                     + '</div>');
             }
         });
 
+            
 
         const moviesData = [{
             id: 1,
-            text: 'Post',
-            director: 'Many Points',
-            year: new Date(2021, 3, 27).toLocaleDateString('pt-PT'),
-            image: 'images/movies/HisGirlFriday.jpg',
-            duration: 'Facebook',
-            color: '#cb6bb2',
+            text: 'His Girl Friday',
+            director: 'Howard Hawks',
+            year: 1940,
+            duration: 92,
+            
         }, {
             id: 2,
             text: 'Royal Wedding',
             director: 'Stanley Donen',
             year: 1951,
-            image: 'images/movies/RoyalWedding.jpg',
             duration: 93,
             color: '#56ca85',
         }, {
@@ -230,15 +252,13 @@
             text: 'A Star Is Born',
             director: 'William A. Wellman',
             year: 1937,
-            image: 'images/movies/AStartIsBorn.jpg',
             duration: 111,
-            color: '#1e90ff',
+            
         }, {
             id: 4,
             text: 'The Screaming Skull',
             director: 'Alex Nicol',
             year: 1958,
-            image: 'images/movies/ScreamingSkull.jpg',
             duration: 68,
             color: '#ff9747',
         }, {
@@ -246,7 +266,6 @@
             text: "It's a Wonderful Life",
             director: 'Frank Capra',
             year: 1946,
-            image: 'images/movies/ItsAWonderfulLife.jpg',
             duration: 130,
             color: '#f05797',
         }, {
@@ -254,7 +273,6 @@
             text: 'City Lights',
             director: 'Charlie Chaplin',
             year: 1931,
-            image: 'images/movies/CityLights.jpg',
             duration: 87,
             color: '#2a9010',
         }];
@@ -262,83 +280,129 @@
         const theatreData = [{
             text: 'Cinema Hall 1',
             id: 0,
+            color: '#000000',
+        }, {
+            text: 'Cinema Hall 2',
+            id: 1,
+            color: '#ffffff',
+        },
+        ];
+
+        const priortyData = [{
+            text: 'Normal',
+            id: 0,
+            color: '#4797fb',
+        }, {
+            text: 'Acil',
+            id: 1,
+            color: '#fb4747',
         },
         ];
 
         const data = [{
-            theatreId: 0,
-            movieId: 3,
+            priortyId: 0,
+            movieId: 5,
             price: 10,
             startDate: new Date('2021-04-26T16:10:00.000Z'),
             endDate: new Date('2021-04-26T18:01:00.000Z'),
         }, {
-            theatreId: 0,
+            priortyId: 0,
             movieId: 1,
             price: 5,
             startDate: new Date('2021-04-26T18:30:00.000Z'),
             endDate: new Date('2021-04-26T20:02:00.000Z'),
         }, {
-            theatreId: 0,
+            priortyId: 0,
             movieId: 3,
             price: 15,
             startDate: new Date('2021-04-26T20:30:00.000Z'),
             endDate: new Date('2021-04-26T22:21:00.000Z'),
         }, {
-            theatreId: 0,
+            priortyId: 0,
             movieId: 4,
             price: 5,
             startDate: new Date('2021-04-26T23:00:00.000Z'),
             endDate: new Date('2021-04-27T00:08:00.000Z'),
         }, {
-            theatreId: 0,
+            
+            priortyId: 0,
             movieId: 2,
             price: 10,
             startDate: new Date('2021-04-27T00:30:00.000Z'),
             endDate: new Date('2021-04-27T02:03:00.000Z'),
         }, {
-            theatreId: 0,
+            
+            priortyId: 0,
             movieId: 1,
             price: 10,
             startDate: new Date('2021-04-27T02:30:00.000Z'),
             endDate: new Date('2021-04-27T04:02:00.000Z'),
         }, {
-            theatreId: 0,
+            
+            priortyId: 0,
             movieId: 2,
             price: 10,
             startDate: new Date('2021-04-27T04:20:00.000Z'),
             endDate: new Date('2021-04-27T05:53:00.000Z'),
         }, {
-            theatreId: 0,
+            
+            priortyId: 0,
             movieId: 5,
             price: 10,
             startDate: new Date('2021-04-27T16:10:00.000Z'),
             endDate: new Date('2021-04-27T18:20:00.000Z'),
         }, {
-            theatreId: 0,
+            
+            priortyId: 0,
             movieId: 2,
             price: 5,
             startDate: new Date('2021-04-27T19:00:00.000Z'),
             endDate: new Date('2021-04-27T20:33:00.000Z'),
         }, {
-            theatreId: 0,
+            
+            priortyId: 0,
             movieId: 3,
             price: 5,
             startDate: new Date('2021-04-27T21:00:00.000Z'),
             endDate: new Date('2021-04-27T22:51:00.000Z'),
         }, {
-            theatreId: 0,
+            
+            priortyId: 0,
             movieId: 4,
             price: 5,
             startDate: new Date('2021-04-27T23:20:00.000Z'),
             endDate: new Date('2021-04-28T00:28:00.000Z'),
         }, {
-            theatreId: 0,
+            
+            priortyId: 0,
             movieId: 1,
             price: 10,
             startDate: new Date('2021-04-28T01:00:00.000Z'),
             endDate: new Date('2021-04-28T02:32:00.000Z'),
+        }, {
+            
+            priortyId: 0,
+            movieId: 2,
+            price: 15,
+            startDate: new Date('2021-04-28T03:00:00.000Z'),
+            endDate: new Date('2021-04-28T04:33:00.000Z'),
+        }, {
+            
+            priortyId: 1,
+            movieId: 4,
+            price: 5,
+            startDate: new Date('2021-04-28T04:50:00.000Z'),
+            endDate: new Date('2021-04-28T05:58:00.000Z'),
+        }, {
+            
+            priortyId: 1,
+            movieId: 1,
+            price: 5,
+            startDate: new Date('2021-04-28T16:00:00.000Z'),
+            endDate: new Date('2021-04-28T17:32:00.000Z'),
         },
         ];
+
 </script>
 }
 
