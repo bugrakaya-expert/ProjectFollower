@@ -6,13 +6,14 @@
 
 
 <main>
+    <div class="alert alert-danger alert-dismissible fade show rounded mb-4" role="alert"><strong>Dikkat!</strong> Termini geçmiş 1 adet projeniz bulunmakta. <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></div>
     <div class="container-fluid">
         <div class="row mb-4">
             <div class="col-12">
                 <div class="mb-3">
                     <h1>Projeler</h1>
                     <div class="text-zero top-right-button-container">
-                        <a asp-controller="Home" asp-action="ProjectNew"><button type="button" class="btn btn-primary btn-lg top-right-button mr-1">YENİ EKLE</button></a>
+                        <a asp-controller="Home" asp-action="ProjectNew"><button type="button" class="btn btn-primary btn-lg top-right-button mr-1">YENİ PROJE EKLE</button></a>
                     </div>
                 </div>
 
@@ -45,7 +46,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="separator"></div>
+                <div class="separator mb-4"></div>
             </div>
         </div>
 
@@ -57,36 +58,35 @@
                         <thead>
                             <tr>
                                 <th style="visibility: hidden;"></th>
-                                <th>Proje Adı</th>
                                 <th>Firma Adı</th>
+                                <th>Proje Adı</th>
                                 <th>Deadline</th>
                                 <th>Durum</th>
                                 <th style="visibility: hidden;"></th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
+                        <tbody class="list">
+                            <tr class="cardd">
                                 <td>
                                     <img src="img/orj/firmalar/elitdijital.png" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
                                 </td>
                                 <td>
-                                    <p class="list-item-heading">AElit Dijital Logo Tasarımı</p>
+                                    <p class="list-item-heading">Elit Dijital Logo Tasarımı</p>
                                 </td>
                                 <td>
-                                    <p class="text-muted">Elit Dijital</p>
+                                    <p>Elit Dijital</p>
                                 </td>
                                 <td>
-                                    <p class="text-muted">05.01.2022</p>
+                                    <p>05.01.2022</p>
                                 </td>
                                 <td>
                                     <p class="d-none">3</p><span class="badge badge-pill badge-primary">TAMAMLANDI</span>
                                 </td>
-                                <td>
+                                <td class="text-center">
                                     <a asp-controller="Home" asp-Action="Details" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
-                                    <button type="button" class="btn btn-danger btn-sm mb-1 delete-project"><i class="glyph-icon simple-icon-trash mr-1"></i>Sil</button>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr class="cardd">
                                 <td>
                                     <img src="img/orj/firmalar/poligon.jpg" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
                                 </td>
@@ -94,20 +94,20 @@
                                     <p class="list-item-heading">Poligon Logo Tasarımı</p>
                                 </td>
                                 <td>
-                                    <p class="text-muted">Poligon Mühendislik</p>
+                                    <p>Poligon Mühendislik</p>
                                 </td>
                                 <td>
-                                    <p class="text-muted">08.02.2022</p>
+                                    <p>08.02.2022</p>
                                 </td>
                                 <td>
-                                    <p class="d-none">2</p><span class="badge badge-pill badge-info">MÜŞTERİ ONAYINDA</span>
+                                    <p class="d-none">2</p><span class="badge badge-pill badge-secondary">MÜŞTERİ ONAYINDA</span>
                                 </td>
-                                <td>
+                                <td class="text-center">
                                     <a asp-controller="Home" asp-Action="Details" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
-                                    <button type="button" class="btn btn-danger btn-sm mb-1 delete-project"><i class="glyph-icon simple-icon-trash mr-1"></i>Sil</button>
+
                                 </td>
                             </tr>
-                            <tr>
+                            <tr class="cardd">
                                 <td>
                                     <img src="img/orj/firmalar/manypoints.png" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
                                 </td>
@@ -115,20 +115,19 @@
                                     <p class="list-item-heading">Many Points Post</p>
                                 </td>
                                 <td>
-                                    <p class="text-muted">Many Points</p>
+                                    <p>Many Points</p>
                                 </td>
                                 <td>
-                                    <p class="text-muted">07.01.2022</p>
+                                    <p>07.01.2022</p>
                                 </td>
                                 <td>
-                                    <p class="d-none">1</p><span class="badge badge-pill badge-warning">YAPIM AŞAMASINDA</span>
+                                    <p class="d-none">1</p><span class="badge badge-pill badge-warning">YAPIM AŞAMASINDA</span><span class="badge badge-pill badge-danger ml-3">Proje Gecikmiş!</span>
                                 </td>
-                                <td>
+                                <td class="text-center">
                                     <a asp-controller="Home" asp-Action="Details" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
-                                    <button type="button" class="btn btn-danger btn-sm mb-1 delete-project"><i class="glyph-icon simple-icon-trash mr-1"></i>Sil</button>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr class="cardd">
                                 <td>
                                     <img src="img/orj/firmalar/poligon.jpg" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
                                 </td>
@@ -136,17 +135,16 @@
                                     <p class="list-item-heading">Poligon Video Tasarımı</p>
                                 </td>
                                 <td>
-                                    <p class="text-muted">Poligon Mühendislik</p>
+                                    <p>Poligon Mühendislik</p>
                                 </td>
                                 <td>
-                                    <p class="text-muted">10.01.2022</p>
+                                    <p>10.01.2022</p>
                                 </td>
                                 <td>
-                                    <p class="d-none">1</p><span class="badge badge-pill badge-warning">YAPIM AŞAMASINDA</span>
+                                    <p class="d-none">1</p><span class="badge badge-pill badge-info">YENİ</span>
                                 </td>
-                                <td>
+                                <td class="text-center">
                                     <a asp-controller="Home" asp-Action="Details" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
-                                    <button type="button" class="btn btn-danger btn-sm mb-1 delete-project"><i class="glyph-icon simple-icon-trash mr-1"></i>Sil</button>
                                 </td>
                             </tr>
                         </tbody>

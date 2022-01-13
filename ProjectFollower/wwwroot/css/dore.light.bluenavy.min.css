@@ -3258,6 +3258,13 @@ input:-webkit-autofill {
     background-color: #00365a !important;
     box-shadow: initial !important;
 }
+
+.custom-checkbox .custom-control-input:disabled:checked ~ .custom-control-label::before,
+.custom-radio .custom-control-input:disabled:checked ~ .custom-control-label::before {
+    background-color: #00365a9e !important;
+    box-shadow: initial !important;
+}
+
 .custom-control-label::after,
 .custom-control-label::before {
     box-shadow: initial !important;

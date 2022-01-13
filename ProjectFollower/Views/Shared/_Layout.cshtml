@@ -44,7 +44,6 @@
     <link rel="stylesheet" href="/css/vendor/bootstrap.rtl.only.min.css" />
     <link rel="stylesheet" href="/css/vendor/component-custom-switch.min.css" />
     <link rel="stylesheet" href="/css/vendor/perfect-scrollbar.css" />
-    <link rel="stylesheet" href="/css/main.css" />
     <link rel="stylesheet" href="/css/vendor/bootstrap-float-label.min.css" />
     <link rel="stylesheet" href="/css/vendor/select2.min.css" />
     <link rel="stylesheet" href="/css/vendor/select2-bootstrap.min.css" />
@@ -58,6 +57,8 @@
     <link rel="stylesheet" href="/css/vendor/dataTables.bootstrap4.min.css" />
     <link rel="stylesheet" href="/css/vendor/datatables.responsive.bootstrap4.min.css" />
     <link rel="stylesheet" href="/css/vendor/component-custom-switch.min.css" />
+    <link rel="stylesheet" href="css/vendor/jquery.contextMenu.min.css" />
+    <link rel="stylesheet" href="/css/main.css" />
     <link rel="shortcut icon" href="/logos/black.svg" />
 </head>
 <body id="app-container" class="menu-default show-spinner">
@@ -118,7 +119,7 @@
                 </button>
 
                 <div class="dropdown-menu dropdown-menu-right mt-3">
-                    <a class="dropdown-item" data-toggle="modal" data-target="#exampleModal">Şifre Değiştir</a>
+                    <a class="dropdown-item" data-toggle="modal" data-target="#sifreModal">Şifre Değiştir</a>
                     <a class="dropdown-item" asp-controller="SignIn" asp-action="Logout">Güvenli Çıkış</a>
                 </div>
             </div>
@@ -158,14 +159,56 @@
     </div>
 
     @RenderBody()
-
-
-    <!-- Modal Şifre Değiştir -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Modal Statü Değiştir -->
+    <div class="modal fade" id="statuModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Şifre Değiştir</h5>
+                    <h5 class="modal-title" id="statuModalLabel">Statü Değiştir</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Proje Adı</label>
+                            <p>Poligon Logo Tasarımı</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword2">Statü</label>
+                            <select class="form-control select-single" data-width="100%">
+                                <option value="AK">Yapım Aşamasında</option>
+                                <option value="HI">Müşteri Onayında</option>
+                                <option value="CA">Tamamlandı</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword2">Durum</label>
+                            <select class="form-control select-single" data-width="100%">
+                                <option value="AK">Normal</option>
+                                <option value="HI">Acil</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                                data-dismiss="modal">
+                            Kapat
+                        </button>
+                        <button type="button" class="btn btn-primary">Değişiklikleri Kaydet</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Şifre Değiştir -->
+    <div class="modal fade" id="sifreModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="sifreModalLabel">Şifre Değiştir</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -235,13 +278,16 @@
     <script src="/js/vendor/cropper.min.js"></script>
     <script src="/js/vendor/typeahead.bundle.js"></script>
     <script src="/js/vendor/mousetrap.min.js"></script>
+    <script src="js/vendor/mousetrap.min.js"></script>
+    <script src="js/vendor/jquery.contextMenu.min.js"></script>
     <script src="/js/vendor/sweetalert2.min.js"></script>
+    <script src="/js/vendor/follower-ezsper.js"></script>
     <script src="/js/dore-plugins/select.from.library.js"></script>
     <script src="/js/dore.script.js"></script>
     <script src="/js/scripts.js"></script>
     <script src="https://cdn3.devexpress.com/jslib/21.2.4/js/dx.all.js"></script>
     <script src="https://cdn3.devexpress.com/jslib/21.2.4/js/localization/dx.messages.tr.js"></script>
-    <script src="/js/vendor/follower-ezsper.js"></script>
+
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)

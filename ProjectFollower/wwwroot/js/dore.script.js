@@ -4088,9 +4088,46 @@ $.dore = function (element, options) {
     /*03.35. Context Menu */
     if ($().contextMenu) {
       $.contextMenu({
-        selector: ".list .card",
+        selector: ".list .cardd",
         callback: function (key, options) {
-          var m = "clicked: " + key;
+            var m = "clicked: " + key;
+            var y = key;
+            if (y == "archive") {
+                Swal.fire({
+                    title: 'Bu projeyi arşive kaldırmak istediğinize emin misiniz?',
+                    showCancelButton: true,
+                    icon: 'info',
+                    confirmButtonText: 'Arşivle',
+                    cancelButtonText: `İptal Et`,
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: 'Başarıyla arşivlendi',
+                            icon: 'success',
+                            confirmButtonText: 'Tamam',
+                        })
+                    }
+                })
+            }
+            if (y == "delete") {
+                Swal.fire({
+                    title: 'Bu projeyi kaldırmak istediğinize emin misiniz?',
+                    showCancelButton: true,
+                    icon: 'info',
+                    confirmButtonText: 'Sil',
+                    cancelButtonText: `İptal Et`,
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: 'Proje başarıyla silindi',
+                            icon: 'success',
+                            confirmButtonText: 'Tamam',
+                        })
+                    }
+                })
+            }
         },
         events: {
           show: function (options) {
@@ -4101,13 +4138,20 @@ $.dore = function (element, options) {
           }
         },
         items: {
+          archive: { name: "Arşivle", className: "simple-icon-drawer archive-post" },
+           delete: { name: "Sil", className: "simple-icon-trash delete-project" },
           copy: {
-            name: "Copy",
-            className: "simple-icon-docs"
-          },
-          archive: { name: "Move to archive", className: "simple-icon-drawer" },
-          delete: { name: "Delete", className: "simple-icon-trash" }
-        }
+              name: "Proje Durumu",
+              className: "simple-icon-settings",
+              "items": {
+                  "status1": { "name": "Yeni" },
+                  "status2": { "name": "Yapım Aşamasında" },
+                  "status3": { "name": "Müşteri Onayında" },
+                  "status4": { "name": "Tamamlandı" }
+              }
+
+            }
+        },
       });
     }
 

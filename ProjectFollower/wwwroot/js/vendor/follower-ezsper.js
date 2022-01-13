@@ -1,23 +1,21 @@
 (function ($) {
     $('#mission-add').click(function() {
-        var listvalue = $('#mission-textbox').val();
-        var playervalue = $('#mission-players').val();
-        if (!playervalue.length || !listvalue.length) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Görev tanımında boş alan bırakamazsın!',
-                confirmButtonText: 'Tamam'
-            })
-        }else{    
-            $('#mission-list').append('<tr>' + '<td><p class="list-item-heading">' + listvalue + '</p></td>' + '<td><p class="text-muted">' + playervalue + '</p></td>' + '<td class="d-flex justify-content-end"><button type="button" class="btn btn-danger mb-1 deleteli"><i class="simple-icon-trash mr-2"></i>Sil</button><td></tr>');
+        var listvalue = $('#mission-textbox').val();   
+        $('#mission-list').append('<tr>' + '<td><p class="list-item-heading">' + listvalue + '</p></td>' + '<td class="d-flex justify-content-end"><button type="button" class="btn btn-danger mb-1 deleteli"><i class="simple-icon-trash mr-2"></i>Sil</button><td></tr>');
+        $("#mission-textbox").val("");
+    });
+    $('#mission-textbox').keypress(function (event) {
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if (keycode == '13') {
+            var listvalue = $('#mission-textbox').val();
+            $('#mission-list').append('<tr>' + '<td><p class="list-item-heading">' + listvalue + '</p></td>' + '<td class="d-flex justify-content-end"><button type="button" class="btn btn-danger mb-1 deleteli"><i class="simple-icon-trash mr-2"></i>Sil</button><td></tr>');
             $("#mission-textbox").val("");
         }
-    });  
+    });
     $('#mission-list').on('click', '.deleteli', function(e) {
         $(this).closest('tr').remove();
     });
-    $( ".delete-project" ).click(function() {
+    $('.delete-project').on('click', function (e) {
         Swal.fire({
             title: 'Bu projeyi kaldırmak istediğinize emin misiniz?',
             showCancelButton: true,
@@ -29,6 +27,24 @@
             if (result.isConfirmed) {
                 Swal.fire({
                     title: 'Başarıyla silindi',
+                    icon: 'success',
+                    confirmButtonText: 'Tamam',
+                })
+            }
+        })
+    });
+    $(".archive-project").click(function () {
+        Swal.fire({
+            title: 'Bu projeyi arşivlemek istediğinize emin misiniz?',
+            showCancelButton: true,
+            icon: 'info',
+            confirmButtonText: 'Arşivle',
+            cancelButtonText: `İptal Et`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Başarıyla arşivlendi',
                     icon: 'success',
                     confirmButtonText: 'Tamam',
                 })
@@ -89,6 +105,7 @@
             }
         })
     });
+
     $('.file-avatar').each(function(){
         var label = $('.custom-select-label');
         var labelValue = $(label).html();

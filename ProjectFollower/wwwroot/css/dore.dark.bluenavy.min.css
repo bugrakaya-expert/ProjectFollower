@@ -58,9 +58,9 @@ Table of Contents
   font-family: 'Nunito';
   font-style: normal;
   font-weight: 300;
-  src: url("../font/nunito/nunito-300.eot");
+  src: url("/font/nunito/nunito-300.eot");
   /* IE9 Compat Modes */
-  src: local(""), url("../font/nunito/nunito-300.eot?#iefix") format("embedded-opentype"), url("../font/nunito/nunito-300.woff2") format("woff2"), url("../font/nunito/nunito-300.woff") format("woff"), url("../font/nunito/nunito-300.ttf") format("truetype"), url("../font/nunito/nunito-300.svg#Nunito") format("svg");
+  src: local(""), url("/font/nunito/nunito-300.eot?#iefix") format("embedded-opentype"), url("/font/nunito/nunito-300.woff2") format("woff2"), url("/font/nunito/nunito-300.woff") format("woff"), url("/font/nunito/nunito-300.ttf") format("truetype"), url("/font/nunito/nunito-300.svg#Nunito") format("svg");
   /* Legacy iOS */ }
 
 /* nunito-regular  */
@@ -68,9 +68,9 @@ Table of Contents
   font-family: 'Nunito';
   font-style: normal;
   font-weight: 400;
-  src: url("../font/nunito/nunito-regular.eot");
+  src: url("/font/nunito/nunito-regular.eot");
   /* IE9 Compat Modes */
-  src: local(""), url("../font/nunito/nunito-regular.eot?#iefix") format("embedded-opentype"), url("../font/nunito/nunito-regular.woff2") format("woff2"), url("../font/nunito/nunito-regular.woff") format("woff"), url("../font/nunito/nunito-regular.ttf") format("truetype"), url("../font/nunito/nunito-regular.svg#Nunito") format("svg");
+  src: local(""), url("/font/nunito/nunito-regular.eot?#iefix") format("embedded-opentype"), url("/font/nunito/nunito-regular.woff2") format("woff2"), url("/font/nunito/nunito-regular.woff") format("woff"), url("/font/nunito/nunito-regular.ttf") format("truetype"), url("/font/nunito/nunito-regular.svg#Nunito") format("svg");
   /* Legacy iOS */ }
 
 /* nunito-600  */
@@ -78,9 +78,9 @@ Table of Contents
   font-family: 'Nunito';
   font-style: normal;
   font-weight: 600;
-  src: url("../font/nunito/nunito-600.eot");
+  src: url("/font/nunito/nunito-600.eot");
   /* IE9 Compat Modes */
-  src: local(""), url("../font/nunito/nunito-600.eot?#iefix") format("embedded-opentype"), url("../font/nunito/nunito-600.woff2") format("woff2"), url("../font/nunito/nunito-600.woff") format("woff"), url("../font/nunito/nunito-600.ttf") format("truetype"), url("../font/nunito/nunito-600.svg#Nunito") format("svg");
+  src: local(""), url("/font/nunito/nunito-600.eot?#iefix") format("embedded-opentype"), url("/font/nunito/nunito-600.woff2") format("woff2"), url("/font/nunito/nunito-600.woff") format("woff"), url("/font/nunito/nunito-600.ttf") format("truetype"), url("/font/nunito/nunito-600.svg#Nunito") format("svg");
   /* Legacy iOS */ }
 
 /* nunito-italic  */
@@ -88,9 +88,9 @@ Table of Contents
   font-family: 'Nunito';
   font-style: italic;
   font-weight: 400;
-  src: url("../font/nunito/nunito-italic.eot");
+  src: url("/font/nunito/nunito-italic.eot");
   /* IE9 Compat Modes */
-  src: local(""), url("../font/nunito/nunito-italic.eot?#iefix") format("embedded-opentype"), url("../font/nunito/nunito-italic.woff2") format("woff2"), url("../font/nunito/nunito-italic.woff") format("woff"), url("../font/nunito/nunito-italic.ttf") format("truetype"), url("../font/nunito/nunito-italic.svg#Nunito") format("svg");
+  src: local(""), url("/font/nunito/nunito-italic.eot?#iefix") format("embedded-opentype"), url("/font/nunito/nunito-italic.woff2") format("woff2"), url("/font/nunito/nunito-italic.woff") format("woff"), url("/font/nunito/nunito-italic.ttf") format("truetype"), url("/font/nunito/nunito-italic.svg#Nunito") format("svg");
   /* Legacy iOS */ }
 
 /* nunito-700  */
@@ -98,9 +98,9 @@ Table of Contents
   font-family: 'Nunito';
   font-style: normal;
   font-weight: 700;
-  src: url("../font/nunito/nunito-700.eot");
+  src: url("/font/nunito/nunito-700.eot");
   /* IE9 Compat Modes */
-  src: local(""), url("../font/nunito/nunito-700.eot?#iefix") format("embedded-opentype"), url("../font/nunito/nunito-700.woff2") format("woff2"), url("../font/nunito/nunito-700.woff") format("woff"), url("../font/nunito/nunito-700.ttf") format("truetype"), url("../font/nunito/nunito-700.svg#Nunito") format("svg");
+  src: local(""), url("/font/nunito/nunito-700.eot?#iefix") format("embedded-opentype"), url("/font/nunito/nunito-700.woff2") format("woff2"), url("/font/nunito/nunito-700.woff") format("woff"), url("/font/nunito/nunito-700.ttf") format("truetype"), url("/font/nunito/nunito-700.svg#Nunito") format("svg");
   /* Legacy iOS */ }
 
 /* 01.Base */
@@ -144,7 +144,7 @@ body {
   text-align: right; }
 
 .fixed-background {
-  background: url("../img/login/balloon-lg.jpg") no-repeat center center fixed;
+  background: url("/img/login/balloon-lg.jpg") no-repeat center center fixed;
   background-size: cover;
   width: 100%;
   height: 100%;
@@ -184,7 +184,7 @@ body {
 .logo-single {
   width: 110px;
   height: 35px;
-  background: url("../logos/white.png") no-repeat;
+  background: url("/logos/white.png") no-repeat;
   background-position: center center;
   display: inline-block;
   margin-bottom: 60px; }
@@ -1523,7 +1523,7 @@ button {
 .logo {
   width: 110px;
   height: 60px;
-  background: url("../logos/white.svg") no-repeat;
+  background: url("/logos/white.svg") no-repeat;
   background-position: center center;
   margin: 0 auto; }
   @media (max-width: 767px) {
@@ -1533,7 +1533,7 @@ button {
 .logo-mobile {
   width: 20px;
   height: 35px;
-  background: url("../logos/mobile.svg") no-repeat;
+  background: url("/logos/mobile.svg") no-repeat;
   background-position: center center; }
 
 #app-container.sub-hidden .menu-button .sub,
@@ -2407,7 +2407,7 @@ main {
 
 .dashboard-search {
   height: 650px;
-  background: url("../img/login/plane.jpg");
+  background: url("/img/login/plane.jpg");
   background-size: contain;
   background-repeat: no-repeat;
   background-color: #1e2022; }
@@ -4532,7 +4532,7 @@ div.dataTables_wrapper div.dataTables_filter input {
   box-shadow: 0 1px 15px rgba(0, 0, 0, 0.1), 0 1px 8px rgba(0, 0, 0, 0.1); }
   .auth-card .image-side {
     width: 40%;
-    background: url("../img/login/balloon.jpg") no-repeat center top;
+    background: url("/img/login/balloon.jpg") no-repeat center top;
     background-size: cover;
     padding: 80px 40px; }
     .auth-card .image-side .h3 {
@@ -6736,7 +6736,7 @@ footer.page-footer {
       display: inline-block;
       width: 100px;
       height: 30px;
-      background: url("../logos/white-full.svg");
+      background: url("/logos/white-full.svg");
       background-repeat: no-repeat; }
   .landing-page .main-container {
     overflow: hidden; }
@@ -6830,12 +6830,12 @@ footer.page-footer {
         display: inline-block;
         width: 120px;
         height: 40px;
-        background: url("../logos/white-full.svg");
+        background: url("/logos/white-full.svg");
         background-repeat: no-repeat; }
       .landing-page .landing-page-nav .navbar-logo .dark {
         width: 120px;
         height: 40px;
-        background: url("../logos/white-full.svg");
+        background: url("/logos/white-full.svg");
         background-repeat: no-repeat;
         display: none; }
     .landing-page .landing-page-nav .mobile-menu-button {
