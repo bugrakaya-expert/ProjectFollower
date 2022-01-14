@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ProjectFollower.DataAcces.Data
+namespace ProjectFollower.Models.DbModels
 {
-    public class BusinessList
+    public class Business
     {
         public int Id { get; set; }
         public string Name { get; set; }

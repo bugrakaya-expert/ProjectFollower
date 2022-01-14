@@ -21,10 +21,10 @@ namespace ProjectFollower.Controllers
         private readonly IUnitOfWork _uow;
 
         public CustomersController(
-UserManager<IdentityUser> userManager,
-SignInManager<IdentityUser> signInManager,
-ILogger<CustomersController> logger,
-IUnitOfWork uow
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager,
+            ILogger<CustomersController> logger,
+            IUnitOfWork uow
     )
         {
             _userManager = userManager;
