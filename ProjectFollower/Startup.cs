@@ -50,12 +50,13 @@ namespace ProjectFollower
                 .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.AddMvc();
             services.AddRazorPages();
             services.AddHttpContextAccessor();
             services.AddSession();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-            services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

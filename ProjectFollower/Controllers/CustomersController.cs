@@ -33,7 +33,7 @@ namespace ProjectFollower.Controllers
             _uow = uow;
         }
 
-        [Route("musteriler")]
+        [Route("customers")]
         public IActionResult Index()
         {
             #region Authentication Index
@@ -50,7 +50,7 @@ namespace ProjectFollower.Controllers
 
             return View();
         }
-        [Route("customer-add")]
+        [Route("customer/add")]
         public IActionResult AddCustomer()
         {
             #region Authentication Index
@@ -68,7 +68,7 @@ namespace ProjectFollower.Controllers
             return View();
         }
 
-        [Route("detaylar")]
+        [Route("customers/details")]
         public IActionResult Details()
         {
             #region Authentication Index

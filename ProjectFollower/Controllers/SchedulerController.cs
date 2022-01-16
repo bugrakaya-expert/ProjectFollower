@@ -36,7 +36,7 @@ namespace ProjectFollower.Controllers
         }
 
 
-        [Route("Scheduler")]
+        [Route("scheduler")]
         public IActionResult Index()
         {
             #region Authentication Index

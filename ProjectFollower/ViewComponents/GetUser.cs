@@ -24,7 +24,7 @@ namespace ProjectFollower.ViewComponents
             if (Claims != null)
             {
                 var AppUser = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == Claims.Value);
-                var FullName = AppUser.Surname + " " + AppUser.Lastname;
+                var FullName = AppUser.FirstName + " " + AppUser.Lastname;
                 return View("default",FullName);
             }
             return View("ERROR NAME");

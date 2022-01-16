@@ -5,10 +5,10 @@ using System.Text;
 
 namespace ProjectFollower.Models.DbModels
 {
-    public class Business
+    public class CompanyType
     {
         [Key]
-        public Guid Id { get; set; }
+        public Guid MyProperty { get; set; }
         [Required]
         public string Name { get; set; }
     }

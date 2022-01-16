@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using ProjectFollower.DataAcces.IMainRepository;
 using ProjectFollower.Models.DbModels;
 using ProjectFollower.Models.ViewModels;
+using ProjectFollower.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,19 +18,21 @@ namespace ProjectFollower.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
-        //private readonly RoleManager<ApplicationUser> _roleManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<AccountController> _logger;
         private readonly IUnitOfWork _uow;
 
         public SignInController(
-                    UserManager<IdentityUser> userManager,
+        UserManager<IdentityUser> userManager,
         SignInManager<IdentityUser> signInManager,
+        RoleManager<IdentityRole> roleManager,
         ILogger<AccountController> logger,
         IUnitOfWork uow
             )
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
             _logger = logger;
             _uow = uow;
         }
@@ -67,6 +70,15 @@ namespace ProjectFollower.Controllers
                 {
                     var user = _uow.ApplicationUser.GetFirstOrDefault(u => u.Email == Input.Email);
                     _logger.LogInformation("Kullanıcı giriş yaptı." + "Kullanıcı: " + user.Email);
+
+                    if (!await _roleManager.RoleExistsAsync(ProjectConstant.UserRoles.Admin))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(ProjectConstant.UserRoles.Admin));
+                    }
+                    if (!await _roleManager.RoleExistsAsync(ProjectConstant.UserRoles.Personel))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(ProjectConstant.UserRoles.Personel));
+                    }
                     return LocalRedirect(returnUrl);
                 }
                 if (result.ToString() == "Failed")
@@ -104,6 +116,7 @@ namespace ProjectFollower.Controllers
             return View("SignIn", model: ModelState.Values);
         }
 
+        [Route("logout")]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();

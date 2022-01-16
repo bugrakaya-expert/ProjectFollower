@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ProjectFollower.Models.DbModels
 {
-    public class Business
+    public class Department
     {
         [Key]
         public Guid Id { get; set; }

@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ProjectFollower.DataAcces\ProjectFollower.DataAcces.csproj" />
     <ProjectReference Include="..\ProjectFollower.Models\ProjectFollower.Models.csproj" />
+    <ProjectReference Include="..\ProjectFollower.Utility\ProjectFollower.Utility.csproj" />
   </ItemGroup>
 
   <ItemGroup>

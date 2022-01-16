@@ -2,161 +2,164 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
-<main>
+@*
+    <main>
     <div class="alert alert-danger alert-dismissible fade show rounded mb-4" role="alert"><strong>Dikkat!</strong> Termini geçmiş 1 adet projeniz bulunmakta. <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></div>
     <div class="container-fluid">
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="mb-3">
-                    <h1>Projeler</h1>
-                    <div class="text-zero top-right-button-container">
-                        <a asp-controller="Home" asp-action="ProjectNew"><button type="button" class="btn btn-primary btn-lg top-right-button mr-1">YENİ PROJE EKLE</button></a>
-                    </div>
-                </div>
-
-                <div class="mb-2">
-                    <a class="btn pt-0 pl-0 d-inline-block d-md-none" data-toggle="collapse" href="#displayOptions"
-                       role="button" aria-expanded="true" aria-controls="displayOptions">
-                        Display Options
-                        <i class="simple-icon-arrow-down align-middle"></i>
-                    </a>
-                    <div class="collapse d-md-block" id="displayOptions">
-                        <div class="d-block d-md-inline-block">
-
-                            <div class="search-sm d-inline-block float-md-left mr-1 mb-1 align-top">
-                                <input placeholder="Ara...">
-                            </div>
-                        </div>
-                        <div class="float-md-right">
-                            <span class="text-muted text-small">210 Projeden 1-10 arasındakiler gösteriliyor. </span>
-                            <button class="btn btn-outline-dark btn-xs dropdown-toggle" type="button"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                20
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#">10</a>
-                                <a class="dropdown-item active" href="#">20</a>
-                                <a class="dropdown-item" href="#">30</a>
-                                <a class="dropdown-item" href="#">50</a>
-                                <a class="dropdown-item" href="#">100</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="separator mb-4"></div>
-            </div>
-        </div>
-
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="data-table-rows data-tables-hide-filter">
-                    <table id="datatableRow" class="data-table data-tables-pagination responsive nowrap"
-                           data-order="[[ 1, &quot;desc&quot; ]]">
-                        <thead>
-                            <tr>
-                                <th style="visibility: hidden;"></th>
-                                <th>Firma Adı</th>
-                                <th>Proje Adı</th>
-                                <th>Deadline</th>
-                                <th>Durum</th>
-                                <th style="visibility: hidden;"></th>
-                            </tr>
-                        </thead>
-                        <tbody class="list">
-                            <tr class="cardd">
-                                <td>
-                                    <img src="img/orj/firmalar/elitdijital.png" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
-                                </td>
-                                <td>
-                                    <p class="list-item-heading">Elit Dijital Logo Tasarımı</p>
-                                </td>
-                                <td>
-                                    <p>Elit Dijital</p>
-                                </td>
-                                <td>
-                                    <p>05.01.2022</p>
-                                </td>
-                                <td>
-                                    <p class="d-none">3</p><span class="badge badge-pill badge-primary">TAMAMLANDI</span>
-                                </td>
-                                <td class="text-center">
-                                    <a asp-controller="Home" asp-Action="Details" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
-                                </td>
-                            </tr>
-                            <tr class="cardd">
-                                <td>
-                                    <img src="img/orj/firmalar/poligon.jpg" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
-                                </td>
-                                <td>
-                                    <p class="list-item-heading">Poligon Logo Tasarımı</p>
-                                </td>
-                                <td>
-                                    <p>Poligon Mühendislik</p>
-                                </td>
-                                <td>
-                                    <p>08.02.2022</p>
-                                </td>
-                                <td>
-                                    <p class="d-none">2</p><span class="badge badge-pill badge-secondary">MÜŞTERİ ONAYINDA</span>
-                                </td>
-                                <td class="text-center">
-                                    <a asp-controller="Home" asp-Action="Details" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
-
-                                </td>
-                            </tr>
-                            <tr class="cardd">
-                                <td>
-                                    <img src="img/orj/firmalar/manypoints.png" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
-                                </td>
-                                <td>
-                                    <p class="list-item-heading">Many Points Post</p>
-                                </td>
-                                <td>
-                                    <p>Many Points</p>
-                                </td>
-                                <td>
-                                    <p>07.01.2022</p>
-                                </td>
-                                <td>
-                                    <p class="d-none">1</p><span class="badge badge-pill badge-warning">YAPIM AŞAMASINDA</span><span class="badge badge-pill badge-danger ml-3">Proje Gecikmiş!</span>
-                                </td>
-                                <td class="text-center">
-                                    <a asp-controller="Home" asp-Action="Details" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
-                                </td>
-                            </tr>
-                            <tr class="cardd">
-                                <td>
-                                    <img src="img/orj/firmalar/poligon.jpg" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
-                                </td>
-                                <td>
-                                    <p class="list-item-heading">Poligon Video Tasarımı</p>
-                                </td>
-                                <td>
-                                    <p>Poligon Mühendislik</p>
-                                </td>
-                                <td>
-                                    <p>10.01.2022</p>
-                                </td>
-                                <td>
-                                    <p class="d-none">1</p><span class="badge badge-pill badge-info">YENİ</span>
-                                </td>
-                                <td class="text-center">
-                                    <a asp-controller="Home" asp-Action="Details" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+    <div class="row mb-4">
+    <div class="col-12">
+    <div class="mb-3">
+    <h1>Projeler</h1>
+    <div class="text-zero top-right-button-container">
+    <a asp-controller="Home" asp-action="ProjectNew"><button type="button" class="btn btn-primary btn-lg top-right-button mr-1">YENİ PROJE EKLE</button></a>
     </div>
-</main>
-@section scripts
-{
+    </div>
+
+    <div class="mb-2">
+    <a class="btn pt-0 pl-0 d-inline-block d-md-none" data-toggle="collapse" href="#displayOptions"
+    role="button" aria-expanded="true" aria-controls="displayOptions">
+    Display Options
+    <i class="simple-icon-arrow-down align-middle"></i>
+    </a>
+    <div class="collapse d-md-block" id="displayOptions">
+    <div class="d-block d-md-inline-block">
+
+    <div class="search-sm d-inline-block float-md-left mr-1 mb-1 align-top">
+    <input placeholder="Ara...">
+    </div>
+    </div>
+    <div class="float-md-right">
+    <span class="text-muted text-small">210 Projeden 1-10 arasındakiler gösteriliyor. </span>
+    <button class="btn btn-outline-dark btn-xs dropdown-toggle" type="button"
+    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    20
+    </button>
+    <div class="dropdown-menu dropdown-menu-right">
+    <a class="dropdown-item" href="#">10</a>
+    <a class="dropdown-item active" href="#">20</a>
+    <a class="dropdown-item" href="#">30</a>
+    <a class="dropdown-item" href="#">50</a>
+    <a class="dropdown-item" href="#">100</a>
+    </div>
+    </div>
+    </div>
+    </div>
+    <div class="separator mb-4"></div>
+    </div>
+    </div>
+
+    <div class="row mb-4">
+    <div class="col-12">
+    <div class="data-table-rows data-tables-hide-filter">
+    <table id="datatableRow" class="data-table data-tables-pagination responsive nowrap"
+    data-order="[[ 1, &quot;desc&quot; ]]">
+    <thead>
+    <tr>
+    <th style="visibility: hidden;"></th>
+    <th>Firma Adı</th>
+    <th>Proje Adı</th>
+    <th>Deadline</th>
+    <th>Durum</th>
+    <th style="visibility: hidden;"></th>
+    </tr>
+    </thead>
+    <tbody class="list">
+    <tr class="cardd">
+    <td>
+    <img src="img/orj/firmalar/elitdijital.png" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
+    </td>
+    <td>
+    <p class="list-item-heading">Elit Dijital Logo Tasarımı</p>
+    </td>
+    <td>
+    <p>Elit Dijital</p>
+    </td>
+    <td>
+    <p>05.01.2022</p>
+    </td>
+    <td>
+    <p class="d-none">3</p><span class="badge badge-pill badge-primary">TAMAMLANDI</span>
+    </td>
+    <td class="text-center">
+    <a asp-controller="Home" asp-Action="Details" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
+    </td>
+    </tr>
+    <tr class="cardd">
+    <td>
+    <img src="img/orj/firmalar/poligon.jpg" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
+    </td>
+    <td>
+    <p class="list-item-heading">Poligon Logo Tasarımı</p>
+    </td>
+    <td>
+    <p>Poligon Mühendislik</p>
+    </td>
+    <td>
+    <p>08.02.2022</p>
+    </td>
+    <td>
+    <p class="d-none">2</p><span class="badge badge-pill badge-secondary">MÜŞTERİ ONAYINDA</span>
+    </td>
+    <td class="text-center">
+    <a asp-controller="Home" asp-Action="Details" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
+
+    </td>
+    </tr>
+    <tr class="cardd">
+    <td>
+    <img src="img/orj/firmalar/manypoints.png" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
+    </td>
+    <td>
+    <p class="list-item-heading">Many Points Post</p>
+    </td>
+    <td>
+    <p>Many Points</p>
+    </td>
+    <td>
+    <p>07.01.2022</p>
+    </td>
+    <td>
+    <p class="d-none">1</p><span class="badge badge-pill badge-warning">YAPIM AŞAMASINDA</span><span class="badge badge-pill badge-danger ml-3">Proje Gecikmiş!</span>
+    </td>
+    <td class="text-center">
+    <a asp-controller="Home" asp-Action="Details" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
+    </td>
+    </tr>
+    <tr class="cardd">
+    <td>
+    <img src="img/orj/firmalar/poligon.jpg" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
+    </td>
+    <td>
+    <p class="list-item-heading">Poligon Video Tasarımı</p>
+    </td>
+    <td>
+    <p>Poligon Mühendislik</p>
+    </td>
+    <td>
+    <p>10.01.2022</p>
+    </td>
+    <td>
+    <p class="d-none">1</p><span class="badge badge-pill badge-info">YENİ</span>
+    </td>
+    <td class="text-center">
+    <a asp-controller="Home" asp-Action="Details" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
+    </td>
+    </tr>
+    </tbody>
+    </table>
+    </div>
+    </div>
+    </div>
+    </div>
+    </main>
+    @section scripts
+    {
     <script src="/js/vendor/jquery.validate/jquery.validate.min.js"></script>
     <script src="/js/vendor/jquery.validate/additional-methods.min.js"></script>
     <script src="/js/vendor/datatables-index.min.js"></script>
-}
+    }
+
+*@

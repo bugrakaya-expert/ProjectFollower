@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ProjectFollower.DataAcces.IMainRepository;
 using ProjectFollower.Models.DbModels;
 using ProjectFollower.Models.ViewModels;
+using static ProjectFollower.Utility.ProjectConstant;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +15,11 @@ using System.Threading.Tasks;
 
 namespace ProjectFollower.Controllers
 {
+    
     public class HomeController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
-        //private readonly RoleManager<ApplicationUser> _roleManager;
         private readonly ILogger<AccountController> _logger;
         private readonly IUnitOfWork _uow;
 
@@ -38,6 +40,8 @@ namespace ProjectFollower.Controllers
         [BindProperty]
         public UserRegisterVM Input { get; set; }
 
+
+        [AllowAnonymous]
         public IActionResult Index()
         {
             #region Authentication Index
@@ -46,18 +50,29 @@ namespace ProjectFollower.Controllers
             if (Claims != null)
             {
                 var ApplicationUser = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == Claims.Value);
-                return View();//Go Dashboard
+                return RedirectToAction("Dashboard","Home");//Go Dashboard
             }
 
             #endregion Authentication Index
 
             return RedirectToAction("Index", "SignIn");
         }
+
+        //[Authorize(Roles = UserRoles.Admin)]
+        [Route("dashboard")]
+        public IActionResult Dashboard() 
+        {
+            return View(); 
+        } 
+
+        [Authorize(Roles = UserRoles.Admin)]
         [Route("project-details")]
         public IActionResult Details()
         {
             return View();
         }
+
+        [Authorize(Roles = UserRoles.Admin)]
         [Route("project-new")]
         public IActionResult ProjectNew()
         {

@@ -1,8 +1,8 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "NewUser";
 }
 
+@model ProjectFollower.Models.ViewModels.UserRegisterVM
 
 <main>
     <div class="container-fluid project-creator">
@@ -22,7 +22,7 @@
                 <div class="separator mb-5"></div>
             </div>
         </div>
-        <form>
+        <form method="post" id="account">
             <div class="row">
                 <div class="col-12">
                     <div class="card mb-4">
@@ -30,11 +30,11 @@
                             <h5 class="mb-4">Yeni Kullanıcı</h5>
                             <div>
                                 <label class="form-group has-top-label">
-                                    <input class="form-control" />
+                                    <input class="form-control" type="text" id="firstname" class="form-control" asp-for="FirstName" required />
                                     <span>Adın</span>
                                 </label>
                                 <label class="form-group has-top-label">
-                                    <input class="form-control" />
+                                    <input class="form-control" type="text" id="lastname" class="form-control" asp-for="Lastname" required />
                                     <span>Soyadın</span>
                                 </label>
                                 <label class="form-group has-top-label">
@@ -45,13 +45,22 @@
                                     <span>Firma Adı</span>
                                 </label>
                                 <label class="form-group has-top-label">
-                                    <input class="form-control" />
+                                    <input class="form-control" type="email" id="email" class="form-control" asp-for="Email" required />
                                     <span>E-posta adresi</span>
                                 </label>
                                 <label class="form-group has-top-label">
-                                    <input class="form-control" />
-                                    <span>Pozisyonun</span>
+                                    <select class="form-control select-single" data-width="100%">
+                                        <option value="AK">Many Points</option>
+                                        <option value="HI">Expert</option>
+                                    </select>
+                                    <span>Pozisyonu</span>
                                 </label>
+                                @*
+                                    <label class="form-group has-top-label">
+                                    <input class="form-control" />
+                                    <span>Pozisyonu</span>
+                                    </label>
+                                *@
                                 <div class="input-group mb-3 file-avatar ">
                                     <label class="custom-select custom-select-label" for="file-upload" class="form-control"></label>
                                     <input type="file" class="d-none" name="file-upload" id="file-upload" />
@@ -71,3 +80,24 @@
         </form>
     </div>
 </main>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function(){
+            console.log("loaded!");
+            $.ajax({
+                url: "json/getdepartmentsjson",
+                      type: "GET",
+                      contentType: "application/json",
+                      dataType: "json",
+                success: function(data) {
+                    console.log(data);
+                    $.each(data, function(i, value) {
+                        console.log(value.name);
+                    });
+                }
+            });
+        });
+    </script>
+}

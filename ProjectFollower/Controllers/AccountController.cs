@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using ProjectFollower.DataAcces.IMainRepository;
 using ProjectFollower.Models.DbModels;
 using ProjectFollower.Models.ViewModels;
+using ProjectFollower.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace ProjectFollower.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
-        //private readonly RoleManager<ApplicationUser> _roleManager;
+        //private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<AccountController> _logger;
         private readonly IUnitOfWork _uow;
 
@@ -89,7 +90,7 @@ namespace ProjectFollower.Controllers
                 {
                     UserName = Input.Email,
                     Email = Input.Email,
-                    Surname = Input.Surname,
+                    FirstName = Input.FirstName,
                     Lastname = Input.Lastname,
                     AppUserName = Input.AppUserName,
                     IdentityNumber = Input.IdentityNumber
@@ -102,7 +103,6 @@ namespace ProjectFollower.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("Kayıt işlemi yapıldı.");
-
 
                     /*Email Send*/
 
@@ -179,6 +179,11 @@ namespace ProjectFollower.Controllers
             return NotFound();
         }
         public IActionResult AddUser()
+        {
+            return View();
+        }
+
+        public IActionResult AccessDenied()
         {
             return View();
         }

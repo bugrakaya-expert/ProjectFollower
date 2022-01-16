@@ -1,6 +1,8 @@
-﻿using System;
+﻿using ProjectFollower.Models.DbModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace ProjectFollower.Models.ViewModels
@@ -28,10 +30,14 @@ namespace ProjectFollower.Models.ViewModels
         [Required]
         public string PhoneNumber { get; set; }*/
         [Required(ErrorMessage = "Ad Soyad belirlemek zorunludur.")]
-        public string Surname { get; set; }
+        public string FirstName { get; set; }
         [Required(ErrorMessage = "Ad Soyad belirlemek zorunludur.")]
         public string Lastname { get; set; }
         public string AppUserName { get; set; }
         public string IdentityNumber { get; set; }
+        public Guid DepartmentId { get; set; }
+
+        [ForeignKey("DepartmentId")]
+        public Department Department { get; set; }
     }
 }
