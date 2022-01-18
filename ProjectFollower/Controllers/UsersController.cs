@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ProjectFollower.Utility;
 
 namespace ProjectFollower.Controllers
 {
@@ -20,19 +21,21 @@ namespace ProjectFollower.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
-        //private readonly RoleManager<ApplicationUser> _roleManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<UsersController> _logger;
         private readonly IUnitOfWork _uow;
 
         public UsersController(
         UserManager<IdentityUser> userManager,
         SignInManager<IdentityUser> signInManager,
+        RoleManager<IdentityRole> roleManager,
         ILogger<UsersController> logger,
         IUnitOfWork uow
             )
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
             _logger = logger;
             _uow = uow;
         }
@@ -88,7 +91,9 @@ namespace ProjectFollower.Controllers
                     Email = Input.Email,
                     FirstName = Input.FirstName,
                     Lastname = Input.Lastname,
-                    DepartmentId=Input.DepartmentId
+                    DepartmentId=Input.DepartmentId,
+                    EmailConfirmed=true,
+                    Role=
 
                 };
 
@@ -98,8 +103,18 @@ namespace ProjectFollower.Controllers
                 {
                     _logger.LogInformation("Kayıt işlemi yapıldı.");
 
-                    /*Email Send*/
-
+                    if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
+                    }
+                    if (!await _roleManager.RoleExistsAsync(UserRoles.Personel))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(UserRoles.Personel));
+                    }
+                    if (!await _roleManager.RoleExistsAsync(UserRoles.Manager))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(UserRoles.Manager));
+                    }
 
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
@@ -130,7 +145,7 @@ namespace ProjectFollower.Controllers
         }
 
         #region API
-        [HttpGet("json/getdepartmentsjson")]
+        [HttpGet("jsonresult/getdepartmentsjson")]
         public JsonResult GetDepartments()
         {
             var Departments = _uow.Department.GetAll();

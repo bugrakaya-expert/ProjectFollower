@@ -13,5 +13,6 @@ namespace ProjectFollower.DataAcces.Data
     : base(options) { }
 
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
+        public DbSet<Department> Department { get; set; }
     }
 }

@@ -71,14 +71,6 @@ namespace ProjectFollower.Controllers
                     var user = _uow.ApplicationUser.GetFirstOrDefault(u => u.Email == Input.Email);
                     _logger.LogInformation("Kullanıcı giriş yaptı." + "Kullanıcı: " + user.Email);
 
-                    if (!await _roleManager.RoleExistsAsync(ProjectConstant.UserRoles.Admin))
-                    {
-                        await _roleManager.CreateAsync(new IdentityRole(ProjectConstant.UserRoles.Admin));
-                    }
-                    if (!await _roleManager.RoleExistsAsync(ProjectConstant.UserRoles.Personel))
-                    {
-                        await _roleManager.CreateAsync(new IdentityRole(ProjectConstant.UserRoles.Personel));
-                    }
                     return LocalRedirect(returnUrl);
                 }
                 if (result.ToString() == "Failed")

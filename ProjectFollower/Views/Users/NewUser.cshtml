@@ -12,10 +12,10 @@
                 <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
                     <ol class="breadcrumb pt-0">
                         <li class="breadcrumb-item">
-                            <a href="#">Kullanıcılar</a>
+                            <a asp-controller="Users" asp-action="Index">Kullanıcılar</a>
                         </li>
                         <li class="breadcrumb-item active">
-                            <a href="#">Yeni Kullanıcı</a>
+                            <a>Yeni Kullanıcı</a>
                         </li>
                     </ol>
                 </nav>
@@ -38,28 +38,24 @@
                                     <span>Soyadın</span>
                                 </label>
                                 <label class="form-group has-top-label">
-                                    <select class="form-control select-single" data-width="100%">
-                                        <option value="AK">Many Points</option>
-                                        <option value="HI">Expert</option>
-                                    </select>
-                                    <span>Firma Adı</span>
-                                </label>
-                                <label class="form-group has-top-label">
                                     <input class="form-control" type="email" id="email" class="form-control" asp-for="Email" required />
                                     <span>E-posta adresi</span>
                                 </label>
                                 <label class="form-group has-top-label">
-                                    <select class="form-control select-single" data-width="100%">
-                                        <option value="AK">Many Points</option>
-                                        <option value="HI">Expert</option>
+                                    <input class="form-control" type="password" id="password" class="form-control" asp-for="Password" required />
+                                    <span>Kullanıcı Şifresi</span>
+                                </label>
+                                <label class="form-group has-top-label">
+                                    <select class="form-control select-single" data-width="100%" id="departments">
+                                        <option hidden>Lütfen Personelinizin pozisyonunu seçiniz..</option>
                                     </select>
                                     <span>Pozisyonu</span>
                                 </label>
                                 @*
-                                    <label class="form-group has-top-label">
-                                    <input class="form-control" />
-                                    <span>Pozisyonu</span>
-                                    </label>
+        <label class="form-group has-top-label">
+        <input class="form-control" />
+        <span>Pozisyonu</span>
+        </label>
                                 *@
                                 <div class="input-group mb-3 file-avatar ">
                                     <label class="custom-select custom-select-label" for="file-upload" class="form-control"></label>
@@ -74,8 +70,9 @@
                 </div>
             </div>
             <div class="d-flex flex-row-reverse">
-                <a href="index.php"><button class="btn btn-danger btn-lg"><i class="iconsminds-close"></i>İptal Et</button></a>
+
                 <button class="btn btn-primary btn-lg mr-3" type="submit"><i class="iconsminds-add"></i> Kullanıcı Oluştur</button>
+                <a asp-controller="Users" asp-action="Index"><button class="btn btn-danger btn-lg"><i class="iconsminds-close"></i>İptal Et</button></a>
             </div>
         </form>
     </div>
@@ -87,17 +84,22 @@
         $(document).ready(function(){
             console.log("loaded!");
             $.ajax({
-                url: "json/getdepartmentsjson",
+                url: "jsonresult/getdepartmentsjson",
                       type: "GET",
                       contentType: "application/json",
                       dataType: "json",
                 success: function(data) {
                     console.log(data);
-                    $.each(data, function(i, value) {
-                        console.log(value.name);
+                    $.each(data, function(i, item) {
+                        console.log(item.name);
+                        $('#departments').append($('<option>', {
+                            value: item.id,
+                            text: item.name
+                        }));
                     });
                 }
             });
+
         });
     </script>
 }

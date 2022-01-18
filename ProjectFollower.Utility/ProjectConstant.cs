@@ -11,6 +11,7 @@ namespace ProjectFollower.Utility
             public const string Admin = "Yönetici";
 
             public const string Personel = "Personel";
+            public const string Manager = "Yetkili";
         }
     }
 }
