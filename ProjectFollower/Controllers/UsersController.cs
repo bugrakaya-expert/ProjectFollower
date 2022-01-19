@@ -93,7 +93,7 @@ namespace ProjectFollower.Controllers
                     Lastname = Input.Lastname,
                     DepartmentId=Input.DepartmentId,
                     EmailConfirmed=true,
-                    Role=
+                    //Role=
 
                 };
 
