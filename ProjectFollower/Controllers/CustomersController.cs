@@ -50,7 +50,7 @@ namespace ProjectFollower.Controllers
 
             return View();
         }
-        [Route("customer/add")]
+        [Route("customers-add")]
         public IActionResult AddCustomer()
         {
             #region Authentication Index
@@ -68,7 +68,7 @@ namespace ProjectFollower.Controllers
             return View();
         }
 
-        [Route("customers/details")]
+        [Route("customers-details")]
         public IActionResult Details()
         {
             #region Authentication Index
