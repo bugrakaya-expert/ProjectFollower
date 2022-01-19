@@ -17,4 +17,8 @@
     <ProjectReference Include="..\ProjectFollower.Models\ProjectFollower.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

@@ -8,7 +8,7 @@ namespace ProjectFollower.Models.DbModels
     public class CompanyType
     {
         [Key]
-        public Guid MyProperty { get; set; }
+        public Guid Id { get; set; }
         [Required]
         public string Name { get; set; }
     }
