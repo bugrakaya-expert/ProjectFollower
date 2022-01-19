@@ -16,7 +16,7 @@ using ProjectFollower.Utility;
 
 namespace ProjectFollower.Controllers
 {
-    [Authorize(Roles = UserRoles.Admin)]
+    //[Authorize(Roles = UserRoles.Admin)]
     public class UsersController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
@@ -45,6 +45,7 @@ namespace ProjectFollower.Controllers
         [Route("users")]
         public IActionResult Index()
         {
+            
             #region Authentication Index
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var Claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
@@ -55,12 +56,13 @@ namespace ProjectFollower.Controllers
             else
                 return View("SignIn");
             #endregion Authentication Index
-
+            
             return View();
         }
         [Route("new-user")]
         public IActionResult NewUser()
         {
+            /*
             #region Authentication Index
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var Claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
@@ -71,13 +73,27 @@ namespace ProjectFollower.Controllers
             else
                 return View("SignIn");
             #endregion Authentication Index
-
+            */
             return View();
         }
 
         [HttpPost("new-user")]
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+
+            if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
+            }
+            if (!await _roleManager.RoleExistsAsync(UserRoles.Manager))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(UserRoles.Manager));
+            }
+            if (!await _roleManager.RoleExistsAsync(UserRoles.Personel))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(UserRoles.Personel));
+            }
+
             bool posted = true;
             //Input.IsCompany=Convert.ToBoolean(RegCheck) ;
             returnUrl = returnUrl ?? Url.Content("~/");
@@ -92,8 +108,7 @@ namespace ProjectFollower.Controllers
                     FirstName = Input.FirstName,
                     Lastname = Input.Lastname,
                     DepartmentId=Input.DepartmentId,
-                    EmailConfirmed=true,
-                    //Role=
+                    EmailConfirmed=true
 
                 };
 
@@ -107,15 +122,19 @@ namespace ProjectFollower.Controllers
                     {
                         await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
                     }
-                    if (!await _roleManager.RoleExistsAsync(UserRoles.Personel))
-                    {
-                        await _roleManager.CreateAsync(new IdentityRole(UserRoles.Personel));
-                    }
                     if (!await _roleManager.RoleExistsAsync(UserRoles.Manager))
                     {
                         await _roleManager.CreateAsync(new IdentityRole(UserRoles.Manager));
                     }
+                    if (!await _roleManager.RoleExistsAsync(UserRoles.Personel))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(UserRoles.Personel));
+                    }
 
+                    if (User.IsInRole(UserRoles.Admin))
+                    {
+                        await _userManager.AddToRoleAsync(user, UserRoles.Personel);
+                    }
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
@@ -128,7 +147,9 @@ namespace ProjectFollower.Controllers
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
                     }
+                    
                 }
+
 
                 foreach (var error in result.Errors)
                 {
@@ -148,8 +169,60 @@ namespace ProjectFollower.Controllers
         [HttpGet("jsonresult/getdepartmentsjson")]
         public JsonResult GetDepartments()
         {
+            /*
+            #region Authentication Index
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var Claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            if (Claims != null)
+            {
+                var ApplicationUser = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == Claims.Value);
+            }
+            else
+                return Json(StatusCode(404));
+            #endregion Authentication Index
+            */
             var Departments = _uow.Department.GetAll();
             return Json(Departments);
+        }
+
+        
+        [HttpGet("jsonresult/getalluserjson")]
+        public JsonResult GetAllUser()
+        {
+            List<Users> _Users = new List<Users>();
+
+            
+            #region Authentication Index
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var Claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            if (Claims != null)
+            {
+                var users = _uow.ApplicationUser.GetAll(includeProperties: "Department");
+                foreach (var item in users)
+                {
+                    Users Useritem = new Users()
+                    {
+                        AppUserName = item.AppUserName,
+                        DepartmentId = item.DepartmentId,
+                        Department = item.Department,
+                        FirstName = item.FirstName,
+                        Lastname = item.Lastname,
+                        IdentityNumber = item.IdentityNumber,
+                        ImageUrl = item.ImageUrl
+                    };
+                    _Users.Add(Useritem);
+                }
+            }
+            else
+                return Json(StatusCode(404));
+            #endregion Authentication Index
+            
+
+
+            //_Users.AddRange((IEnumerable<Users>)(Users)users);
+
+
+            return Json(_Users);
         }
         #endregion API
     }

@@ -30,23 +30,23 @@
                             <h5 class="mb-4">Yeni Kullanıcı</h5>
                             <div>
                                 <label class="form-group has-top-label">
-                                    <input class="form-control" type="text" id="firstname" class="form-control" asp-for="FirstName" required />
+                                    <input class="form-control" type="text" id="firstname" asp-for="FirstName" required />
                                     <span>Adın</span>
                                 </label>
                                 <label class="form-group has-top-label">
-                                    <input class="form-control" type="text" id="lastname" class="form-control" asp-for="Lastname" required />
+                                    <input class="form-control" type="text" id="lastname" asp-for="Lastname" required />
                                     <span>Soyadın</span>
                                 </label>
                                 <label class="form-group has-top-label">
-                                    <input class="form-control" type="email" id="email" class="form-control" asp-for="Email" required />
+                                    <input class="form-control" type="email" id="email"  asp-for="Email" required />
                                     <span>E-posta adresi</span>
                                 </label>
                                 <label class="form-group has-top-label">
-                                    <input class="form-control" type="password" id="password" class="form-control" asp-for="Password" required />
+                                    <input class="form-control" type="password" id="password" asp-for="Password" required />
                                     <span>Kullanıcı Şifresi</span>
                                 </label>
                                 <label class="form-group has-top-label">
-                                    <select class="form-control select-single" data-width="100%" id="departments">
+                                    <select class="form-control select-single" data-width="100%" id="departments" asp-for="DepartmentId">
                                         <option hidden>Lütfen Personelinizin pozisyonunu seçiniz..</option>
                                     </select>
                                     <span>Pozisyonu</span>
@@ -89,7 +89,6 @@
                       contentType: "application/json",
                       dataType: "json",
                 success: function(data) {
-                    console.log(data);
                     $.each(data, function(i, item) {
                         console.log(item.name);
                         $('#departments').append($('<option>', {
@@ -99,7 +98,6 @@
                     });
                 }
             });
-
         });
     </script>
 }
