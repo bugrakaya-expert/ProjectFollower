@@ -13,10 +13,12 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ProjectFollower.Utility;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace ProjectFollower.Controllers
 {
-    //[Authorize(Roles = UserRoles.Admin)]
+    [Authorize(Roles = UserRoles.Admin)]
     public class UsersController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
@@ -24,13 +26,15 @@ namespace ProjectFollower.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<UsersController> _logger;
         private readonly IUnitOfWork _uow;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
         public UsersController(
         UserManager<IdentityUser> userManager,
         SignInManager<IdentityUser> signInManager,
         RoleManager<IdentityRole> roleManager,
         ILogger<UsersController> logger,
-        IUnitOfWork uow
+        IUnitOfWork uow,
+        IWebHostEnvironment hostEnvironment
             )
         {
             _userManager = userManager;
@@ -38,6 +42,7 @@ namespace ProjectFollower.Controllers
             _roleManager = roleManager;
             _logger = logger;
             _uow = uow;
+            _hostEnvironment = hostEnvironment;
         }
         [BindProperty]
         public UserRegisterVM Input { get; set; }
@@ -100,7 +105,38 @@ namespace ProjectFollower.Controllers
 
             if (ModelState.IsValid)
             {
-                //var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
+                string webRootPath = _hostEnvironment.WebRootPath;
+                var files = HttpContext.Request.Form.Files;
+
+                Console.WriteLine(files.Count.ToString());
+                System.Diagnostics.Debug.WriteLine(files.ToString());
+
+                if (files.Count() > 0)
+                {
+                    string fileName = Guid.NewGuid().ToString();
+                    var uploads = Path.Combine(webRootPath, @"images\users");
+
+                    //var imageUrl = productVM.Product.ImageUrl;
+
+                    var extension = Path.GetExtension(files[0].FileName);
+
+                    /*
+                    if (productVM.Product.ImageUrl != null)
+                    {
+                        var imagePath = Path.Combine(webRootPath, productVM.Product.ImageUrl.TrimStart('\\'));
+                        if (System.IO.File.Exists(imagePath))
+                        {
+                            System.IO.File.Delete(imagePath);
+                        }
+                    }*/
+
+                    using (var fileStreams = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
+                    {
+                        files[0].CopyTo(fileStreams);
+                    }
+                    Input.ImageUrl = @"\images\users\" + fileName + extension;
+                }
+
                 var user = new ApplicationUser
                 {
                     UserName = Input.Email,
@@ -108,8 +144,8 @@ namespace ProjectFollower.Controllers
                     FirstName = Input.FirstName,
                     Lastname = Input.Lastname,
                     DepartmentId=Input.DepartmentId,
-                    EmailConfirmed=true
-
+                    EmailConfirmed=true,
+                    ImageUrl=Input.ImageUrl
                 };
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
@@ -205,8 +241,7 @@ namespace ProjectFollower.Controllers
                         AppUserName = item.AppUserName,
                         DepartmentId = item.DepartmentId,
                         Department = item.Department,
-                        FirstName = item.FirstName,
-                        Lastname = item.Lastname,
+                        FullName = item.FirstName+" "+ item.Lastname,
                         IdentityNumber = item.IdentityNumber,
                         ImageUrl = item.ImageUrl
                     };

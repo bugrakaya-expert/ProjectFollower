@@ -187,5 +187,31 @@ namespace ProjectFollower.Controllers
         {
             return View();
         }
+        [HttpPost]
+        public async Task<JsonResult> EditUser(EditUserPass editUserPass)
+        {
+            //string currentPassword="",newPassword="";
+            IdentityResult ChangeResult = new IdentityResult();
+            bool CheckResult=false;
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var Claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (Claims != null)
+            {
+                var AppUser = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == Claims.Value);
+
+                var _user = new Users()
+                {
+                    FullName = AppUser.FirstName + " " + AppUser.Lastname,
+                    ImageUrl = AppUser.ImageUrl
+                };
+                CheckResult = Equals(editUserPass.newPassword == editUserPass.confirmnewPassword);
+                if (CheckResult)
+                    ChangeResult = await _userManager.ChangePasswordAsync(AppUser, editUserPass.currentPassword, editUserPass.newPassword);
+                else
+                    return Json(CheckResult);
+            }
+            return Json(CheckResult);
+        }
     }
 }

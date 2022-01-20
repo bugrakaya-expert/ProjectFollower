@@ -22,7 +22,7 @@
                 <div class="separator mb-5"></div>
             </div>
         </div>
-        <form method="post" id="account">
+        <form method="post" id="account" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-12">
                     <div class="card mb-4">
@@ -58,7 +58,7 @@
         </label>
                                 *@
                                 <div class="input-group mb-3 file-avatar ">
-                                    <label class="custom-select custom-select-label" for="file-upload" class="form-control"></label>
+                                    <label class="custom-select custom-select-label" for="file-upload"></label>
                                     <input type="file" class="d-none" name="file-upload" id="file-upload" />
                                     <div class="input-group-append">
                                         <label class="input-group-text" for="file-upload">Fotoğraf Yükle</label>
@@ -71,8 +71,8 @@
             </div>
             <div class="d-flex flex-row-reverse">
 
-                <button class="btn btn-primary btn-lg mr-3" type="submit"><i class="iconsminds-add"></i> Kullanıcı Oluştur</button>
-                <a asp-controller="Users" asp-action="Index"><button class="btn btn-danger btn-lg"><i class="iconsminds-close"></i>İptal Et</button></a>
+                <button class="btn btn-primary btn-lg mr-3" type="submit" onclick="return validateInput()"><i class="iconsminds-add"></i> Kullanıcı Oluştur</button>
+                <button class="btn btn-danger btn-lg" asp-controller="Users" asp-action="Index"><i class="iconsminds-close"></i>İptal Et</button>
             </div>
         </form>
     </div>
@@ -98,6 +98,13 @@
                     });
                 }
             });
+
+            function validateInput() {
+                if (document.getElementById("uploadBox").value == "") {
+                    swal('Dikkat', "Resim seçmeden ürün eklemeye çalışıyorsunuz. Ürün ekleme başarısız!", "warning");
+                    return false;
+                }
+            }
         });
     </script>
 }

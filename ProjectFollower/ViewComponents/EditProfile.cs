@@ -9,11 +9,10 @@ using System.Threading.Tasks;
 
 namespace ProjectFollower.ViewComponents
 {
-    public class GetUser : ViewComponent
+    public class EditProfile : ViewComponent
     {
         private readonly IUnitOfWork _uow;
-
-        public GetUser(IUnitOfWork uow)
+        public EditProfile(IUnitOfWork uow)
         {
             _uow = uow;
         }
@@ -28,12 +27,13 @@ namespace ProjectFollower.ViewComponents
 
                 var _user = new Users()
                 {
-                    FullName= AppUser.FirstName+" "+ AppUser.Lastname,
-                    ImageUrl =AppUser.ImageUrl
+                    FullName = AppUser.FirstName + " " + AppUser.Lastname,
+                    ImageUrl = AppUser.ImageUrl
                 };
                 return View("default", _user);
             }
-            return View("ERROR NAME");
+
+            return null;
         }
     }
 }

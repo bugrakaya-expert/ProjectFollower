@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -14,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace ProjectFollower.Controllers
 {
+    [AllowAnonymous]
     public class SignInController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;

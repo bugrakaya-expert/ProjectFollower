@@ -39,6 +39,8 @@ namespace ProjectFollower.Models.ViewModels
 
         [ForeignKey("DepartmentId")]
         public Department Department { get; set; }
+        public string ImageUrl { get; set; }
+
         public string Role { get; set; }
     }
 }

@@ -4,6 +4,11 @@
 }
 @model ProjectFollower.Models.ViewModels.SignInInput
 
+
+
+
+@*<partial name="_LoginPartial" />*@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -41,21 +46,23 @@
                             <form method="post" id="account">
                                 @*<div asp-validation-summary="All" class="badge-warning shadow-2"></div>*@
 
-
-                                <label class="form-group has-float-label mb-4">
-                                    <input class="form-control" placeholder="Mailinizi Giriniz" asp-for="Email" />
-                                    <span>E-posta</span>
-                                </label>
-                                <label class="form-group has-float-label mb-4">
-                                    <input class="form-control" type="password" placeholder="Şifrenizi Giriniz" asp-for="Password" />
-                                    <span>Şifre</span>
-                                </label>
-                                <div asp-validation-summary="ModelOnly" class="alert alert-warning alert-dismissible fade show rounded mb-2" role="alert">
+                                <div asp-validation-summary="All" class="alert alert-warning alert-dismissible fade show rounded mb-2 mt-2" role="alert">
 
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">×</span>
                                     </button>
                                 </div>
+
+
+                                <label class="form-group has-float-label mb-4">
+                                    <input class="form-control" placeholder="Mailinizi Giriniz" asp-for="Email" required />
+                                    <span>E-posta</span>
+                                </label>
+                                <label class="form-group has-float-label mb-4">
+                                    <input class="form-control" type="password" placeholder="Şifrenizi Giriniz" asp-for="Password" required />
+                                    <span>Şifre</span>
+                                </label>
+
                                 <div class="d-flex justify-content-between align-items-center">
                                     <a href="#">Şifreni mi unuttun?</a>
                                     <button class="btn btn-primary btn-lg btn-shadow" type="submit">GİRİŞ</button>
@@ -73,3 +80,7 @@
     <script src="/js/scripts.js"></script>
 </body>
 </html>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -238,14 +238,13 @@
                 success: function (data) {
                     console.log(data);
                     $.each(data, function (i, item) {
-                        var firstname = item.firstName;
-                        var lastname = item.lastname;
                         var department = item.department.name;
-                        var fullname = firstname + " " + lastname;
+                        var fullname = item.fullName;
+                        var imageurl = item.imageUrl;
                         $("#users").append(`
 <div class='d-flex flex-row mb-3 pb-3 border-bottom'>
     <a href='#'>
-        <img src='img/orj/users/egul.jpg' alt='Emre Gül'
+        <img src='`+ imageurl + `' alt='`+ fullname + `'
              class='img-thumbnail border-0 rounded-circle list-thumbnail align-self-center xsmall' />
     </a>
     <div class='pl-3 w-50'>

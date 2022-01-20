@@ -108,22 +108,7 @@
                     <i class="simple-icon-size-actual"></i>
                 </button>
             </div>
-
-            <div class="user d-inline-block">
-                <button class="btn btn-empty p-0" type="button" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false">
-                    @*<span class="name">Emre Gül</span>*@
-                    @*<span class="name">@await Component.InvokeAsync("GetUser")</span>*@
-                    <span>
-                        <img alt="Profile Picture" src="/img/orj/users/egul.jpg" />
-                    </span>
-                </button>
-
-                <div class="dropdown-menu dropdown-menu-right mt-3">
-                    <a class="dropdown-item" data-toggle="modal" data-target="#sifreModal">Şifre Değiştir</a>
-                    <a class="dropdown-item" asp-controller="SignIn" asp-action="Logout">Güvenli Çıkış</a>
-                </div>
-            </div>
+            @await Component.InvokeAsync("GetUser")
         </div>
     </nav>
     <div class="menu">
@@ -250,7 +235,13 @@
                             <input type="password" class="form-control" id="exampleInputPassword2"
                                    placeholder="Şifre">
                         </div>
-
+                        <div class="input-group mb-3 file-avatar ">
+                            <label class="custom-select custom-select-label" for="file-upload"></label>
+                            <input type="file" class="d-none" name="file-upload" id="file-upload" />
+                            <div class="input-group-append">
+                                <label class="input-group-text" for="file-upload">Fotoğraf Yükle</label>
+                            </div>
+                        </div>
                         <div class="custom-control custom-checkbox mb-3">
                             <input type="checkbox" class="custom-control-input" id="customCheck1">
                             <label class="custom-control-label" for="customCheck1">Okudum, anladım kabul ediyorum.</label>
@@ -305,7 +296,26 @@
     <script src="https://cdn3.devexpress.com/jslib/21.2.4/js/localization/dx.messages.tr.js"></script>
 
     <script src="~/js/site.js" asp-append-version="true"></script>
-
+    <script>
+        $(document).ready(function () {
+            console.log("loaded!");
+            $.ajax({
+                url: "jsonresult/getalluserjson",
+                type: "GET",
+                contentType: "application/json",
+                dataType: "json",
+                success: function (data) {
+                    $.each(data, function (i, item) {
+                        console.log(item.name);
+                        $('#departments').append($('<option>', {
+                            value: item.id,
+                            text: item.name
+                        }));
+                    });
+                }
+            });
+        });
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
