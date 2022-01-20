@@ -187,12 +187,12 @@ namespace ProjectFollower.Controllers
         {
             return View();
         }
-        [HttpPost]
+        [HttpPost("jsonresult/edituserpassjson")]
         public async Task<JsonResult> EditUser(EditUserPass editUserPass)
         {
             //string currentPassword="",newPassword="";
             IdentityResult ChangeResult = new IdentityResult();
-            bool CheckResult=false;
+            bool CheckResult = false;
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var Claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
@@ -205,13 +205,15 @@ namespace ProjectFollower.Controllers
                     FullName = AppUser.FirstName + " " + AppUser.Lastname,
                     ImageUrl = AppUser.ImageUrl
                 };
-                CheckResult = Equals(editUserPass.newPassword == editUserPass.confirmnewPassword);
+                CheckResult = editUserPass.newPassword.Equals(editUserPass.confirmnewPassword);
                 if (CheckResult)
                     ChangeResult = await _userManager.ChangePasswordAsync(AppUser, editUserPass.currentPassword, editUserPass.newPassword);
                 else
-                    return Json(CheckResult);
+                    return Json("Şifre tekrarı ile uyuşmuyor.");
             }
-            return Json(CheckResult);
+            if(ChangeResult.Succeeded)
+                return Json(ChangeResult.Errors);
+            return Json(ChangeResult.Errors);
         }
     }
 }

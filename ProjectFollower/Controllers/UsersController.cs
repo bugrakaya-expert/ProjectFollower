@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using ProjectFollower.Utility;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using System.Drawing;
 
 namespace ProjectFollower.Controllers
 {
@@ -132,6 +133,16 @@ namespace ProjectFollower.Controllers
 
                     using (var fileStreams = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
                     {
+                        byte[] array=null;
+                        fileStreams.Read(array);
+
+                        var image = Image.FromStream(fileStreams);
+
+                        var size = image.Size;
+
+                        var width = size.Width;
+                        var height = size.Height;
+
                         files[0].CopyTo(fileStreams);
                     }
                     Input.ImageUrl = @"\images\users\" + fileName + extension;

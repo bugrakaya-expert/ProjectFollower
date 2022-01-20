@@ -214,11 +214,11 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form>
+                <form id="changepass-form">
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="exampleInputEmail1">E-posta adresi</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1"
+                            <label for="modalEmail">E-posta adresi</label>
+                            <input type="email" class="form-control" id="modalEmail"
                                    aria-describedby="emailHelp" placeholder="E-posta adresinizi girin">
                             <small id="emailHelp" class="form-text text-muted">
                                 We'll never share your email
@@ -226,13 +226,18 @@
                             </small>
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputPassword1">Yeni Şifre</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1"
+                            <label for="modalCurrentPassword">Geçerli Şifre</label>
+                            <input type="password" class="form-control" id="modalCurrentPassword" name="currentPassword"
+                                   placeholder="Geçerli Şifre">
+                        </div>
+                        <div class="form-group">
+                            <label for="modalPassword">Yeni Şifre</label>
+                            <input type="password" class="form-control" id="modalPassword" name="newPassword"
                                    placeholder="Şifre">
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputPassword2">Yeni Şifre Tekrar</label>
-                            <input type="password" class="form-control" id="exampleInputPassword2"
+                            <label for="modalPasswordconfirm">Yeni Şifre Tekrar</label>
+                            <input type="password" class="form-control" id="modalPasswordconfirm" name="confirmnewPassword"
                                    placeholder="Şifre">
                         </div>
                         <div class="input-group mb-3 file-avatar ">
@@ -252,7 +257,8 @@
                                 data-dismiss="modal">
                             Kapat
                         </button>
-                        <button type="button" class="btn btn-primary">Değişiklikleri Kaydet</button>
+                        <button type="button" class="btn btn-primary" onclick="return editUserFunc()" id="modalsubmit">Değişiklikleri Kaydet</button>
+                        @*<button type="submit" class="btn btn-primary" id="modalsubmit">Değişiklikleri Kaydet</button>*@
                     </div>
                 </form>
             </div>
@@ -296,26 +302,6 @@
     <script src="https://cdn3.devexpress.com/jslib/21.2.4/js/localization/dx.messages.tr.js"></script>
 
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script>
-        $(document).ready(function () {
-            console.log("loaded!");
-            $.ajax({
-                url: "jsonresult/getalluserjson",
-                type: "GET",
-                contentType: "application/json",
-                dataType: "json",
-                success: function (data) {
-                    $.each(data, function (i, item) {
-                        console.log(item.name);
-                        $('#departments').append($('<option>', {
-                            value: item.id,
-                            text: item.name
-                        }));
-                    });
-                }
-            });
-        });
-    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
