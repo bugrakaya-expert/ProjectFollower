@@ -16,6 +16,7 @@ using ProjectFollower.Utility;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using System.Drawing;
+using Microsoft.AspNetCore.Http;
 
 namespace ProjectFollower.Controllers
 {
@@ -136,7 +137,9 @@ namespace ProjectFollower.Controllers
                         byte[] array=null;
                         fileStreams.Read(array);
 
-                        var image = Image.FromStream(fileStreams);
+                        //var image = Image.FromStream(fileStreams);
+                        using var image = Image.Load(fileStreams);
+
 
                         var size = image.Size;
 
