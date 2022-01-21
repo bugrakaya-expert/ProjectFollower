@@ -13,14 +13,6 @@ namespace ProjectFollower.Models.DbModels
         [Required]
         public string Name { get; set; }
         public string AuthorizedName { get; set; }
-        [Required]
-
-
-        public Guid BusinessId { get; set; }
-        [ForeignKey("BusinessId")]
-        public Business Business { get; set; }//Firma Sektörü ÖRN: Mühendislik, Tekstil vb..
-
-
 
         [ForeignKey("CompanyTypeId")]
         public Guid CompanyTypeId { get; set; }
@@ -29,8 +21,7 @@ namespace ProjectFollower.Models.DbModels
 
         public string Email { get; set; }
         public string Phone { get; set; }
-        public string LogoUrl { get; set; }
+        public string ImageUrl { get; set; }
         public string Description { get; set; }
-        public string DocumentsUrls { get; set; }//may needs Document Model.
     }
 }

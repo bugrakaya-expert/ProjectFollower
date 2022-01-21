@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "AddCustomer";
 }
-
+@model ProjectFollower.Models.ViewModels.CustomerVM
 <main>
     <div class="container-fluid project-creator">
         <div class="row">
@@ -12,7 +12,7 @@
                 <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
                     <ol class="breadcrumb pt-0">
                         <li class="breadcrumb-item">
-                            <a href="#">Firmalar</a>
+                            <a asp-controller="Customers" asp-action="Index">Firmalar</a>
                         </li>
                         <li class="breadcrumb-item active">
                             <a href="#">Yeni Firma</a>
@@ -23,35 +23,43 @@
             </div>
         </div>
 
-        <form>
+        <form method="post" id="customer" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-12 col-xl-8 mb-8">
                     <div class="card mb-4">
                         <div class="card-body">
                             <h5 class="mb-4">Yeni Firma</h5>
+                            <hr />
+                            <div asp-validation-summary="ModelOnly" class="alert alert-danger alert-dismissible fade show rounded mb-2 mt-2" role="alert">
+
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+
                             <div>
+                                <span asp-validation-for="Name" class="text-danger"></span>
                                 <label class="form-group has-top-label">
-                                    <input class="form-control" />
+                                    <input class="form-control" type="text" id="Name" asp-for="Name" required />
                                     <span>Firma Adı</span>
                                 </label>
+                                <span asp-validation-for="AuthorizedName" class="text-danger"></span>
                                 <label class="form-group has-top-label">
-                                    <input class="form-control" />
-                                    <span>Firma Sektörü</span>
-                                </label>
-                                <label class="form-group has-top-label">
-                                    <input class="form-control" />
+                                    <input type="text" id="authorizedName" class="form-control" asp-for="AuthorizedName" required />
                                     <span>Firma Yetkilisi</span>
                                 </label>
+                                <span asp-validation-for="Email" class="text-danger"></span>
                                 <label class="form-group has-top-label">
-                                    <input class="form-control" />
+                                    <input type="email" id="email" class="form-control" asp-for="Email" required />
                                     <span>Firma E-posta</span>
                                 </label>
+                                <span asp-validation-for="Phone" class="text-danger"></span>
                                 <label class="form-group has-top-label">
-                                    <input class="form-control" />
+                                    <input type="text" id="phone" class="form-control" asp-for="Phone" required />
                                     <span>Firma Telefon</span>
                                 </label>
                                 <div class="input-group mb-3 file-avatar ">
-                                    <label class="custom-select custom-select-label" for="file-upload" class="form-control">
+                                    <label class="custom-select custom-select-label" for="file-upload">
                                     </label>
                                     <input type="file" class="d-none" name="file-upload" id="file-upload" />
                                     <div class="input-group-append">
@@ -66,10 +74,9 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="mb-4">Firma Dosyaları</h5>
-                            <form action="/file-upload">
-                                <div class="dropzone">
-                                </div>
-                            </form>
+                            <div class="dropzone">
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -86,9 +93,9 @@
             </div>
             <div class="d-flex flex-row-reverse">
                 <a href="index.php"><button class="btn btn-danger btn-lg"><i class="iconsminds-close"></i>İptal Et</button></a>
-                <button class="btn btn-primary btn-lg mr-3" type="submit"><i class="iconsminds-add"></i>Firma Oluştur</button>
-
+                <button class="btn btn-primary btn-lg mr-3" id="submitForm"><i class="iconsminds-add"></i>Firma Oluştur</button>
             </div>
+            <input type="text" id="htmlstr" class="form-control form-text" asp-for="@Model.Description" hidden/>
         </form>
     </div>
 </main>
@@ -97,5 +104,23 @@
 {
     <script src="/js/vendor/quill.min.js"></script>
     <script src="/js/vendor/datatables.min.js"></script>
+
+    <script>
+
+
+
+        $(document).ready(function () {
+            $("#submitForm").trigger("click");
+
+            $(document).on("click", "#submitForm", function () {
+                $(this).text("It works!");
+
+                var htmlString = $('#quillEditor').html();
+                $('#htmlstr').val(htmlString);
+                $('#customer').submit();
+            });
+
+        });
+    </script>
 
 }

@@ -5,6 +5,7 @@
 @model ProjectFollower.Models.ViewModels.UserRegisterVM
 
 <main>
+
     <div class="container-fluid project-creator">
         <div class="row">
             <div class="col-12">
@@ -28,26 +29,39 @@
                     <div class="card mb-4">
                         <div class="card-body">
                             <h5 class="mb-4">Yeni Kullanıcı</h5>
+                            <hr />
+                            <div asp-validation-summary="ModelOnly" class="alert alert-danger alert-dismissible fade show rounded mb-2 mt-2" role="alert">
+
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+
                             <div>
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
                                 <label class="form-group has-top-label">
                                     <input class="form-control" type="text" id="firstname" asp-for="FirstName" required />
                                     <span>Adın</span>
                                 </label>
+                                <span asp-validation-for="Lastname" class="text-danger"></span>
                                 <label class="form-group has-top-label">
                                     <input class="form-control" type="text" id="lastname" asp-for="Lastname" required />
                                     <span>Soyadın</span>
                                 </label>
+                                <span asp-validation-for="Email" class="text-danger"></span>
                                 <label class="form-group has-top-label">
-                                    <input class="form-control" type="email" id="email"  asp-for="Email" required />
+                                    <input class="form-control" type="email" id="email" asp-for="Email" required />
                                     <span>E-posta adresi</span>
                                 </label>
+                                <span asp-validation-for="Password" class="text-danger"></span>
                                 <label class="form-group has-top-label">
                                     <input class="form-control" type="password" id="password" asp-for="Password" required />
                                     <span>Kullanıcı Şifresi</span>
                                 </label>
+                                <span asp-validation-for="DepartmentId" class="text-danger"></span>
                                 <label class="form-group has-top-label">
-                                    <select class="form-control select-single" data-width="100%" id="departments" asp-for="DepartmentId">
-                                        <option hidden>Lütfen Personelinizin pozisyonunu seçiniz..</option>
+                                    <select class="form-control select-single" data-width="100%" id="departments" asp-for="DepartmentId" required>
+                                        <option hidden value="">Lütfen Personelinizin pozisyonunu seçiniz..</option>
                                     </select>
                                     <span>Pozisyonu</span>
                                 </label>
@@ -81,15 +95,15 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             console.log("loaded!");
             $.ajax({
                 url: "jsonresult/getdepartmentsjson",
-                      type: "GET",
-                      contentType: "application/json",
-                      dataType: "json",
-                success: function(data) {
-                    $.each(data, function(i, item) {
+                type: "GET",
+                contentType: "application/json",
+                dataType: "json",
+                success: function (data) {
+                    $.each(data, function (i, item) {
                         console.log(item.name);
                         $('#departments').append($('<option>', {
                             value: item.id,
@@ -105,6 +119,18 @@
                     return false;
                 }
             }
+            @{ if (Model.ModalMessage.Status==true)
+                {
+                    <text>
+            Swal.fire({
+                title: '@Model.ModalMessage.Message',
+                showCancelButton: false,
+                icon: '@Model.ModalMessage.Icon',
+                confirmButtonText: 'Tamam'
+            })
+            </text>
+        }
+    }
         });
     </script>
 }

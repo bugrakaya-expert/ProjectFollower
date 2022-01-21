@@ -16,6 +16,7 @@ using ProjectFollower.Utility;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using System.Drawing;
+using System.Drawing.Imaging;
 using Microsoft.AspNetCore.Http;
 
 namespace ProjectFollower.Controllers
@@ -81,7 +82,19 @@ namespace ProjectFollower.Controllers
                 return View("SignIn");
             #endregion Authentication Index
             */
-            return View();
+
+            var ModalMessage = new ModalMessageVM()
+            {
+                Message = "",
+                Icon = "",
+                Status = false
+            };
+            var addUserStatus = new UserRegisterVM()
+            {
+                ModalMessage = ModalMessage
+            };
+
+            return View(addUserStatus);
         }
 
         [HttpPost("new-user")]
@@ -101,14 +114,13 @@ namespace ProjectFollower.Controllers
                 await _roleManager.CreateAsync(new IdentityRole(UserRoles.Personel));
             }
 
-            bool posted = true;
-            //Input.IsCompany=Convert.ToBoolean(RegCheck) ;
             returnUrl = returnUrl ?? Url.Content("~/");
 
             if (ModelState.IsValid)
             {
                 string webRootPath = _hostEnvironment.WebRootPath;
                 var files = HttpContext.Request.Form.Files;
+
 
                 Console.WriteLine(files.Count.ToString());
                 System.Diagnostics.Debug.WriteLine(files.ToString());
@@ -134,23 +146,29 @@ namespace ProjectFollower.Controllers
 
                     using (var fileStreams = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
                     {
-                        byte[] array=null;
-                        fileStreams.Read(array);
-
-                        //var image = Image.FromStream(fileStreams);
-                        using var image = Image.Load(fileStreams);
-
-
+                        var stream=files[0].OpenReadStream();
+                        var image = Image.FromStream(stream);
                         var size = image.Size;
+                        var width = (float)size.Width;
+                        var height = (float)size.Height;
 
-                        var width = size.Width;
-                        var height = size.Height;
+                        float rate = width / height;
+
+                        if (width > 200 || height > 200)
+                        {
+                            ModelState.AddModelError(string.Empty, "Kullanıcı oluşturulamadı! Profil resmi 200px den fazla olamaz.");
+                            return View("NewUser");
+                        }
+                        if (rate !=1)
+                        {
+                            ModelState.AddModelError(string.Empty, "Kullanıcı oluşturulamadı! Profil resmi 1:1 oranında olmalıdır. ");
+                            return View("NewUser");
+                        }
 
                         files[0].CopyTo(fileStreams);
                     }
                     Input.ImageUrl = @"\images\users\" + fileName + extension;
                 }
-
                 var user = new ApplicationUser
                 {
                     UserName = Input.Email,
@@ -188,14 +206,22 @@ namespace ProjectFollower.Controllers
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        //return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = "~/" });
-                        return RedirectToAction("SuccessResult", posted);
-                        //return Redirect("~/");
+
+                        var ModalMessage = new ModalMessageVM()
+                        {
+                            Message="Kullanıcı başarılı bir şekilde eklendi.",
+                            Icon= "success",
+                            Status=true
+                        };
+                        var addUserStatus = new UserRegisterVM()
+                        {
+                            ModalMessage=ModalMessage
+                        };
+                        return View("NewUser",addUserStatus);
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                        return View();
                     }
                     
                 }
@@ -203,14 +229,51 @@ namespace ProjectFollower.Controllers
 
                 foreach (var error in result.Errors)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    if(error.Code== "DuplicateUserName")
+                    {
+                        var ModalMessage = new ModalMessageVM()
+                        {
+                            Message = "Doğrulama hatası",
+                            Icon = "error",
+                            Status = true
+                        };
+                        var addUserStatus = new UserRegisterVM()
+                        {
+                            ModalMessage = ModalMessage
+                        };
+                        return View("NewUser", addUserStatus);
+                    }
+                    //
+
+
+                    //ModelState.AddModelError(string.Empty, error.Description);
+
+                    return View("NewUser");
+
                 }
 
             }
-
             // If we got this far, something failed, redisplay form
+            foreach (var item in ModelState.Values)
+            {
+                if (item.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+                {
+                    ModelState.AddModelError(string.Empty, item.Errors[0].ErrorMessage);
+                    var ModalMessage = new ModalMessageVM()
+                    {
+                        Message = item.Errors[0].ErrorMessage,
+                        Icon = "warning",
+                        Status = true
+                    };
+                    var addUserStatus = new UserRegisterVM()
+                    {
+                        ModalMessage = ModalMessage
+                    };
+                    return View("NewUser", addUserStatus);
+                }
+            }
 
-            return LocalRedirect(returnUrl);
+            return View("NewUser");
 
 
         }

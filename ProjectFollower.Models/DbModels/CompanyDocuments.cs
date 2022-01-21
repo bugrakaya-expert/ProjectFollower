@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace ProjectFollower.Models.DbModels
 {
-    public class Department
+    public class CompanyDocuments
     {
         [Key]
-        //Lütfen Personelinizin pozisyonunu seçiniz..
         public Guid Id { get; set; }
-        [Required]
-        public string Name { get; set; }
+        [ForeignKey("CustomerId")]
+        public Guid CustomerId { get; set; }
+        public string DocumentUrl { get; set; }
     }
 }

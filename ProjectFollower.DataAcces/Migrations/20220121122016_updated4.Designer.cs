@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectFollower.DataAcces.Data;
 
 namespace ProjectFollower.DataAcces.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220121122016_updated4")]
+    partial class updated4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -277,6 +279,9 @@ namespace ProjectFollower.DataAcces.Migrations
                     b.Property<string>("AuthorizedName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("BusinessId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("CompanyTypeId")
                         .HasColumnType("uniqueidentifier");
 
@@ -297,6 +302,8 @@ namespace ProjectFollower.DataAcces.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BusinessId");
 
                     b.HasIndex("CompanyTypeId");
 
@@ -400,6 +407,12 @@ namespace ProjectFollower.DataAcces.Migrations
 
             modelBuilder.Entity("ProjectFollower.Models.DbModels.Customers", b =>
                 {
+                    b.HasOne("ProjectFollower.Models.DbModels.Business", "Business")
+                        .WithMany()
+                        .HasForeignKey("BusinessId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ProjectFollower.Models.DbModels.CompanyType", "CompanyType")
                         .WithMany()
                         .HasForeignKey("CompanyTypeId")

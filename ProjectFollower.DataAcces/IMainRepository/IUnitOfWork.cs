@@ -9,6 +9,8 @@ namespace ProjectFollower.DataAcces.IMainRepository
         //ICategoryRepository Category { get; }
         IDepartmentRepository Department { get; }
         IApplicationUserRepository ApplicationUser { get; }
+        ICustomersRepository Customers { get; }
+        ICompanyDocumentsRepository CompanyDocuments { get; }
 
         void Save();
     }

@@ -14,10 +14,14 @@ namespace ProjectFollower.DataAcces.MainRepository
             _db = db;
             ApplicationUser = new ApplicationUserRepository(_db);
             Department = new DepartmentRepository(_db);
+            Customers = new CustomersRepository(_db);
+            CompanyDocuments = new CompanyDocumentsRepository(_db);
         }
         //public ICategoryRepository Category { get; private set; }
         public IApplicationUserRepository ApplicationUser { get; private set; }
         public IDepartmentRepository Department { get; private set; }
+        public ICustomersRepository Customers { get; private set; }
+        public ICompanyDocumentsRepository CompanyDocuments { get; private set; }
         public void Dispose()
         {
             _db.Dispose();
