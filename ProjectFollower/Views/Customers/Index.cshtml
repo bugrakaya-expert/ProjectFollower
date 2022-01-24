@@ -3,7 +3,6 @@
     ViewData["Title"] = "Index";
 }
 
-
 <main>
     <div class="container-fluid">
         <div class="row mb-4">
@@ -96,7 +95,7 @@
         <div class="row mb-4">
             <div class="col-12">
                 <div class="data-table-rows data-tables-hide-filter">
-                    <table id="datatableRow" class="data-table data-tables-pagination responsive nowrap"
+                    <table id="custTable" class="data-table data-tables-pagination responsive nowrap"
                            data-order="[[ 1, &quot;desc&quot; ]]">
                         <thead>
                             <tr>
@@ -105,9 +104,11 @@
                                 <th>Firma Yetkilisi</th>
                                 <th>Sektör</th>
                                 <th style="visibility: hidden;"></th>
+
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="tbody">
+                            @*
                             <tr>
                                 <td>
                                     <img src="img/orj/firmalar/elitdijital.png" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
@@ -126,43 +127,87 @@
                                     <button type="button" class="btn btn-danger btn-sm mb-1"><i class="glyph-icon simple-icon-trash mr-1"></i>Sil</button>
                                 </td>
                             </tr>
+                        </tbody>*@
+                        @*
+                        <tbody>
+
                             <tr>
                                 <td>
-                                    <img src="img/orj/firmalar/poligon.jpg" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
+                                    <img src="img/orj/firmalar/elitdijital.png" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
                                 </td>
                                 <td>
-                                    <p class="list-item-heading">Poligon</p>
+                                    <p class="list-item-heading">Elit Dijital</p>
                                 </td>
                                 <td>
-                                    <p class="text-muted">Ercan</p>
+                                    <p class="text-muted">Alp</p>
                                 </td>
                                 <td>
-                                    <p class="text-muted">Mühendislik</p>
+                                    <p class="text-muted">Baskı Dizayn</p>
                                 </td>
                                 <td class="text-right">
                                     <a asp-controller="Customers" asp-action="Details" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
-                                    <button type="button" class="btn btn-danger btn-sm mb-1 delete-project"><i class="glyph-icon simple-icon-trash mr-1"></i>Sil</button>
+                                    <button type="button" class="btn btn-danger btn-sm mb-1"><i class="glyph-icon simple-icon-trash mr-1"></i>Sil</button>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <img src="img/orj/firmalar/manypoints.png" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
-                                </td>
-                                <td>
-                                    <p class="list-item-heading">Many Points</p>
-                                </td>
-                                <td>
-                                    <p class="text-muted">Many Points</p>
-                                </td>
-                                <td>
-                                    <p class="text-muted">-</p>
-                                </td>
-                                <td class="text-right">
-                                    <a asp-controller="Customers" asp-action="Details" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
-                                    <button type="button" class="btn btn-danger btn-sm mb-1 delete-project"><i class="glyph-icon simple-icon-trash mr-1"></i>Sil</button>
-                                </td>
-                            </tr>
+
+                            
+                                <tr>
+                                    <td>
+                                        <img src="img/orj/firmalar/elitdijital.png" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
+                                    </td>
+                                    <td>
+                                        <p class="list-item-heading">Elit Dijital</p>
+                                    </td>
+                                    <td>
+                                        <p class="text-muted">Alp</p>
+                                    </td>
+                                    <td>
+                                        <p class="text-muted">Baskı Dizayn</p>
+                                    </td>
+                                    <td class="text-right">
+                                        <a asp-controller="Customers" asp-action="Details" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
+                                        <button type="button" class="btn btn-danger btn-sm mb-1"><i class="glyph-icon simple-icon-trash mr-1"></i>Sil</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <img src="img/orj/firmalar/poligon.jpg" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
+                                    </td>
+                                    <td>
+                                        <p class="list-item-heading">Poligon</p>
+                                    </td>
+                                    <td>
+                                        <p class="text-muted">Ercan</p>
+                                    </td>
+                                    <td>
+                                        <p class="text-muted">Mühendislik</p>
+                                    </td>
+                                    <td class="text-right">
+                                        <a asp-controller="Customers" asp-action="Details" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
+                                        <button type="button" class="btn btn-danger btn-sm mb-1 delete-project"><i class="glyph-icon simple-icon-trash mr-1"></i>Sil</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <img src="img/orj/firmalar/manypoints.png" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
+                                    </td>
+                                    <td>
+                                        <p class="list-item-heading">Many Points</p>
+                                    </td>
+                                    <td>
+                                        <p class="text-muted">Many Points</p>
+                                    </td>
+                                    <td>
+                                        <p class="text-muted">-</p>
+                                    </td>
+                                    <td class="text-right">
+                                        <a asp-controller="Customers" asp-action="Details" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
+                                        <button type="button" class="btn btn-danger btn-sm mb-1 delete-project"><i class="glyph-icon simple-icon-trash mr-1"></i>Sil</button>
+                                    </td>
+                                </tr>
+                            
                         </tbody>
+                        *@
                     </table>
                 </div>
             </div>
@@ -175,4 +220,57 @@
     <script src="/js/vendor/jquery.validate/jquery.validate.min.js"></script>
     <script src="/js/vendor/jquery.validate/additional-methods.min.js"></script>
     <script src="/js/vendor/datatables-index.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            
+            $.ajax({
+                url: "jsonresult/getallcustomers",
+                type: "GET",
+                contentType: "application/json",
+                dataType: "json",
+                success: function (data) {
+                    $.each(data, function (i, item) {
+                        console.log(item.name);
+                        /*
+                        $('#companytypes').append($('<option>', {
+                            value: item.id,
+                            text: item.name
+                        }));*/
+                        var img = "";
+                        var name = item.name;
+                        console.log("Firma Adı: "+name);
+                        var authname = item.authorizedName;
+                        console.log("Yetkili Adı: "+authname);
+                        var comptype = item.companyType.name;
+                        console.log("Firma Tipi: " + comptype);
+                        
+                        var htmlstr = `
+                            <tr>
+                                <td>
+                                    <img src="`+img+`" alt="`+name+`" class="list-thumbnail responsive border-0 card-img-left" />
+                                </td>
+                                <td>
+                                    <p class="list-item-heading">`+name+`</p>
+                                </td>
+                                <td>
+                                    <p class="text-muted">`+authname+`</p>
+                                </td>
+                                <td>
+                                    <p class="text-muted">`+comptype+`</p>
+                                </td>
+                                <td class="text-right">
+                                    <a asp-controller="Customers" asp-action="Details" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
+                                    <button type="button" class="btn btn-danger btn-sm mb-1"><i class="glyph-icon simple-icon-trash mr-1"></i>Sil</button>
+                                </td>
+                            </tr>`;
+                        
+                        $("#tbody").append(htmlstr);
+
+
+                    });
+                }
+            });
+        });
+    </script>
 }

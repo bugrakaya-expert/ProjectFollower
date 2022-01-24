@@ -23,7 +23,7 @@
             </div>
         </div>
 
-        <form method="post" id="customer" enctype="multipart/form-data">
+        <form method="post" id="customer" enctype="multipart/form-data" data-pasley-validate>
             <div class="row">
                 <div class="col-12 col-xl-8 mb-8">
                     <div class="card mb-4">
@@ -43,6 +43,13 @@
                                     <input class="form-control" type="text" id="Name" asp-for="Name" required />
                                     <span>Firma Adı</span>
                                 </label>
+                                <span asp-validation-for="CompanyTypeId" class="text-danger"></span>
+                                <label class="form-group has-top-label">
+                                    <select class="form-control select-single" data-width="100%" id="companytypes" asp-for="CompanyTypeId" required>
+                                        <option hidden value="">Lütfen Firma tipini seçiniz..</option>
+                                    </select>
+                                    <span>Firma Tipi</span>
+                                </label>
                                 <span asp-validation-for="AuthorizedName" class="text-danger"></span>
                                 <label class="form-group has-top-label">
                                     <input type="text" id="authorizedName" class="form-control" asp-for="AuthorizedName" required />
@@ -58,6 +65,7 @@
                                     <input type="text" id="phone" class="form-control" asp-for="Phone" required />
                                     <span>Firma Telefon</span>
                                 </label>
+                                
                                 <div class="input-group mb-3 file-avatar ">
                                     <label class="custom-select custom-select-label" for="file-upload">
                                     </label>
@@ -66,20 +74,32 @@
                                         <label class="input-group-text" for="file-upload">Firma Logosu Yükle</label>
                                     </div>
                                 </div>
+                                
                             </div>
                         </div>
                     </div>
                 </div>
+                @*
                 <div class="col-12 col-xl-4 mb-4 ">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="mb-4">Firma Dosyaları</h5>
-                            <div class="dropzone">
+                                <div class="input-group mb-3 file-avatar ">
+                                    <label class="custom-select custom-select-label" for="file-upload">
+                                    </label>
+                                    <input type="file" id="files" name="files" class="d-none" multiple />
+                                    <div class="input-group-append">
+                                        <label class="input-group-text" for="files">Firma Dosyaları Yükle</label>
+                                    </div>
+                                </div>                            <!--
+                            <div class="dropzone" id="customedrop">
 
                             </div>
+                            -->
                         </div>
                     </div>
                 </div>
+                *@
             </div>
             <div class="row">
                 <div class="col-12">
@@ -106,10 +126,58 @@
     <script src="/js/vendor/datatables.min.js"></script>
 
     <script>
-
-
-
+        
         $(document).ready(function () {
+            $.ajax({
+                url: "jsonresult/getcompanytypesjson",
+                type: "GET",
+                contentType: "application/json",
+                dataType: "json",
+                success: function (data) {
+                    $.each(data, function (i, item) {
+                        console.log(item.name);
+                        $('#companytypes').append($('<option>', {
+                            value: item.id,
+                            text: item.name
+                        }));
+                    });
+                }
+            });
+
+            /*
+            const dropzone = new Dropzone("div.dropzone",
+                { url: "/customers-add" },
+                Dr
+            );*/
+
+            /*
+            $("#customedrop").dropzone({
+                url: "/customers-add",
+                paramName:"#dropzone-upload",
+            });*/
+
+            /*
+            Dropzone.options.customedrop = {
+                url: "/customers-add"
+            };*/
+
+
+            //Simple Dropzonejs 
+            /*
+            $("#customzone").dropzone({
+                url: "hn_SimpeFileUploader.ashx",
+                addRemoveLinks: true,
+                success: function (file, response) {
+                    var imgName = response;
+                    file.previewElement.classList.add("dz-success");
+                    console.log("Successfully uploaded : " + imgName);
+                },
+                error: function (file, response) {
+                    file.previewElement.classList.add("dz-error");
+                }
+            });
+            */
+
             $("#submitForm").trigger("click");
 
             $(document).on("click", "#submitForm", function () {

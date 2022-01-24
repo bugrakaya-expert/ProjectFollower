@@ -12,6 +12,6 @@ namespace ProjectFollower.Models.DbModels
         public Guid Id { get; set; }
         [ForeignKey("CustomerId")]
         public Guid CustomerId { get; set; }
-        public string DocumentUrl { get; set; }
+        public string FileName { get; set; }
     }
 }
