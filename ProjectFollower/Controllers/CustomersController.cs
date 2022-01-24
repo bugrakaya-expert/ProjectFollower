@@ -165,8 +165,8 @@ namespace ProjectFollower.Controllers
             return View("Index");
         }
 
-        [Route("customers-details")]
-        public IActionResult Details()
+        [HttpGet("customers-details/{id}")]
+        public IActionResult Details(string id)
         {
             #region Authentication Index
             var claimsIdentity = (ClaimsIdentity)User.Identity;
