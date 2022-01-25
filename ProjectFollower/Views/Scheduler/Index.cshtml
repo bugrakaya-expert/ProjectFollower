@@ -60,8 +60,12 @@
 
 </style>
 <main>
-
-    <div id="scheduler"></div>
+    <div class="row">
+        <div class="col-12">
+            <div id="scheduler"></div>
+        </div>
+    </div>
+   
 
 </main>
 
@@ -77,11 +81,23 @@
             $('#scheduler').dxScheduler({
                 timeZone: 'America/Los_Angeles',
                 dataSource: data,
-                views: ['month', 'agenda'],
-                currentView: 'agenda',
+                views: [{
+                    type: 'month',
+                    name: 'Auto Mode',
+                    maxAppointmentsPerCell: 'auto',
+                }, {
+                    type: 'month',
+                    name: 'Unlimited Mode',
+                    maxAppointmentsPerCell: 'unlimited',
+                }, {
+                    type: 'month',
+                    name: 'Numeric Mode',
+                    maxAppointmentsPerCell: 4,
+                }],
+                currentView: 'Auto Mode',
                 currentDate: new Date(2021, 3, 27),
                 showAllDayPanel: false,
-                height: 600,
+                height: 700,
                 crossScrollingEnabled: true,
                 cellDuration: 20,
                 editing: {
@@ -92,46 +108,40 @@
                     allowDragging: true,
                 },
                 onAppointmentAdded(e) {
-                    showToast('Eklendi', e.appointmentData.movieId, 'success');
+                    showToast('Eklendi', e.appointmentData.id, 'success');
                     $.each(data, function (index, val) {
                         console.log(val.price);
                     });
                 },
                 onAppointmentUpdated(e) {
-                    showToast('Güncellendi', e.appointmentData.movieId, 'info');
+                    showToast('Güncellendi', e.appointmentData.id, 'info');
                     $.each(data, function (index, val) {
                         console.log(val.price);
                     });
                 },
                 onAppointmentDeleted(e) {
-                    showToast('Silindi', e.appointmentData.movieId, 'warning');
+                    showToast('Silindi', e.appointmentData.id, 'warning');
                     $.each(data, function (index, val) {
                         console.log(val.price);
                     });
                 },
                 resources: [{
-                    fieldExpr: 'movieId',
-                    dataSource: moviesData,
+                    fieldExpr: 'id',
+                    dataSource: data,
                 },
                     {
                         fieldExpr: 'priortyId',
                         dataSource: priortyData,
                         useColorAsDefault: true,
-                    },
-                   {
-                    fieldExpr: 'theatreId',
-                    dataSource: theatreData,
-                }],
+                    }],
                 appointmentTooltipTemplate(model) {
-                    return getTooltipTemplate(getMovieById(model.appointmentData.movieId));
+                    return getTooltipTemplate(getMovieById(model.targetedAppointmentData.id));
                 },
                 appointmentTemplate(model) {
                     const movieInfo = getMovieById(model.appointmentData.movieId) || {};
 
                     return $(`${"<div class='dx-scheduler-agenda-appointment-left-layout'><div class='dx-scheduler-agenda-appointment-marker';>"
-                        + '</div></div><div class="dx-scheduler-agenda-appointment-right-layout"><div class="dx-scheduler-appointment-title">'}${model.appointmentData.price}</div>`
-                        + `<div>${movieInfo.text}`
-                        + '</div>'
+                        + '</div></div><div class="dx-scheduler-agenda-appointment-right-layout"><div class="dx-scheduler-appointment-title">'}${model.targetedAppointmentData.projectName}</div>`
                         + '</div>');
                 },
                 onAppointmentFormOpening(data) {
@@ -141,48 +151,28 @@
 
                     form.option('items', [{
                         label: {
-                            text: 'Movie',
+                            text: 'Konu',
                         },
-                        editorType: 'dxSelectBox',
-                        dataField: 'movieId',
+                        editorType: 'dxTextBox',
+                        dataField: 'projectName',
                         editorOptions: {
-                            items: moviesData,
+                            items: data,
                             displayExpr: 'text',
-                            valueExpr: 'id',
-                            onValueChanged(args) {
-                                movieInfo = getMovieById(args.value);
-
-                                form.updateData('director', movieInfo.director);
-                                form.updateData('endDate', new Date(startDate.getTime() + 60 * 1000 * movieInfo.duration));
-                            },
+                            valueExpr: 'projectName',
                         },
                     }, {
                         label: {
-                            text: 'Konu',
+                            text: 'Açıklama',
                         },
-                        name: 'price',
+                        name: 'director',
+                        dataField: 'director',
                         editorType: 'dxTextBox',
-                        editorOptions: {
-                            items: moviesData,
-                            displayExpr: 'text',
-                            valueExpr: 'id',
-                            onValueChanged(args) {
-                                movieInfo = getMovieById(args.value);
-
-                                form.updateData('konu', movieInfo.konu);
-                            },
-                        },
                     }, {
                         dataField: 'startDate',
                         editorType: 'dxDateBox',
                         editorOptions: {
                             width: '100%',
                             type: 'date',
-                            onValueChanged(args) {
-                                startDate = args.value;
-
-                                form.updateData('endDate', new Date(startDate.getTime()));
-                            },
                         },
                     }, {
                         name: 'endDate',
@@ -194,15 +184,11 @@
                             readOnly: true,
                         },
                     }, {
-                        dataField: 'Öncelik',
+                        dataField: 'priortyId',
                         editorType: 'dxRadioGroup',
                         editorOptions: {
                             value: movieInfo.priortyId,
                             dataSource: ['Normal', 'Acil'],
-                            itemTemplate(itemData) {
-                                return `${itemData}`;
-                                
-                            },
                         },
                     },
                     ]);
@@ -210,7 +196,7 @@
             }).dxScheduler('instance');
 
             function getMovieById(id) {
-                return DevExpress.data.query(moviesData)
+                return DevExpress.data.query(data)
                     .filter('id', id)
                     .toArray()[0];
             }
@@ -218,13 +204,13 @@
             function getTooltipTemplate(movieData) {
                 return $(`${"<div class='movie-tooltip'>"}`
                     + '<div class=\'movie-info\'>'
-                    + `<div class='movie-title'>${movieData.text} (${movieData.year})`
+                    + `<div class='movie-title'>${movieData.projectName} (${movieData.priorty})`
                     + '</div>'
                     + '<div>'
-                    + `Status:${movieData.director
+                    + `Firma: ${movieData.companyName
                     }</div>`
                     + '<div>'
-                    + `Duration: ${movieData.duration} minutes`
+                    + `Duration: ${movieData.startDate.displayStartDate,'shortDate'} minutes`
                     + '</div>'
                     + '</div>'
                     + '</div>');
@@ -246,7 +232,6 @@
             director: 'Stanley Donen',
             year: 1951,
             duration: 93,
-            color: '#56ca85',
         }, {
             id: 3,
             text: 'A Star Is Born',
@@ -260,33 +245,19 @@
             director: 'Alex Nicol',
             year: 1958,
             duration: 68,
-            color: '#ff9747',
         }, {
             id: 5,
             text: "It's a Wonderful Life",
             director: 'Frank Capra',
             year: 1946,
             duration: 130,
-            color: '#f05797',
         }, {
             id: 6,
             text: 'City Lights',
             director: 'Charlie Chaplin',
             year: 1931,
             duration: 87,
-            color: '#2a9010',
         }];
-
-        const theatreData = [{
-            text: 'Cinema Hall 1',
-            id: 0,
-            color: '#000000',
-        }, {
-            text: 'Cinema Hall 2',
-            id: 1,
-            color: '#ffffff',
-        },
-        ];
 
         const priortyData = [{
             text: 'Normal',
@@ -300,107 +271,13 @@
         ];
 
         const data = [{
-            priortyId: 0,
-            movieId: 5,
-            price: 10,
+            id: 1,
+            companyName: 'Many Points',
+            projectName: 'Emre',
+            priorty: 'Acil',
             startDate: new Date('2021-04-26T16:10:00.000Z'),
             endDate: new Date('2021-04-26T18:01:00.000Z'),
-        }, {
-            priortyId: 0,
-            movieId: 1,
-            price: 5,
-            startDate: new Date('2021-04-26T18:30:00.000Z'),
-            endDate: new Date('2021-04-26T20:02:00.000Z'),
-        }, {
-            priortyId: 0,
-            movieId: 3,
-            price: 15,
-            startDate: new Date('2021-04-26T20:30:00.000Z'),
-            endDate: new Date('2021-04-26T22:21:00.000Z'),
-        }, {
-            priortyId: 0,
-            movieId: 4,
-            price: 5,
-            startDate: new Date('2021-04-26T23:00:00.000Z'),
-            endDate: new Date('2021-04-27T00:08:00.000Z'),
-        }, {
-            
-            priortyId: 0,
-            movieId: 2,
-            price: 10,
-            startDate: new Date('2021-04-27T00:30:00.000Z'),
-            endDate: new Date('2021-04-27T02:03:00.000Z'),
-        }, {
-            
-            priortyId: 0,
-            movieId: 1,
-            price: 10,
-            startDate: new Date('2021-04-27T02:30:00.000Z'),
-            endDate: new Date('2021-04-27T04:02:00.000Z'),
-        }, {
-            
-            priortyId: 0,
-            movieId: 2,
-            price: 10,
-            startDate: new Date('2021-04-27T04:20:00.000Z'),
-            endDate: new Date('2021-04-27T05:53:00.000Z'),
-        }, {
-            
-            priortyId: 0,
-            movieId: 5,
-            price: 10,
-            startDate: new Date('2021-04-27T16:10:00.000Z'),
-            endDate: new Date('2021-04-27T18:20:00.000Z'),
-        }, {
-            
-            priortyId: 0,
-            movieId: 2,
-            price: 5,
-            startDate: new Date('2021-04-27T19:00:00.000Z'),
-            endDate: new Date('2021-04-27T20:33:00.000Z'),
-        }, {
-            
-            priortyId: 0,
-            movieId: 3,
-            price: 5,
-            startDate: new Date('2021-04-27T21:00:00.000Z'),
-            endDate: new Date('2021-04-27T22:51:00.000Z'),
-        }, {
-            
-            priortyId: 0,
-            movieId: 4,
-            price: 5,
-            startDate: new Date('2021-04-27T23:20:00.000Z'),
-            endDate: new Date('2021-04-28T00:28:00.000Z'),
-        }, {
-            
-            priortyId: 0,
-            movieId: 1,
-            price: 10,
-            startDate: new Date('2021-04-28T01:00:00.000Z'),
-            endDate: new Date('2021-04-28T02:32:00.000Z'),
-        }, {
-            
-            priortyId: 0,
-            movieId: 2,
-            price: 15,
-            startDate: new Date('2021-04-28T03:00:00.000Z'),
-            endDate: new Date('2021-04-28T04:33:00.000Z'),
-        }, {
-            
-            priortyId: 1,
-            movieId: 4,
-            price: 5,
-            startDate: new Date('2021-04-28T04:50:00.000Z'),
-            endDate: new Date('2021-04-28T05:58:00.000Z'),
-        }, {
-            
-            priortyId: 1,
-            movieId: 1,
-            price: 5,
-            startDate: new Date('2021-04-28T16:00:00.000Z'),
-            endDate: new Date('2021-04-28T17:32:00.000Z'),
-        },
+        }
         ];
 
 </script>

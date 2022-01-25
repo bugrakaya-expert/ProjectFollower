@@ -112,12 +112,19 @@
         var fileInput = $('input[type="file"]', this);
         $(fileInput).on('change', function(){
             var fileName = $(this).val().split('\\').pop();
-                if (fileName) { 
-                    $(label).html(fileName);
-                } 
-                else { 
-                    $(label).html(labelValue);
-                }
-            });
+            var names = [];
+            for (var i = 0; i < $(this).get(0).files.length; ++i) {
+                names.push($(this).get(0).files[i].name+"<br>");
+            }
+            $(label).html(names);
         });
+    });
+
+    $("#tableSearch").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+        $("#tbody tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+
 })(jQuery);

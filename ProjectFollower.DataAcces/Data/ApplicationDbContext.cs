@@ -18,5 +18,8 @@ namespace ProjectFollower.DataAcces.Data
         public DbSet<Customers> Customer { get; set; }
         public DbSet<CompanyType> CompanyType { get; set; }
         public DbSet<CompanyDocuments> CompanyDocuments { get; set; }
+        public DbSet<Projects> Projects { get; set; }
+        public DbSet<ProjectTasks> ProjectTasks { get; set; }
+        public DbSet<ResponsibleUsers> ResponsibleUsers { get; set; }
     }
 }

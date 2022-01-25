@@ -76,13 +76,28 @@ namespace ProjectFollower.Controllers
         [Route("project-new")]
         public IActionResult ProjectNew()
         {
+            //var GetCustomers = _uow.
             return View();
         }
-        [HttpGet("link")]
+        [HttpGet("jsonresult/getalluserswithdep")]
         public JsonResult GetJson()
         {
-            //action
-            return Json(null);
+            //var UserswithDep = _uow.ApplicationUser.GetAll(includeProperties: "Department");
+            List<DepartmentsVM> departmentsVMs = new List<DepartmentsVM>();
+            var GetDepartments = _uow.Department.GetAll();
+            foreach (var item in GetDepartments)
+            {
+                var UserWidtDep = _uow.ApplicationUser.GetAll(i => i.DepartmentId == item.Id);
+                var DepartmentItem = new DepartmentsVM()
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    ApplicationUser = UserWidtDep,
+                };
+                departmentsVMs.Add(DepartmentItem);
+            }
+
+            return Json(departmentsVMs);
         }
     }
 }

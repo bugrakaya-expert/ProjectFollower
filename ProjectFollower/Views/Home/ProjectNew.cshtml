@@ -2,7 +2,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "ProjectNew";
 }
-
+@model ProjectFollower.Models.ViewModels.ProjectVM
 <main>
     <div class="container-fluid project-creator">
         <div class="row">
@@ -23,7 +23,7 @@
             </div>
         </div>
 
-        <form>
+        <form method="post">
             <div class="row">
                 <div class="col-12 col-xl-8 mb-8">
                     <div class="card mb-4">
@@ -35,36 +35,42 @@
                                     <span>Proje Adı</span>
                                 </label>
                                 <label class="form-group has-top-label">
-                                    <select class="form-control select-single" data-width="100%">
-                                        <option value="AK">Many Points</option>
-                                        <option value="HI">Expert</option>
-                                        <option value="CA">Poligon</option>
+                                    <select class="form-control select-single" data-width="100%" id="customers" asp-for="CustomersId" required>
+                                        <option value="" hidden>Hangi Firmaya ait proje açıyorsanız onu seçiniz.</option>
                                     </select>
                                     <span>Firma Adı</span>
                                 </label>
                                 <label class="form-group has-top-label">
-                                    <input class="form-control datepicker" placeholder="" />
+                                    <input class="form-control datepicker" placeholder="" asp-for="EndingDate" />
                                     <span>Öngörülen Bitiş Tarihi</span>
                                 </label>
+
+
+                                    <label class="form-group has-top-label">
+                                        <select class="form-control select2-multiple" multiple="multiple" data-width="100%" >
+                                            <optgroup label="Grafik Tasarım">
+                                                <option value="AK">Ayşe</option>
+                                                <option value="HI">Kubilay</option>
+                                            </optgroup>
+                                            <optgroup label="Sosyal Medya">
+                                                <option value="CA">Niran</option>
+                                                <option value="damla">Damla</option>
+                                            </optgroup>
+                                            <optgroup label="Video">
+                                                <option value="cihangir">Cihangir</option>
+                                            </optgroup>
+                                            <optgroup label="Yazılım">
+                                                <option value="emre">Emre</option>
+                                                <option value="bugra">Buğra</option>
+                                            </optgroup>
+                                            <option value="TNOGZ" disabled="disabled">The Twilight Zone</option>
+                                            <option value="TPZ">Herkes</option>
+                                        </select>
+                                        <span>Proje Üyeleri</span>
+                                    </label>
+
                                 <label class="form-group has-top-label">
-                                    <select class="form-control select2-multiple" multiple="multiple" data-width="100%">
-                                        <optgroup label="Grafik Tasarım">
-                                            <option value="AK">Ayşe</option>
-                                            <option value="HI">Kubilay</option>
-                                        </optgroup>
-                                        <optgroup label="Sosyal Medya">
-                                            <option value="CA">Niran</option>
-                                            <option value="damla">Damla</option>
-                                        </optgroup>
-                                        <optgroup label="Video">
-                                            <option value="cihangir">Cihangir</option>
-                                        </optgroup>
-                                        <optgroup label="Yazılım">
-                                            <option value="emre">Emre</option>
-                                            <option value="bugra">Buğra</option>
-                                        </optgroup>
-                                        <option value="TNOGZ" disabled="disabled">The Twilight Zone</option>
-                                        <option value="TPZ">Herkes</option>
+                                    <select class="form-control select2-multiple" multiple="multiple" data-width="100%" id="departments">
                                     </select>
                                     <span>Proje Üyeleri</span>
                                 </label>
@@ -151,8 +157,63 @@
 
 @section scripts
 {
-<script src="/js/vendor/quill.min.js"></script>
-<script src="/js/vendor/datatables.min.js"></script>
+    <script src="/js/vendor/quill.min.js"></script>
+    <script src="/js/vendor/datatables.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            $.ajax({
+                url: "/jsonresult/getallcustomers",
+                type: "GET",
+                contentType: "application/json",
+                dataType: "json",
+                success: function (data) {
+                    $.each(data, function (i, item) {
+                        console.log(item.name);
+                        $('#customers').append($('<option>', {
+                            value: item.id,
+                            text: item.name
+                        }));
+                    });
+                }
+            });
+
+            $.ajax({
+                url: "/jsonresult/getalluserswithdep",
+                type: "GET",
+                contentType: "application/json",
+                dataType: "json",
+                success: function (data) {
+                    $.each(data, function (i, item) {
+                        console.log(item);
+                        $('#departments').append($('<optgroup>', {
+                            
+                            /*value: item.id,*/
+                            label: item.name,
+                            id: 'depgro-'+i
+                            /*text: item.name*/
+                        }));
+                        
+                        $.each(item.applicationUser, function (z, appItem) {
+
+                            $('#departments').append($('<option>', {
+
+                                /*value: item.id,*/
+                                label: appItem.firstName,
+                                data-select2-id: 'depgro-' + i
+                                /*text: item.name*/
+                            }));
+
+
+
+                        });
+                    });
+                }
+            });
+
+        });
+    </script>
 
 }
 

@@ -9,14 +9,14 @@
         <div class="row">
             <div class="col-12">
                 <div class="mb-2">
-                    <h1>@Model.Name</h1>
+                    <h1 contenteditable="true">@Model.Name</h1>
                     <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
                         <ol class="breadcrumb pt-0">
                             <li class="breadcrumb-item">
                                 <a asp-controller="Customers" asp-action="Index">Firmalar</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                <a >@Model.Name</a>
+                                <a>@Model.Name</a>
                             </li>
                         </ol>
                     </nav>
@@ -74,8 +74,23 @@
                                             </a>
                                         </div>
                                     }
-                                }
 
+                                }
+                                <div class="separator mb-5"></div>
+                                <div class="d-flex flex-row mb-3">
+                                    <div class="col-12">
+                                        <div class="input-group mb-3 file-avatar">
+                                            <label class="custom-select custom-select-label file-new-uploads-text" for="file-upload" style="height:auto; line-height:inherit;"></label>
+                                            <input type="file" class="d-none file-new-uploads" name="file-upload" id="file-upload" multiple>
+                                            <div class="input-group-append">
+                                                <label class="input-group-text" for="file-upload" value="Fotoğraf Yükle">Fotoğraf Yükle</label>
+                                            </div>
+                                        </div>
+                                        <div class="text-zero top-right-button-container">
+                                            <a href="/new-user"><button type="button" class="btn btn-primary top-right-button mr-1">YENİ DOSYA EKLE</button></a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
