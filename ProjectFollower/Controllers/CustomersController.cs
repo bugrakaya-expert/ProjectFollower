@@ -44,7 +44,7 @@ namespace ProjectFollower.Controllers
             _hostEnvironment = hostEnvironment;
         }
 
-        [Route("customers")]
+        [Route("musteriler")]
         public IActionResult Index()
         {
             #region Authentication Index
@@ -61,7 +61,7 @@ namespace ProjectFollower.Controllers
 
             return View();
         }
-        [Route("customers-add")]
+        [Route("musteriler/ekle")]
         public IActionResult AddCustomer()
         {
             #region Authentication Index
@@ -79,7 +79,7 @@ namespace ProjectFollower.Controllers
             return View();
         }
 
-        [HttpPost("customers-add")]
+        [HttpPost("musteriler/ekle")]
         public IActionResult AddCustomerAction(CustomerVM customervm, ICollection<IFormFile> filess)
         {
             #region Authentication Index
@@ -143,7 +143,7 @@ namespace ProjectFollower.Controllers
                         var Document = new CompanyDocuments()
                         {
                             CustomerId = customer.Id,
-                            FileName = item.FileName+extension,
+                            FileName = item.FileName + extension,
                         };
                         _uow.CompanyDocuments.Add(Document);
                     }
@@ -162,11 +162,11 @@ namespace ProjectFollower.Controllers
             */
             //_uow.Customers.Add(customer);
             _uow.Save();
-            return View("Index");
+            return RedirectToAction("Index", "Customers");
         }
 
-        [HttpGet("customers-details/{id}")]
-        public IActionResult Details(string id)
+        [HttpGet("musteriler/{id}")]
+        public IActionResult Details(Guid id)
         {
             #region Authentication Index
             var claimsIdentity = (ClaimsIdentity)User.Identity;
@@ -180,11 +180,41 @@ namespace ProjectFollower.Controllers
                 return View("SignIn");
             #endregion Authentication Index
 
-            return View();
+            var getCustomer = _uow.Customers.GetFirstOrDefault(i => i.Id == id);
+            var getDocuments = _uow.CompanyDocuments.GetAll(i => i.CustomerId == id);
+            var Customer = new CustomerVM()
+            {
+                AuthorizedName = getCustomer.AuthorizedName,
+                Description = getCustomer.Description,
+                ImageUrl = getCustomer.ImageUrl,
+                Name = getCustomer.Name,
+                Email = getCustomer.Email,
+                Phone = getCustomer.Phone,
+                Documents = getDocuments
+            };
+
+            return View(Customer);
         }
-        public async Task<JsonResult> DropzoneActionHandler(ICollection<IFormFile> files)
+        [HttpGet("musteriler/sil/{id}")]
+        public IActionResult Remove(Guid id, bool status)
         {
-            return Json(null);
+
+            if (status)
+            {
+                var getCustomer = _uow.Customers.GetFirstOrDefault(i => i.Id == id);
+                var getDocuments = _uow.CompanyDocuments.GetAll(i => i.CustomerId == id);
+
+                if (getDocuments.Count() > 0)
+                    if ((Directory.Exists(LocFilePaths.DIR_Customer_Doc + getCustomer.Name)))
+                        Directory.Delete(LocFilePaths.DIR_Customer_Doc + getCustomer.Name,true);
+
+                _uow.Customers.Remove(getCustomer);
+                _uow.CompanyDocuments.RemoveRange(getDocuments);
+                _uow.Save();
+                
+            }
+
+            return RedirectToAction("Index","Customers");
         }
         #region API
         [HttpGet("jsonresult/getallcustomers")]

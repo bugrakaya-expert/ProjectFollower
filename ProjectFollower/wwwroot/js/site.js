@@ -3,7 +3,6 @@
 
 // Write your Javascript code.
 $(document).ready(function () {
-    console.log("loaded!");
 });
 function editUserFunc() {
     $("#modalsubmit").prop('disabled', true);    

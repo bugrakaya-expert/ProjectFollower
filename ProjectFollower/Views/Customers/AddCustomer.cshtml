@@ -1,6 +1,7 @@
 ﻿
 @{
     ViewData["Title"] = "AddCustomer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @model ProjectFollower.Models.ViewModels.CustomerVM
 <main>
@@ -129,7 +130,7 @@
         
         $(document).ready(function () {
             $.ajax({
-                url: "jsonresult/getcompanytypesjson",
+                url: "/jsonresult/getcompanytypesjson",
                 type: "GET",
                 contentType: "application/json",
                 dataType: "json",
@@ -182,8 +183,7 @@
 
             $(document).on("click", "#submitForm", function () {
                 $(this).text("It works!");
-
-                var htmlString = $('#quillEditor').html();
+                var htmlString = $('.ql-editor').html();
                 $('#htmlstr').val(htmlString);
                 $('#customer').submit();
             });

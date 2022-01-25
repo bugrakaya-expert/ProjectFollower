@@ -1,6 +1,7 @@
 ﻿
 @{
     ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <main>
@@ -231,7 +232,6 @@
                 dataType: "json",
                 success: function (data) {
                     $.each(data, function (i, item) {
-                        console.log(item.name);
                         /*
                         $('#companytypes').append($('<option>', {
                             value: item.id,
@@ -239,12 +239,8 @@
                         }));*/
                         var img = "";
                         var name = item.name;
-                        console.log("Firma Adı: "+name);
                         var authname = item.authorizedName;
-                        console.log("Yetkili Adı: "+authname);
-                        var comptype = item.companyType.name;
-                        console.log("Firma Tipi: " + comptype);
-                        
+                        var comptype = item.companyType.name;                        
                         var htmlstr = `
                             <tr>
                                 <td>
@@ -260,8 +256,13 @@
                                     <p class="text-muted">`+comptype+`</p>
                                 </td>
                                 <td class="text-right">
-                                    <a href="/customers-details/`+item.id+`" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
-                                    <button type="button" class="btn btn-danger btn-sm mb-1"><i class="glyph-icon simple-icon-trash mr-1"></i>Sil</button>
+                                    <form method="get" action="musteriler/sil/`+ item.id+`">
+                                    <!--<input name="id" value="`+ item.id +`" hidden/>-->
+                                    <input name="status" value="true" hidden/>
+                                    <button type="submit" class="btn btn-danger btn-sm mb-1 delete-project"><i class="glyph-icon simple-icon-trash mr-1"></i>Sil</button>
+                                    <a href="/musteriler/`+ item.id +`" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
+                                    </form>
+                                    
                                 </td>
                             </tr>`;
                         

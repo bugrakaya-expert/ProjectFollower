@@ -1,20 +1,22 @@
 ﻿
 @{
     ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@model ProjectFollower.Models.ViewModels.CustomerVM
 <main>
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
                 <div class="mb-2">
-                    <h1>Poligon Mühendislik</h1>
+                    <h1>@Model.Name</h1>
                     <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
                         <ol class="breadcrumb pt-0">
                             <li class="breadcrumb-item">
-                                <a href="#">Firmalar</a>
+                                <a asp-controller="Customers" asp-action="Index">Firmalar</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                <a href="#">Poligon Mühendislik</a>
+                                <a >@Model.Name</a>
                             </li>
                         </ol>
                     </nav>
@@ -34,7 +36,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="second-tab" data-toggle="tab" href="#second" role="tab"
-                                   aria-controls="second" aria-selected="false">Dosyalar(5)</a>
+                                   aria-controls="second" aria-selected="false">Dosyalar(@Model.Documents.Count())</a>
                             </li>
                         </ul>
                     </div>
@@ -44,123 +46,36 @@
                                  aria-labelledby="first-tab">
 
                                 <p class="font-weight-bold">Firma Açıklaması</p>
-                                <p>
-                                    Vivamus ultricies augue vitae commodo condimentum. Nullam
-                                    faucibus eros eu mauris feugiat, eget consectetur tortor tempus. Sed volutpat
-                                    mollis dui eget fringilla. Vestibulum blandit urna ut tellus lobortis tristique.
-                                    Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia
-                                    Curae; Pellentesque quis cursus mauris. Nam in ornare erat. Vestibulum convallis
-                                    enim ac massa dapibus consectetur. Maecenas facilisis eros ac felis mattis, eget
-                                    auctor sapien varius.
-                                    <br />
-                                    <br />
-                                    Nulla non purus fermentum, pulvinar dui condimentum,
-                                    malesuada nibh. Sed viverra quam urna, at condimentum ante viverra non. Mauris
-                                    posuere erat sapien, a convallis libero lobortis sit amet. Suspendisse in orci
-                                    tellus.
-                                </p>
+                                @Html.Raw(Model.Description)
                                 <br />
-
-
-
 
                             </div>
                             <div class="tab-pane fade" id="second" role="tabpanel" aria-labelledby="second-tab">
-                                <div class="d-flex flex-row mb-3 border-bottom">
-                                    <div class="p-0 position-relative tab-icon">
-                                        <div class="preview-container">
-                                            <img data-dz-thumbnail="" class="img-thumbnail border-0">
-                                            <i class="simple-icon-doc preview-icon"></i>
+                                @{
+                                    foreach (var item in Model.Documents)
+                                    {
+                                        <div class="d-flex flex-row mb-3 border-bottom">
+                                            <div class="p-0 position-relative tab-icon">
+                                                <div class="preview-container">
+                                                    <img data-dz-thumbnail="" class="img-thumbnail border-0">
+                                                    <i class="simple-icon-doc preview-icon"></i>
+                                                </div>
+                                            </div>
+                                            <div class="pl-3 w-80 dz-details position-relative">
+                                                <div>
+                                                    <span data-dz-name="">@item.FileName</span>
+                                                </div>
+                                                <div class="text-primary text-extra-small" data-dz-size="">
+                                                    <strong>0</strong> KB
+                                                </div>
+                                            </div>
+                                            <a href="#/" class="download-icon" data-dz-remove="">
+                                                <i class="glyph-icon simple-icon-cloud-download"></i>
+                                            </a>
                                         </div>
-                                    </div>
-                                    <div class="pl-3 w-80 dz-details position-relative">
-                                        <div>
-                                            <span data-dz-name="">baktek.docx</span>
-                                        </div>
-                                        <div class="text-primary text-extra-small" data-dz-size="">
-                                            <strong>16.4</strong> KB
-                                        </div>
-                                    </div>
-                                    <a href="#/" class="download-icon" data-dz-remove="">
-                                        <i class="glyph-icon simple-icon-cloud-download"></i>
-                                    </a>
-                                </div>
-                                <div class="d-flex flex-row mb-3 border-bottom">
-                                    <div class="p-0 position-relative tab-icon">
-                                        <div class="preview-container">
-                                            <img data-dz-thumbnail="" class="img-thumbnail border-0">
-                                            <i class="simple-icon-doc preview-icon"></i>
-                                        </div>
-                                    </div>
-                                    <div class="pl-3 w-80 dz-details position-relative">
-                                        <div>
-                                            <span data-dz-name="">baktek.docx</span>
-                                        </div>
-                                        <div class="text-primary text-extra-small" data-dz-size="">
-                                            <strong>16.4</strong> KB
-                                        </div>
-                                    </div>
-                                    <a href="#/" class="download-icon" data-dz-remove="">
-                                        <i class="glyph-icon simple-icon-cloud-download"></i>
-                                    </a>
-                                </div>
-                                <div class="d-flex flex-row mb-3 border-bottom">
-                                    <div class="p-0 position-relative tab-icon">
-                                        <div class="preview-container">
-                                            <img data-dz-thumbnail="" class="img-thumbnail border-0">
-                                            <i class="simple-icon-doc preview-icon"></i>
-                                        </div>
-                                    </div>
-                                    <div class="pl-3 w-80 dz-details position-relative">
-                                        <div>
-                                            <span data-dz-name="">baktek.docx</span>
-                                        </div>
-                                        <div class="text-primary text-extra-small" data-dz-size="">
-                                            <strong>16.4</strong> KB
-                                        </div>
-                                    </div>
-                                    <a href="#/" class="download-icon" data-dz-remove="">
-                                        <i class="glyph-icon simple-icon-cloud-download"></i>
-                                    </a>
-                                </div>
-                                <div class="d-flex flex-row mb-3 border-bottom">
-                                    <div class="p-0 position-relative tab-icon">
-                                        <div class="preview-container">
-                                            <img data-dz-thumbnail="" class="img-thumbnail border-0">
-                                            <i class="simple-icon-doc preview-icon"></i>
-                                        </div>
-                                    </div>
-                                    <div class="pl-3 w-80 dz-details position-relative">
-                                        <div>
-                                            <span data-dz-name="">baktek.docx</span>
-                                        </div>
-                                        <div class="text-primary text-extra-small" data-dz-size="">
-                                            <strong>16.4</strong> KB
-                                        </div>
-                                    </div>
-                                    <a href="#/" class="download-icon" data-dz-remove="">
-                                        <i class="glyph-icon simple-icon-cloud-download"></i>
-                                    </a>
-                                </div>
-                                <div class="d-flex flex-row mb-3 border-bottom">
-                                    <div class="p-0 position-relative tab-icon">
-                                        <div class="preview-container">
-                                            <img data-dz-thumbnail="" class="img-thumbnail border-0">
-                                            <i class="simple-icon-doc preview-icon"></i>
-                                        </div>
-                                    </div>
-                                    <div class="pl-3 w-80 dz-details position-relative">
-                                        <div>
-                                            <span data-dz-name="">baktek.docx</span>
-                                        </div>
-                                        <div class="text-primary text-extra-small" data-dz-size="">
-                                            <strong>16.4</strong> KB
-                                        </div>
-                                    </div>
-                                    <a href="#/" class="download-icon" data-dz-remove="">
-                                        <i class="glyph-icon simple-icon-cloud-download"></i>
-                                    </a>
-                                </div>
+                                    }
+                                }
+
                             </div>
                         </div>
                     </div>
@@ -172,22 +87,22 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-8 p-0 m-0 d-flex justify-content-center align-items-center">
-                                <h1 class="p-0 m-0">Poligon Mühendislik</h1>
+                                <h1 class="p-0 m-0">@Model.Name</h1>
                             </div>
                             <div class="col-4">
-                                <img src="img/orj/firmalar/poligon.jpg" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left ml-2" />
+                                <img src="@Model.ImageUrl" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left ml-2" />
                             </div>
                             <div class="col-6 mt-2">
                                 <p class="font-weight-bold">Firma Yetkilisi</p>
-                                <p>Alp</p>
+                                <p>@Model.AuthorizedName</p>
                             </div>
                             <div class="col-6 mt-2">
                                 <p class="font-weight-bold">Firma E-posta</p>
-                                <p>Alp@poligon.com</p>
+                                <p>@Model.Email</p>
                             </div>
                             <div class="col-6 mt-2">
                                 <p class="font-weight-bold">Firma Telefon</p>
-                                <p>+90 554 552 55 55</p>
+                                <p>@Model.Phone</p>
                             </div>
                         </div>
                     </div>
@@ -196,3 +111,9 @@
         </div>
     </div>
 </main>
+
+@section scripts{
+
+    <script src="~/js/scripts.js"></script>
+
+}
