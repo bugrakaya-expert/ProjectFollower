@@ -17,6 +17,9 @@ namespace ProjectFollower.DataAcces.MainRepository
             Customers = new CustomersRepository(_db);
             CompanyDocuments = new CompanyDocumentsRepository(_db);
             CompanyType = new CompanyTypeRepository(_db);
+            Project = new ProjectRepository(_db);
+            ProjectTasks = new ProjectTaskRepository(_db);
+            ResponsibleUsers = new ResponsibleUsersRepository(_db);
         }
         //public ICategoryRepository Category { get; private set; }
         public IApplicationUserRepository ApplicationUser { get; private set; }
@@ -24,6 +27,9 @@ namespace ProjectFollower.DataAcces.MainRepository
         public ICustomersRepository Customers { get; private set; }
         public ICompanyDocumentsRepository CompanyDocuments { get; private set; }
         public ICompanyTypeRepository CompanyType { get; private set; }
+        public IProjectRepository Project { get; private set; }
+        public IProjectTaskRepository ProjectTasks { get; private set; }
+        public IResponsibleUsersRepository ResponsibleUsers { get; private set; }
         public void Dispose()
         {
             _db.Dispose();

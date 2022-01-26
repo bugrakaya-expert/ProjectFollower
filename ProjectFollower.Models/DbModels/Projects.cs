@@ -10,14 +10,19 @@ namespace ProjectFollower.Models.DbModels
     {
         [Key]
         public Guid Id { get; set; }
+        [Required(ErrorMessage = "Bir Proje adı girmelisiniz.")]
         public string Name { get; set; }
 
+        [Required(ErrorMessage = "Firma seçmek zorunludur.")]
         [ForeignKey("CustomersId")]
         public Guid CustomersId { get; set; }
         public Customers Customers { get; set; }
         public string CreationDate { get; set; }
+        [Required(ErrorMessage = "Öngörülen Bitiş Tarihi seçmelisiniz.")]
         public string EndingDate { get; set; }
         public string FinishDate { get; set; }
+        public string Description { get; set; }
+        public bool Archived { get; set; }
 
     }
 }

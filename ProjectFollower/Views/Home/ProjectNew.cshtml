@@ -1,6 +1,6 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewData["Title"] = "ProjectNew";
+
 }
 @model ProjectFollower.Models.ViewModels.ProjectVM
 <main>
@@ -23,31 +23,34 @@
             </div>
         </div>
 
-        <form method="post">
+        <form method="post" id="project">
             <div class="row">
                 <div class="col-12 col-xl-8 mb-8">
                     <div class="card mb-4">
                         <div class="card-body">
                             <h5 class="mb-4">Yeni Proje</h5>
                             <div>
+                                <span asp-validation-for="Name" class="text-danger"></span>
                                 <label class="form-group has-top-label">
-                                    <input class="form-control" />
+                                    <input class="form-control" asp-for="Name" autocomplete="off" value="Deneme" required />
                                     <span>Proje Adı</span>
                                 </label>
+                                <span asp-validation-for="CustomersId" class="text-danger"></span>
                                 <label class="form-group has-top-label">
                                     <select class="form-control select-single" data-width="100%" id="customers" asp-for="CustomersId" required>
                                         <option value="" hidden>Hangi Firmaya ait proje açıyorsanız onu seçiniz.</option>
                                     </select>
                                     <span>Firma Adı</span>
                                 </label>
+                                <span asp-validation-for="EndingDate" class="text-danger"></span>
                                 <label class="form-group has-top-label">
-                                    <input class="form-control datepicker" placeholder="" asp-for="EndingDate" />
+                                    <input class="form-control datepicker" placeholder="" asp-for="EndingDate" autocomplete="off" value="31.01.2022" required />
                                     <span>Öngörülen Bitiş Tarihi</span>
                                 </label>
 
-
+                                @*
                                     <label class="form-group has-top-label">
-                                        <select class="form-control select2-multiple" multiple="multiple" data-width="100%" >
+                                        <select class="form-control select2-multiple" multiple="multiple" data-width="100%">
                                             <optgroup label="Grafik Tasarım">
                                                 <option value="AK">Ayşe</option>
                                                 <option value="HI">Kubilay</option>
@@ -68,10 +71,22 @@
                                         </select>
                                         <span>Proje Üyeleri</span>
                                     </label>
-
+                                *@
+                                <span asp-validation-for="UserId" class="text-danger"></span>
                                 <label class="form-group has-top-label">
-                                    <select class="form-control select2-multiple" multiple="multiple" data-width="100%" id="departments">
+                                    <select class="form-control select2-multiple" multiple="multiple" data-width="100%" asp-for="UserId" required>
+                                        @foreach (var item in Model.DepartmentsVMs)
+                                        {
+                                            <optgroup label="@item.Name">
+                                                @foreach (var itemUser in item.ApplicationUser)
+                                                {
+                                                    <option value="@itemUser.Id">@itemUser.FirstName</option>
+                                                }
+
+                                            </optgroup>
+                                        }
                                     </select>
+
                                     <span>Proje Üyeleri</span>
                                 </label>
                             </div>
@@ -99,7 +114,7 @@
                                 <input class="form-control" id="mission-textbox" style="display: inline-block;" id="mission-textbox">
                                 <span>Görev Tanımı</span>
                             </label>
-                            <button type="button" class="btn btn-outline-secondary mb-1" id="mission-add">Görev Ekle</button>
+                            <button type="button" class="btn btn-outline-secondary mb-1 taskAct" id="mission-add">Görev Ekle</button>
                         </div>
                     </div>
                 </div>
@@ -137,19 +152,32 @@
                     <div class="card mb-4">
                         <div class="card-body ">
                             <h5 class="mb-4">Proje Dosyaları</h5>
-                            <form action="/file-upload">
-                                <div class="dropzone">
-                                </div>
-                            </form>
+                            @*
+                                <form action="/file-upload">
+                                    <div class="dropzone">
+                                    </div>
+                                </form>
+                            *@
                         </div>
                     </div>
                 </div>
             </div>
             <div class="d-flex flex-row-reverse">
-                <a href="index.php"><button class="btn btn-danger btn-lg"><i class="iconsminds-close"></i>İptal Et</button></a>
-                <button class="btn btn-primary btn-lg mr-3" type="submit"><i class="iconsminds-add"></i> Proje Oluştur</button>
+                <a href=""><button class="btn btn-danger btn-lg"><i class="iconsminds-close"></i>İptal Et</button></a>
+                <button class="btn btn-primary btn-lg mr-3" id="submitForm"><i class="iconsminds-add"></i> Proje Oluştur</button>
+
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger alert-dismissible fade show rounded mb-2 mt-2" role="alert">
+
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
 
             </div>
+
+            <input type="text" id="htmlstr" class="form-control form-text" asp-for="@Model.Description" hidden />
+            <select class="form-control select2-multiple d-none" multiple="multiple" data-width="100%" id="taskDescription" asp-for="TaskDesc" hidden>
+            </select>
         </form>
     </div>
 </main>
@@ -157,6 +185,7 @@
 
 @section scripts
 {
+    <partial name="_ValidationScriptsPartial" />
     <script src="/js/vendor/quill.min.js"></script>
     <script src="/js/vendor/datatables.min.js"></script>
 
@@ -178,41 +207,54 @@
                     });
                 }
             });
-
-            $.ajax({
-                url: "/jsonresult/getalluserswithdep",
-                type: "GET",
-                contentType: "application/json",
-                dataType: "json",
-                success: function (data) {
-                    $.each(data, function (i, item) {
-                        console.log(item);
-                        $('#departments').append($('<optgroup>', {
-                            
-                            /*value: item.id,*/
-                            label: item.name,
-                            id: 'depgro-'+i
-                            /*text: item.name*/
-                        }));
-                        
-                        $.each(item.applicationUser, function (z, appItem) {
-
-                            $('#departments').append($('<option>', {
-
-                                /*value: item.id,*/
-                                label: appItem.firstName,
-                                data-select2-id: 'depgro-' + i
-                                /*text: item.name*/
-                            }));
-
-
-
-                        });
-                    });
+            /*
+            $('#departments').select2({
+                ajax: {
+                    url: '/jsonresult/getalluserswithdep',
+                    data: function (params) {
+                        var query = {
+                            search: params.term,
+                            type: 'public'
+                        }
+                        console.log(query);
+                        // Query parameters will be ?search=[term]&type=public
+                        return query;
+                    }
                 }
             });
+            */
+            $(document).on("click", ".taskAct", function () {
+
+            });
+
+
+            $(document).on("click", "#submitForm", function () {
+                $('#taskDescription').html('');
+
+                var htmlString = $('.ql-editor').html();
+                $('#htmlstr').val(htmlString);
+                $('.list-item-heading').each(function () {
+                    /*var taskAct = $(".list-item-heading").html();*/
+                    var taskAct = $(this).html();
+                    console.log(taskAct);
+                    $('#taskDescription').append($('<option>', {
+                        value: taskAct,
+                        text: taskAct
+                    }).attr('selected', true));
+                });
+
+
+                $('#project').submit();
+            });
+
+
+
 
         });
+            /*
+        $("#submitForm").trigger("click");*/
+
+
     </script>
 
 }

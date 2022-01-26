@@ -12,7 +12,9 @@ namespace ProjectFollower.DataAcces.IMainRepository
         ICustomersRepository Customers { get; }
         ICompanyDocumentsRepository CompanyDocuments { get; }
         ICompanyTypeRepository CompanyType { get; }
-
+        IProjectRepository Project { get; }
+        IProjectTaskRepository ProjectTasks { get; }
+        IResponsibleUsersRepository ResponsibleUsers { get; }
         void Save();
     }
 }

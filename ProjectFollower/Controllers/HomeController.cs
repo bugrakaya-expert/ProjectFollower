@@ -76,14 +76,7 @@ namespace ProjectFollower.Controllers
         [Route("project-new")]
         public IActionResult ProjectNew()
         {
-            //var GetCustomers = _uow.
-            return View();
-        }
-        [HttpGet("jsonresult/getalluserswithdep")]
-        public JsonResult GetJson()
-        {
-            //var UserswithDep = _uow.ApplicationUser.GetAll(includeProperties: "Department");
-            List<DepartmentsVM> departmentsVMs = new List<DepartmentsVM>();
+            List<DepartmentsVM> departmentsVM = new List<DepartmentsVM>();
             var GetDepartments = _uow.Department.GetAll();
             foreach (var item in GetDepartments)
             {
@@ -94,10 +87,79 @@ namespace ProjectFollower.Controllers
                     Name = item.Name,
                     ApplicationUser = UserWidtDep,
                 };
-                departmentsVMs.Add(DepartmentItem);
+                departmentsVM.Add(DepartmentItem);
             }
 
-            return Json(departmentsVMs);
+            ProjectVM Project = new ProjectVM()
+            {
+                DepartmentsVMs= departmentsVM
+            };
+
+            return View(Project);
+        }
+        [Authorize(Roles = UserRoles.Admin)]
+        [HttpPost("project-new")]
+        public IActionResult ProjectNewPost(ProjectVM ProjectVM)
+        {
+            var Users = new List<ApplicationUser>();
+
+            ProjectVM.Customers = _uow.Customers.GetFirstOrDefault(i => i.Id == ProjectVM.CustomersId);
+            ProjectVM.CreationDate = DateTime.Now.ToString("dd/MM/yyyy");
+
+            var Project = new Projects()
+            {
+                CreationDate=ProjectVM.CreationDate,
+                CustomersId=ProjectVM.CustomersId,
+                Description=ProjectVM.Description,
+                EndingDate=ProjectVM.EndingDate,
+                Name=ProjectVM.Name
+            };
+            _uow.Project.Add(Project);
+            foreach (var item in ProjectVM.UserId)
+            {
+                var User = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == item, includeProperties: "Department");
+                //Users.Add(User);
+                var ResponsibleUser = new ResponsibleUsers()
+                {
+                    ProjectId=Project.Id,
+                    UserId= Guid.Parse(User.Id)
+                };
+                _uow.ResponsibleUsers.Add(ResponsibleUser);
+            }
+            foreach (var item in ProjectVM.TaskDesc)
+            {
+                var ProjectTask = new ProjectTasks()
+                {
+                    Description=item,
+                    ProjectsId= Project.Id
+                };
+                _uow.ProjectTasks.Add(ProjectTask);
+            }
+            _uow.Save();
+            return Redirect("/project-new");
+        }
+        [HttpGet("jsonresult/getalluserswithdep")]
+        public JsonResult GetJson()
+        {
+            //var UserswithDep = _uow.ApplicationUser.GetAll(includeProperties: "Department");
+            var Project = new ProjectVM();
+            var GetDepartments = _uow.Department.GetAll();
+            int i = 0;
+            foreach (var item in GetDepartments)
+            {
+                var UserWidtDep = _uow.ApplicationUser.GetAll(i => i.DepartmentId == item.Id);
+                var DepartmentItem = new DepartmentsVM()
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    ApplicationUser = UserWidtDep,
+                };
+                Project.DepartmentsVMs.Add(DepartmentItem);
+            }
+
+
+
+            return Json(Project);
         }
     }
 }
