@@ -13,12 +13,19 @@ namespace ProjectFollower.Utility
             public const string Personel = "Personel";
             public const string Manager = "Yetkili";
         }
-
+        public static class ProjectStatus
+        {
+            public const int New = 0;
+            public const int CustomerApproving = 1;
+            public const int Cunstroction = 2;
+            public const int Done = 3;
+        }
         public static class LocFilePaths
         {
             public const string RootAsset = @"C:\project-followerAssets\";
             public const string Customers = @"customers\";
             public const string Users = @"users\";
+            public const string Projects = @"projects\";
             public const string Documents = @"documents\";
             public const string Img = @"img\";
 
@@ -29,6 +36,15 @@ namespace ProjectFollower.Utility
             public const string DIR_Users_Main = RootAsset + Users;
             public const string DIR_Users_Doc = RootAsset + Users + Documents;
             public const string DIR_Users_Img = RootAsset + Users + Img;
+
+            public const string DIR_Projects_Main = RootAsset + Projects;
+            public const string DIR_Projects_Doc = RootAsset + Projects + Documents;
+            public const string DIR_Projects_Img = RootAsset + Projects + Img;
+        }
+        public static void GenerateAsset()
+        {
+            //Generate assets
+
         }
     }
 }

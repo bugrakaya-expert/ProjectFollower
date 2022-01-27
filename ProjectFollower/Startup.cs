@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using ProjectFollower.DataAcces.Data;
 using ProjectFollower.DataAcces.IMainRepository;
 using ProjectFollower.DataAcces.MainRepository;
+using ProjectFollower.Hubs;
 using ProjectFollower.Models.DbModels;
 using System;
 using System.Collections.Generic;
@@ -57,6 +59,10 @@ namespace ProjectFollower
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            services.AddSignalR(options =>
+            {
+                options.EnableDetailedErrors = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -81,6 +87,11 @@ namespace ProjectFollower
             app.UseSession();
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseCors(builder =>
+            {
+                builder.WithOrigins("https://localhost:5001", "http://localhost:5000").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+            });
             /*
             app.UseEndpoints(endpoints =>
             {
@@ -92,6 +103,7 @@ namespace ProjectFollower
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+                endpoints.MapHub<HomeHub>("/homeHub");
             });
         }
     }

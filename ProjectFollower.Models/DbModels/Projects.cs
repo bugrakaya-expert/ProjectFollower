@@ -22,7 +22,13 @@ namespace ProjectFollower.Models.DbModels
         public string EndingDate { get; set; }
         public string FinishDate { get; set; }
         public string Description { get; set; }
+        public int Status { get; set; }
         public bool Archived { get; set; }
+
+        [NotMapped]
+        public int ProjectSequence { get; set; }
+        [NotMapped]
+        public int SequanceDate { get; set; }
 
     }
 }

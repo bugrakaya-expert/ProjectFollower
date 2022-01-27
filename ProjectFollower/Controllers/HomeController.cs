@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace ProjectFollower.Controllers
 {
-    
+
     public class HomeController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
@@ -39,7 +39,8 @@ namespace ProjectFollower.Controllers
 
         [BindProperty]
         public UserRegisterVM Input { get; set; }
-
+        public int Sequence = 0;
+        public int Delayeds = 0;
 
         [AllowAnonymous]
         public IActionResult Index()
@@ -50,7 +51,7 @@ namespace ProjectFollower.Controllers
             if (Claims != null)
             {
                 var ApplicationUser = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == Claims.Value);
-                return RedirectToAction("Dashboard","Home");//Go Dashboard
+                return RedirectToAction("Dashboard", "Home");//Go Dashboard
             }
 
             #endregion Authentication Index
@@ -60,20 +61,20 @@ namespace ProjectFollower.Controllers
 
         //[Authorize(Roles = UserRoles.Admin)]
         [Route("dashboard")]
-        public IActionResult Dashboard() 
+        public IActionResult Dashboard()
         {
-            return View(); 
-        } 
+            return View();
+        }
 
-        [Authorize(Roles = UserRoles.Admin)]
-        [Route("project-details")]
+        [AllowAnonymous]
+        [Route("proje-detaylari")]
         public IActionResult Details()
         {
             return View();
         }
 
         [Authorize(Roles = UserRoles.Admin)]
-        [Route("project-new")]
+        [Route("yeni-proje")]
         public IActionResult ProjectNew()
         {
             List<DepartmentsVM> departmentsVM = new List<DepartmentsVM>();
@@ -92,13 +93,13 @@ namespace ProjectFollower.Controllers
 
             ProjectVM Project = new ProjectVM()
             {
-                DepartmentsVMs= departmentsVM
+                DepartmentsVMs = departmentsVM
             };
 
             return View(Project);
         }
         [Authorize(Roles = UserRoles.Admin)]
-        [HttpPost("project-new")]
+        [HttpPost("yeni-proje")]
         public IActionResult ProjectNewPost(ProjectVM ProjectVM)
         {
             var Users = new List<ApplicationUser>();
@@ -108,11 +109,11 @@ namespace ProjectFollower.Controllers
 
             var Project = new Projects()
             {
-                CreationDate=ProjectVM.CreationDate,
-                CustomersId=ProjectVM.CustomersId,
-                Description=ProjectVM.Description,
-                EndingDate=ProjectVM.EndingDate,
-                Name=ProjectVM.Name
+                CreationDate = ProjectVM.CreationDate,
+                CustomersId = ProjectVM.CustomersId,
+                Description = ProjectVM.Description,
+                EndingDate = ProjectVM.EndingDate,
+                Name = ProjectVM.Name
             };
             _uow.Project.Add(Project);
             foreach (var item in ProjectVM.UserId)
@@ -121,8 +122,8 @@ namespace ProjectFollower.Controllers
                 //Users.Add(User);
                 var ResponsibleUser = new ResponsibleUsers()
                 {
-                    ProjectId=Project.Id,
-                    UserId= Guid.Parse(User.Id)
+                    ProjectId = Project.Id,
+                    UserId = Guid.Parse(User.Id)
                 };
                 _uow.ResponsibleUsers.Add(ResponsibleUser);
             }
@@ -130,13 +131,76 @@ namespace ProjectFollower.Controllers
             {
                 var ProjectTask = new ProjectTasks()
                 {
-                    Description=item,
-                    ProjectsId= Project.Id
+                    Description = item,
+                    ProjectsId = Project.Id
                 };
                 _uow.ProjectTasks.Add(ProjectTask);
             }
             _uow.Save();
-            return Redirect("/project-new");
+            return Redirect("/");
+        }
+
+        [Authorize(Roles = UserRoles.Admin)]
+        [HttpPost("proje-detaylari")]
+        #region API
+
+        [Authorize(Roles = UserRoles.Admin)]
+        [HttpGet("jsonresult/getprojectlist/{ArchiveStatus}")]
+        public JsonResult ListJson(int ArchiveStatus)
+        {
+            IEnumerable<Projects> Projects;
+            List<Projects> _projects = new List<Projects>();
+            List<ProjectListVM> ProjectListVMs = new List<ProjectListVM>();
+            if (ArchiveStatus == 0)
+            {
+                Projects = _uow.Project.GetAll(i => i.Archived == false, includeProperties: "Customers");
+            }
+            else if (ArchiveStatus == 1)
+            {
+                Projects = _uow.Project.GetAll(i => i.Archived == true, includeProperties: "Customers");
+            }
+            else if (ArchiveStatus == 2)
+                Projects = _uow.Project.GetAll(includeProperties: "Customers");
+            else
+                return Json(null);
+
+            var FilteredProject = Projects.OrderBy(d => Convert.ToDateTime(d.EndingDate));
+            foreach (var item in FilteredProject)
+            {
+                item.SequanceDate=Sequence++;
+                if (DateTime.Now.Date > Convert.ToDateTime(item.EndingDate))
+                {
+                    item.ProjectSequence = 1;
+                    Delayeds++;
+                }
+                else
+                    item.ProjectSequence = 2;
+                /*
+                var ProjectListVM = new ProjectListVM()
+                {
+                    Archived=item.Archived,
+                    CustomersId = item.CustomersId,
+                    Name=item.Name,
+                    Customers=item.Customers,
+                    EndingDate=item.EndingDate,
+                    Status = item.Status,
+                    ProjectSequence = Sequence
+                };
+                ProjectListVMs.Add(ProjectListVM);*/
+                _projects.Add(item);
+            }
+            var ProjectListVM = new ProjectListVM()
+            {
+                Projects = _projects,
+                DelayedProjects = Delayeds
+            };
+
+            return Json(ProjectListVM);
+        }
+        public JsonResult UpSetJson()
+        {
+
+            return Json(null);
         }
         [HttpGet("jsonresult/getalluserswithdep")]
         public JsonResult GetJson()
@@ -161,5 +225,7 @@ namespace ProjectFollower.Controllers
 
             return Json(Project);
         }
+        #endregion API
+
     }
 }

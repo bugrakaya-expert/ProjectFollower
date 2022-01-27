@@ -81,21 +81,9 @@
             $('#scheduler').dxScheduler({
                 timeZone: 'America/Los_Angeles',
                 dataSource: data,
-                views: [{
-                    type: 'month',
-                    name: 'Auto Mode',
-                    maxAppointmentsPerCell: 'auto',
-                }, {
-                    type: 'month',
-                    name: 'Unlimited Mode',
-                    maxAppointmentsPerCell: 'unlimited',
-                }, {
-                    type: 'month',
-                    name: 'Numeric Mode',
-                    maxAppointmentsPerCell: 4,
-                }],
-                currentView: 'Auto Mode',
-                currentDate: new Date(2021, 3, 27),
+                views: ['agenda', 'month'],
+                currentView: 'agenda',
+                currentDate: new Date(2021, 4, 11),
                 showAllDayPanel: false,
                 height: 700,
                 crossScrollingEnabled: true,
@@ -108,177 +96,75 @@
                     allowDragging: true,
                 },
                 onAppointmentAdded(e) {
-                    showToast('Eklendi', e.appointmentData.id, 'success');
+                    showToast('Eklendi', e.appointmentData.projectName, 'success');
                     $.each(data, function (index, val) {
                         console.log(val.price);
                     });
                 },
                 onAppointmentUpdated(e) {
-                    showToast('Güncellendi', e.appointmentData.id, 'info');
+                    showToast('Güncellendi', e.appointmentData.projectName, 'info');
                     $.each(data, function (index, val) {
                         console.log(val.price);
                     });
                 },
                 onAppointmentDeleted(e) {
-                    showToast('Silindi', e.appointmentData.id, 'warning');
+                    showToast('Silindi', e.appointmentData.projectName, 'warning');
                     $.each(data, function (index, val) {
                         console.log(val.price);
                     });
                 },
-                resources: [{
-                    fieldExpr: 'id',
-                    dataSource: data,
-                },
+                resources: [
                     {
-                        fieldExpr: 'priortyId',
-                        dataSource: priortyData,
+                        fieldExpr: 'assigneeId',
+                        allowMultiple: true,
+                        dataSource: assignees,
+                        label: 'Assignee',
+                    }, {
+                        fieldExpr: 'priorityId',
+                        dataSource: priorities,
+                        label: 'Priority',
                         useColorAsDefault: true,
                     }],
-                appointmentTooltipTemplate(model) {
-                    return getTooltipTemplate(getMovieById(model.targetedAppointmentData.id));
-                },
-                appointmentTemplate(model) {
-                    const movieInfo = getMovieById(model.appointmentData.movieId) || {};
-
-                    return $(`${"<div class='dx-scheduler-agenda-appointment-left-layout'><div class='dx-scheduler-agenda-appointment-marker';>"
-                        + '</div></div><div class="dx-scheduler-agenda-appointment-right-layout"><div class="dx-scheduler-appointment-title">'}${model.targetedAppointmentData.projectName}</div>`
-                        + '</div>');
-                },
-                onAppointmentFormOpening(data) {
-                    const { form } = data;
-                    let movieInfo = getMovieById(data.appointmentData.movieId) || {};
-                    let { startDate } = data.appointmentData;
-
-                    form.option('items', [{
-                        label: {
-                            text: 'Konu',
-                        },
-                        editorType: 'dxTextBox',
-                        dataField: 'projectName',
-                        editorOptions: {
-                            items: data,
-                            displayExpr: 'text',
-                            valueExpr: 'projectName',
-                        },
-                    }, {
-                        label: {
-                            text: 'Açıklama',
-                        },
-                        name: 'director',
-                        dataField: 'director',
-                        editorType: 'dxTextBox',
-                    }, {
-                        dataField: 'startDate',
-                        editorType: 'dxDateBox',
-                        editorOptions: {
-                            width: '100%',
-                            type: 'date',
-                        },
-                    }, {
-                        name: 'endDate',
-                        dataField: 'endDate',
-                        editorType: 'dxDateBox',
-                        editorOptions: {
-                            width: '100%',
-                            type: 'datetime',
-                            readOnly: true,
-                        },
-                    }, {
-                        dataField: 'priortyId',
-                        editorType: 'dxRadioGroup',
-                        editorOptions: {
-                            value: movieInfo.priortyId,
-                            dataSource: ['Normal', 'Acil'],
-                        },
-                    },
-                    ]);
-                },
-            }).dxScheduler('instance');
-
-            function getMovieById(id) {
-                return DevExpress.data.query(data)
-                    .filter('id', id)
-                    .toArray()[0];
-            }
-
-            function getTooltipTemplate(movieData) {
-                return $(`${"<div class='movie-tooltip'>"}`
-                    + '<div class=\'movie-info\'>'
-                    + `<div class='movie-title'>${movieData.projectName} (${movieData.priorty})`
-                    + '</div>'
-                    + '<div>'
-                    + `Firma: ${movieData.companyName
-                    }</div>`
-                    + '<div>'
-                    + `Duration: ${movieData.startDate.displayStartDate,'shortDate'} minutes`
-                    + '</div>'
-                    + '</div>'
-                    + '</div>');
-            }
+                height: 600,
+            });
         });
-
-            
-
-        const moviesData = [{
+        const assignees = [{
+            text: 'Samantha Bright',
             id: 1,
-            text: 'His Girl Friday',
-            director: 'Howard Hawks',
-            year: 1940,
-            duration: 92,
-            
         }, {
+            text: 'John Heart',
             id: 2,
-            text: 'Royal Wedding',
-            director: 'Stanley Donen',
-            year: 1951,
-            duration: 93,
         }, {
+            text: 'Todd Hoffman',
             id: 3,
-            text: 'A Star Is Born',
-            director: 'William A. Wellman',
-            year: 1937,
-            duration: 111,
-            
         }, {
+            text: 'Sandra Johnson',
             id: 4,
-            text: 'The Screaming Skull',
-            director: 'Alex Nicol',
-            year: 1958,
-            duration: 68,
-        }, {
-            id: 5,
-            text: "It's a Wonderful Life",
-            director: 'Frank Capra',
-            year: 1946,
-            duration: 130,
-        }, {
-            id: 6,
-            text: 'City Lights',
-            director: 'Charlie Chaplin',
-            year: 1931,
-            duration: 87,
         }];
 
-        const priortyData = [{
-            text: 'Normal',
-            id: 0,
-            color: '#4797fb',
-        }, {
-            text: 'Acil',
+        const priorities = [{
+            text: 'High',
             id: 1,
-            color: '#fb4747',
-        },
-        ];
+            color: '#cc5c53',
+        }, {
+            text: 'Low',
+            id: 2,
+            color: '#ff9747',
+        }];
 
         const data = [{
-            id: 1,
-            companyName: 'Many Points',
-            projectName: 'Emre',
-            priorty: 'Acil',
-            startDate: new Date('2021-04-26T16:10:00.000Z'),
-            endDate: new Date('2021-04-26T18:01:00.000Z'),
-        }
-        ];
+            text: 'Google AdWords Strategy',
+            startDate: new Date('2021-05-03T16:00:00.000Z'),
+            endDate: new Date('2021-05-03T17:30:00.000Z'),
+            assigneeId: 3,
+            priorityId: 1,
+        }, {
+            text: 'New Brochures',
+            startDate: new Date('2021-05-03T18:30:00.000Z'),
+            endDate: new Date('2021-05-03T21:15:00.000Z'),
+            assigneeId: 1,
+            priorityId: 1,
+        }];
 
 </script>
 }
