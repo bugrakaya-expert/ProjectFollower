@@ -7,11 +7,14 @@ using ProjectFollower.DataAcces.IMainRepository;
 using ProjectFollower.Models.DbModels;
 using ProjectFollower.Models.ViewModels;
 using static ProjectFollower.Utility.ProjectConstant;
+using ProjectFollower.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ProjectFollower.Hubs;
+using Microsoft.AspNetCore.SignalR;
 
 namespace ProjectFollower.Controllers
 {
@@ -21,18 +24,21 @@ namespace ProjectFollower.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<AccountController> _logger;
+        protected IHubContext<HomeHub> _context;
         private readonly IUnitOfWork _uow;
 
         public HomeController(
         UserManager<IdentityUser> userManager,
         SignInManager<IdentityUser> signInManager,
         ILogger<AccountController> logger,
+        IHubContext<HomeHub> context,
         IUnitOfWork uow
             )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _context = context;
             _uow = uow;
         }
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
@@ -42,7 +48,7 @@ namespace ProjectFollower.Controllers
         public int Sequence = 0;
         public int Delayeds = 0;
 
-        [AllowAnonymous]
+        [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         public IActionResult Index()
         {
             #region Authentication Index
@@ -59,18 +65,30 @@ namespace ProjectFollower.Controllers
             return RedirectToAction("Index", "SignIn");
         }
 
-        //[Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [Route("dashboard")]
         public IActionResult Dashboard()
         {
             return View();
         }
 
-        [AllowAnonymous]
-        [Route("proje-detaylari")]
-        public IActionResult Details()
+        [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
+        [Route("proje-detaylari/{id}")]
+        public IActionResult Details(string id)
         {
-            return View();
+            var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
+            var _tasks = _uow.ProjectTasks.GetAll(i => i.ProjectsId == Guid.Parse(id));
+            var _documents = _uow.ProjectDocuments.GetAll(i => i.ProjectsId == Guid.Parse(id));
+            var _comments = _uow.ProjectComments.GetAll(i => i.ProjectsId == Guid.Parse(id));
+
+            var _projectDetailVM = new ProjectDetailVM()
+            {
+                Project = _project,
+                ProjectTasks = _tasks,
+                ProjectDocuments = _documents,
+                ProjectComments = _comments
+            };
+            return View(_projectDetailVM);
         }
 
         [Authorize(Roles = UserRoles.Admin)]
@@ -100,7 +118,7 @@ namespace ProjectFollower.Controllers
         }
         [Authorize(Roles = UserRoles.Admin)]
         [HttpPost("yeni-proje")]
-        public IActionResult ProjectNewPost(ProjectVM ProjectVM)
+        public async Task<IActionResult> ProjectNewPost(ProjectVM ProjectVM)
         {
             var Users = new List<ApplicationUser>();
 
@@ -137,6 +155,8 @@ namespace ProjectFollower.Controllers
                 _uow.ProjectTasks.Add(ProjectTask);
             }
             _uow.Save();
+            WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
+            await WebSocAct.ListProjects_WebSocket();
             return Redirect("/");
         }
 
@@ -167,7 +187,7 @@ namespace ProjectFollower.Controllers
             var FilteredProject = Projects.OrderBy(d => Convert.ToDateTime(d.EndingDate));
             foreach (var item in FilteredProject)
             {
-                item.SequanceDate=Sequence++;
+                item.SequanceDate = Sequence++;
                 if (DateTime.Now.Date > Convert.ToDateTime(item.EndingDate))
                 {
                     item.ProjectSequence = 1;

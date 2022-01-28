@@ -2,6 +2,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "Dashboard";
     int seq = 0;
+
 }
 
 <main>
@@ -44,17 +45,12 @@
                             </div>
                         </div>
                         <div class="float-md-right">
-                            <span class="text-muted text-small">210 Projeden 1-10 arasındakiler gösteriliyor. </span>
-                            <button class="btn btn-outline-dark btn-xs dropdown-toggle" type="button"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                20
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#">10</a>
-                                <a class="dropdown-item active" href="#">20</a>
-                                <a class="dropdown-item" href="#">30</a>
-                                <a class="dropdown-item" href="#">50</a>
-                                <a class="dropdown-item" href="#">100</a>
+                            <div class="form-group row mb-1 mr-2">
+                            <label class=" d-flex align-items-center mr-2 text-muted"><b>Arşivlenmiş Projeler</b></label>
+                                    <div class="custom-switch custom-switch-secondary-inverse mb-2">
+                                        <input class="custom-switch-input" id="switch4" type="checkbox"> 
+                                        <label class="custom-switch-btn" for="switch4"></label>
+                                    </div>
                             </div>
                         </div>
                     </div>
@@ -178,6 +174,7 @@
     <script>
         $(document).ready(function () {
 
+
             var arcStatus = 0;
             console.log("ready!");
             $("#tbody").html("");
@@ -189,7 +186,8 @@
                     contentType: "application/json",
                     dataType: "json",
                     success: function (data) {
-
+                        $("#tbody").text("");
+                        
                         $.each(data.projects, function (i, item) {
                             var img = "";
                             var name = item.name;
@@ -227,7 +225,7 @@
                                             <p class="d-none">`+ sequence + `</p>` + status + `
                                         </td>
                                         <td class="text-center">
-                                            <a asp-controller="Home" asp-Action="Details" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
+                                            <a href="/proje-detaylari/`+item.id+`" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
                                         </td>
                                     </tr>
 `;
@@ -243,11 +241,15 @@
 `;
                         if (data.delayedProjects > 0)
                             $("#mp-attention").html(alertstr);
+
+
+                        
                     }
                 });
             }
 
-            setTimeout(function () { voidAjx(); }, 5000);
+
+            voidAjx();
 
 
         });

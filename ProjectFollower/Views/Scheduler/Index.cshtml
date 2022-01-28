@@ -73,99 +73,106 @@
 @section scripts
 {
     <script>
+
         DevExpress.localization.locale(navigator.language);
         function showToast(event, value, type) {
             DevExpress.ui.notify(`${event} "${value}" task`, type, 800);
         }
-        $(() => {
-            $('#scheduler').dxScheduler({
-                timeZone: 'America/Los_Angeles',
-                dataSource: data,
-                views: ['agenda', 'month'],
-                currentView: 'agenda',
-                currentDate: new Date(2021, 4, 11),
-                showAllDayPanel: false,
-                height: 700,
-                crossScrollingEnabled: true,
-                cellDuration: 20,
-                editing: {
-                    allowAdding: true,
-                    allowDeleting: true,
-                    allowUpdating: true,
-                    allowResizing: true,
-                    allowDragging: true,
-                },
-                onAppointmentAdded(e) {
-                    showToast('Eklendi', e.appointmentData.projectName, 'success');
-                    $.each(data, function (index, val) {
-                        console.log(val.price);
+        $(document).ready(function () {
+
+
+
+            var testdata;
+            $.ajax({
+                type: "GET",
+                url: "/getscheduler",
+                contentType: "application/json",
+                dataType: "json",
+                success: function (data) {
+                    var schedulerPriorityObj = data.schedulerPriority;
+                    var customersObj = data.customers;
+
+
+
+
+                    $(() => {
+                        $('#scheduler').dxScheduler({
+                            timeZone: 'America/Los_Angeles',
+                            dataSource: data,
+                            views: ['agenda', 'month'],
+                            currentView: 'agenda',
+                            currentDate: new Date(2021, 4, 11),
+                            showAllDayPanel: false,
+                            height: 700,
+                            crossScrollingEnabled: true,
+                            cellDuration: 20,
+                            editing: {
+                                allowAdding: true,
+                                allowDeleting: true,
+                                allowUpdating: true,
+                                allowResizing: true,
+                                allowDragging: true,
+                            },
+                            onAppointmentAdded(e) {
+                                showToast('Eklendi', e.appointmentData.text, 'success');
+                                console.log(e.appointmentData.id);
+                            },
+                            onAppointmentUpdated(e) {
+                                showToast('Güncellendi', e.appointmentData.text, 'info');
+                                console.log(e.appointmentData.id);
+                            },
+                            onAppointmentDeleted(e) {
+                                showToast('Silindi', e.appointmentData.text, 'warning');
+                                console.log(e.appointmentData.id);
+                            },
+                            resources: [
+                                {
+                                    fieldExpr: 'id',
+                                    allowMultiple: false,
+                                    dataSource: customersObj,
+                                    label: 'Companies',
+                                }, {
+                                    fieldExpr: 'id',
+                                    dataSource: schedulerPriorityObj,
+                                    label: 'Priority',
+                                    useColorAsDefault: false,
+                                }],
+                            height: 600,
+                        });
                     });
-                },
-                onAppointmentUpdated(e) {
-                    showToast('Güncellendi', e.appointmentData.projectName, 'info');
-                    $.each(data, function (index, val) {
-                        console.log(val.price);
-                    });
-                },
-                onAppointmentDeleted(e) {
-                    showToast('Silindi', e.appointmentData.projectName, 'warning');
-                    $.each(data, function (index, val) {
-                        console.log(val.price);
-                    });
-                },
-                resources: [
-                    {
-                        fieldExpr: 'assigneeId',
-                        allowMultiple: true,
-                        dataSource: assignees,
-                        label: 'Assignee',
-                    }, {
-                        fieldExpr: 'priorityId',
-                        dataSource: priorities,
-                        label: 'Priority',
-                        useColorAsDefault: true,
-                    }],
-                height: 600,
+                    console.log(schedulerPriorityObj);
+
+                }
             });
+
+            const data = [{
+                id: 1,
+                text: 'Google AdWords Strategy',
+                startDate: new Date("2021-05-03T16:00:00.000Z"),
+                endDate: new Date('2021-05-03T16:30:00.000Z'),
+                customersId: 3,
+                priorityId: 2,
+                description: 'sa',
+                allDay: true
+            }, {
+                id: 2,
+                text: 'New Brochures',
+                startDate: new Date("2021-05-03T16:00:00.000Z"),
+                endDate: new Date('2021-05-03T16:30:00.000Z'),
+                customersId: 1,
+                priorityId: 1,
+                description: 'sa',
+                allDay: true
+                }];
+            console.log(data);
+
         });
-        const assignees = [{
-            text: 'Samantha Bright',
-            id: 1,
-        }, {
-            text: 'John Heart',
-            id: 2,
-        }, {
-            text: 'Todd Hoffman',
-            id: 3,
-        }, {
-            text: 'Sandra Johnson',
-            id: 4,
-        }];
 
-        const priorities = [{
-            text: 'High',
-            id: 1,
-            color: '#cc5c53',
-        }, {
-            text: 'Low',
-            id: 2,
-            color: '#ff9747',
-        }];
 
-        const data = [{
-            text: 'Google AdWords Strategy',
-            startDate: new Date('2021-05-03T16:00:00.000Z'),
-            endDate: new Date('2021-05-03T17:30:00.000Z'),
-            assigneeId: 3,
-            priorityId: 1,
-        }, {
-            text: 'New Brochures',
-            startDate: new Date('2021-05-03T18:30:00.000Z'),
-            endDate: new Date('2021-05-03T21:15:00.000Z'),
-            assigneeId: 1,
-            priorityId: 1,
-        }];
 
+
+
+        
 </script>
 }
 

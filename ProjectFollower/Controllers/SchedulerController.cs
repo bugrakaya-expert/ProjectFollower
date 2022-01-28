@@ -52,5 +52,35 @@ namespace ProjectFollower.Controllers
 
             return RedirectToAction("Index", "SignIn");
         }
+
+        #region API
+        [HttpGet("getscheduler")]
+        public JsonResult GetScheduler()
+        {
+            List<SchedulerCustomerVM> schedulerCustomer = new List<SchedulerCustomerVM>();
+            var scheduler = _uow.Scheduler.GetAll();
+            var schedulerpriorities = _uow.SchedulerPriority.GetAll();
+            var companies = _uow.Customers.GetAll();
+
+            foreach (var item in companies)
+            {
+                var _schedulerCustomer = new SchedulerCustomerVM()
+                {
+                    Id = item.Id.ToString(),
+                    Text = item.Name
+                };
+                schedulerCustomer.Add(_schedulerCustomer);
+            }
+            var _schedulerVM = new SchedulerVM()
+            {
+                Scheduler = scheduler,
+                SchedulerPriority = schedulerpriorities,
+                Customers = schedulerCustomer
+            };
+
+            return Json(_schedulerVM);
+
+        }
+        #endregion API
     }
 }

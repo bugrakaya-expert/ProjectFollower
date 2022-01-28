@@ -89,7 +89,7 @@
         </div>
 
 
-        <a class="navbar-logo" href="index.php">
+        <a asp-controller="Home" asp-action="Index">
             <span class="logo d-none d-xs-block"></span>
             <span class="logo-mobile d-block d-xs-none"></span>
         </a>
@@ -108,7 +108,7 @@
                     <i class="simple-icon-size-actual"></i>
                 </button>
             </div>
-            @await Component.InvokeAsync("GetUser")
+            @if (User.IsInRole(UserRoles.Admin) || User.IsInRole(UserRoles.Manager) || User.IsInRole(UserRoles.Personel))@await Component.InvokeAsync("GetUser");
         </div>
     </nav>
     <div class="menu">
@@ -150,6 +150,33 @@
                                 <a asp-controller="Home" asp-action="Index">
                                     <i class="simple-icon-grid"></i>
                                     <span>Projeler</span>
+                                </a>
+                            </li>
+                            <li class="@Html.ActiveClass("Scheduler")">
+                                <a asp-controller="Scheduler" asp-action="Index">
+                                    <i class="simple-icon-calendar"></i>
+                                    <span>Takvim</span>
+                                </a>
+                            </li>
+                        }
+                        else if (User.IsInRole(UserRoles.Manager))
+                        {
+                            <li class="@Html.ActiveClass("Home")">
+                                <a asp-controller="Home" asp-action="Index">
+                                    <i class="simple-icon-grid"></i>
+                                    <span>Projeler</span>
+                                </a>
+                            </li>
+                            <li class="@Html.ActiveClass("Scheduler")">
+                                <a asp-controller="Scheduler" asp-action="Index">
+                                    <i class="simple-icon-calendar"></i>
+                                    <span>Takvim</span>
+                                </a>
+                            </li>
+                            <li class="@Html.ActiveClass("Customers")">
+                                <a asp-controller="Customers" asp-action="Index">
+                                    <i class="simple-icon-organization"></i>
+                                    <span>Müşteriler</span>
                                 </a>
                             </li>
                         }
@@ -331,11 +358,12 @@
 
     <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
     @*<script src="~/js/signalr/dist/cjs/HubConnection.js"> </script>
-    <script src="~/js/signalr/dist/cjs/HubConnectionBuilder.js"> </script>
-    <script src="~/js/signalr/dist/esm/HubConnection.js"> </script>
-    <script src="~/js/signalr/dist/esm/HubConnectionBuilder.js"> </script>
-    <script src="~/js/signalr/dist/webworker/signalr.min.js"> </script>*@
-    <script src="~/js/denemeHub.js"></script>
+        <script src="~/js/signalr/dist/cjs/HubConnectionBuilder.js"> </script>
+        <script src="~/js/signalr/dist/esm/HubConnection.js"> </script>
+        <script src="~/js/signalr/dist/esm/HubConnectionBuilder.js"> </script>
+        <script src="~/js/signalr/dist/webworker/signalr.min.js"> </script>*@
+    <!--<script src="~/js/denemeHub.js"></script>-->
+    <script src="~/js/projectlistHub.js"></script>
 
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)

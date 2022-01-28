@@ -187,6 +187,19 @@ namespace ProjectFollower.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public IActionResult Login(string returnUrl = null)
+        {
+            returnUrl = returnUrl ?? Url.Content("~/");
+
+            var charsToRemove = new string[] { "@", ",", ".", ";", "/" };
+            foreach (var c in charsToRemove)
+            {
+                returnUrl = returnUrl.Replace(c, string.Empty);
+            }
+            return Redirect("/signin?ReturnUrl=%2F" + returnUrl);
+        }
         [HttpPost("jsonresult/edituserpassjson")]
         public async Task<JsonResult> EditUser(EditUserPass editUserPass)
         {
@@ -211,7 +224,7 @@ namespace ProjectFollower.Controllers
                 else
                     return Json("Şifre tekrarı ile uyuşmuyor.");
             }
-            if(ChangeResult.Succeeded)
+            if (ChangeResult.Succeeded)
                 return Json(ChangeResult.Errors);
             return Json(ChangeResult.Errors);
         }

@@ -15,6 +15,10 @@ namespace ProjectFollower.DataAcces.IMainRepository
         IProjectRepository Project { get; }
         IProjectTaskRepository ProjectTasks { get; }
         IResponsibleUsersRepository ResponsibleUsers { get; }
+        IProjectDocumentsRepository ProjectDocuments { get; }
+        IProjectCommentsRepository ProjectComments { get; }
+        ISchedulerPriorityRepository SchedulerPriority { get; }
+        ISchedulerRepository Scheduler { get; }
         void Save();
     }
 }

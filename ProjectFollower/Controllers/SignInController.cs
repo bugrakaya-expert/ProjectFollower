@@ -44,8 +44,9 @@ namespace ProjectFollower.Controllers
         [BindProperty]
         public SignInInput Input { get; set; }
         [Route("signin")]
-        public IActionResult Index()
+        public IActionResult Index(string returnUrl = null)
         {
+            returnUrl = returnUrl ?? Url.Content("~/");
             #region Authentication Index
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var Claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
@@ -56,6 +57,13 @@ namespace ProjectFollower.Controllers
                     return RedirectToAction("Index", "Home");//return dashboard;
             }
             #endregion Authentication Index
+
+            
+            var charsToRemove = new string[] { "@", ",", ".", ";", "/" };
+            foreach (var c in charsToRemove)
+            {
+                returnUrl = returnUrl.Replace(c, string.Empty);
+            }
 
             return View();
         }

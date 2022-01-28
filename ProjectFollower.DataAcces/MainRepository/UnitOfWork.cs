@@ -20,6 +20,10 @@ namespace ProjectFollower.DataAcces.MainRepository
             Project = new ProjectRepository(_db);
             ProjectTasks = new ProjectTaskRepository(_db);
             ResponsibleUsers = new ResponsibleUsersRepository(_db);
+            ProjectDocuments = new ProjectDocumentsRepository(_db);
+            ProjectComments = new ProjectCommentsRepository(_db);
+            SchedulerPriority = new SchedulerPriorityRepository(_db);
+            Scheduler = new SchedulerRepository(_db);
         }
         //public ICategoryRepository Category { get; private set; }
         public IApplicationUserRepository ApplicationUser { get; private set; }
@@ -30,6 +34,10 @@ namespace ProjectFollower.DataAcces.MainRepository
         public IProjectRepository Project { get; private set; }
         public IProjectTaskRepository ProjectTasks { get; private set; }
         public IResponsibleUsersRepository ResponsibleUsers { get; private set; }
+        public IProjectDocumentsRepository ProjectDocuments { get; private set; }
+        public IProjectCommentsRepository ProjectComments { get; private set; }
+        public ISchedulerPriorityRepository SchedulerPriority { get; private set; }
+        public ISchedulerRepository Scheduler { get; private set; }
         public void Dispose()
         {
             _db.Dispose();
