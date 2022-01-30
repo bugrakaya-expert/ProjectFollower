@@ -228,5 +228,20 @@ namespace ProjectFollower.Controllers
                 return Json(ChangeResult.Errors);
             return Json(ChangeResult.Errors);
         }
+
+        [HttpGet("jsonresult/getphotolinkjson")]
+        public JsonResult GetPhotoLink()
+        {
+            string imglink = "";
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var Claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (Claims != null)
+            {
+                var AppUser = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == Claims.Value);
+                imglink = AppUser.ImageUrl;
+            }
+            return Json(imglink);
+        }
     }
 }

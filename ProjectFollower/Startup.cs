@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -52,12 +53,21 @@ namespace ProjectFollower
                 .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.AddDataProtection();
+
             services.AddMvc();
-            services.AddRazorPages();
+            services.AddRazorPages().AddSessionStateTempDataProvider();
             services.AddHttpContextAccessor();
-            services.AddSession();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromHours(10);
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                options.Cookie.SameSite = SameSiteMode.Strict;
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation().AddSessionStateTempDataProvider();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddSignalR(options =>
             {
@@ -84,10 +94,19 @@ namespace ProjectFollower
             app.UseStaticFiles();
 
             app.UseRouting();
-            app.UseSession();
+            app.UseCookiePolicy();
+            //app.UseSession();
+            app.UseSession(new SessionOptions()
+            {
+                Cookie = new CookieBuilder()
+                {
+                    Name = ".AspNetCore.Session.ProjectFollower"
+                }
+            });
+
             app.UseAuthentication();
             app.UseAuthorization();
-
+            
             app.UseCors(builder =>
             {
                 builder.WithOrigins("https://localhost:5001", "http://localhost:5000").AllowAnyHeader().AllowAnyMethod().AllowCredentials();

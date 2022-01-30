@@ -9,7 +9,6 @@ namespace ProjectFollower.Utility
         public static class UserRoles
         {
             public const string Admin = "Yönetici";
-
             public const string Personel = "Personel";
             public const string Manager = "Yetkili";
         }
@@ -23,6 +22,28 @@ namespace ProjectFollower.Utility
         public static class LocFilePaths
         {
             public const string RootAsset = @"C:\project-followerAssets\";
+            public const string Customers = @"customers\";
+            public const string Users = @"users\";
+            public const string Projects = @"projects\";
+            public const string Documents = @"documents\";
+            public const string Img = @"img\";
+
+            public const string DIR_Customer_Main = RootAsset + Customers;
+            public const string DIR_Customer_Doc = RootAsset + Customers + Documents;
+            public const string DIR_Customer_Img = RootAsset + Customers + Img;
+
+            public const string DIR_Users_Main = RootAsset + Users;
+            public const string DIR_Users_Doc = RootAsset + Users + Documents;
+            public const string DIR_Users_Img = RootAsset + Users + Img;
+
+            public const string DIR_Projects_Main = RootAsset + Projects;
+            public const string DIR_Projects_Doc = RootAsset + Projects + Documents;
+            public const string DIR_Projects_Img = RootAsset + Projects + Img;
+        }
+
+        public static class WebRootPaths
+        {
+            public const string RootAsset = @"wwwroot\assets\";
             public const string Customers = @"customers\";
             public const string Users = @"users\";
             public const string Projects = @"projects\";

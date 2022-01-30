@@ -68,7 +68,7 @@ namespace ProjectFollower.Controllers
             return View();
         }
         [Route("new-user")]
-        public IActionResult NewUser()
+        public IActionResult NewUser(ModalMessageVM ModalMessage)
         {
             /*
             #region Authentication Index
@@ -82,8 +82,18 @@ namespace ProjectFollower.Controllers
                 return View("SignIn");
             #endregion Authentication Index
             */
+            if (ModalMessage.Status==true)
+            {
+                var addUser = new UserRegisterVM()
+                {
+                    ModalMessage = ModalMessage
+                };
 
-            var ModalMessage = new ModalMessageVM()
+                return View(addUser);
+            }
+
+            
+            var _ModalMessage = new ModalMessageVM()
             {
                 Message = "",
                 Icon = "",
@@ -91,10 +101,10 @@ namespace ProjectFollower.Controllers
             };
             var addUserStatus = new UserRegisterVM()
             {
-                ModalMessage = ModalMessage
+                ModalMessage = _ModalMessage
             };
-
             return View(addUserStatus);
+
         }
 
         [HttpPost("new-user")]
@@ -128,15 +138,13 @@ namespace ProjectFollower.Controllers
                 if (files.Count() > 0)
                 {
                     string fileName = Guid.NewGuid().ToString();
-                    var uploads = Path.Combine(webRootPath, LocFilePaths.DIR_Users_Img);
+                    var uploads = Path.Combine(WebRootPaths.DIR_Users_Img);
 
                     #region Check Users Directories
-                    if (!(Directory.Exists(LocFilePaths.RootAsset)))
-                        Directory.CreateDirectory(LocFilePaths.RootAsset);
-                    if (!(Directory.Exists(LocFilePaths.DIR_Users_Main)))
-                        Directory.CreateDirectory(LocFilePaths.DIR_Users_Main);
-                    if (!(Directory.Exists(LocFilePaths.DIR_Users_Img)))
-                        Directory.CreateDirectory(LocFilePaths.DIR_Users_Img);
+                    if (!(Directory.Exists(WebRootPaths.DIR_Users_Main)))
+                        Directory.CreateDirectory(WebRootPaths.DIR_Users_Main);
+                    if (!(Directory.Exists(WebRootPaths.DIR_Users_Img)))
+                        Directory.CreateDirectory(WebRootPaths.DIR_Users_Img);
                     #endregion Check Users Directories
 
 
@@ -167,17 +175,29 @@ namespace ProjectFollower.Controllers
                         if (width > 200 || height > 200)
                         {
                             ModelState.AddModelError(string.Empty, "Kullanıcı oluşturulamadı! Profil resmi 200px den fazla olamaz.");
-                            return View("NewUser");
+                            ModalMessageVM ModalMessage = new ModalMessageVM()
+                            {
+                                Message = "Kullanıcı oluşturulamadı! Profil resmi 200px den fazla olamaz.",
+                                Icon="warning",
+                                Status = true
+                            };
+                            return RedirectToAction("NewUser",ModalMessage);
                         }
                         if (rate !=1)
                         {
                             ModelState.AddModelError(string.Empty, "Kullanıcı oluşturulamadı! Profil resmi 1:1 oranında olmalıdır. ");
-                            return View("NewUser");
+                            ModalMessageVM ModalMessage = new ModalMessageVM()
+                            {
+                                Message = "Kullanıcı oluşturulamadı! Profil resmi 1:1 oranında olmalıdır. ",
+                                Icon = "warning",
+                                Status = true
+                            };
+                            return RedirectToAction("NewUser", ModalMessage);
                         }
 
                         files[0].CopyTo(fileStreams);
                     }
-                    Input.ImageUrl = @"\images\users\" + fileName + extension;
+                    Input.ImageUrl = fileName+ extension;
                 }
                 var user = new ApplicationUser
                 {
@@ -187,7 +207,7 @@ namespace ProjectFollower.Controllers
                     Lastname = Input.Lastname,
                     DepartmentId=Input.DepartmentId,
                     EmailConfirmed=true,
-                    ImageUrl=Input.ImageUrl
+                    ImageUrl= Input.ImageUrl
                 };
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
@@ -213,7 +233,7 @@ namespace ProjectFollower.Controllers
                     {
                         await _userManager.AddToRoleAsync(user, UserRoles.Personel);
                     }
-
+                    /*
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
 
@@ -227,13 +247,21 @@ namespace ProjectFollower.Controllers
                         {
                             ModalMessage=ModalMessage
                         };
-                        return View("NewUser",addUserStatus);
+                        return RedirectToAction("NewUser",addUserStatus);
                     }
                     else
                     {
                         return View();
                     }
-                    
+                    */
+                    var ModalMessage = new ModalMessageVM()
+                    {
+                        Message = "Kullanıcı başarılı bir şekilde eklendi.\n"+ "'"+user.UserName+"'",
+                        Icon = "success",
+                        Status = true
+                    };
+                    return RedirectToAction("NewUser", ModalMessage);
+
                 }
 
 
@@ -251,14 +279,14 @@ namespace ProjectFollower.Controllers
                         {
                             ModalMessage = ModalMessage
                         };
-                        return View("NewUser", addUserStatus);
+                        return RedirectToAction("NewUser", addUserStatus);
                     }
                     //
 
 
                     //ModelState.AddModelError(string.Empty, error.Description);
 
-                    return View("NewUser");
+                    return RedirectToAction("NewUser");
 
                 }
 
@@ -279,13 +307,22 @@ namespace ProjectFollower.Controllers
                     {
                         ModalMessage = ModalMessage
                     };
-                    return View("NewUser", addUserStatus);
+                    return RedirectToAction("NewUser", addUserStatus);
                 }
             }
 
-            return View("NewUser");
+            return RedirectToAction("NewUser");
 
 
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var AppUser = _uow.ApplicationUser.GetFirstOrDefault(i=>i.Id == id);
+            _uow.ApplicationUser.Remove(AppUser);
+            _uow.Save();
+            return RedirectToAction("NewUser");
         }
 
         #region API
@@ -309,8 +346,8 @@ namespace ProjectFollower.Controllers
         }
 
         
-        [HttpGet("jsonresult/getalluserjson")]
-        public JsonResult GetAllUser()
+        [HttpGet("jsonresult/getpersoneluserjson")]
+        public JsonResult GetPersonelUser()
         {
             List<Users> _Users = new List<Users>();
 
@@ -323,16 +360,21 @@ namespace ProjectFollower.Controllers
                 var users = _uow.ApplicationUser.GetAll(includeProperties: "Department");
                 foreach (var item in users)
                 {
-                    Users Useritem = new Users()
+
+                    if (item.UserRole == UserRoles.Personel)
                     {
-                        AppUserName = item.AppUserName,
-                        DepartmentId = item.DepartmentId,
-                        Department = item.Department,
-                        FullName = item.FirstName+" "+ item.Lastname,
-                        IdentityNumber = item.IdentityNumber,
-                        ImageUrl = item.ImageUrl
-                    };
-                    _Users.Add(Useritem);
+                        Users Useritem = new Users()
+                        {
+                            AppUserName = item.AppUserName,
+                            DepartmentId = item.DepartmentId,
+                            Department = item.Department,
+                            FullName = item.FirstName + " " + item.Lastname,
+                            IdentityNumber = item.IdentityNumber,
+                            ImageUrl = item.ImageUrl
+                        };
+
+                        _Users.Add(Useritem);
+                    }
                 }
             }
             else
@@ -346,6 +388,45 @@ namespace ProjectFollower.Controllers
 
             return Json(_Users);
         }
+
+        [HttpGet("jsonresult/getmanageruserjson")]
+        public JsonResult GetManagerUser()
+        {
+            List<Users> _Users = new List<Users>();
+
+
+            #region Authentication Index
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var Claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            if (Claims != null)
+            {
+                var users = _uow.ApplicationUser.GetAll(includeProperties: "Department");
+                foreach (var item in users)
+                {
+                    Users Useritem = new Users()
+                    {
+                        AppUserName = item.AppUserName,
+                        DepartmentId = item.DepartmentId,
+                        Department = item.Department,
+                        FullName = item.FirstName + " " + item.Lastname,
+                        IdentityNumber = item.IdentityNumber,
+                        ImageUrl = item.ImageUrl
+                    };
+                    _Users.Add(Useritem);
+                }
+            }
+            else
+                return Json(StatusCode(404));
+            #endregion Authentication Index
+
+
+
+            //_Users.AddRange((IEnumerable<Users>)(Users)users);
+
+
+            return Json(_Users);
+        }
+
         #endregion API
     }
 }

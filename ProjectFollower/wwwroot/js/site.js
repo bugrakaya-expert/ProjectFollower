@@ -3,9 +3,35 @@
 
 // Write your Javascript code.
 $(document).ready(function () {
+    const locImg = "/assets/users/img/";
+    $("#photochange").text("");
+
+
+    $.ajax({
+        url: "jsonresult/getphotolinkjson",
+        type: "GET",
+        contentType: "application/json",
+        dataType: "json",
+        success: function (imglink) {
+            $("#photochange").append(`
+
+Mevcut Profil Fotoğrafı<br />
+<img src='`+ locImg+imglink +`' alt='' class='img-thumbnail border-0 rounded-circle list-thumbnail align-self-center'>
+
+
+
+`);
+        }
+    });
+
+
+
+
+
+
 });
 function editUserFunc() {
-    $("#modalsubmit").prop('disabled', true);    
+    $("#modalsubmit").prop('disabled', true);
 
     $.ajax({
         type: "POST",
@@ -29,7 +55,7 @@ function editUserFunc() {
             var msg_desc = "";
             var msg_icon = "";
 
-            if (msg.length==0) {
+            if (msg.length == 0) {
                 msg_desc = "Şifreniz başarılı bir şekilde güncelleştirildi.";
                 msg_icon = "success";
             }

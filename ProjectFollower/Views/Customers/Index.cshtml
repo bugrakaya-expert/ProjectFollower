@@ -211,12 +211,12 @@
                                     <p class="text-muted">`+comptype+`</p>
                                 </td>
                                 <td class="text-right">
-                                    <form method="get" action="musteriler/sil/`+ item.id+`">
+                                    @*<form method="get" action="musteriler/sil/`+ item.id+`">*@
                                     <!--<input name="id" value="`+ item.id +`" hidden/>-->
                                     <input name="status" value="true" hidden/>
-                                    <button type="submit" class="btn btn-danger btn-sm mb-1 delete-project"><i class="glyph-icon simple-icon-trash mr-1"></i>Sil</button>
+                                    <button type="submit" class="btn btn-danger btn-sm mb-1 delete-project" disabled><i class="glyph-icon simple-icon-trash mr-1"></i>Sil</button>
                                     <a href="/musteriler/`+ item.id +`" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
-                                    </form>
+                                    @*</form>*@
                                     
                                 </td>
                             </tr>`;
