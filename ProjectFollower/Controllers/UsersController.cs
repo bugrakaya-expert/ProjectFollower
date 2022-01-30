@@ -123,12 +123,22 @@ namespace ProjectFollower.Controllers
 
 
                 Console.WriteLine(files.Count.ToString());
-                System.Diagnostics.Debug.WriteLine(files.ToString());
-
+                //System.Diagnostics.Debug.WriteLine(files.ToString());
+                
                 if (files.Count() > 0)
                 {
                     string fileName = Guid.NewGuid().ToString();
-                    var uploads = Path.Combine(webRootPath, @"images\users");
+                    var uploads = Path.Combine(webRootPath, LocFilePaths.DIR_Users_Img);
+
+                    #region Check Users Directories
+                    if (!(Directory.Exists(LocFilePaths.RootAsset)))
+                        Directory.CreateDirectory(LocFilePaths.RootAsset);
+                    if (!(Directory.Exists(LocFilePaths.DIR_Users_Main)))
+                        Directory.CreateDirectory(LocFilePaths.DIR_Users_Main);
+                    if (!(Directory.Exists(LocFilePaths.DIR_Users_Img)))
+                        Directory.CreateDirectory(LocFilePaths.DIR_Users_Img);
+                    #endregion Check Users Directories
+
 
                     //var imageUrl = productVM.Product.ImageUrl;
 
