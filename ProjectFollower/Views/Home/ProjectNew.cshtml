@@ -158,6 +158,17 @@
                                     </div>
                                 </form>
                             *@
+
+                            <div class="input-group mb-3 file-avatar">
+                                <label class="custom-select custom-select-label file-new-uploads-text" for="file-upload" style="height:auto; line-height:inherit;"></label>
+                                <input type="file" class="d-none file-new-uploads" name="file-upload" id="file-upload" multiple>
+                                <div class="input-group-append">
+                                    <label class="input-group-text" for="file-upload" value="Fotoğraf Yükle">Dosya Yükle</label>
+                                </div>
+                            </div>
+                            <div class="text-zero top-right-button-container">
+                                <a href="/new-user"><button type="button" class="btn btn-primary top-right-button mr-1">YENİ DOSYA EKLE</button></a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -175,7 +186,7 @@
 
             </div>
 
-            <input type="text" id="htmlstr" class="form-control form-text" asp-for="@Model.Description" hidden />
+            <input type="text" id="htmlstr" class="form-control form-text" asp-for="@Model.Description" />
             <select class="form-control select2-multiple d-none" multiple="multiple" data-width="100%" id="taskDescription" asp-for="TaskDesc" hidden>
             </select>
         </form>
@@ -252,8 +263,8 @@
 
 
         });
-            /*
-        $("#submitForm").trigger("click");*/
+                /*
+$("#submitForm").trigger("click");*/
 
 
     </script>

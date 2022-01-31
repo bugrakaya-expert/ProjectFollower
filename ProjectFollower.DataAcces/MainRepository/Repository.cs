@@ -75,7 +75,17 @@ namespace ProjectFollower.DataAcces.MainRepository
                     query = query.Include(item);
                 }
             }
+            try
+            {
+                return query.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\n\n Hata: " + ex.Message+"\n\n");
+            }
+
             return query.FirstOrDefault();
+
         }
 
         public void Remove(int id)

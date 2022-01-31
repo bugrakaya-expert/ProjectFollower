@@ -202,6 +202,110 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="second" role="tabpanel" aria-labelledby="second-tab">
+                                @{
+                                    if (Model.ProjectDocuments.Count() > 0)
+                                    {
+                                        foreach (var item in Model.ProjectDocuments)
+                                        {
+                                            <div class="d-flex flex-row mb-3 border-bottom">
+                                                <div class="p-0 position-relative tab-icon">
+                                                    <div class="preview-container">
+                                                        <img data-dz-thumbnail="" class="img-thumbnail border-0">
+                                                        <i class="simple-icon-doc preview-icon"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="pl-3 w-80 dz-details position-relative">
+                                                    <div>
+                                                        <span data-dz-name="">@item.FileName</span>
+                                                    </div>
+                                                    <div class="text-primary text-extra-small" data-dz-size="">
+                                                        <strong>0</strong> KB
+                                                    </div>
+                                                </div>
+                                                <a href="#/" class="download-icon" data-dz-remove="">
+                                                    <i class="glyph-icon simple-icon-cloud-download"></i>
+                                                </a>
+                                                <a href="#/" class="download-icon ml-4" data-dz-remove="">
+                                                    <i class="glyph-icon simple-icon-trash"></i>
+                                                </a>
+                                            </div>
+                                        }
+
+                                    }
+                                    else
+                                    {
+
+                                    }
+                                }
+                                @*
+        <div class="d-flex flex-row mb-3 border-bottom">
+            <div class="p-0 position-relative tab-icon">
+                <div class="preview-container">
+                    <img data-dz-thumbnail="" class="img-thumbnail border-0">
+                    <i class="simple-icon-doc preview-icon"></i>
+                </div>
+            </div>
+            <div class="pl-3 w-80 dz-details position-relative">
+                <div>
+                    <span data-dz-name="">baktek.docx</span>
+                </div>
+                <div class="text-primary text-extra-small" data-dz-size="">
+                    <strong>16.4</strong> KB
+                </div>
+            </div>
+            <a href="#/" class="download-icon" data-dz-remove="">
+                <i class="glyph-icon simple-icon-cloud-download"></i>
+            </a>
+            <a href="#/" class="download-icon ml-4" data-dz-remove="">
+                <i class="glyph-icon simple-icon-trash"></i>
+            </a>
+        </div>
+        <div class="d-flex flex-row mb-3 border-bottom">
+            <div class="p-0 position-relative tab-icon">
+                <div class="preview-container">
+                    <img data-dz-thumbnail="" class="img-thumbnail border-0">
+                    <i class="simple-icon-doc preview-icon"></i>
+                </div>
+            </div>
+            <div class="pl-3 w-80 dz-details position-relative">
+                <div>
+                    <span data-dz-name="">baktek.docx</span>
+                </div>
+                <div class="text-primary text-extra-small" data-dz-size="">
+                    <strong>16.4</strong> KB
+                </div>
+            </div>
+            <a href="#/" class="download-icon" data-dz-remove="">
+                <i class="glyph-icon simple-icon-cloud-download"></i>
+            </a>
+            <a href="#/" class="download-icon ml-4" data-dz-remove="">
+                <i class="glyph-icon simple-icon-trash"></i>
+            </a>
+        </div>
+        <div class="d-flex flex-row mb-3 border-bottom">
+            <div class="p-0 position-relative tab-icon">
+                <div class="preview-container">
+                    <img data-dz-thumbnail="" class="img-thumbnail border-0">
+                    <i class="simple-icon-doc preview-icon"></i>
+                </div>
+            </div>
+            <div class="pl-3 w-80 dz-details position-relative">
+                <div>
+                    <span data-dz-name="">baktek.docx</span>
+                </div>
+                <div class="text-primary text-extra-small" data-dz-size="">
+                    <strong>16.4</strong> KB
+                </div>
+            </div>
+            <a href="#/" class="download-icon" data-dz-remove="">
+                <i class="glyph-icon simple-icon-cloud-download"></i>
+            </a>
+            <a href="#/" class="download-icon ml-4" data-dz-remove="">
+                <i class="glyph-icon simple-icon-trash"></i>
+            </a>
+        </div>
+                                *@
+
                                 <div class="d-flex flex-row mb-3 border-bottom">
                                     <div class="p-0 position-relative tab-icon">
                                         <div class="preview-container">
@@ -246,71 +350,19 @@
                                         <i class="glyph-icon simple-icon-trash"></i>
                                     </a>
                                 </div>
-                                <div class="d-flex flex-row mb-3 border-bottom">
-                                    <div class="p-0 position-relative tab-icon">
-                                        <div class="preview-container">
-                                            <img data-dz-thumbnail="" class="img-thumbnail border-0">
-                                            <i class="simple-icon-doc preview-icon"></i>
+                                <div class="d-flex flex-row mb-3">
+                                    <div class="col-12">
+                                        <div class="input-group mb-3 file-avatar">
+                                            <label class="custom-select custom-select-label file-new-uploads-text" for="file-upload" style="height:auto; line-height:inherit;"></label>
+                                            <input type="file" class="d-none file-new-uploads" name="file-upload" id="file-upload" multiple>
+                                            <div class="input-group-append">
+                                                <label class="input-group-text" for="file-upload" value="Fotoğraf Yükle">Dosya Yükle</label>
+                                            </div>
+                                        </div>
+                                        <div class="text-zero top-right-button-container">
+                                            <a href="/new-user"><button type="button" class="btn btn-primary top-right-button mr-1">YENİ DOSYA EKLE</button></a>
                                         </div>
                                     </div>
-                                    <div class="pl-3 w-80 dz-details position-relative">
-                                        <div>
-                                            <span data-dz-name="">baktek.docx</span>
-                                        </div>
-                                        <div class="text-primary text-extra-small" data-dz-size="">
-                                            <strong>16.4</strong> KB
-                                        </div>
-                                    </div>
-                                    <a href="#/" class="download-icon" data-dz-remove="">
-                                        <i class="glyph-icon simple-icon-cloud-download"></i>
-                                    </a>
-                                    <a href="#/" class="download-icon ml-4" data-dz-remove="">
-                                        <i class="glyph-icon simple-icon-trash"></i>
-                                    </a>
-                                </div>
-                                <div class="d-flex flex-row mb-3 border-bottom">
-                                    <div class="p-0 position-relative tab-icon">
-                                        <div class="preview-container">
-                                            <img data-dz-thumbnail="" class="img-thumbnail border-0">
-                                            <i class="simple-icon-doc preview-icon"></i>
-                                        </div>
-                                    </div>
-                                    <div class="pl-3 w-80 dz-details position-relative">
-                                        <div>
-                                            <span data-dz-name="">baktek.docx</span>
-                                        </div>
-                                        <div class="text-primary text-extra-small" data-dz-size="">
-                                            <strong>16.4</strong> KB
-                                        </div>
-                                    </div>
-                                    <a href="#/" class="download-icon" data-dz-remove="">
-                                        <i class="glyph-icon simple-icon-cloud-download"></i>
-                                    </a>
-                                    <a href="#/" class="download-icon ml-4" data-dz-remove="">
-                                        <i class="glyph-icon simple-icon-trash"></i>
-                                    </a>
-                                </div>
-                                <div class="d-flex flex-row mb-3 border-bottom">
-                                    <div class="p-0 position-relative tab-icon">
-                                        <div class="preview-container">
-                                            <img data-dz-thumbnail="" class="img-thumbnail border-0">
-                                            <i class="simple-icon-doc preview-icon"></i>
-                                        </div>
-                                    </div>
-                                    <div class="pl-3 w-80 dz-details position-relative">
-                                        <div>
-                                            <span data-dz-name="">baktek.docx</span>
-                                        </div>
-                                        <div class="text-primary text-extra-small" data-dz-size="">
-                                            <strong>16.4</strong> KB
-                                        </div>
-                                    </div>
-                                    <a href="#/" class="download-icon" data-dz-remove="">
-                                        <i class="glyph-icon simple-icon-cloud-download"></i>
-                                    </a>
-                                    <a href="#/" class="download-icon ml-4" data-dz-remove="">
-                                        <i class="glyph-icon simple-icon-trash"></i>
-                                    </a>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="third" role="tabpanel" aria-labelledby="third-tab">
@@ -377,7 +429,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="project-detailsLabel">Firma Adı - Proje Detay</h5>
+                <h5 class="modal-title" id="project-detailsLabel">@Model.Project.Customers.Name - @Model.Project.Name</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -387,9 +439,7 @@
                     <div class="form-group">
                         <div class="input-group">
                             <div id="quillEditor" style="min-height: 10rem; width: 100%">
-                                <div class="ql-editor">
-                                    @Html.Raw(Model.Project.Description)
-                                </div>
+                                <div class="ql-editor">@Html.Raw(Model.Project.Description)</div>
                             </div>
                         </div>
                     </div>
@@ -399,14 +449,38 @@
                             data-dismiss="modal">
                         Kapat
                     </button>
-                    <button type="button" class="btn btn-primary">Değişiklikleri Kaydet</button>
+                    <button type="button" class="btn btn-primary" id="submitDesc">Değişiklikleri Kaydet</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+<form asp-action="UpdateDesc" asp-controller="Home" method="post" id="descDetail">
+    <input type="text" id="htmlstr" class="form-control form-text" asp-for="@Model.Project.Description" />
+    <input type="text" id="htmlstr" class="form-control form-text" asp-for="@Model.Project.Id" />
+</form>
+
+
 @section scripts
 {
-<script src="/js/vendor/quill.min.js"></script>
+    <script src="/js/vendor/quill.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            @*window.history.pushState("", "", "/proje-detaylari/" +@Model.Project.Id);*@
+            history.pushState("", "", "/proje-detaylari/" +@Model.Project.Id);
+            $(document).on("click", "#submitDesc", function () {
+                console.log("submitdesc Action");
+
+                var htmlString = $('.ql-editor').html();
+                console.log("submitdesc Action 2");
+                $('#htmlstr').val(htmlString);
+                console.log("submitdesc Action 3");
+                $('#descDetail').submit();
+            });
+        });
+    </script>
+
 
 }

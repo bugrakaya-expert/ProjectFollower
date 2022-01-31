@@ -73,10 +73,10 @@ namespace ProjectFollower.Controllers
         }
 
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
-        [Route("proje-detaylari/{id}")]
-        public IActionResult Details(string id)
+        [Route("proje-detaylari/{id}&updated={status}")]
+        public IActionResult Details(string id,bool status)
         {
-            var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
+            var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id),includeProperties:"Customers");
             var _tasks = _uow.ProjectTasks.GetAll(i => i.ProjectsId == Guid.Parse(id));
             var _documents = _uow.ProjectDocuments.GetAll(i => i.ProjectsId == Guid.Parse(id));
             var _comments = _uow.ProjectComments.GetAll(i => i.ProjectsId == Guid.Parse(id));
@@ -158,6 +158,16 @@ namespace ProjectFollower.Controllers
             WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
             await WebSocAct.ListProjects_WebSocket();
             return Redirect("/");
+        }
+
+        [Authorize(Roles = UserRoles.Admin)]
+        [HttpPost("proje-detaylari/aciklama-duzenle")]
+        public IActionResult UpdateDesc(ProjectDetailVM _projectDetailVM)
+        {
+            string id = Convert.ToString(_projectDetailVM.Project.Id);
+            string description = _projectDetailVM.Project.Description;
+            var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id), includeProperties: "Customers");
+            return Redirect("/proje-detaylari/"+id+ "&updated=" + true);
         }
 
         [Authorize(Roles = UserRoles.Admin)]

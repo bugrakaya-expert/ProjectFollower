@@ -4107,6 +4107,25 @@ $.dore = function (element, options) {
                             icon: 'success',
                             confirmButtonText: 'Tamam',
                         })
+                        console.log('true');
+                    }
+                })
+            }
+            if (y == "status1") {
+                Swal.fire({
+                    title: 'Bu projeyi yeni hale getirmek istediğinize emin misiniz?',
+                    showCancelButton: true,
+                    icon: 'info',
+                    confirmButtonText: 'Güncelle',
+                    cancelButtonText: `İptal Et`,
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: 'Başarıyla güncellendi',
+                            icon: 'success',
+                            confirmButtonText: 'Tamam',
+                        })
                     }
                 })
             }
@@ -4143,11 +4162,11 @@ $.dore = function (element, options) {
           copy: {
               name: "Proje Durumu",
               className: "simple-icon-settings",
-              "items": {
-                  "status1": { "name": "Yeni" },
-                  "status2": { "name": "Yapım Aşamasında" },
-                  "status3": { "name": "Müşteri Onayında" },
-                  "status4": { "name": "Tamamlandı" }
+              items: {
+                  status1 : { "name": "Yeni" },
+                  status2: { "name": "Yapım Aşamasında" },
+                  status3: { "name": "Müşteri Onayında" },
+                  status4: { "name": "Tamamlandı" }
               }
 
             }
