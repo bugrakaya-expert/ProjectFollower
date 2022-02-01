@@ -21,7 +21,8 @@ namespace ProjectFollower.Utility
         }
         public static class LocFilePaths
         {
-            public const string RootAsset = @"C:\project-followerAssets\";
+            //public const string RootAsset = @"C:\project-followerAssets\";
+            public const string RootAsset = @"\assets\files\";
             public const string Customers = @"customers\";
             public const string Users = @"users\";
             public const string Projects = @"projects\";
@@ -61,6 +62,18 @@ namespace ProjectFollower.Utility
             public const string DIR_Projects_Main = RootAsset + Projects;
             public const string DIR_Projects_Doc = RootAsset + Projects + Documents;
             public const string DIR_Projects_Img = RootAsset + Projects + Img;
+        }
+        public static class ContentTypes
+        {
+            public const string Pdf = "application/pdf";
+            public const string Rar = "application/vnd.rar";
+            public const string Docx = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+            public const string Gif = "image/gif";
+            public const string Jpeg = "image/jpeg";
+            public const string Jpg = "image/jpeg";
+            public const string Zip = "application/zip";
+
+
         }
         public static void GenerateAsset()
         {

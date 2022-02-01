@@ -15,6 +15,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using ProjectFollower.Hubs;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace ProjectFollower.Controllers
 {
@@ -26,13 +28,15 @@ namespace ProjectFollower.Controllers
         private readonly ILogger<AccountController> _logger;
         protected IHubContext<HomeHub> _context;
         private readonly IUnitOfWork _uow;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
         public HomeController(
         UserManager<IdentityUser> userManager,
         SignInManager<IdentityUser> signInManager,
         ILogger<AccountController> logger,
         IHubContext<HomeHub> context,
-        IUnitOfWork uow
+        IUnitOfWork uow,
+        IWebHostEnvironment hostEnvironment
             )
         {
             _userManager = userManager;
@@ -40,6 +44,7 @@ namespace ProjectFollower.Controllers
             _logger = logger;
             _context = context;
             _uow = uow;
+            _hostEnvironment = hostEnvironment;
         }
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
@@ -73,10 +78,11 @@ namespace ProjectFollower.Controllers
         }
 
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
-        [Route("proje-detaylari/{id}&updated={status}")]
-        public IActionResult Details(string id,bool status)
+        //[Route("proje-detaylari/{id}&updated={status}")]
+        [Route("proje-detaylari/{id}")]
+        public IActionResult Details(string id)
         {
-            var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id),includeProperties:"Customers");
+            var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id), includeProperties: "Customers");
             var _tasks = _uow.ProjectTasks.GetAll(i => i.ProjectsId == Guid.Parse(id));
             var _documents = _uow.ProjectDocuments.GetAll(i => i.ProjectsId == Guid.Parse(id));
             var _comments = _uow.ProjectComments.GetAll(i => i.ProjectsId == Guid.Parse(id));
@@ -134,6 +140,7 @@ namespace ProjectFollower.Controllers
                 Name = ProjectVM.Name
             };
             _uow.Project.Add(Project);
+            ProjectVM.Id = Project.Id;
             foreach (var item in ProjectVM.UserId)
             {
                 var User = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == item, includeProperties: "Department");
@@ -154,20 +161,160 @@ namespace ProjectFollower.Controllers
                 };
                 _uow.ProjectTasks.Add(ProjectTask);
             }
+
+            string webRootPath = _hostEnvironment.WebRootPath;
+            var files = HttpContext.Request.Form.Files;
+            if (files.Count() > 0)
+            {
+                //string fileName = Guid.NewGuid().ToString();
+                var uploads = Path.Combine(webRootPath, webRootPath+LocFilePaths.DIR_Projects_Doc + ProjectVM.Name);
+
+                if (!Directory.Exists(uploads))
+                {
+                    Directory.CreateDirectory(uploads);
+                }
+                /*
+                #region Check Customer Directories
+                if (!(Directory.Exists(LocFilePaths.RootAsset)))
+                    Directory.CreateDirectory(LocFilePaths.RootAsset);
+                if (!(Directory.Exists(LocFilePaths.DIR_Projects_Main)))
+                    Directory.CreateDirectory(LocFilePaths.DIR_Projects_Main);
+                if (!(Directory.Exists(LocFilePaths.DIR_Projects_Doc)))
+                    Directory.CreateDirectory(LocFilePaths.DIR_Projects_Doc);
+                if (!(Directory.Exists(LocFilePaths.DIR_Projects_Doc + ProjectVM.Name)))
+                    Directory.CreateDirectory(LocFilePaths.DIR_Projects_Doc + ProjectVM.Name);
+                #endregion Check Customer Directories
+                */
+
+                foreach (var item in files)
+                {
+                    string extension = "";
+                    var _filename = item.FileName.Split('.');
+                    if (_filename.Count() == 1)
+                        extension = Path.GetExtension(item.FileName);
+                    using (var fileStream = new FileStream(Path.Combine(uploads, item.FileName + extension), FileMode.Create))
+                    {
+                        item.CopyTo(fileStream);
+                        var Document = new ProjectDocuments()
+                        {
+                            ProjectsId = ProjectVM.Id,
+                            FileName = item.FileName + extension,
+                        };
+                        _uow.ProjectDocuments.Add(Document);
+                    }
+                }
+            }
             _uow.Save();
             WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
             await WebSocAct.ListProjects_WebSocket();
             return Redirect("/");
         }
+        [HttpPost("proje-detaylari/dokuman-guncelle")]
+        public IActionResult UpdateDocuments(ProjectDetailVM projectDetailVM)
+        {
+            string webRootPath = _hostEnvironment.WebRootPath;
+            var files = HttpContext.Request.Form.Files;
+            var Project = _uow.Project.GetFirstOrDefault(i => i.Id == projectDetailVM.Project.Id);
+            if (files.Count() > 0)
+            {
+                //string fileName = Guid.NewGuid().ToString();
+                var uploads = Path.Combine(webRootPath, webRootPath + LocFilePaths.DIR_Projects_Doc + Project.Name);
+
+                #region Check Customer Directories
+                if (!Directory.Exists(uploads))
+                {
+                    Directory.CreateDirectory(uploads);
+                }
+                #endregion Check Customer Directories
+
+
+                foreach (var item in files)
+                {
+                    string extension = "";
+                    var _filename = item.FileName.Split('.');
+                    if (_filename.Count() == 1)
+                        extension = Path.GetExtension(item.FileName);
+                    using (var fileStream = new FileStream(Path.Combine(uploads, item.FileName + extension), FileMode.Create))
+                    {
+                        item.CopyTo(fileStream);
+                        var Document = new ProjectDocuments()
+                        {
+                            ProjectsId = Project.Id,
+                            FileName = item.FileName + extension,
+                        };
+                        _uow.ProjectDocuments.Add(Document);
+                    }
+                }
+                _uow.Save();
+            }
+            return Redirect("/proje-detaylari/" + projectDetailVM.Project.Id);
+        }
+        [HttpGet("proje-detaylari/dokuman-indir/{id}")]
+        public IActionResult DownloadFile(string id)
+        {
+            string webRootPath = _hostEnvironment.WebRootPath;
+            string contentPath = _hostEnvironment.ContentRootPath;
+            var Document = _uow.ProjectDocuments.GetFirstOrDefault(i => i.Id == Guid.Parse(id), includeProperties: "Projects");
+
+            //string fileName = Guid.NewGuid().ToString();
+            var downloads = Path.Combine(webRootPath, LocFilePaths.DIR_Projects_Doc + Document.Projects.Name);
+            
+            using (var fileStream = new FileStream(Path.Combine(downloads, Document.FileName), FileMode.Open, System.IO.FileAccess.Read))
+            {
+                fileStream.Close();
+                //Response.Headers.Add("content-disposition", "attachment; filename=" + Document.FileName);
+                return File(fileStream, ContentTypes.Jpeg,Document.FileName); // or "application/x-rar-compressed"
+                //return File(fileStream, "application/octet-stream"); // or "application/x-rar-compressed"
+            }
+            /*
+            var response = HttpContext.Response;
+            response.ContentType = ContentType;
+            context.HttpContext.Response.Headers.Add("Content-Disposition", new[] { "attachment; filename=" + FileDownloadName });
+            using (var fileStream = new FileStream(FilePath, FileMode.Open))
+            {
+                await fileStream.CopyToAsync(context.HttpContext.Response.Body);
+            }*/
+            return null;
+        }
+        [HttpGet("proje-detaylari/dokuman-kaldir/{id}")]
+        public IActionResult RemoveDocument(string id)
+        {
+            var Document = _uow.ProjectDocuments.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
+            var project = _uow.Project.GetFirstOrDefault(i => i.Id == Document.ProjectsId);
+            var loc = LocFilePaths.DIR_Projects_Doc + project.Name + @"\" + Document.FileName;
+            _uow.ProjectDocuments.Remove(Document);
+            _uow.Save();
+            if (System.IO.File.Exists(loc))
+            {
+                System.IO.File.Delete(loc);
+            }
+            /*
+            if (Directory.Exists(LocFilePaths.DIR_Projects_Doc + project.Name+ @"\"+Document.FileName))
+                Directory.Delete(LocFilePaths.DIR_Projects_Doc + project.Name + @"\" + Document.FileName);*/
+
+
+            return Redirect("/proje-detaylari/" + project.Id);
+        }
+        [HttpGet("proje-detaylari/gorev-degistir/{id}")]
+        public IActionResult ChangTask(ProjectDetailVM ProjectDetailVM)
+        {
+
+            //return Redirect("/proje-detaylari/" + project.Id);
+            return Redirect("/");
+        }
 
         [Authorize(Roles = UserRoles.Admin)]
-        [HttpPost("proje-detaylari/aciklama-duzenle")]
-        public IActionResult UpdateDesc(ProjectDetailVM _projectDetailVM)
+        [HttpPost("jsonresult/updatedescription")]
+        public JsonResult UpdateDesc(ProjectDetailVM _projectDetailVM)
         {
             string id = Convert.ToString(_projectDetailVM.Project.Id);
             string description = _projectDetailVM.Project.Description;
             var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id), includeProperties: "Customers");
-            return Redirect("/proje-detaylari/"+id+ "&updated=" + true);
+            _project.Description = description;
+            _uow.Project.Update(_project);
+            _uow.Save();
+            //return Json("/proje-detaylari/"+id+ "&updated=" + true);
+            return Json(_project.Description);
         }
 
         [Authorize(Roles = UserRoles.Admin)]
@@ -201,22 +348,12 @@ namespace ProjectFollower.Controllers
                 if (DateTime.Now.Date > Convert.ToDateTime(item.EndingDate))
                 {
                     item.ProjectSequence = 1;
-                    Delayeds++;
+                    item.IsDelayed = true;
+                    if(item.Status<3)
+                        Delayeds++;
                 }
                 else
                     item.ProjectSequence = 2;
-                /*
-                var ProjectListVM = new ProjectListVM()
-                {
-                    Archived=item.Archived,
-                    CustomersId = item.CustomersId,
-                    Name=item.Name,
-                    Customers=item.Customers,
-                    EndingDate=item.EndingDate,
-                    Status = item.Status,
-                    ProjectSequence = Sequence
-                };
-                ProjectListVMs.Add(ProjectListVM);*/
                 _projects.Add(item);
             }
             var ProjectListVM = new ProjectListVM()
@@ -227,9 +364,20 @@ namespace ProjectFollower.Controllers
 
             return Json(ProjectListVM);
         }
-        public JsonResult UpSetJson()
+        [HttpGet("jsonresult/getprojectdetail/{id}")]
+        public JsonResult GetProjectDetail(string id)
         {
-
+            var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id), includeProperties: "Customers");
+            return Json(_project);
+        }
+        [HttpGet("jsonresult/deleteproject/{id}")]
+        public async Task<JsonResult> DeleteProject(string id)
+        {
+            var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
+            _uow.Project.Remove(_project);
+            _uow.Save();
+            WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
+            await WebSocAct.ListProjects_WebSocket();
             return Json(null);
         }
         [HttpGet("jsonresult/getalluserswithdep")]
@@ -254,6 +402,56 @@ namespace ProjectFollower.Controllers
 
 
             return Json(Project);
+        }
+        [HttpPost("jsonresult/updateTasks")]
+        public JsonResult UpdateTasks(ProjectTaskVM projectTasks)
+        {
+
+            return Json(null);
+        }
+        [HttpGet("jsonresult/changeToNewState/{id}")]
+        public async Task<JsonResult> ChangetoNewState(string id)
+        {
+            var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
+            _project.Status = 0;
+            _uow.Project.Update(_project);
+            _uow.Save();
+            WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
+            await WebSocAct.ListProjects_WebSocket();
+            return Json(null);
+        }
+        [HttpGet("jsonresult/changeToConstructionState/{id}")]
+        public async Task<JsonResult> ChangetoConstructionState(string id)
+        {
+            var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
+            _project.Status = 1;
+            _uow.Project.Update(_project);
+            _uow.Save();
+            WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
+            await WebSocAct.ListProjects_WebSocket();
+            return Json(null);
+        }
+        [HttpGet("jsonresult/changeToCustomerApproveState/{id}")]
+        public async Task<JsonResult> ChangetoCustomerApprove(string id)
+        {
+            var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
+            _project.Status = 2;
+            _uow.Project.Update(_project);
+            _uow.Save();
+            WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
+            await WebSocAct.ListProjects_WebSocket();
+            return Json(null);
+        }
+        [HttpGet("jsonresult/changeToDoneState/{id}")]
+        public async Task<JsonResult> ChangetoDone(string id)
+        {
+            var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
+            _project.Status = 3;
+            _uow.Project.Update(_project);
+            _uow.Save();
+            WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
+            await WebSocAct.ListProjects_WebSocket();
+            return Json(null);
         }
         #endregion API
 

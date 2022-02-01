@@ -243,5 +243,11 @@ namespace ProjectFollower.Controllers
             }
             return Json(imglink);
         }
+        [HttpGet("jsonresult/updateUserPhoto")]
+        public JsonResult UpdatePhoto()
+        {
+
+            return Json(null);
+        }
     }
 }

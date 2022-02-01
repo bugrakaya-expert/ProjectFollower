@@ -38,11 +38,12 @@ namespace ProjectFollower.Extensions
                 if (DateTime.Now.Date > Convert.ToDateTime(item.EndingDate))
                 {
                     item.ProjectSequence = 1;
-                    Delayeds++;
+                    item.IsDelayed = true;
+                    if (item.Status < 3)
+                        Delayeds++;
                 }
                 else
                     item.ProjectSequence = 2;
-
                 _projects.Add(item);
             }
             var _ProjectListVM = new ProjectListVM()

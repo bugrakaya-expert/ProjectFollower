@@ -88,3 +88,32 @@ function editUserFunc() {
 
 }
 
+function updatePhotoFunc() {
+    $("#modalPhotoSubmit").prop('disabled', true);
+
+    $.ajax({
+        type: "POST",
+        url: "jsonresult/updateUserPhoto",
+        data: {
+            editUserPass: {
+                currentPassword: $("#modalCurrentPassword").val(),
+                newPassword: $("#modalPassword").val(),
+                confirmnewPassword: $("#modalPasswordconfirm").val()
+            }
+        },
+        success: function (msg) {
+
+            Swal.fire({
+                title: "Profil fotoğrafı başarılı bir şekilde güncelleştirildi.",
+                showCancelButton: false,
+                icon: msg_icon,
+                confirmButtonText: 'Tamam',
+            })
+
+
+        }
+    });
+
+
+
+}

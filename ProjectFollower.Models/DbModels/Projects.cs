@@ -29,6 +29,8 @@ namespace ProjectFollower.Models.DbModels
         public int ProjectSequence { get; set; }
         [NotMapped]
         public int SequanceDate { get; set; }
+        [NotMapped]
+        public bool IsDelayed { get; set; }
 
     }
 }

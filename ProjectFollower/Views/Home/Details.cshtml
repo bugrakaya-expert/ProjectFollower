@@ -1,8 +1,12 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "Details";
+
+    int TaskLength = 0;
+    string TaskIdString = "";
 }
 @model ProjectFollower.Models.ViewModels.ProjectDetailVM
+@using static ProjectFollower.Utility.ProjectConstant
 <main>
     <div class="container-fluid">
         <div class="row">
@@ -49,91 +53,89 @@
                                  aria-labelledby="first-tab">
 
                                 <p class="font-weight-bold">Görevler</p>
-
-                                @foreach (var item in Model.ProjectTasks)
-                                {
-                                    if (item.Done)
+                                @*<form action="/proje-detaylari/gorev-degistir/@Model.Project.Id" method="get">*@
+                                <form id="sectionTasks">
+                                    @foreach (var item in Model.ProjectTasks)
                                     {
+                                        TaskLength++;
+                                        TaskIdString = "control-mission" + TaskLength.ToString();
+
                                         <div class="row">
                                             <div class="col-10">
-                                                <p class="mission-completed">@item.Description</p>
+                                                @if (item.Done)
+                                                {
+                                                    <p class="mission-completed">@item.Description</p>
+                                                }
+                                                else
+                                                {
+                                                    <p>@item.Description</p>
+                                                }
+
                                             </div>
                                             <div class="col-2 text-end">
                                                 <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" disabled checked class="custom-control-input" id="control-mission1" name="control-mission1">
-                                                    <label class="custom-control-label" disabled for="control-mission1">Tamamlandı</label>
+                                                    @*<input value="@item.Done.ToString()" id="@item.Id" type="text" class="taskvalue" />*@
+                                                    <input type="checkbox" class="custom-control-input taskvalue" id="@item.Id" checked="@item.Done">
+                                                    <label class="custom-control-label" for="@item.Id">Tamamlanmadı</label>
                                                 </div>
                                             </div>
                                         </div>
+
                                     }
-                                    else
-                                    {
+
+
+                                    @*
                                         <div class="row">
-                                            <div class="col-10">
-                                                <p>@item.Description</p>
-                                            </div>
-                                            <div class="col-2 text-end">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="control-mission3" name="control-mission3">
-                                                    <label class="custom-control-label" for="control-mission3">Tamamlanmadı</label>
-                                                </div>
-                                            </div>
+                                        <div class="col-10">
+                                        <p class="mission-completed">Pellentesque quis cursus mauris.</p>
                                         </div>
-                                    }
-
-                                }
-
-                                @*
-                                    <div class="row">
-                                    <div class="col-10">
-                                    <p class="mission-completed">Pellentesque quis cursus mauris.</p>
-                                    </div>
-                                    <div class="col-2 text-end">
-                                    <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" disabled checked class="custom-control-input" id="control-mission1" name="control-mission1">
-                                    <label class="custom-control-label" disabled for="control-mission1">Tamamlandı</label>
-                                    </div>
-                                    </div>
-                                    </div>
-                                    <div class="row">
-                                    <div class="col-10">
-                                    <p>Pellentesque quis cursus mauris.</p>
-                                    </div>
-                                    <div class="col-2 text-end">
-                                    <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" disabled class="custom-control-input" id="control-mission2" name="control-mission2">
-                                    <label class="custom-control-label" disabled for="control-mission2">Tamamlanmadı</label>
-                                    </div>
-                                    </div>
-                                    </div>
-                                    <div class="row">
-                                    <div class="col-10">
-                                    <p>Pellentesque quis cursus mauris.</p>
-                                    </div>
-                                    <div class="col-2 text-end">
-                                    <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="control-mission3" name="control-mission3">
-                                    <label class="custom-control-label" for="control-mission3">Tamamlanmadı</label>
-                                    </div>
-                                    </div>
-                                    </div>
+                                        <div class="col-2 text-end">
+                                        <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" disabled checked class="custom-control-input" id="control-mission1" name="control-mission1">
+                                        <label class="custom-control-label" disabled for="control-mission1">Tamamlandı</label>
+                                        </div>
+                                        </div>
+                                        </div>
+                                        <div class="row">
+                                        <div class="col-10">
+                                        <p>Pellentesque quis cursus mauris.</p>
+                                        </div>
+                                        <div class="col-2 text-end">
+                                        <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" disabled class="custom-control-input" id="control-mission2" name="control-mission2">
+                                        <label class="custom-control-label" disabled for="control-mission2">Tamamlanmadı</label>
+                                        </div>
+                                        </div>
+                                        </div>
+                                        <div class="row">
+                                        <div class="col-10">
+                                        <p>Pellentesque quis cursus mauris.</p>
+                                        </div>
+                                        <div class="col-2 text-end">
+                                        <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="control-mission3" name="control-mission3">
+                                        <label class="custom-control-label" for="control-mission3">Tamamlanmadı</label>
+                                        </div>
+                                        </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                        <div class="col-10">
+                                        <p>Pellentesque quis cursus mauris.</p>
+                                        </div>
+                                        <div class="col-2 text-end">
+                                        <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="control-mission4" name="control-mission4">
+                                        <label class="custom-control-label" for="control-mission4">Tamamlanmadı</label>
+                                        </div>
+                                        </div>
+                                        </div>
+                                    *@
                                     <div class="row mb-4">
-                                    <div class="col-10">
-                                    <p>Pellentesque quis cursus mauris.</p>
+                                        <div class="col-12 text-right">
+                                            <button type="button" class="btn btn-primary btn-sm mb-0" id="taskbtn">Görevleri Düzenlemeyi Kaydet</button>
+                                        </div>
                                     </div>
-                                    <div class="col-2 text-end">
-                                    <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="control-mission4" name="control-mission4">
-                                    <label class="custom-control-label" for="control-mission4">Tamamlanmadı</label>
-                                    </div>
-                                    </div>
-                                    </div>
-                                *@
-                                <div class="row mb-4">
-                                    <div class="col-12 text-right">
-                                        <button type="submit" class="btn btn-primary btn-sm mb-0">Görevleri Düzenlemeyi Kaydet</button>
-                                    </div>
-                                </div>
+                                </form>
                                 <div class="separator mb-5"></div>
 
                                 <p class="font-weight-bold">Yorumlar</p>
@@ -207,6 +209,7 @@
                                     {
                                         foreach (var item in Model.ProjectDocuments)
                                         {
+                                            string link = LocFilePaths.DIR_Projects_Doc + item.Projects.Name + "/" + item.FileName;
                                             <div class="d-flex flex-row mb-3 border-bottom">
                                                 <div class="p-0 position-relative tab-icon">
                                                     <div class="preview-container">
@@ -222,10 +225,10 @@
                                                         <strong>0</strong> KB
                                                     </div>
                                                 </div>
-                                                <a href="#/" class="download-icon" data-dz-remove="">
+                                                <a href="@link" class="download-icon" data-dz-remove="" download>
                                                     <i class="glyph-icon simple-icon-cloud-download"></i>
                                                 </a>
-                                                <a href="#/" class="download-icon ml-4" data-dz-remove="">
+                                                <a href="/proje-detaylari/dokuman-kaldir/@item.Id" class="download-icon ml-4" data-dz-remove="">
                                                     <i class="glyph-icon simple-icon-trash"></i>
                                                 </a>
                                             </div>
@@ -234,136 +237,145 @@
                                     }
                                     else
                                     {
-
+                                        <h4>Henüz projeye ait bir dosya yüklenmemiş..</h4>
                                     }
                                 }
                                 @*
-        <div class="d-flex flex-row mb-3 border-bottom">
-            <div class="p-0 position-relative tab-icon">
-                <div class="preview-container">
-                    <img data-dz-thumbnail="" class="img-thumbnail border-0">
-                    <i class="simple-icon-doc preview-icon"></i>
-                </div>
-            </div>
-            <div class="pl-3 w-80 dz-details position-relative">
-                <div>
-                    <span data-dz-name="">baktek.docx</span>
-                </div>
-                <div class="text-primary text-extra-small" data-dz-size="">
-                    <strong>16.4</strong> KB
-                </div>
-            </div>
-            <a href="#/" class="download-icon" data-dz-remove="">
-                <i class="glyph-icon simple-icon-cloud-download"></i>
-            </a>
-            <a href="#/" class="download-icon ml-4" data-dz-remove="">
-                <i class="glyph-icon simple-icon-trash"></i>
-            </a>
-        </div>
-        <div class="d-flex flex-row mb-3 border-bottom">
-            <div class="p-0 position-relative tab-icon">
-                <div class="preview-container">
-                    <img data-dz-thumbnail="" class="img-thumbnail border-0">
-                    <i class="simple-icon-doc preview-icon"></i>
-                </div>
-            </div>
-            <div class="pl-3 w-80 dz-details position-relative">
-                <div>
-                    <span data-dz-name="">baktek.docx</span>
-                </div>
-                <div class="text-primary text-extra-small" data-dz-size="">
-                    <strong>16.4</strong> KB
-                </div>
-            </div>
-            <a href="#/" class="download-icon" data-dz-remove="">
-                <i class="glyph-icon simple-icon-cloud-download"></i>
-            </a>
-            <a href="#/" class="download-icon ml-4" data-dz-remove="">
-                <i class="glyph-icon simple-icon-trash"></i>
-            </a>
-        </div>
-        <div class="d-flex flex-row mb-3 border-bottom">
-            <div class="p-0 position-relative tab-icon">
-                <div class="preview-container">
-                    <img data-dz-thumbnail="" class="img-thumbnail border-0">
-                    <i class="simple-icon-doc preview-icon"></i>
-                </div>
-            </div>
-            <div class="pl-3 w-80 dz-details position-relative">
-                <div>
-                    <span data-dz-name="">baktek.docx</span>
-                </div>
-                <div class="text-primary text-extra-small" data-dz-size="">
-                    <strong>16.4</strong> KB
-                </div>
-            </div>
-            <a href="#/" class="download-icon" data-dz-remove="">
-                <i class="glyph-icon simple-icon-cloud-download"></i>
-            </a>
-            <a href="#/" class="download-icon ml-4" data-dz-remove="">
-                <i class="glyph-icon simple-icon-trash"></i>
-            </a>
-        </div>
-                                *@
-
-                                <div class="d-flex flex-row mb-3 border-bottom">
-                                    <div class="p-0 position-relative tab-icon">
-                                        <div class="preview-container">
-                                            <img data-dz-thumbnail="" class="img-thumbnail border-0">
-                                            <i class="simple-icon-doc preview-icon"></i>
-                                        </div>
-                                    </div>
-                                    <div class="pl-3 w-80 dz-details position-relative">
-                                        <div>
-                                            <span data-dz-name="">baktek.docx</span>
-                                        </div>
-                                        <div class="text-primary text-extra-small" data-dz-size="">
-                                            <strong>16.4</strong> KB
-                                        </div>
-                                    </div>
-                                    <a href="#/" class="download-icon" data-dz-remove="">
-                                        <i class="glyph-icon simple-icon-cloud-download"></i>
-                                    </a>
-                                    <a href="#/" class="download-icon ml-4" data-dz-remove="">
-                                        <i class="glyph-icon simple-icon-trash"></i>
-                                    </a>
-                                </div>
-                                <div class="d-flex flex-row mb-3 border-bottom">
-                                    <div class="p-0 position-relative tab-icon">
-                                        <div class="preview-container">
-                                            <img data-dz-thumbnail="" class="img-thumbnail border-0">
-                                            <i class="simple-icon-doc preview-icon"></i>
-                                        </div>
-                                    </div>
-                                    <div class="pl-3 w-80 dz-details position-relative">
-                                        <div>
-                                            <span data-dz-name="">baktek.docx</span>
-                                        </div>
-                                        <div class="text-primary text-extra-small" data-dz-size="">
-                                            <strong>16.4</strong> KB
-                                        </div>
-                                    </div>
-                                    <a href="#/" class="download-icon" data-dz-remove="">
-                                        <i class="glyph-icon simple-icon-cloud-download"></i>
-                                    </a>
-                                    <a href="#/" class="download-icon ml-4" data-dz-remove="">
-                                        <i class="glyph-icon simple-icon-trash"></i>
-                                    </a>
-                                </div>
-                                <div class="d-flex flex-row mb-3">
-                                    <div class="col-12">
-                                        <div class="input-group mb-3 file-avatar">
-                                            <label class="custom-select custom-select-label file-new-uploads-text" for="file-upload" style="height:auto; line-height:inherit;"></label>
-                                            <input type="file" class="d-none file-new-uploads" name="file-upload" id="file-upload" multiple>
-                                            <div class="input-group-append">
-                                                <label class="input-group-text" for="file-upload" value="Fotoğraf Yükle">Dosya Yükle</label>
+                                    <div class="d-flex flex-row mb-3 border-bottom">
+                                        <div class="p-0 position-relative tab-icon">
+                                            <div class="preview-container">
+                                                <img data-dz-thumbnail="" class="img-thumbnail border-0">
+                                                <i class="simple-icon-doc preview-icon"></i>
                                             </div>
                                         </div>
-                                        <div class="text-zero top-right-button-container">
-                                            <a href="/new-user"><button type="button" class="btn btn-primary top-right-button mr-1">YENİ DOSYA EKLE</button></a>
+                                        <div class="pl-3 w-80 dz-details position-relative">
+                                            <div>
+                                                <span data-dz-name="">baktek.docx</span>
+                                            </div>
+                                            <div class="text-primary text-extra-small" data-dz-size="">
+                                                <strong>16.4</strong> KB
+                                            </div>
+                                        </div>
+                                        <a href="#/" class="download-icon" data-dz-remove="">
+                                            <i class="glyph-icon simple-icon-cloud-download"></i>
+                                        </a>
+                                        <a href="#/" class="download-icon ml-4" data-dz-remove="">
+                                            <i class="glyph-icon simple-icon-trash"></i>
+                                        </a>
+                                    </div>
+                                    <div class="d-flex flex-row mb-3 border-bottom">
+                                        <div class="p-0 position-relative tab-icon">
+                                            <div class="preview-container">
+                                                <img data-dz-thumbnail="" class="img-thumbnail border-0">
+                                                <i class="simple-icon-doc preview-icon"></i>
+                                            </div>
+                                        </div>
+                                        <div class="pl-3 w-80 dz-details position-relative">
+                                            <div>
+                                                <span data-dz-name="">baktek.docx</span>
+                                            </div>
+                                            <div class="text-primary text-extra-small" data-dz-size="">
+                                                <strong>16.4</strong> KB
+                                            </div>
+                                        </div>
+                                        <a href="#/" class="download-icon" data-dz-remove="">
+                                            <i class="glyph-icon simple-icon-cloud-download"></i>
+                                        </a>
+                                        <a href="#/" class="download-icon ml-4" data-dz-remove="">
+                                            <i class="glyph-icon simple-icon-trash"></i>
+                                        </a>
+                                    </div>
+                                    <div class="d-flex flex-row mb-3 border-bottom">
+                                        <div class="p-0 position-relative tab-icon">
+                                            <div class="preview-container">
+                                                <img data-dz-thumbnail="" class="img-thumbnail border-0">
+                                                <i class="simple-icon-doc preview-icon"></i>
+                                            </div>
+                                        </div>
+                                        <div class="pl-3 w-80 dz-details position-relative">
+                                            <div>
+                                                <span data-dz-name="">baktek.docx</span>
+                                            </div>
+                                            <div class="text-primary text-extra-small" data-dz-size="">
+                                                <strong>16.4</strong> KB
+                                            </div>
+                                        </div>
+                                        <a href="#/" class="download-icon" data-dz-remove="">
+                                            <i class="glyph-icon simple-icon-cloud-download"></i>
+                                        </a>
+                                        <a href="#/" class="download-icon ml-4" data-dz-remove="">
+                                            <i class="glyph-icon simple-icon-trash"></i>
+                                        </a>
+                                    </div>
+
+
+                                                            <div class="d-flex flex-row mb-3 border-bottom">
+                                                                <div class="p-0 position-relative tab-icon">
+                                                                    <div class="preview-container">
+                                                                        <img data-dz-thumbnail="" class="img-thumbnail border-0">
+                                                                        <i class="simple-icon-doc preview-icon"></i>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="pl-3 w-80 dz-details position-relative">
+                                                                    <div>
+                                                                        <span data-dz-name="">baktek.docx</span>
+                                                                    </div>
+                                                                    <div class="text-primary text-extra-small" data-dz-size="">
+                                                                        <strong>16.4</strong> KB
+                                                                    </div>
+                                                                </div>
+                                                                <a href="#/" class="download-icon" data-dz-remove="">
+                                                                    <i class="glyph-icon simple-icon-cloud-download"></i>
+                                                                </a>
+                                                                <a href="#/" class="download-icon ml-4" data-dz-remove="">
+                                                                    <i class="glyph-icon simple-icon-trash"></i>
+                                                                </a>
+                                                            </div>
+                                                            <div class="d-flex flex-row mb-3 border-bottom">
+                                                                <div class="p-0 position-relative tab-icon">
+                                                                    <div class="preview-container">
+                                                                        <img data-dz-thumbnail="" class="img-thumbnail border-0">
+                                                                        <i class="simple-icon-doc preview-icon"></i>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="pl-3 w-80 dz-details position-relative">
+                                                                    <div>
+                                                                        <span data-dz-name="">baktek.docx</span>
+                                                                    </div>
+                                                                    <div class="text-primary text-extra-small" data-dz-size="">
+                                                                        <strong>16.4</strong> KB
+                                                                    </div>
+                                                                </div>
+                                                                <a href="#/" class="download-icon" data-dz-remove="">
+                                                                    <i class="glyph-icon simple-icon-cloud-download"></i>
+                                                                </a>
+                                                                <a href="#/" class="download-icon ml-4" data-dz-remove="">
+                                                                    <i class="glyph-icon simple-icon-trash"></i>
+                                                                </a>
+                                                            </div>
+
+
+
+
+                                *@
+                                <form asp-action="UpdateDocuments" asp-controller="Home" method="post" enctype="multipart/form-data" data-pasley-validate>
+                                    <input type="text" asp-for="Project.Id" value="@Model.Project.Id" hidden />
+                                    <div class="d-flex flex-row mb-3">
+                                        <div class="col-12">
+                                            <div class="input-group mb-3 file-avatar">
+                                                <label class="custom-select custom-select-label file-new-uploads-text" for="file-upload" style="height:auto; line-height:inherit;"></label>
+                                                <input type="file" class="d-none file-new-uploads" name="file-upload" id="file-upload" multiple>
+                                                <div class="input-group-append">
+                                                    <label class="input-group-text" for="file-upload" value="Fotoğraf Yükle">Dosya Yükle</label>
+                                                </div>
+                                            </div>
+                                            <div class="text-zero top-right-button-container">
+                                                <button type="submit" class="btn btn-primary top-right-button mr-1">YENİ DOSYA EKLE</button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </form>
+
                             </div>
                             <div class="tab-pane fade" id="third" role="tabpanel" aria-labelledby="third-tab">
                                 <div class="row">
@@ -374,7 +386,7 @@
                                         <button data-toggle="modal" data-target="#project-details" class="btn btn-primary btn-sm mb-0">Düzenle</button>
                                     </div>
                                 </div>
-                                @Html.Raw(Model.Project.Description)
+                                <div id="desc">@Html.Raw(Model.Project.Description)</div>
                             </div>
                         </div>
                     </div>
@@ -396,19 +408,35 @@
                             <div class="col-6 p-0 m-0 text-center">
                                 <p class="text-muted text-small mb-2">Proje Statüsü</p>
                                 <p class="mb-3">
-                                    <span class="badge badge-pill badge-warning mb-1">YAPIM AŞAMASINDA</span>
+                                    @if (Model.Project.Status == 0)
+                                    {
+                                        <span class="badge badge-pill badge-info mb-1">YENİ</span>
+                                    }
+                                    @if (Model.Project.Status == 1)
+                                    {
+                                        <span class="badge badge-pill badge-warning mb-1">YAPIM AŞAMASINDA</span>
+                                    }
+                                    @if (Model.Project.Status == 2)
+                                    {
+                                        <span class="badge badge-pill badge-secondary mb-1">YAPIM AŞAMASINDA</span>
+                                    }
+                                    @if (Model.Project.Status == 3)
+                                    {
+                                        <span class="badge badge-pill badge-primary mb-1">YAPIM AŞAMASINDA</span>
+                                    }
+                                    @*<span class="badge badge-pill badge-warning mb-1">YAPIM AŞAMASINDA</span>*@
                                 </p>
                             </div>
                             <div class="col-3 p-0 m-0  text-center">
                                 <p class="text-muted text-small mb-2">Proje Başlangıç</p>
                                 <p class="mb-3">
-                                    <span class="badge badge-pill badge-info mb-1">10.01.2022</span>
+                                    <span class="badge badge-pill badge-info mb-1">@Model.Project.CreationDate</span>
                                 </p>
                             </div>
                             <div class="col-3 p-0 m-0  text-center">
                                 <p class="text-muted text-small mb-2">Proje Deadline</p>
                                 <p class="mb-3">
-                                    <span class="badge badge-pill badge-danger mb-1">10.01.2022</span>
+                                    <span class="badge badge-pill badge-danger mb-1">@Model.Project.EndingDate</span>
                                 </p>
                             </div>
                         </div>
@@ -455,10 +483,11 @@
         </div>
     </div>
 </div>
-<form asp-action="UpdateDesc" asp-controller="Home" method="post" id="descDetail">
-    <input type="text" id="htmlstr" class="form-control form-text" asp-for="@Model.Project.Description" />
-    <input type="text" id="htmlstr" class="form-control form-text" asp-for="@Model.Project.Id" />
-</form>
+@*
+    <form asp-action="UpdateDesc" asp-controller="Home" method="post" id="descDetail">
+        <input type="text" id="htmlstr" class="form-control form-text" asp-for="@Model.Project.Description" />
+        <input type="text" id="projectid" class="form-control form-text" asp-for="@Model.Project.Id" />
+    </form>*@
 
 
 @section scripts
@@ -469,7 +498,7 @@
         $(document).ready(function () {
 
             @*window.history.pushState("", "", "/proje-detaylari/" +@Model.Project.Id);*@
-            history.pushState("", "", "/proje-detaylari/" +@Model.Project.Id);
+            @*history.pushState("", "", "/proje-detaylari/" +@Model.Project.Id);*@
             $(document).on("click", "#submitDesc", function () {
                 console.log("submitdesc Action");
 
@@ -477,8 +506,82 @@
                 console.log("submitdesc Action 2");
                 $('#htmlstr').val(htmlString);
                 console.log("submitdesc Action 3");
-                $('#descDetail').submit();
+                //$('#descDetail').submit();
+
+                $.ajax({
+                    type: "POST",
+                    url: "/jsonresult/updatedescription",
+                    data: {
+                        project: {
+                            id: '@Model.Project.Id',
+                            description: $('.ql-editor').html()
+                        }
+                    },
+                    success: function (received) {
+                        console.log(received);
+                        $('#desc').html("");
+                        $('#desc').append(received);
+                        $('#project-details').modal('toggle');
+
+                        Swal.fire({
+                            title: "Güncelleme başarılı.",
+                            showCancelButton: false,
+                            icon: "success",
+                            confirmButtonText: 'Tamam',
+                        })
+
+
+                    }
+                });
+
             });
+
+
+            $(document).on("click", "#taskbtn", function () {
+                var ids = $('.taskvalue').map(function () {
+                    
+                    return JSON.stringify(JSON.parse({
+                        id: this.id,
+                        done: this.checked
+                    }));
+                    /*
+                    return {
+                        id: this.id,
+                        done: this.checked
+                    };*/
+                }).get().join();
+
+                console.log("Status:" + '@Model.Project.Id');
+                console.log("İD ler:" + ids);  // Result: a,b,c,d
+
+                $.ajax({
+                    type: "POST",
+                    dataType: 'json',
+                    url: "/jsonresult/updateTasks",
+                    data: {
+                        projectId: '@Model.Project.Id',
+                    },
+                    success: function (received) {
+
+                        /*
+                        Swal.fire({
+                            title: "Güncelleme başarılı.",
+                            showCancelButton: false,
+                            icon: "success",
+                            confirmButtonText: 'Tamam',
+                        });*/
+
+
+                    }
+                });
+                
+            });
+
+
+
+            //var obj = {id:"",val:""};
+
+
         });
     </script>
 

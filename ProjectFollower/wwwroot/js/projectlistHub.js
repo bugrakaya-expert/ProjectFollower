@@ -9,27 +9,33 @@ connection.on("SendData", function (projectList) {
     console.log("before each: "+projectList);
     $("#tbody").text("");
     $.each(projectList.projects, function (i, item) {
-        console.log("each starting Index: " + i);
         var img = "";
         var name = item.name;
+        var id = item.id;
         var status = "";
+        var isDelayed = item.isDelayed;
         var endingData = item.endingDate;
         var custImage = item.customers.imageUrl;
+        var delayedspan = '';
+        if (isDelayed == true) {
+            delayedspan = `<span class="badge badge-pill badge-danger ml-3">Proje Gecikmiş!</span>`
+        }
+
         var custName = item.customers.name;
         var sequence = item.projectSequence;
         var dateSequence = item.sequanceDate;
         //var comptype = item.companyType.name;
         if (item.status == 0)
-            status = `<span class="badge badge-pill badge-info">YENİ</span>`;
+            status = `<span class="badge badge-pill badge-info">YENİ</span>` + delayedspan;
         if (item.status == 1)
-            status = `<span class="badge badge-pill badge-secondary">MÜŞTERİ ONAYINDA</span>`;
+            status = `<span class="badge badge-pill badge-warning">YAPIM AŞAMASINDA</span>` + delayedspan;
         if (item.status == 2)
-            status = `<span class="badge badge-pill badge-warning">YAPIM AŞAMASINDA</span><span class="badge badge-pill badge-danger ml-3">Proje Gecikmiş!</span>`;
+            status = `<span class="badge badge-pill badge-secondary">MÜŞTERİ ONAYINDA</span>` + delayedspan;
         if (item.status == 3)
             status = `<span class="badge badge-pill badge-primary">TAMAMLANDI</span>`;
 
         var htmlstr = `
-                                    <tr class="cardd">
+                                    <tr class="cardd" id="`+ id +`">
                                         <td>
                                             <img src="`+ img + `" alt="` + name + `" class="list-thumbnail responsive border-0 card-img-left" />
                                         </td>

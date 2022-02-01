@@ -4107,7 +4107,7 @@ $.dore = function (element, options) {
                             icon: 'success',
                             confirmButtonText: 'Tamam',
                         })
-                        console.log('true');
+                        console.log(this.attr('id'));
                     }
                 })
             }
@@ -4121,31 +4121,155 @@ $.dore = function (element, options) {
                 }).then((result) => {
                     /* Read more about isConfirmed, isDenied below */
                     if (result.isConfirmed) {
-                        Swal.fire({
-                            title: 'Başarıyla güncellendi',
-                            icon: 'success',
-                            confirmButtonText: 'Tamam',
-                        })
+                        var id = this.attr('id');
+                        $.ajax({
+                            url: "jsonresult/changeToNewState/" + id,
+                            type: "GET",
+                            contentType: "application/json",
+                            dataType: "json",
+                            success: function (data) {
+                                Swal.fire({
+                                    title: 'Başarıyla güncellendi',
+                                    icon: 'success',
+                                    confirmButtonText: 'Tamam',
+                                });
+
+                            }
+                        });
+
+
                     }
                 })
             }
-            if (y == "delete") {
+            if (y == "status2") {
                 Swal.fire({
-                    title: 'Bu projeyi kaldırmak istediğinize emin misiniz?',
+                    title: 'Bu projeyi yapım aşaması hale getirmek istediğinize emin misiniz?',
                     showCancelButton: true,
                     icon: 'info',
-                    confirmButtonText: 'Sil',
+                    confirmButtonText: 'Güncelle',
                     cancelButtonText: `İptal Et`,
                 }).then((result) => {
                     /* Read more about isConfirmed, isDenied below */
                     if (result.isConfirmed) {
-                        Swal.fire({
-                            title: 'Proje başarıyla silindi',
-                            icon: 'success',
-                            confirmButtonText: 'Tamam',
-                        })
+                        var id = this.attr('id');
+                        $.ajax({
+                            url: "jsonresult/changeToConstructionState/" + id,
+                            type: "GET",
+                            contentType: "application/json",
+                            dataType: "json",
+                            success: function (data) {
+                                Swal.fire({
+                                    title: 'Başarıyla güncellendi',
+                                    icon: 'success',
+                                    confirmButtonText: 'Tamam',
+                                });
+
+
+                            }
+                        });
+
+
                     }
                 })
+            }
+            if (y == "status3") {
+                Swal.fire({
+                    title: 'Bu projeyi müşteri onayı haline getirmek istediğinize emin misiniz?',
+                    showCancelButton: true,
+                    icon: 'info',
+                    confirmButtonText: 'Güncelle',
+                    cancelButtonText: `İptal Et`,
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        var id = this.attr('id');
+                        $.ajax({
+                            url: "jsonresult/changeToCustomerApproveState/" + id,
+                            type: "GET",
+                            contentType: "application/json",
+                            dataType: "json",
+                            success: function (data) {
+                                Swal.fire({
+                                    title: 'Başarıyla güncellendi',
+                                    icon: 'success',
+                                    confirmButtonText: 'Tamam',
+                                });
+
+
+                            }
+                        });
+                    }
+                })
+            }
+            if (y == "status4") {
+                Swal.fire({
+                    title: 'Bu projeyi tamamlandı haline getirmek istediğinize emin misiniz?',
+                    showCancelButton: true,
+                    icon: 'info',
+                    confirmButtonText: 'Güncelle',
+                    cancelButtonText: `İptal Et`,
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        var id = this.attr('id');
+                        $.ajax({
+                            url: "jsonresult/changeToDoneState/" + id,
+                            type: "GET",
+                            contentType: "application/json",
+                            dataType: "json",
+                            success: function (data) {
+                                Swal.fire({
+                                    title: 'Başarıyla güncellendi',
+                                    icon: 'success',
+                                    confirmButtonText: 'Tamam',
+                                });
+
+
+                            }
+                        });
+                    }
+                })
+            }
+            if (y == "delete") {
+                var id = this.attr('id');
+                $.ajax({
+                    url: "jsonresult/getprojectdetail/" + id,
+                    type: "GET",
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function (data) {
+                        Swal.fire({
+                            title: data.customers.name + ' Firmasına ait ' + data.name +' Adlı projeyi kaldırmak istediğinize emin misiniz?',
+                            showCancelButton: true,
+                            icon: 'info',
+                            confirmButtonText: 'Sil',
+                            cancelButtonText: `İptal Et`,
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+
+                                $.ajax({
+                                    url: "jsonresult/deleteproject/" + id,
+                                    type: "GET",
+                                    contentType: "application/json",
+                                    dataType: "json",
+                                    success: function (data) {
+                                        Swal.fire({
+                                            title: 'Proje başarıyla silindi',
+                                            icon: 'success',
+                                            confirmButtonText: 'Tamam',
+                                        })
+
+
+                                    }
+                                });
+
+                            }
+                        });
+                    }
+                });
+
+
             }
         },
         events: {

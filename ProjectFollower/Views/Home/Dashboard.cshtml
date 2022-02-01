@@ -14,11 +14,11 @@
     </div>
 
     @*
-    <div id="messageTxt"></div>
-    <div class="form-inline">
-        <input id="messageTextbox" />
-        <input id="btnSend" class="btn btn-success" type="button"/>
-    </div>
+        <div id="messageTxt"></div>
+        <div class="form-inline">
+            <input id="messageTextbox" />
+            <input id="btnSend" class="btn btn-success" type="button"/>
+        </div>
     *@
     <div class="container-fluid">
         <div class="row mb-4">
@@ -45,11 +45,11 @@
                         </div>
                         <div class="float-md-right">
                             <div class="form-group row mb-1 mr-2">
-                            <label class=" d-flex align-items-center mr-2 text-muted"><b>Arşivlenmiş Projeler</b></label>
-                                    <div class="custom-switch custom-switch-secondary-inverse mb-2">
-                                        <input class="custom-switch-input" id="switch4" type="checkbox"> 
-                                        <label class="custom-switch-btn" for="switch4"></label>
-                                    </div>
+                                <label class=" d-flex align-items-center mr-2 text-muted"><b>Arşivlenmiş Projeler</b></label>
+                                <div class="custom-switch custom-switch-secondary-inverse mb-2">
+                                    <input class="custom-switch-input" id="switch4" type="checkbox">
+                                    <label class="custom-switch-btn" for="switch4"></label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -186,47 +186,54 @@
                     dataType: "json",
                     success: function (data) {
                         $("#tbody").text("");
-                        
+
                         $.each(data.projects, function (i, item) {
                             var img = "";
                             var name = item.name;
+                            var id = item.id;
                             var status = "";
+                            var isDelayed = item.isDelayed;
                             var endingData = item.endingDate;
                             var custImage = item.customers.imageUrl;
+                            var delayedspan = '';
+                            if (isDelayed == true) {
+                                delayedspan = `<span class="badge badge-pill badge-danger ml-3">Proje Gecikmiş!</span>`
+                            }
+
                             var custName = item.customers.name;
                             var sequence = item.projectSequence;
                             var dateSequence = item.sequanceDate;
                             //var comptype = item.companyType.name;
                             if (item.status == 0)
-                                status = `<span class="badge badge-pill badge-info">YENİ</span>`;
+                                status = `<span class="badge badge-pill badge-info">YENİ</span>` + delayedspan;
                             if (item.status == 1)
-                                status = `<span class="badge badge-pill badge-secondary">MÜŞTERİ ONAYINDA</span>`;
+                                status = `<span class="badge badge-pill badge-warning">YAPIM AŞAMASINDA</span>` + delayedspan;
                             if (item.status == 2)
-                                status = `<span class="badge badge-pill badge-warning">YAPIM AŞAMASINDA</span><span class="badge badge-pill badge-danger ml-3">Proje Gecikmiş!</span>`;
+                                status = `<span class="badge badge-pill badge-secondary">MÜŞTERİ ONAYINDA</span>` + delayedspan;
                             if (item.status == 3)
                                 status = `<span class="badge badge-pill badge-primary">TAMAMLANDI</span>`;
 
                             var htmlstr = `
-                                    <tr class="cardd">
-                                        <td>
-                                            <img src="`+ img + `" alt="` + name + `" class="list-thumbnail responsive border-0 card-img-left" />
-                                        </td>
-                                        <td>
-                                            <p class="d-none">`+ dateSequence + `</p> <p>` + custName + `</p>
-                                        </td>
-                                        <td>
-                                            <p class="list-item-heading">`+ name + `</p>
-                                        </td>
-                                        <td>
-                                            <p class="d-none">`+ dateSequence + `</p> <p>` + endingData + `</p>
-                                        </td>
-                                        <td>
-                                            <p class="d-none">`+ sequence + `</p>` + status + `
-                                        </td>
-                                        <td class="text-center">
-                                            <a href="/proje-detaylari/`+item.id+`" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
-                                        </td>
-                                    </tr>
+                                        <tr class="cardd" id="`+id+`">
+                                            <td>
+                                                <img src="`+ img + `" alt="` + name + `" class="list-thumbnail responsive border-0 card-img-left" />
+                                            </td>
+                                            <td>
+                                                <p class="d-none">`+ dateSequence + `</p> <p>` + custName + `</p>
+                                            </td>
+                                            <td>
+                                                <p class="list-item-heading">`+ name + `</p>
+                                            </td>
+                                            <td>
+                                                <p class="d-none">`+ dateSequence + `</p> <p>` + endingData + `</p>
+                                            </td>
+                                            <td>
+                                                <p class="d-none">`+ sequence + `</p>` + status + `
+                                            </td>
+                                            <td class="text-center">
+                                                <a href="/proje-detaylari/`+ item.id + `" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
+                                            </td>
+                                        </tr>
 `;
 
                             $("#tbody").append(htmlstr);
@@ -236,13 +243,13 @@
 
 
                         var alertstr = `
-        <div class="alert alert-danger alert-dismissible fade show rounded mb-4" role="alert"><strong>Dikkat!</strong> Termini geçmiş `+ data.delayedProjects + ` adet projeniz bulunmakta. <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></div>
+            <div class="alert alert-danger alert-dismissible fade show rounded mb-4" role="alert"><strong>Dikkat!</strong> Termini geçmiş `+ data.delayedProjects + ` adet projeniz bulunmakta. <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></div>
 `;
                         if (data.delayedProjects > 0)
                             $("#mp-attention").html(alertstr);
 
 
-                        
+
                     }
                 });
             }
