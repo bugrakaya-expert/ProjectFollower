@@ -9,13 +9,14 @@ connection.on("SendData", function (projectList) {
     console.log("before each: "+projectList);
     $("#tbody").text("");
     $.each(projectList.projects, function (i, item) {
-        var img = "";
         var name = item.name;
         var id = item.id;
         var status = "";
         var isDelayed = item.isDelayed;
         var endingData = item.endingDate;
         var custImage = item.customers.imageUrl;
+        var custmail = item.customers.email + '/img/';
+        var img = "/assets/customers/" + custmail + custImage;
         var delayedspan = '';
         if (isDelayed == true) {
             delayedspan = `<span class="badge badge-pill badge-danger ml-3">Proje Gecikmiş!</span>`

@@ -230,7 +230,7 @@
                 $(document).ready(function () {
                 $("#managers").html("");
                 $("#users").html("");
-                    const loc = "/assets/users/img/";
+
 
                     $.ajax({
                         url: "jsonresult/getpersoneluserjson",
@@ -242,7 +242,7 @@
                             $.each(data, function (i, item) {
                                 var department = item.department.name;
                                 var fullname = item.fullName;
-                                var imageurl = loc+item.imageUrl;
+                                var imageurl = "/assets/users/" + item.email + "/img/" + item.imageUrl;
                                 $("#users").append(`
         <div class='d-flex flex-row mb-3 pb-3 border-bottom'>
             <a href='#'>
@@ -281,7 +281,7 @@
                     $.each(data, function (i, item) {
                         var department = item.department.name;
                         var fullname = item.fullName;
-                        var imageurl = loc+item.imageUrl;
+                        var imageurl = "/assets/users/" + item.email + "/img/" + item.imageUrl;
                         $("#managers").append(`
     <div class='d-flex flex-row mb-3 pb-3 border-bottom'>
     <a href='#'>

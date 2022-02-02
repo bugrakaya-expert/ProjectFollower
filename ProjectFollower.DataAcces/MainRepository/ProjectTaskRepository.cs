@@ -20,5 +20,9 @@ namespace ProjectFollower.DataAcces.MainRepository
         {
             _db.Update(ProjectTask);
         }
+        public void UpdateRange(List<ProjectTasks> ProjectTask)
+        {
+            _db.UpdateRange(ProjectTask);
+        }
     }
 }

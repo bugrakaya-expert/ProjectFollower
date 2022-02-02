@@ -1,33 +1,38 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <UserSecretsId>aspnet-ProjectFollower-3C19E95B-660E-40AA-8CC2-1A9545183960</UserSecretsId>
-    <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<UserSecretsId>aspnet-ProjectFollower-3C19E95B-660E-40AA-8CC2-1A9545183960</UserSecretsId>
+		<CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Abp" Version="7.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.21" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.21" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.21" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.21" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.21" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.21" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
-    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Abp" Version="7.0.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.21" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.21" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.21" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.21" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.21" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.21" />
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+		<PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ProjectFollower.DataAcces\ProjectFollower.DataAcces.csproj" />
-    <ProjectReference Include="..\ProjectFollower.Models\ProjectFollower.Models.csproj" />
-    <ProjectReference Include="..\ProjectFollower.Utility\ProjectFollower.Utility.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\ProjectFollower.DataAcces\ProjectFollower.DataAcces.csproj" />
+		<ProjectReference Include="..\ProjectFollower.Models\ProjectFollower.Models.csproj" />
+		<ProjectReference Include="..\ProjectFollower.Utility\ProjectFollower.Utility.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\js\dore-plugins\" />
-    <Folder Include="wwwroot\js\vendor\" />
-  </ItemGroup>
+	<ItemGroup>
+		<Folder Include="wwwroot\js\dore-plugins\" />
+		<Folder Include="wwwroot\js\vendor\" />
+
+		<Compile Remove="wwwroot\assets\**" />
+		<Content Remove="wwwroot\assets\**" />
+		<EmbeddedResource Remove="wwwroot\assets\**" />
+		<None Remove="wwwroot\assets\**" />
+	</ItemGroup>
 
 </Project>

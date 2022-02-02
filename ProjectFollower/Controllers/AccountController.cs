@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -8,9 +9,13 @@ using ProjectFollower.Models.ViewModels;
 using ProjectFollower.Utility;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Drawing;
+using System.Drawing.Imaging;
+using static ProjectFollower.Utility.ProjectConstant;
 
 namespace ProjectFollower.Controllers
 {
@@ -21,18 +26,22 @@ namespace ProjectFollower.Controllers
         //private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<AccountController> _logger;
         private readonly IUnitOfWork _uow;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
         public AccountController(
         UserManager<IdentityUser> userManager,
         SignInManager<IdentityUser> signInManager,
         ILogger<AccountController> logger,
-        IUnitOfWork uow
+        IUnitOfWork uow,
+                IWebHostEnvironment hostEnvironment
             )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _uow = uow;
+            _hostEnvironment = hostEnvironment;
+
         }
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
@@ -239,15 +248,100 @@ namespace ProjectFollower.Controllers
             if (Claims != null)
             {
                 var AppUser = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == Claims.Value);
-                imglink = AppUser.ImageUrl;
+                var userpath = WebRootPaths.DIR_Users_Main + AppUser.Email + "/" + WebRootPaths.Img + AppUser.ImageUrl;
+                imglink = userpath;
             }
             return Json(imglink);
         }
+        public IActionResult UpdateUserPhoto()
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var Claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (Claims != null)
+            {
+                var AppUser = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == Claims.Value);
+                string webRootPath = _hostEnvironment.WebRootPath;
+                var userpath = LocFileForWeb.DIR_Users_Main + AppUser.Email + @"\" + LocFileForWeb.Img;
+                var files = HttpContext.Request.Form.Files;
+                string fileName;
+                var extension = Path.GetExtension(files[0].FileName);
+                if (AppUser.ImageUrl == null)
+                {
+
+                    fileName = Guid.NewGuid().ToString()+extension;
+                    AppUser.ImageUrl = fileName;
+                    _uow.ApplicationUser.Update(AppUser);
+                    _uow.Save();
+                }
+                else
+                {
+                    fileName = AppUser.ImageUrl;
+                }
+
+
+                if (files.Count() > 0)
+                {
+                    var uploads = Path.Combine(webRootPath+userpath);
+                    string fileLocation = uploads + fileName;
+
+                    if (!(Directory.Exists(uploads)))
+                        Directory.CreateDirectory(uploads);
+                    if (System.IO.File.Exists(fileLocation))
+                    {
+                        System.IO.File.Delete(fileLocation);
+                        fileName = AppUser.ImageUrl;
+                    }
+
+                    using (var fileStreams = new FileStream(Path.Combine(uploads, fileName), FileMode.Create))
+                    {
+                        var stream = files[0].OpenReadStream();
+                        var image = Image.FromStream(stream);
+                        var size = image.Size;
+                        var width = (float)size.Width;
+                        var height = (float)size.Height;
+
+                        float rate = width / height;
+
+                        if (width > 200 || height > 200)
+                        {
+                            ModelState.AddModelError(string.Empty, "Kullanıcı oluşturulamadı! Profil resmi 200px den fazla olamaz.");
+                            ModalMessageVM ModalMessage = new ModalMessageVM()
+                            {
+                                Message = "Kullanıcı oluşturulamadı! Profil resmi 200px den fazla olamaz.",
+                                Icon = "warning",
+                                Status = true
+                            };
+                            return RedirectToAction("NewUser", ModalMessage);
+                        }
+                        if (rate != 1)
+                        {
+                            ModelState.AddModelError(string.Empty, "Kullanıcı oluşturulamadı! Profil resmi 1:1 oranında olmalıdır. ");
+                            ModalMessageVM ModalMessage = new ModalMessageVM()
+                            {
+                                Message = "Kullanıcı oluşturulamadı! Profil resmi 1:1 oranında olmalıdır. ",
+                                Icon = "warning",
+                                Status = true
+                            };
+                            return RedirectToAction("NewUser", ModalMessage);
+                        }
+
+                        files[0].CopyTo(fileStreams);
+                    }
+                }
+
+
+
+            }
+
+            return Redirect("/");
+        }
+        /*
         [HttpGet("jsonresult/updateUserPhoto")]
-        public JsonResult UpdatePhoto()
+        public JsonResult UpdateUserPhoto()
         {
 
             return Json(null);
-        }
+        }*/
     }
 }

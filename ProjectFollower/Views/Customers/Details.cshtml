@@ -1,7 +1,8 @@
-﻿
+﻿@using static ProjectFollower.Utility.ProjectConstant.WebRootPaths;
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var customerpath = DIR_Customer_Main + Model.Email + "/img/" + Model.ImageUrl;
 }
 @model ProjectFollower.Models.ViewModels.CustomerVM
 <main>
@@ -51,46 +52,51 @@
 
                             </div>
                             <div class="tab-pane fade" id="second" role="tabpanel" aria-labelledby="second-tab">
-                                @{
-                                    foreach (var item in Model.Documents)
+                                @{ if (Model.Documents.Count() > 0)
                                     {
-                                        <div class="d-flex flex-row mb-3 border-bottom">
-                                            <div class="p-0 position-relative tab-icon">
-                                                <div class="preview-container">
-                                                    <img data-dz-thumbnail="" class="img-thumbnail border-0">
-                                                    <i class="simple-icon-doc preview-icon"></i>
+                                        foreach (var item in Model.Documents)
+                                        {
+                                            <div class="d-flex flex-row mb-3 border-bottom">
+                                                <div class="p-0 position-relative tab-icon">
+                                                    <div class="preview-container">
+                                                        <img data-dz-thumbnail="" class="img-thumbnail border-0">
+                                                        <i class="simple-icon-doc preview-icon"></i>
+                                                    </div>
                                                 </div>
+                                                <div class="pl-3 w-80 dz-details position-relative">
+                                                    <div>
+                                                        <span data-dz-name="">@item.FileName</span>
+                                                    </div>
+                                                    <div class="text-primary text-extra-small" data-dz-size="">
+                                                        <strong>0</strong> KB
+                                                    </div>
+                                                </div>
+                                                <a href="#/" class="download-icon" data-dz-remove="">
+                                                    <i class="glyph-icon simple-icon-cloud-download"></i>
+                                                </a>
                                             </div>
-                                            <div class="pl-3 w-80 dz-details position-relative">
-                                                <div>
-                                                    <span data-dz-name="">@item.FileName</span>
-                                                </div>
-                                                <div class="text-primary text-extra-small" data-dz-size="">
-                                                    <strong>0</strong> KB
-                                                </div>
-                                            </div>
-                                            <a href="#/" class="download-icon" data-dz-remove="">
-                                                <i class="glyph-icon simple-icon-cloud-download"></i>
-                                            </a>
-                                        </div>
+                                        }
                                     }
+
 
                                 }
                                 <div class="separator mb-5"></div>
-                                <div class="d-flex flex-row mb-3">
-                                    <div class="col-12">
-                                        <div class="input-group mb-3 file-avatar">
-                                            <label class="custom-select custom-select-label file-new-uploads-text" for="file-upload" style="height:auto; line-height:inherit;"></label>
-                                            <input type="file" class="d-none file-new-uploads" name="file-upload" id="file-upload" multiple>
-                                            <div class="input-group-append">
-                                                <label class="input-group-text" for="file-upload" value="Fotoğraf Yükle">Dosya Yükle</label>
+                                
+                                    <div class="d-flex flex-row mb-3">
+                                        <div class="col-12">
+                                            <div class="input-group mb-3 file-avatar">
+                                                <label class="custom-select custom-select-label file-new-uploads-text" for="file-upload" style="height:auto; line-height:inherit;"></label>
+                                                <input type="file" class="d-none file-new-uploads" name="file-upload" id="file-upload" multiple>
+                                                <div class="input-group-append">
+                                                    <label class="input-group-text" for="file-upload" value="Fotoğraf Yükle">Dosya Yükle</label>
+                                                </div>
+                                            </div>
+                                            <div class="text-zero top-right-button-container">
+                                                <a href="/new-user"><button type="button" class="btn btn-primary top-right-button mr-1">YENİ DOSYA EKLE</button></a>
                                             </div>
                                         </div>
-                                        <div class="text-zero top-right-button-container">
-                                            <a href="/new-user"><button type="button" class="btn btn-primary top-right-button mr-1">YENİ DOSYA EKLE</button></a>
-                                        </div>
                                     </div>
-                                </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -105,7 +111,7 @@
                                 <h1 class="p-0 m-0">@Model.Name</h1>
                             </div>
                             <div class="col-4">
-                                <img src="@Model.ImageUrl" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left ml-2" />
+                                <img src="@customerpath" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left ml-2" />
                             </div>
                             <div class="col-6 mt-2">
                                 <p class="font-weight-bold">Firma Yetkilisi</p>

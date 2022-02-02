@@ -53,7 +53,7 @@ namespace ProjectFollower.Controllers
         public int Sequence = 0;
         public int Delayeds = 0;
 
-        [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
+        //[Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         public IActionResult Index()
         {
             #region Authentication Index
@@ -82,17 +82,36 @@ namespace ProjectFollower.Controllers
         [Route("proje-detaylari/{id}")]
         public IActionResult Details(string id)
         {
+            List<Users> _users = new List<Users>();
             var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id), includeProperties: "Customers");
             var _tasks = _uow.ProjectTasks.GetAll(i => i.ProjectsId == Guid.Parse(id));
             var _documents = _uow.ProjectDocuments.GetAll(i => i.ProjectsId == Guid.Parse(id));
             var _comments = _uow.ProjectComments.GetAll(i => i.ProjectsId == Guid.Parse(id));
+            var _responsibles = _uow.ResponsibleUsers.GetAll(i => i.ProjectId == Guid.Parse(id));
 
+            foreach (var item in _responsibles)
+            {
+                var AppUser = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == item.UserId.ToString(),includeProperties: "Department");
+                var User = new Users()
+                {
+                    FirstName = AppUser.FirstName,
+                    LastName = AppUser.Lastname,
+                    FullName = AppUser.FirstName + " " + AppUser.Lastname,
+                    Email = AppUser.Email,
+                    Department=AppUser.Department,
+                    DepartmentId=AppUser.DepartmentId,
+                    AppUserName=AppUser.AppUserName,
+                    ImageUrl=AppUser.ImageUrl
+                };
+                _users.Add(User);
+            }
             var _projectDetailVM = new ProjectDetailVM()
             {
                 Project = _project,
                 ProjectTasks = _tasks,
                 ProjectDocuments = _documents,
-                ProjectComments = _comments
+                ProjectComments = _comments,
+                Users=_users
             };
             return View(_projectDetailVM);
         }
@@ -404,10 +423,20 @@ namespace ProjectFollower.Controllers
             return Json(Project);
         }
         [HttpPost("jsonresult/updateTasks")]
-        public JsonResult UpdateTasks(ProjectTaskVM projectTasks)
+        public JsonResult UpdateTasks([FromBody]List<ProjectTasks> projectTasks)
         {
+            var ProjectId = _uow.ProjectTasks.GetFirstOrDefault(i=>i.Id== projectTasks[0].Id).ProjectsId;
+            List<ProjectTasks> projectTasksList = new List<ProjectTasks>();
+            foreach (var item in projectTasks)
+            {
+                var _projectTask = _uow.ProjectTasks.GetFirstOrDefault(i => i.Id == item.Id);
+                _projectTask.Done = item.Done;
+                projectTasksList.Add(_projectTask);
+            }
+            _uow.ProjectTasks.UpdateRange(projectTasksList);
+            _uow.Save();
 
-            return Json(null);
+            return Json(projectTasksList);
         }
         [HttpGet("jsonresult/changeToNewState/{id}")]
         public async Task<JsonResult> ChangetoNewState(string id)

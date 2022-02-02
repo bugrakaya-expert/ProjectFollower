@@ -232,6 +232,8 @@
     </div>
 
     <!-- Modal Profil Foto Değiştir -->
+
+
     <div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -241,13 +243,13 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="changephoto-form">
+                <form id="changephoto-form" asp-controller="Account" asp-action="UpdateUserPhoto" enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="form-group">
                             <div class="row d-flex align-items-center justify-content-center">
                                 <div class="col-sm-6 text-center" id="photochange">
                                     Mevcut Profil Fotoğrafı<br />
-                                    <img src="img/orj/users/egul.jpg" alt="Emre Gül" class="img-thumbnail border-0 rounded-circle list-thumbnail align-self-center">
+
                                 </div>
                                 <div class="col-sm-6 text-center">
                                     <p>Yeni Profil Fotoğrafı Yükleyin</p><br />
@@ -267,7 +269,7 @@
                                 data-dismiss="modal">
                             Kapat
                         </button>
-                        <button type="button" class="btn btn-primary" onclick="return updatePhotoFunc()" id="modalPhotoSubmit">Değişiklikleri Kaydet</button>
+                        <button type="submit" class="btn btn-primary" onclick="return updatePhotoFunc()" id="modalPhotoSubmit">Değişiklikleri Kaydet</button>
                         @*<button type="submit" class="btn btn-primary" id="modalsubmit">Değişiklikleri Kaydet</button>*@
                     </div>
                 </form>

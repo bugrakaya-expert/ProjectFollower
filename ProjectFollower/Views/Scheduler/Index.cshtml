@@ -1,64 +1,6 @@
 ﻿
 @{
 }
-
-<style>
-    .options {
-        padding: 20px;
-        background-color: rgba(191, 191, 191, 0.15);
-        margin-top: 20px;
-    }
-
-    .caption {
-        font-size: 18px;
-        font-weight: 500;
-    }
-
-    .option {
-        margin-top: 10px;
-        display: inline-block;
-    }
-    .dx-tooltip-wrapper .dx-overlay-content .dx-popup-content {
-        padding: 14px;
-    }
-
-/*    .showtime-preview > div:first-child {
-        font-size: 12px;
-        white-space: normal;
-
-    }
-    .showtime-preview {
-        width: 100%;
-        border-radius: 5px;
-        padding-left: 5px;
-    }
-
-
-   .showtime-preview > div:not(:first-child) {
-        font-size: 11px;
-        white-space: normal;
-    }
-        */
-    .movie-tooltip .movie-info {
-        margin-left: 10px;
-        vertical-align: top;
-        text-align: left;
-    }
-
-    .movie-tooltip .movie-title {
-        font-size: 1.5em;
-        line-height: 40px;
-    }
-
-    .long-title h3 {
-        font-family: 'Segoe UI Light', 'Helvetica Neue Light', 'Segoe UI', 'Helvetica Neue', 'Trebuchet MS', Verdana;
-        font-weight: 200;
-        font-size: 28px;
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-</style>
 <main>
     <div class="row">
         <div class="col-12">
@@ -79,9 +21,6 @@
             DevExpress.ui.notify(`${event} "${value}" task`, type, 800);
         }
         $(document).ready(function () {
-
-
-
             var testdata;
             $.ajax({
                 type: "GET",
@@ -91,17 +30,13 @@
                 success: function (data) {
                     var schedulerPriorityObj = data.schedulerPriority;
                     var customersObj = data.customers;
-
-
-
-
                     $(() => {
                         $('#scheduler').dxScheduler({
                             timeZone: 'America/Los_Angeles',
                             dataSource: data,
                             views: ['agenda', 'month'],
                             currentView: 'agenda',
-                            currentDate: new Date(2021, 4, 11),
+                            currentDate: new Date(2021, 5, 3),
                             showAllDayPanel: false,
                             height: 700,
                             crossScrollingEnabled: true,
@@ -140,7 +75,7 @@
                             height: 600,
                         });
                     });
-                    console.log(schedulerPriorityObj);
+                    console.log(schedulerPriorityObj.id);
 
                 }
             });

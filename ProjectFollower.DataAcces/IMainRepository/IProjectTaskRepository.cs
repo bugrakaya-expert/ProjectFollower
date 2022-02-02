@@ -8,5 +8,6 @@ namespace ProjectFollower.DataAcces.IMainRepository
     public interface IProjectTaskRepository : IRepository<ProjectTasks>
     {
         void Update(ProjectTasks projectTask);
+        void UpdateRange(List<ProjectTasks> projectTask);
     }
 }

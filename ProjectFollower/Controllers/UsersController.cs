@@ -130,7 +130,7 @@ namespace ProjectFollower.Controllers
             {
                 string webRootPath = _hostEnvironment.WebRootPath;
                 var files = HttpContext.Request.Form.Files;
-
+                var userpath = webRootPath + LocFileForWeb.DIR_Users_Main + Input.Email;
 
                 Console.WriteLine(files.Count.ToString());
                 //System.Diagnostics.Debug.WriteLine(files.ToString());
@@ -138,13 +138,17 @@ namespace ProjectFollower.Controllers
                 if (files.Count() > 0)
                 {
                     string fileName = Guid.NewGuid().ToString();
-                    var uploads = Path.Combine(WebRootPaths.DIR_Users_Img);
+                    var uploads = Path.Combine(userpath+@"\"+ LocFileForWeb.Img);
+
 
                     #region Check Users Directories
+                    if (!(Directory.Exists(uploads)))
+                        Directory.CreateDirectory(uploads);
+                    /*
                     if (!(Directory.Exists(WebRootPaths.DIR_Users_Main)))
                         Directory.CreateDirectory(WebRootPaths.DIR_Users_Main);
                     if (!(Directory.Exists(WebRootPaths.DIR_Users_Img)))
-                        Directory.CreateDirectory(WebRootPaths.DIR_Users_Img);
+                        Directory.CreateDirectory(WebRootPaths.DIR_Users_Img);*/
                     #endregion Check Users Directories
 
 
@@ -357,7 +361,7 @@ namespace ProjectFollower.Controllers
             var Claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             if (Claims != null)
             {
-                var users = _uow.ApplicationUser.GetAll(includeProperties: "Department");
+                var users = _uow.ApplicationUser.GetAll(r=>r.UserRole==UserRoles.Personel,includeProperties: "Department");
                 foreach (var item in users)
                 {
 
@@ -370,6 +374,7 @@ namespace ProjectFollower.Controllers
                             Department = item.Department,
                             FullName = item.FirstName + " " + item.Lastname,
                             IdentityNumber = item.IdentityNumber,
+                            Email = item.Email,
                             ImageUrl = item.ImageUrl
                         };
 
@@ -400,7 +405,7 @@ namespace ProjectFollower.Controllers
             var Claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             if (Claims != null)
             {
-                var users = _uow.ApplicationUser.GetAll(includeProperties: "Department");
+                var users = _uow.ApplicationUser.GetAll(r => r.UserRole == UserRoles.Admin,includeProperties: "Department");
                 foreach (var item in users)
                 {
                     Users Useritem = new Users()
@@ -410,6 +415,7 @@ namespace ProjectFollower.Controllers
                         Department = item.Department,
                         FullName = item.FirstName + " " + item.Lastname,
                         IdentityNumber = item.IdentityNumber,
+                        Email = item.Email,
                         ImageUrl = item.ImageUrl
                     };
                     _Users.Add(Useritem);

@@ -3,7 +3,7 @@
 
 // Write your Javascript code.
 $(document).ready(function () {
-    const locImg = "/assets/users/img/";
+    //const locImg = "/assets/users/img/";
     $("#photochange").text("");
 
 
@@ -16,7 +16,7 @@ $(document).ready(function () {
             $("#photochange").append(`
 
 Mevcut Profil Fotoğrafı<br />
-<img src='`+ locImg+imglink +`' alt='' class='img-thumbnail border-0 rounded-circle list-thumbnail align-self-center'>
+<img src='`+ imglink +`' alt='' class='img-thumbnail border-0 rounded-circle list-thumbnail align-self-center'>
 
 
 
@@ -88,6 +88,7 @@ function editUserFunc() {
 
 }
 
+/*
 function updatePhotoFunc() {
     $("#modalPhotoSubmit").prop('disabled', true);
 
@@ -95,11 +96,7 @@ function updatePhotoFunc() {
         type: "POST",
         url: "jsonresult/updateUserPhoto",
         data: {
-            editUserPass: {
-                currentPassword: $("#modalCurrentPassword").val(),
-                newPassword: $("#modalPassword").val(),
-                confirmnewPassword: $("#modalPasswordconfirm").val()
-            }
+
         },
         success: function (msg) {
 
@@ -117,3 +114,5 @@ function updatePhotoFunc() {
 
 
 }
+
+*/

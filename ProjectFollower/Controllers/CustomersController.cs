@@ -97,6 +97,41 @@ namespace ProjectFollower.Controllers
             var _CompanyType = _uow.CompanyType.GetFirstOrDefault(i => i.Id == customervm.CompanyTypeId);
 
             var DocumentList = new List<CompanyDocuments>();
+
+
+            //var GetCustomer = _uow.Customers.GetFirstOrDefault(i => i.Email==customervm.Email);
+
+            string webRootPath = _hostEnvironment.WebRootPath;
+            var customerpath = LocFileForWeb.DIR_Customer_Main + customervm.Email+ @"\" + LocFileForWeb.Img;
+            var files = HttpContext.Request.Form.Files;
+            string FileName="";
+            if (files.Count() > 0)
+            {
+                //string fileName = Guid.NewGuid().ToString();
+                var uploads = Path.Combine(webRootPath+ customerpath);
+
+                if (!(Directory.Exists(uploads)))
+                    Directory.CreateDirectory(uploads);
+
+
+                foreach (var item in files)
+                {
+                    var extension = Path.GetExtension(item.FileName);
+                    using (var fileStream = new FileStream(Path.Combine(uploads, item.FileName), FileMode.Create))
+                    {
+                        item.CopyTo(fileStream);
+                        /*
+                        var Document = new CompanyDocuments()
+                        {
+                            CustomerId = customer.Id,
+                            FileName = item.FileName + extension,
+                        };
+
+                        _uow.CompanyDocuments.Add(Document);*/
+                    }
+                    FileName = item.FileName;
+                }
+            }
             var customer = new Customers()
             {
                 AuthorizedName = customervm.AuthorizedName,
@@ -104,51 +139,13 @@ namespace ProjectFollower.Controllers
                 CompanyTypeId = customervm.CompanyTypeId,
                 Description = customervm.Description,
                 Email = customervm.Email,
-                ImageUrl = customervm.ImageUrl,
+                ImageUrl = FileName,
                 Name = customervm.Name,
                 Phone = customervm.Phone,
 
             };
             _uow.Customers.Add(customer);
             _uow.Save();
-
-            //var GetCustomer = _uow.Customers.GetFirstOrDefault(i => i.Email==customervm.Email);
-
-            string webRootPath = _hostEnvironment.WebRootPath;
-            var files = HttpContext.Request.Form.Files;
-            if (files.Count() > 0)
-            {
-                //string fileName = Guid.NewGuid().ToString();
-                var uploads = Path.Combine(webRootPath, LocFilePaths.DIR_Customer_Doc + customervm.Name);
-
-
-                #region Check Customer Directories
-                if (!(Directory.Exists(LocFilePaths.RootAsset)))
-                    Directory.CreateDirectory(LocFilePaths.RootAsset);
-                if (!(Directory.Exists(LocFilePaths.DIR_Customer_Main)))
-                    Directory.CreateDirectory(LocFilePaths.DIR_Customer_Main);
-                if (!(Directory.Exists(LocFilePaths.DIR_Customer_Doc)))
-                    Directory.CreateDirectory(LocFilePaths.DIR_Customer_Doc);
-                if (!(Directory.Exists(LocFilePaths.DIR_Customer_Doc + customervm.Name)))
-                    Directory.CreateDirectory(LocFilePaths.DIR_Customer_Doc + customervm.Name);
-                #endregion Check Customer Directories
-
-
-                foreach (var item in files)
-                {
-                    var extension = Path.GetExtension(item.FileName);
-                    using (var fileStream = new FileStream(Path.Combine(uploads, item.FileName + extension), FileMode.Create))
-                    {
-                        item.CopyTo(fileStream);
-                        var Document = new CompanyDocuments()
-                        {
-                            CustomerId = customer.Id,
-                            FileName = item.FileName + extension,
-                        };
-                        _uow.CompanyDocuments.Add(Document);
-                    }
-                }
-            }
             /*
             foreach (var document_item in customervm.Documents)
             {
@@ -161,11 +158,11 @@ namespace ProjectFollower.Controllers
             }
             */
             //_uow.Customers.Add(customer);
-            _uow.Save();
+            //_uow.Save();
             return RedirectToAction("Index", "Customers");
         }
 
-        [HttpGet("musteriler/{id}")]
+        [Route("musteriler/{id}")]
         public IActionResult Details(Guid id)
         {
             #region Authentication Index
@@ -174,7 +171,6 @@ namespace ProjectFollower.Controllers
             if (Claims != null)
             {
                 var ApplicationUser = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == Claims.Value);
-
             }
             else
                 return View("SignIn");

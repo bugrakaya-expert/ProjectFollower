@@ -1,7 +1,8 @@
-﻿
+﻿@using static ProjectFollower.Utility.ProjectConstant.WebRootPaths; 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var customerpath = DIR_Customer_Main;
 }
 
 <main>
@@ -192,7 +193,7 @@
                             value: item.id,
                             text: item.name
                         }));*/
-                        var img = "";
+                        var img = '@customerpath' + item.email + '/img/' + item.imageUrl;
                         var name = item.name;
                         var authname = item.authorizedName;
                         var comptype = item.companyType.name;                        

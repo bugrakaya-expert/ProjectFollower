@@ -188,13 +188,14 @@
                         $("#tbody").text("");
 
                         $.each(data.projects, function (i, item) {
-                            var img = "";
                             var name = item.name;
                             var id = item.id;
                             var status = "";
                             var isDelayed = item.isDelayed;
                             var endingData = item.endingDate;
                             var custImage = item.customers.imageUrl;
+                            var custmail = item.customers.email + '/img/';
+                            var img = "/assets/customers/" + custmail + custImage;
                             var delayedspan = '';
                             if (isDelayed == true) {
                                 delayedspan = `<span class="badge badge-pill badge-danger ml-3">Proje Gecikmiş!</span>`
@@ -214,26 +215,26 @@
                                 status = `<span class="badge badge-pill badge-primary">TAMAMLANDI</span>`;
 
                             var htmlstr = `
-                                        <tr class="cardd" id="`+id+`">
-                                            <td>
-                                                <img src="`+ img + `" alt="` + name + `" class="list-thumbnail responsive border-0 card-img-left" />
-                                            </td>
-                                            <td>
-                                                <p class="d-none">`+ dateSequence + `</p> <p>` + custName + `</p>
-                                            </td>
-                                            <td>
-                                                <p class="list-item-heading">`+ name + `</p>
-                                            </td>
-                                            <td>
-                                                <p class="d-none">`+ dateSequence + `</p> <p>` + endingData + `</p>
-                                            </td>
-                                            <td>
-                                                <p class="d-none">`+ sequence + `</p>` + status + `
-                                            </td>
-                                            <td class="text-center">
-                                                <a href="/proje-detaylari/`+ item.id + `" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
-                                            </td>
-                                        </tr>
+                                            <tr class="cardd" id="`+ id + `">
+                                                <td>
+                                                    <img src="`+ img + `" alt="` + name + `" class="list-thumbnail responsive border-0 card-img-left" />
+                                                </td>
+                                                <td>
+                                                    <p class="d-none">`+ dateSequence + `</p> <p>` + custName + `</p>
+                                                </td>
+                                                <td>
+                                                    <p class="list-item-heading">`+ name + `</p>
+                                                </td>
+                                                <td>
+                                                    <p class="d-none">`+ dateSequence + `</p> <p>` + endingData + `</p>
+                                                </td>
+                                                <td>
+                                                    <p class="d-none">`+ sequence + `</p>` + status + `
+                                                </td>
+                                                <td class="text-center">
+                                                    <a href="/proje-detaylari/`+ item.id + `" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
+                                                </td>
+                                            </tr>
 `;
 
                             $("#tbody").append(htmlstr);
@@ -243,7 +244,7 @@
 
 
                         var alertstr = `
-            <div class="alert alert-danger alert-dismissible fade show rounded mb-4" role="alert"><strong>Dikkat!</strong> Termini geçmiş `+ data.delayedProjects + ` adet projeniz bulunmakta. <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></div>
+                <div class="alert alert-danger alert-dismissible fade show rounded mb-4" role="alert"><strong>Dikkat!</strong> Termini geçmiş `+ data.delayedProjects + ` adet projeniz bulunmakta. <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></div>
 `;
                         if (data.delayedProjects > 0)
                             $("#mp-attention").html(alertstr);
