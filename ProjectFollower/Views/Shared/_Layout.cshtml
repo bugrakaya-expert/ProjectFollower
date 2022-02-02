@@ -108,7 +108,7 @@
                     <i class="simple-icon-size-actual"></i>
                 </button>
             </div>
-            @if (User.IsInRole(UserRoles.Admin) || User.IsInRole(UserRoles.Manager) || User.IsInRole(UserRoles.Personel))@await Component.InvokeAsync("GetUser");
+            @if (User.IsInRole(UserRoles.Admin) || User.IsInRole(UserRoles.Manager) || User.IsInRole(UserRoles.Personel))@await Component.InvokeAsync("GetUser")
         </div>
     </nav>
     <div class="menu">

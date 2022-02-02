@@ -375,7 +375,8 @@ namespace ProjectFollower.Controllers
                             FullName = item.FirstName + " " + item.Lastname,
                             IdentityNumber = item.IdentityNumber,
                             Email = item.Email,
-                            ImageUrl = item.ImageUrl
+                            ImageUrl = item.ImageUrl,
+                            Role = item.Role
                         };
 
                         _Users.Add(Useritem);
@@ -416,7 +417,8 @@ namespace ProjectFollower.Controllers
                         FullName = item.FirstName + " " + item.Lastname,
                         IdentityNumber = item.IdentityNumber,
                         Email = item.Email,
-                        ImageUrl = item.ImageUrl
+                        ImageUrl = item.ImageUrl,
+                        Role = item.Role
                     };
                     _Users.Add(Useritem);
                 }

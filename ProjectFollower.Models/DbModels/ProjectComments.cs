@@ -13,10 +13,7 @@ namespace ProjectFollower.Models.DbModels
         [ForeignKey("ProjectsId")]
         public Guid ProjectsId { get; set; }
         public Projects Projects { get; set; }
-        [ForeignKey("ApplicationUserId")]
-        public Guid ApplicationUserId { get; set; }
-        public ApplicationUser ApplicationUser { get; set; }
-        public DateTime Time { get; set; }
+        public DateTime CommentTime { get; set; }
         public string Comment { get; set; }
     }
 }
