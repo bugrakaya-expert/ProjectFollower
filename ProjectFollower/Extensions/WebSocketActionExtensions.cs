@@ -7,6 +7,8 @@ using ProjectFollower.Models.ViewModels;
 using ProjectFollower.DataAcces.IMainRepository;
 using ProjectFollower.Hubs;
 using Microsoft.AspNetCore.SignalR;
+using System.Security.Claims;
+using static ProjectFollower.Utility.ProjectConstant;
 
 namespace ProjectFollower.Extensions
 {
@@ -22,8 +24,9 @@ namespace ProjectFollower.Extensions
 
         public int Sequence = 0;
         public int Delayeds = 0;
-        public async Task ListProjects_WebSocket()
+        public async Task ListProjects_WebSocket(Claim Claims)
         {
+            /*
             IEnumerable<Projects> Projects;
             List<Projects> _projects = new List<Projects>();
             List<ProjectListVM> ProjectListVMs = new List<ProjectListVM>();
@@ -51,8 +54,11 @@ namespace ProjectFollower.Extensions
                 Projects = _projects,
                 DelayedProjects = Delayeds
             };
+
             HomeHub Hub = new HomeHub(_context);
-            await Hub.SendDataTable(_ProjectListVM);
+            await Hub.SendDataTable(_ProjectListVM);*/
+            HomeHub Hub = new HomeHub(_context);
+            await Hub.SendDataTable(null);
 
             //return _ProjectListVM;
         }

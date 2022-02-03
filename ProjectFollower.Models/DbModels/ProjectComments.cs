@@ -14,6 +14,8 @@ namespace ProjectFollower.Models.DbModels
         public Guid ProjectsId { get; set; }
         public Projects Projects { get; set; }
         public DateTime CommentTime { get; set; }
+        public string UserId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
         public string Comment { get; set; }
     }
 }

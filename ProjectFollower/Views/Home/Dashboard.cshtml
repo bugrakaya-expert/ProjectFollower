@@ -2,15 +2,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "Dashboard";
     int seq = 0;
-
+    bool archived = Convert.ToBoolean(Context.Request.Cookies["_kj6ght"]);
 }
-
+@using static ProjectFollower.Utility.ProjectConstant.UserRoles
 <main>
     @*
         <div class="alert alert-danger alert-dismissible fade show rounded mb-4" role="alert"><strong>Dikkat!</strong> Termini geçmiş 1 adet projeniz bulunmakta. <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></div>
     *@
     <div id="mp-attention">
-
     </div>
 
     @*
@@ -26,7 +25,11 @@
                 <div class="mb-3">
                     <h1>Projeler</h1>
                     <div class="text-zero top-right-button-container">
-                        <a asp-controller="Home" asp-action="ProjectNew"><button type="button" class="btn btn-primary btn-lg top-right-button mr-1">YENİ PROJE EKLE</button></a>
+                        @if (User.IsInRole(Admin))
+                        {
+                            <button asp-controller="Home" asp-action="ProjectNew" type="button" class="btn btn-primary btn-lg top-right-button mr-1">YENİ PROJE EKLE</button>
+                        }
+
                     </div>
                 </div>
 
@@ -47,8 +50,16 @@
                             <div class="form-group row mb-1 mr-2">
                                 <label class=" d-flex align-items-center mr-2 text-muted"><b>Arşivlenmiş Projeler</b></label>
                                 <div class="custom-switch custom-switch-secondary-inverse mb-2">
-                                    <input class="custom-switch-input" id="switch4" type="checkbox">
-                                    <label class="custom-switch-btn" for="switch4"></label>
+                                    @if (archived)
+                                    {
+                                        <input class="custom-switch-input" id="archived" type="checkbox" checked>
+                                    }
+                                    else
+                                    {
+                                        <input class="custom-switch-input" id="archived" type="checkbox">
+                                    }
+
+                                    <label class="custom-switch-btn" for="archived"></label>
                                 </div>
                             </div>
                         </div>
@@ -62,14 +73,14 @@
             <div class="col-12">
                 <div class="data-table-rows data-tables-hide-filter">
                     <table id="datatableRow" class="data-table data-tables-pagination responsive nowrap"
-                           data-order="[[ 1, &quot;desc&quot; ]]">
+                           data-order="[[ 1, &quot;desc&quot; ]]" style="width:100%">
                         <thead>
                             <tr>
                                 <th style="visibility: hidden;"></th>
-                                <th>Firma Adı</th>
-                                <th>Proje Adı</th>
-                                <th>Deadline</th>
-                                <th>Durum</th>
+                                <th data-sorter="false">Firma Adı</th>
+                                <th data-sorter="false">Proje Adı</th>
+                                <th data-sorter="false">Deadline</th>
+                                <th data-sorter="false">Durum</th>
                                 <th style="visibility: hidden;"></th>
                             </tr>
                         </thead>
@@ -171,17 +182,49 @@
     <script src="/js/vendor/datatables-index.min.js"></script>
 
     <script>
-        $(document).ready(function () {
+        $(window).on('load', function () {
 
+            var archived = '@archived';
+            function changeArcStatus() {
+                $.ajax({
+                    type: "GET",
+                    url: "/jsonresult/changearcstatus/" + archived,
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function (data) {
+                        console.log("archive ajax success");
+                        setTimeout(function () {
+                            location.reload();
+                        }, 500);
+                    }
+                });
+            };
 
-            var arcStatus = 0;
+            if ($('#archived').is(":checked")) {
+
+                console.log("archive checked.");
+            }
+
+            $('#archived').change(function () {
+                if (this.checked) {
+                    console.log("archive checked.");
+                    archived = true;
+                    changeArcStatus();
+                } else {
+                    console.log("archive unchecked.");
+                    archived = false;
+                    changeArcStatus();
+                }
+            });
+
+            //var arcStatus = 0;
             console.log("ready!");
             $("#tbody").html("");
 
             function voidAjx() {
                 $.ajax({
                     type: "GET",
-                    url: "/jsonresult/getprojectlist/" + arcStatus,
+                    url: "/jsonresult/getprojectlist/" + archived,
                     contentType: "application/json",
                     dataType: "json",
                     success: function (data) {
@@ -213,28 +256,30 @@
                                 status = `<span class="badge badge-pill badge-secondary">MÜŞTERİ ONAYINDA</span>` + delayedspan;
                             if (item.status == 3)
                                 status = `<span class="badge badge-pill badge-primary">TAMAMLANDI</span>`;
+                            if (item.status == 4)
+                                status = `<span class="badge badge-pill badge-primary">Arşivli</span>&nbsp;&nbsp; <i class="fas fa-archive fa-2x"></i>`;
 
                             var htmlstr = `
-                                            <tr class="cardd" id="`+ id + `">
-                                                <td>
-                                                    <img src="`+ img + `" alt="` + name + `" class="list-thumbnail responsive border-0 card-img-left" />
-                                                </td>
-                                                <td>
-                                                    <p class="d-none">`+ dateSequence + `</p> <p>` + custName + `</p>
-                                                </td>
-                                                <td>
-                                                    <p class="list-item-heading">`+ name + `</p>
-                                                </td>
-                                                <td>
-                                                    <p class="d-none">`+ dateSequence + `</p> <p>` + endingData + `</p>
-                                                </td>
-                                                <td>
-                                                    <p class="d-none">`+ sequence + `</p>` + status + `
-                                                </td>
-                                                <td class="text-center">
-                                                    <a href="/proje-detaylari/`+ item.id + `" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
-                                                </td>
-                                            </tr>
+                                                <tr class="cardd" id="`+ id + `">
+                                                    <td>
+                                                        <img src="`+ img + `" alt="` + name + `" class="list-thumbnail responsive border-0 card-img-left" />
+                                                    </td>
+                                                    <td>
+                                                        <p class="d-none">`+ dateSequence + `</p> <p>` + custName + `</p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="list-item-heading">`+ name + `</p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="d-none">`+ dateSequence + `</p> <p>` + endingData + `</p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="d-none">`+ sequence + `</p>` + status + `
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <a href="/proje-detaylari/`+ item.id + `" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
+                                                    </td>
+                                                </tr>
 `;
 
                             $("#tbody").append(htmlstr);
@@ -244,7 +289,7 @@
 
 
                         var alertstr = `
-                <div class="alert alert-danger alert-dismissible fade show rounded mb-4" role="alert"><strong>Dikkat!</strong> Termini geçmiş `+ data.delayedProjects + ` adet projeniz bulunmakta. <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></div>
+                    <div class="alert alert-danger alert-dismissible fade show rounded mb-4" role="alert"><strong>Dikkat!</strong> Termini geçmiş `+ data.delayedProjects + ` adet projeniz bulunmakta. <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></div>
 `;
                         if (data.delayedProjects > 0)
                             $("#mp-attention").html(alertstr);
@@ -253,12 +298,19 @@
 
                     }
                 });
+
+
             }
 
 
             voidAjx();
+            /*
+            $('#datatableRow').DataTable({
+                "order": [[3, 'desc']]
+            });*/
 
 
         });
+
     </script>
 }
