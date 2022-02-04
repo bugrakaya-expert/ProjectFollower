@@ -1,53 +1,41 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProjectFollower.DataAcces.Migrations
 {
-    public partial class updated19 : Migration
+    public partial class InitialMigration4 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_ProjectComments_AspNetUsers_ApplicationUserId1",
+                name: "FK_ProjectComments_AspNetUsers_ApplicationUserId",
                 table: "ProjectComments");
 
             migrationBuilder.DropIndex(
-                name: "IX_ProjectComments_ApplicationUserId1",
+                name: "IX_ProjectComments_ApplicationUserId",
                 table: "ProjectComments");
 
             migrationBuilder.DropColumn(
                 name: "ApplicationUserId",
-                table: "ProjectComments");
-
-            migrationBuilder.DropColumn(
-                name: "ApplicationUserId1",
                 table: "ProjectComments");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<Guid>(
-                name: "ApplicationUserId",
-                table: "ProjectComments",
-                type: "uniqueidentifier",
-                nullable: false,
-                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
-
             migrationBuilder.AddColumn<string>(
-                name: "ApplicationUserId1",
+                name: "ApplicationUserId",
                 table: "ProjectComments",
                 type: "nvarchar(450)",
                 nullable: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProjectComments_ApplicationUserId1",
+                name: "IX_ProjectComments_ApplicationUserId",
                 table: "ProjectComments",
-                column: "ApplicationUserId1");
+                column: "ApplicationUserId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_ProjectComments_AspNetUsers_ApplicationUserId1",
+                name: "FK_ProjectComments_AspNetUsers_ApplicationUserId",
                 table: "ProjectComments",
-                column: "ApplicationUserId1",
+                column: "ApplicationUserId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);

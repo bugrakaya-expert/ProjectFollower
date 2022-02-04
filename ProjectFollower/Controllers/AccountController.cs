@@ -23,7 +23,7 @@ namespace ProjectFollower.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
-        //private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<AccountController> _logger;
         private readonly IUnitOfWork _uow;
         private readonly IWebHostEnvironment _hostEnvironment;
@@ -31,6 +31,7 @@ namespace ProjectFollower.Controllers
         public AccountController(
         UserManager<IdentityUser> userManager,
         SignInManager<IdentityUser> signInManager,
+        RoleManager<IdentityRole> roleManager,
         ILogger<AccountController> logger,
         IUnitOfWork uow,
                 IWebHostEnvironment hostEnvironment
@@ -38,6 +39,7 @@ namespace ProjectFollower.Controllers
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
             _logger = logger;
             _uow = uow;
             _hostEnvironment = hostEnvironment;
@@ -87,6 +89,19 @@ namespace ProjectFollower.Controllers
         [HttpPost("registerUser")]
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
+            }
+            if (!await _roleManager.RoleExistsAsync(UserRoles.Manager))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(UserRoles.Manager));
+            }
+            if (!await _roleManager.RoleExistsAsync(UserRoles.Personel))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(UserRoles.Personel));
+            }
+
             bool posted = true;
             //Input.IsCompany=Convert.ToBoolean(RegCheck) ;
             returnUrl = returnUrl ?? Url.Content("~/");
@@ -102,7 +117,8 @@ namespace ProjectFollower.Controllers
                     FirstName = Input.FirstName,
                     Lastname = Input.Lastname,
                     AppUserName = Input.AppUserName,
-                    IdentityNumber = Input.IdentityNumber
+                    IdentityNumber = Input.IdentityNumber,
+                    DepartmentId= Guid.Parse("c4c20233-e1b8-41f4-96e7-136aa1c31ad5")
 
 
                 };
@@ -187,6 +203,7 @@ namespace ProjectFollower.Controllers
                 return View();
             return NotFound();
         }
+        [Route("registerUser")]
         public IActionResult AddUser()
         {
             return View();
@@ -253,6 +270,7 @@ namespace ProjectFollower.Controllers
             }
             return Json(imglink);
         }
+        [HttpPost("update-profile-photo")]
         public IActionResult UpdateUserPhoto()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;

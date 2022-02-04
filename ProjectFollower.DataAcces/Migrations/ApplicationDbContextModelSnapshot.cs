@@ -324,9 +324,6 @@ namespace ProjectFollower.DataAcces.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
 
@@ -340,8 +337,6 @@ namespace ProjectFollower.DataAcces.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("ProjectsId");
 
@@ -509,7 +504,6 @@ namespace ProjectFollower.DataAcces.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("IdentityNumber")
@@ -519,7 +513,6 @@ namespace ProjectFollower.DataAcces.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Lastname")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserRole")
@@ -592,10 +585,6 @@ namespace ProjectFollower.DataAcces.Migrations
 
             modelBuilder.Entity("ProjectFollower.Models.DbModels.ProjectComments", b =>
                 {
-                    b.HasOne("ProjectFollower.Models.DbModels.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId");
-
                     b.HasOne("ProjectFollower.Models.DbModels.Projects", "Projects")
                         .WithMany()
                         .HasForeignKey("ProjectsId")

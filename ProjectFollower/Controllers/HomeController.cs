@@ -51,6 +51,8 @@ namespace ProjectFollower.Controllers
 
         [BindProperty]
         public UserRegisterVM Input { get; set; }
+        public string Nullorempty { get; private set; }
+
         public int Sequence = 0;
         public int Delayeds = 0;
 
@@ -94,6 +96,7 @@ namespace ProjectFollower.Controllers
         public IActionResult Details(string id)
         {
             List<Users> _users = new List<Users>();
+            List<CommentVM> _commentList = new List<CommentVM>();
             var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id), includeProperties: "Customers");
             var _tasks = _uow.ProjectTasks.GetAll(i => i.ProjectsId == Guid.Parse(id));
             var _documents = _uow.ProjectDocuments.GetAll(i => i.ProjectsId == Guid.Parse(id));
@@ -116,12 +119,25 @@ namespace ProjectFollower.Controllers
                 };
                 _users.Add(User);
             }
+            foreach (var item in _comments)
+            {
+                var UserItem = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == item.UserId);
+                var commentItem = new CommentVM()
+                {
+                    Comment = item.Comment,
+                    CommentTime = item.CommentTime.ToString("f"),
+                    FullName = UserItem.FirstName + " " + UserItem.Lastname,
+                    Img=UserItem.ImageUrl,
+                    UserEmail=UserItem.Email
+                };
+                _commentList.Add(commentItem);
+            }
             var _projectDetailVM = new ProjectDetailVM()
             {
                 Project = _project,
                 ProjectTasks = _tasks,
                 ProjectDocuments = _documents,
-                ProjectComments = _comments,
+                CommentVM = _commentList,
                 Users=_users
             };
             return View(_projectDetailVM);
@@ -588,23 +604,40 @@ namespace ProjectFollower.Controllers
             await WebSocAct.ListProjects_WebSocket(GetClaim());
             return Json(null);
         }
-        //public async Task<JsonResult> Comment
-        [HttpPost("jsonresult/addcomment")]
-        public JsonResult AddComments(CommentVM comment)
+
+        [HttpPost("jsonresult/addcomment/")]
+        public JsonResult AddComments(ProjectComments projectComments)
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var Claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            //CommentVM commentVM = new CommentVM();
+            if (String.IsNullOrEmpty(projectComments.Comment))
+            {
+                return Json(null);
+            }
             if (Claims != null)
             {
                 var AppUser = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == Claims.Value);
-                comment.ProjectComments.UserId = AppUser.Id;
-                comment.ProjectComments.CommentTime = DateTime.Now;
-                comment.FirstName = AppUser.FirstName;
-                comment.LastName = AppUser.Lastname;
-                comment.FullName = AppUser.FirstName + " " + AppUser.Lastname;
-                comment.Img = AppUser.ImageUrl;
+                projectComments.UserId = AppUser.Id;
+                projectComments.CommentTime = DateTime.Now;
+                _uow.ProjectComments.Add(projectComments);
+                var Comment = new CommentVM()
+                {
+                    Comment = projectComments.Comment,
+                    CommentTime = projectComments.CommentTime.ToString("F"),
+                    Img = AppUser.ImageUrl,
+                    FullName = AppUser.FirstName + " " + AppUser.Lastname,
+                    UserEmail = AppUser.Email
+                };
+                _uow.Save();
+                return Json(Comment);
+
+                //_uow.ProjectComments.Add(ProjectComments);
             }
-            return Json(comment);
+            return Json(null);
+            //var project = new Projects();
+
+
         }
         #endregion API
 

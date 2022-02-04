@@ -10,8 +10,8 @@ using ProjectFollower.DataAcces.Data;
 namespace ProjectFollower.DataAcces.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220126123745_updated11")]
-    partial class updated11
+    [Migration("20220204113816_InitialMigration3")]
+    partial class InitialMigration3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -320,6 +320,55 @@ namespace ProjectFollower.DataAcces.Migrations
                     b.ToTable("Department");
                 });
 
+            modelBuilder.Entity("ProjectFollower.Models.DbModels.ProjectComments", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CommentTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("ProjectsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("ProjectsId");
+
+                    b.ToTable("ProjectComments");
+                });
+
+            modelBuilder.Entity("ProjectFollower.Models.DbModels.ProjectDocuments", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FileName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ProjectsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectsId");
+
+                    b.ToTable("ProjectDocuments");
+                });
+
             modelBuilder.Entity("ProjectFollower.Models.DbModels.ProjectTasks", b =>
                 {
                     b.Property<Guid>("Id")
@@ -328,6 +377,9 @@ namespace ProjectFollower.DataAcces.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Done")
+                        .HasColumnType("bit");
 
                     b.Property<Guid>("ProjectsId")
                         .HasColumnType("uniqueidentifier");
@@ -358,13 +410,18 @@ namespace ProjectFollower.DataAcces.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EndingDate")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FinishDate")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -390,6 +447,59 @@ namespace ProjectFollower.DataAcces.Migrations
                     b.ToTable("ResponsibleUsers");
                 });
 
+            modelBuilder.Entity("ProjectFollower.Models.DbModels.Scheduler", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("AllDay")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("CustomersId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PriorityId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomersId");
+
+                    b.ToTable("Scheduler");
+                });
+
+            modelBuilder.Entity("ProjectFollower.Models.DbModels.SchedulerPriority", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Color")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SchedulerPriority");
+                });
+
             modelBuilder.Entity("ProjectFollower.Models.DbModels.ApplicationUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
@@ -401,7 +511,6 @@ namespace ProjectFollower.DataAcces.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("IdentityNumber")
@@ -411,7 +520,9 @@ namespace ProjectFollower.DataAcces.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Lastname")
-                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserRole")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasIndex("DepartmentId");
@@ -479,6 +590,28 @@ namespace ProjectFollower.DataAcces.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ProjectFollower.Models.DbModels.ProjectComments", b =>
+                {
+                    b.HasOne("ProjectFollower.Models.DbModels.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("ProjectFollower.Models.DbModels.Projects", "Projects")
+                        .WithMany()
+                        .HasForeignKey("ProjectsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ProjectFollower.Models.DbModels.ProjectDocuments", b =>
+                {
+                    b.HasOne("ProjectFollower.Models.DbModels.Projects", "Projects")
+                        .WithMany()
+                        .HasForeignKey("ProjectsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("ProjectFollower.Models.DbModels.ProjectTasks", b =>
                 {
                     b.HasOne("ProjectFollower.Models.DbModels.Projects", "Projects")
@@ -489,6 +622,15 @@ namespace ProjectFollower.DataAcces.Migrations
                 });
 
             modelBuilder.Entity("ProjectFollower.Models.DbModels.Projects", b =>
+                {
+                    b.HasOne("ProjectFollower.Models.DbModels.Customers", "Customers")
+                        .WithMany()
+                        .HasForeignKey("CustomersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ProjectFollower.Models.DbModels.Scheduler", b =>
                 {
                     b.HasOne("ProjectFollower.Models.DbModels.Customers", "Customers")
                         .WithMany()

@@ -244,7 +244,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="changephoto-form" asp-controller="Account" asp-action="UpdateUserPhoto" enctype="multipart/form-data">
+                <form id="changephoto-form" method="post" asp-controller="Account" asp-action="UpdateUserPhoto" enctype="multipart/form-data" data-pasley-validate>
                     <div class="modal-body">
                         <div class="form-group">
                             <div class="row d-flex align-items-center justify-content-center">

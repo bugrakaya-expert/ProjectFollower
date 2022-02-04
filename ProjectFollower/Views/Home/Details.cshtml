@@ -93,53 +93,6 @@
 
                                     }
 
-
-                                    @*
-                                        <div class="row">
-                                        <div class="col-10">
-                                        <p class="mission-completed">Pellentesque quis cursus mauris.</p>
-                                        </div>
-                                        <div class="col-2 text-end">
-                                        <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" disabled checked class="custom-control-input" id="control-mission1" name="control-mission1">
-                                        <label class="custom-control-label" disabled for="control-mission1">Tamamlandı</label>
-                                        </div>
-                                        </div>
-                                        </div>
-                                        <div class="row">
-                                        <div class="col-10">
-                                        <p>Pellentesque quis cursus mauris.</p>
-                                        </div>
-                                        <div class="col-2 text-end">
-                                        <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" disabled class="custom-control-input" id="control-mission2" name="control-mission2">
-                                        <label class="custom-control-label" disabled for="control-mission2">Tamamlanmadı</label>
-                                        </div>
-                                        </div>
-                                        </div>
-                                        <div class="row">
-                                        <div class="col-10">
-                                        <p>Pellentesque quis cursus mauris.</p>
-                                        </div>
-                                        <div class="col-2 text-end">
-                                        <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="control-mission3" name="control-mission3">
-                                        <label class="custom-control-label" for="control-mission3">Tamamlanmadı</label>
-                                        </div>
-                                        </div>
-                                        </div>
-                                        <div class="row mb-4">
-                                        <div class="col-10">
-                                        <p>Pellentesque quis cursus mauris.</p>
-                                        </div>
-                                        <div class="col-2 text-end">
-                                        <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="control-mission4" name="control-mission4">
-                                        <label class="custom-control-label" for="control-mission4">Tamamlanmadı</label>
-                                        </div>
-                                        </div>
-                                        </div>
-                                    *@
                                     <div class="row mb-4">
                                         <div class="col-12 text-right">
                                             <button type="button" class="btn btn-primary btn-sm mb-0" id="taskbtn">Görevleri Düzenlemeyi Kaydet</button>
@@ -149,19 +102,20 @@
                                 <div class="separator mb-5"></div>
 
                                 <p class="font-weight-bold">Yorumlar</p>
-                                <div id="comments">
-                                    @if (Model.ProjectComments.Count() > 0)
+                                <div class="scroll dashboard-list-with-user" id="comments">
+
+                                    @if (Model.CommentVM.Count() > 0)
                                     {
-                                        @foreach (var item in Model.ProjectComments)
+                                        @foreach (var item in Model.CommentVM)
                                         {
                                             <div class="d-flex flex-row mb-3 border-bottom justify-content-between">
                                                 <a href="#">
-                                                    <img src="@item.ApplicationUser.ImageUrl" alt="Philip Nelms"
+                                                    <img src="/assets/users/@item.UserEmail/img/@item.Img" alt="Philip Nelms"
                                                          class="img-thumbnail border-0 rounded-circle list-thumbnail align-self-center xsmall" />
                                                 </a>
                                                 <div class="pl-3 flex-grow-1">
                                                     <a href="#">
-                                                        <p class="font-weight-medium mb-0">@item.ApplicationUser.FirstName @item.ApplicationUser.Lastname</p>
+                                                        <p class="font-weight-medium mb-0">@item.FullName</p>
                                                         <p class="text-muted mb-0 text-small">@item.CommentTime</p>
                                                     </a>
                                                     <p class="mt-3">
@@ -317,8 +271,6 @@
                             string img = customerpath + item.Email + "/img/" + item.ImageUrl;
                             <img alt="thumb" class="img-thumbnail border-0 rounded-circle mb-4 list-thumbnail mx-auto" src="@img">
                         }
-
-                        @*<img alt="thumb" class="img-thumbnail border-0 rounded-circle mb-4 list-thumbnail mx-auto" src="img/orj/users/egul.jpg">*@
                     </div>
                 </div>
             </div>
@@ -368,10 +320,12 @@
     <script src="/js/vendor/quill.min.js"></script>
 
     <script>
+        function test() {
+            //alert("I am here");
+        }
+
         $(document).ready(function () {
 
-            @*window.history.pushState("", "", "/proje-detaylari/" +@Model.Project.Id);*@
-            @*history.pushState("", "", "/proje-detaylari/" +@Model.Project.Id);*@
             $(document).on("click", "#submitDesc", function () {
                 console.log("submitdesc Action");
 
@@ -451,41 +405,60 @@
                 var comment = $('#comment-input').val();
                 $.ajax({
                     type: "POST",
-                    url: "/jsonresult/addcomment",
+                    //url: "/jsonresult/addcomment/" + '@Model.Project.Id' + "/" + comment,
+                    url: "/jsonresult/addcomment/",
                     data: {
-                        projectComments: {
-                            projectsId: '@Model.Project.Id',
-                            comment: $('#comment-input').val()
-                        }
+                        projectsId: '@Model.Project.Id',
+                        comment: comment
+
                     },
                     success: function (received) {
-                        console.log(received);
-                        commenthtml = `
+                        if (received == null)
+                            $("#comment-input").val("");
+                        else {
+
+                            commenthtml = `
 
                                             <div class='d-flex flex-row mb-3 border-bottom justify-content-between'>
                                                 <a href='#'>
-                                                    <img src='`+ received.img+`' alt='Philip Nelms'
+                                                    <img src='/assets/users/`+ received.userEmail + `/img/` + received.img + `' alt='` + received.fullName + `'
                                                          class='img-thumbnail border-0 rounded-circle list-thumbnail align-self-center xsmall' />
                                                 </a>
                                                 <div class='pl-3 flex-grow-1'>
                                                     <a href='#'>
                                                         <p class='font-weight-medium mb-0'>`+ received.fullName + `</p>
-                                                        <p class='text-muted mb-0 text-small'>`+ received.projectComments.commentTime+`</p>
+                                                        <p class='text-muted mb-0 text-small'>`+ received.commentTime + `</p>
                                                     </a>
                                                     <p class='mt-3'>
-                                                        `+ received.projectComments.comment+`
+                                                        `+ received.comment + `
                                                     </p>
                                                 </div>
                                             </div>
 `;
-                        $("#comments").append(commenthtml);
+                            $("#comments").append(commenthtml);
+                            $("#commentnone").hide();
+
+                            $("#comment-input").val("");
+                        }
+
+
+
 
                     }
                 });
             });
 
 
-            //var obj = {id:"",val:""};
+
+            $('#comment-input').keydown(function (event) {
+                var keyCode = (event.keyCode ? event.keyCode : event.which);
+                if (keyCode == 13) {
+                    $('#comment-button').trigger('click');
+                    test();
+                }
+            });
+
+
 
 
         });

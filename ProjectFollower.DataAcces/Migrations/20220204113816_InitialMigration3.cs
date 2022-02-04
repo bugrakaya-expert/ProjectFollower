@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProjectFollower.DataAcces.Migrations
 {
-    public partial class updated13 : Migration
+    public partial class InitialMigration3 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,17 +13,17 @@ namespace ProjectFollower.DataAcces.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     ProjectsId = table.Column<Guid>(nullable: false),
-                    ApplicationUserId = table.Column<Guid>(nullable: false),
-                    ApplicationUserId1 = table.Column<string>(nullable: true),
-                    Time = table.Column<DateTime>(nullable: false),
+                    CommentTime = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
+                    ApplicationUserId = table.Column<string>(nullable: true),
                     Comment = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProjectComments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProjectComments_AspNetUsers_ApplicationUserId1",
-                        column: x => x.ApplicationUserId1,
+                        name: "FK_ProjectComments_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -35,38 +35,14 @@ namespace ProjectFollower.DataAcces.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "ProjectDocuments",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    ProjectsId = table.Column<Guid>(nullable: false),
-                    FileName = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProjectDocuments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ProjectDocuments_Projects_ProjectsId",
-                        column: x => x.ProjectsId,
-                        principalTable: "Projects",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
-                name: "IX_ProjectComments_ApplicationUserId1",
+                name: "IX_ProjectComments_ApplicationUserId",
                 table: "ProjectComments",
-                column: "ApplicationUserId1");
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProjectComments_ProjectsId",
                 table: "ProjectComments",
-                column: "ProjectsId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProjectDocuments_ProjectsId",
-                table: "ProjectDocuments",
                 column: "ProjectsId");
         }
 
@@ -74,9 +50,6 @@ namespace ProjectFollower.DataAcces.Migrations
         {
             migrationBuilder.DropTable(
                 name: "ProjectComments");
-
-            migrationBuilder.DropTable(
-                name: "ProjectDocuments");
         }
     }
 }

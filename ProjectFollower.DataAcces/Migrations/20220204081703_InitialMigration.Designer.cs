@@ -10,8 +10,8 @@ using ProjectFollower.DataAcces.Data;
 namespace ProjectFollower.DataAcces.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220203140545_updated21")]
-    partial class updated21
+    [Migration("20220204081703_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -326,26 +326,19 @@ namespace ProjectFollower.DataAcces.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CommentTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("CommentTime")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("ProjectsId")
+                    b.Property<Guid>("ProjectId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("ProjectsId");
 
                     b.ToTable("ProjectComments");
                 });
@@ -511,7 +504,6 @@ namespace ProjectFollower.DataAcces.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("IdentityNumber")
@@ -521,7 +513,6 @@ namespace ProjectFollower.DataAcces.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Lastname")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserRole")
@@ -588,19 +579,6 @@ namespace ProjectFollower.DataAcces.Migrations
                     b.HasOne("ProjectFollower.Models.DbModels.CompanyType", "CompanyType")
                         .WithMany()
                         .HasForeignKey("CompanyTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ProjectFollower.Models.DbModels.ProjectComments", b =>
-                {
-                    b.HasOne("ProjectFollower.Models.DbModels.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId");
-
-                    b.HasOne("ProjectFollower.Models.DbModels.Projects", "Projects")
-                        .WithMany()
-                        .HasForeignKey("ProjectsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

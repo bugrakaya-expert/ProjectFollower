@@ -321,7 +321,7 @@ namespace ProjectFollower.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(string id)
+        public IActionResult Delete(string id)
         {
             var AppUser = _uow.ApplicationUser.GetFirstOrDefault(i=>i.Id == id);
             _uow.ApplicationUser.Remove(AppUser);

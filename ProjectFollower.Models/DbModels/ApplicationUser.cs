@@ -9,15 +9,12 @@ namespace ProjectFollower.Models.DbModels
 {
     public class ApplicationUser : IdentityUser
     {
-        [Required]
         public string FirstName { get; set; }
-        [Required]
         public string Lastname { get; set; }
         public string AppUserName { get; set; }
         public string IdentityNumber { get; set; }
 
         public string ImageUrl { get; set; }
-        [Required]
         public Guid DepartmentId { get; set; }
 
         [ForeignKey("DepartmentId")]
