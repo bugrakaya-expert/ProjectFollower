@@ -397,8 +397,12 @@ namespace ProjectFollower.Controllers
         {
             string id = Convert.ToString(_projectDetailVM.Project.Id);
             string description = _projectDetailVM.Project.Description;
+            string endingDate = _projectDetailVM.Project.EndingDate;
+            string projectName = _projectDetailVM.Project.Name;
             var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id), includeProperties: "Customers");
             _project.Description = description;
+            _project.EndingDate = endingDate;
+            _project.Name = projectName;
             _uow.Project.Update(_project);
             _uow.Save();
             //return Json("/proje-detaylari/"+id+ "&updated=" + true);

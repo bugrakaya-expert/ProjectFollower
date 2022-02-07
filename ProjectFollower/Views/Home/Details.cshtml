@@ -258,7 +258,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-8 p-0 m-0 d-flex justify-content-center align-items-center">
-                                <h1 class="p-0 m-0">Poligon Mühendislik</h1>
+                                <h1 class="p-0 m-0">@Model.Project.Customers.Name</h1>
                             </div>
                             <div class="col-4">
                                 <img src="/img/orj/firmalar/poligon.jpg" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left ml-2" />
@@ -329,7 +329,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Proje Adı:</label>
-                        <input type="text" class="form-control" id="recipient-name">
+                        <input id="projectname" type="text" class="form-control" id="recipient-name" value="@Model.Project.Name">
                     </div>
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Açıklama:</label>
@@ -341,7 +341,7 @@
                     </div>
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Proje Bitiş Tarihi:</label>
-                        <input class="form-control datepicker" placeholder="" autocomplete="off" value="31.01.2022" required />
+                        <input id="dateval" class="form-control datepicker" placeholder="" autocomplete="off" value="@DateTime.Now.ToString("dd/MM/yyyy")" required />
                     </div>
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Proje Üyeleri:</label>
@@ -420,7 +420,9 @@
                     data: {
                         project: {
                             id: '@Model.Project.Id',
-                            description: $('.ql-editor').html()
+                            description: $('.ql-editor').html(),
+                            EndingDate: $('#dateval').val(),
+                            Name: $('#projectname').val()
                         }
                     },
                     success: function (received) {
