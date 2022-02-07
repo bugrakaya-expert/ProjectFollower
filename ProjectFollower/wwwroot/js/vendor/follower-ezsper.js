@@ -15,9 +15,12 @@
     $('#mission-list').on('click', '.deleteli', function(e) {
         $(this).closest('tr').remove();
     });
-    $('.delete-project').on('click', function (e) {
+
+
+    $(".remove-customer-document").click(function () {
+        var id = $(this).attr('id');
         Swal.fire({
-            title: 'Bu projeyi kaldırmak istediğinize emin misiniz?',
+            title: 'Bu dökümanı kaldırmak istediğinizden emin misiniz?',
             showCancelButton: true,
             icon: 'info',
             confirmButtonText: 'Kaldır',
@@ -25,83 +28,21 @@
         }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                Swal.fire({
-                    title: 'Başarıyla silindi',
-                    icon: 'success',
-                    confirmButtonText: 'Tamam',
-                })
-            }
-        })
-    });
-    $(".archive-project").click(function () {
-        Swal.fire({
-            title: 'Bu projeyi arşivlemek istediğinize emin misiniz?',
-            showCancelButton: true,
-            icon: 'info',
-            confirmButtonText: 'Arşivle',
-            cancelButtonText: `İptal Et`,
-        }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-                Swal.fire({
-                    title: 'Başarıyla arşivlendi',
-                    icon: 'success',
-                    confirmButtonText: 'Tamam',
-                })
-            }
-        })
-    });
-    $( ".upgrade-user" ).click(function() {
-        Swal.fire({
-            title: 'Bu kişiyi yönetici yapmak ister misiniz?',
-            showCancelButton: true,
-            icon: 'info',
-            confirmButtonText: 'Yükselt',
-            cancelButtonText: `İptal Et`,
-        }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-                Swal.fire({
-                    title: 'Kişinin rütbesi başarıyla yükseltildi',
-                    icon: 'success',
-                    confirmButtonText: 'Tamam',
-                })
-            }
-        })
-    });
-    $( ".delete-user" ).click(function() {
-        Swal.fire({
-            title: 'Bu kişiyi silmek ister misiniz?',
-            showCancelButton: true,
-            icon: 'info',
-            confirmButtonText: 'Sil',
-            cancelButtonText: `İptal Et`,
-        }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-                Swal.fire({
-                    title: 'Kişi başarıyla silindi',
-                    icon: 'success',
-                    confirmButtonText: 'Tamam',
-                })
-            }
-        })
-    });
-    $( ".fall-user" ).click(function() {
-        Swal.fire({
-            title: 'Bu kişiyi sadece kullanıcı yapmak ister misiniz?',
-            showCancelButton: true,
-            icon: 'info',
-            confirmButtonText: 'Düşür',
-            cancelButtonText: `İptal Et`,
-        }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-                Swal.fire({
-                    title: 'Kişinin rütbesi başarıyla düşürüldü',
-                    icon: 'success',
-                    confirmButtonText: 'Tamam',
-                })
+                $.ajax({
+                    url: "/jsonresult/removeCustomerDocument/" + id,
+                    type: "GET",
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function (data) {
+                        Swal.fire({
+                            title: 'Başarıyla güncellendi',
+                            icon: 'success',
+                            confirmButtonText: 'Tamam',
+                        }).then((result) => {
+                            location.reload();
+                        });
+                    }
+                });
             }
         })
     });

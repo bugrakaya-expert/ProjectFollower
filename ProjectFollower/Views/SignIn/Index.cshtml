@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="/css/vendor/bootstrap.rtl.only.min.css" />
     <link rel="stylesheet" href="/css/vendor/bootstrap-float-label.min.css" />
     <link rel="stylesheet" href="/css/main.css" />
+    <link rel="shortcut icon" href="~/logos/black.svg" />
 </head>
 <body class="background show-spinner no-footer">
     <div class="fixed-background"></div>
@@ -39,19 +40,20 @@
                             </p>
                         </div>
                         <div class="form-side">
-                            <a href="Dashboard.Default.html">
+                            <a href="https://www.many-points.com/" target="_blank">
                                 <span class="logo-single"></span>
                             </a>
+                            <div asp-validation-summary="ModelOnly" class="alert alert-warning alert-dismissible fade show rounded mb-3" role="alert">
+
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
                             <h6 class="mb-4">Giriş Bilgileri</h6>
                             <form method="post" id="account">
                                 @*<div asp-validation-summary="All" class="badge-warning shadow-2"></div>*@
 
-                                <div asp-validation-summary="ModelOnly" class="alert alert-warning alert-dismissible fade show rounded mb-2 mt-2" role="alert">
 
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">×</span>
-                                    </button>
-                                </div>
 
 
                                 <label class="form-group has-float-label mb-4">

@@ -8,6 +8,7 @@ namespace ProjectFollower.Models.ViewModels
 {
     public class Users
     {
+        public string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string FullName { get; set; }

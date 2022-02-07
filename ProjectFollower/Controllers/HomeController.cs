@@ -124,6 +124,7 @@ namespace ProjectFollower.Controllers
                 var UserItem = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == item.UserId);
                 var commentItem = new CommentVM()
                 {
+                    Id=item.Id,
                     Comment = item.Comment,
                     CommentTime = item.CommentTime.ToString("f"),
                     FullName = UserItem.FirstName + " " + UserItem.Lastname,
@@ -253,7 +254,7 @@ namespace ProjectFollower.Controllers
             _uow.Save();
             WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
             await WebSocAct.ListProjects_WebSocket(GetClaim());
-            return Redirect("/");
+            return RedirectToAction("Dashboard","Home");
         }
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [HttpPost("proje-detaylari/dokuman-guncelle")]
@@ -344,6 +345,30 @@ namespace ProjectFollower.Controllers
 
             return Redirect("/proje-detaylari/" + project.Id);
         }
+        [Authorize(Roles = UserRoles.Admin)]
+        [HttpPost]
+        public IActionResult AddTask(ProjectDetailVM projectDetailVM)
+        {
+            var projectTask = new ProjectTasks()
+            {
+                ProjectsId= projectDetailVM.ProjectsId,
+                Description= projectDetailVM.ProjectTaskItem.Description
+            };
+            _uow.ProjectTasks.Add(projectTask);
+            _uow.Save();
+            return Redirect("/proje-detaylari/" + projectDetailVM.ProjectsId);
+        }
+        [Authorize(Roles = UserRoles.Admin)]
+        [HttpGet("proje-detaylari/gorev-kaldir/{id}")]
+        public IActionResult RemoveTask(string id)
+        {
+            var task = _uow.ProjectTasks.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
+            var project = _uow.Project.GetFirstOrDefault(i => i.Id == task.ProjectsId);
+            _uow.ProjectTasks.Remove(task);
+            _uow.Save();
+            return Redirect("/proje-detaylari/" + project.Id);
+        }
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpGet("proje-detaylari/gorev-degistir/{id}")]
         public IActionResult ChangTask(ProjectDetailVM ProjectDetailVM)
         {
@@ -351,7 +376,21 @@ namespace ProjectFollower.Controllers
             //return Redirect("/proje-detaylari/" + project.Id);
             return Redirect("/");
         }
+        [HttpPost("jsonresult/deletecomment/")]
+        public IActionResult DeleteComment(string id)
+        {
+            var appUser = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == GetClaim().Value);
+            var comment = _uow.ProjectComments.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
+            if (comment.UserId == appUser.Id || User.IsInRole(UserRoles.Admin))
+            {
+                var project = _uow.Project.GetFirstOrDefault(i => i.Id == comment.ProjectsId);
+                _uow.ProjectComments.Remove(comment);
+                _uow.Save();
+                return Redirect("/proje-detaylari/" + project.Id.ToString());
+            }
+            return NoContent();
 
+        }
         [Authorize(Roles = UserRoles.Admin)]
         [HttpPost("jsonresult/updatedescription")]
         public JsonResult UpdateDesc(ProjectDetailVM _projectDetailVM)
@@ -505,7 +544,9 @@ namespace ProjectFollower.Controllers
         public async Task<JsonResult> DeleteProject(string id)
         {
             var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
+            var _responsibles = _uow.ResponsibleUsers.GetAll(i => i.ProjectId == Guid.Parse(id));
             _uow.Project.Remove(_project);
+            _uow.ResponsibleUsers.RemoveRange(_responsibles);
             _uow.Save();
             WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
             await WebSocAct.ListProjects_WebSocket(GetClaim());
@@ -534,6 +575,7 @@ namespace ProjectFollower.Controllers
 
             return Json(Project);
         }
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpPost("jsonresult/updateTasks")]
         public JsonResult UpdateTasks([FromBody]List<ProjectTasks> projectTasks)
         {
@@ -550,6 +592,7 @@ namespace ProjectFollower.Controllers
 
             return Json(projectTasksList);
         }
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpGet("jsonresult/changearcstatus/{archived}")]
         public JsonResult ChangeArciveStatus(bool archived)
         {

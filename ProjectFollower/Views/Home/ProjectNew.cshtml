@@ -32,7 +32,7 @@
                             <div>
                                 <span asp-validation-for="Name" class="text-danger"></span>
                                 <label class="form-group has-top-label">
-                                    <input class="form-control" asp-for="Name" autocomplete="off" value="Deneme" required />
+                                    <input class="form-control" asp-for="Name" autocomplete="off" required />
                                     <span>Proje Adı</span>
                                 </label>
                                 <span asp-validation-for="CustomersId" class="text-danger"></span>
@@ -44,7 +44,7 @@
                                 </label>
                                 <span asp-validation-for="EndingDate" class="text-danger"></span>
                                 <label class="form-group has-top-label">
-                                    <input class="form-control datepicker" placeholder="" asp-for="EndingDate" autocomplete="off" value="31.01.2022" required />
+                                    <input class="form-control datepicker" placeholder="" asp-for="EndingDate" autocomplete="off" value="@DateTime.Now.Date.ToString("dd/MM/yyy")" required />
                                     <span>Öngörülen Bitiş Tarihi</span>
                                 </label>
 
@@ -183,7 +183,7 @@
 
             </div>
 
-            <input type="text" id="htmlstr" class="form-control form-text" asp-for="@Model.Description" />
+            <input type="text" id="htmlstr" class="form-control form-text d-none" asp-for="@Model.Description" />
             <select class="form-control select2-multiple d-none" multiple="multiple" data-width="100%" id="taskDescription" asp-for="TaskDesc" hidden>
             </select>
         </form>

@@ -45,10 +45,16 @@
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="first" role="tabpanel"
                                  aria-labelledby="first-tab">
+                                <div class="row">
+                                    <div class="col-8 font-weight-bold">Firma Açıklaması</div>
+                                    <div class="col-4 text-right">
+                                        <button data-toggle="modal" data-target="#company-details" class="btn btn-primary btn-sm mb-0">Firma Bilgilerini Düzenle</button>
+                                    </div>
+                                    <div class="col-12">
+                                        @Html.Raw(Model.Description)
+                                    </div>
+                                </div>
 
-                                <p class="font-weight-bold">Firma Açıklaması</p>
-                                @Html.Raw(Model.Description)
-                                <br />
 
                             </div>
                             <div class="tab-pane fade" id="second" role="tabpanel" aria-labelledby="second-tab">
@@ -56,34 +62,39 @@
                                     {
                                         foreach (var item in Model.Documents)
                                         {
-                                            <div class="d-flex flex-row mb-3 border-bottom">
-                                                <div class="p-0 position-relative tab-icon">
-                                                    <div class="preview-container">
-                                                        <img data-dz-thumbnail="" class="img-thumbnail border-0">
-                                                        <i class="simple-icon-doc preview-icon"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="pl-3 w-80 dz-details position-relative">
-                                                    <div>
-                                                        <span data-dz-name="">@item.FileName</span>
-                                                    </div>
-                                                    <div class="text-primary text-extra-small" data-dz-size="">
-                                                        <strong>0</strong> KB
-                                                    </div>
-                                                </div>
-                                                <a href="#/" class="download-icon" data-dz-remove="">
-                                                    <i class="glyph-icon simple-icon-cloud-download"></i>
-                                                </a>
-                                            </div>
+                                                                <div class="d-flex flex-row mb-3 border-bottom">
+                                                                    <div class="p-0 position-relative tab-icon">
+                                                                        <div class="preview-container">
+                                                                            <img data-dz-thumbnail="" class="img-thumbnail border-0">
+                                                                            <i class="simple-icon-doc preview-icon"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="pl-3 w-90 dz-details position-relative">
+                                                                        <div>
+                                                                            <span data-dz-name="">@item.FileName</span>
+                                                                        </div>
+                                                                        <div class="text-primary text-extra-small" data-dz-size="">
+                                                                            <strong>0</strong> KB
+                                                                        </div>
+                                                                    </div>
+                                                                    <a href="@DIR_Customer_Doc@Model.Email/@item.FileName" class="download-icon" download>
+                                                                        <i class="glyph-icon simple-icon-cloud-download"></i>
+                                                                    </a>
+                                                                        <a class="trash-icon ml-3 remove-customer-document" href="#" style="font-size:23px;" id="@item.Id">
+                                                                            <i class="glyph-icon simple-icon-trash"></i>
+                                                                        </a>
+
+                                                                </div>
                                         }
                                     }
 
 
                                 }
                                 <div class="separator mb-5"></div>
-                                
-                                    <div class="d-flex flex-row mb-3">
-                                        <div class="col-12">
+
+                                <div class="d-flex flex-row mb-3">
+                                    <div class="col-12">
+                                        <form asp-controller="Customers" asp-action="AddDocuments" method="post" enctype="multipart/form-data" data-pasley-validate asp-route-Id="@Model.Id">
                                             <div class="input-group mb-3 file-avatar">
                                                 <label class="custom-select custom-select-label file-new-uploads-text" for="file-upload" style="height:auto; line-height:inherit;"></label>
                                                 <input type="file" class="d-none file-new-uploads" name="file-upload" id="file-upload" multiple>
@@ -91,12 +102,15 @@
                                                     <label class="input-group-text" for="file-upload" value="Fotoğraf Yükle">Dosya Yükle</label>
                                                 </div>
                                             </div>
+
                                             <div class="text-zero top-right-button-container">
-                                                <a href="/new-user"><button type="button" class="btn btn-primary top-right-button mr-1">YENİ DOSYA EKLE</button></a>
+                                                <a><button type="submit" class="btn btn-primary top-right-button mr-1">Yeni Dosya Ekle</button></a>
                                             </div>
-                                        </div>
+                                        </form>
                                     </div>
-                                
+
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -132,9 +146,73 @@
         </div>
     </div>
 </main>
+<div class="modal fade" id="company-details" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="company-detailsLabel">@Model.Name</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="UpdateCustomer" asp-controller="Customers" method="post" asp-route-id="@Model.Id" id="updatecustForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Firma Adı:</label>
+                        <input type="text" class="form-control" value="@Model.Name" asp-for="Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Açıklama:</label>
+                        <div class="input-group">
+                            <div id="quillEditor" style="min-height: 10rem; width: 100%">
+                                <div class="ql-editor">@Html.Raw(Model.Description)</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Firma Yetkilisi:</label>
+                        <input type="text" class="form-control" id="company-yetkili" value="@Model.AuthorizedName" asp-for="AuthorizedName">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Firma Telefon:</label>
+                        <input type="text" class="form-control" id="company-telefon" value="@Model.Phone" asp-for="Phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Firma E-posta:</label>
+                        <input type="text" class="form-control" id="company-eposta" value="@Model.Email" asp-for="Email">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-dismiss="modal">
+                        Kapat
+                    </button>
+                    <button class="btn btn-primary" id="submitDesc">Değişiklikleri Kaydet</button>
+                </div>
+
+                <input id="htmlstr" value="@Model.Description" asp-for="Description" class="d-none"/>
+            </form>
+
+        </div>
+    </div>
+</div>
+
 
 @section scripts{
+    <script>
+        $(document).ready(function () {
+            $(document).on("click", "#submitDesc", function () {
+                var htmlString = $('.ql-editor').html();
+                $('#htmlstr').val(htmlString);
+                $('#updatecustForm').submit();
+            })
+
+        });
+
+    </script>
+    <script src="/js/vendor/quill.min.js"></script>
 
     <script src="~/js/scripts.js"></script>
+
 
 }

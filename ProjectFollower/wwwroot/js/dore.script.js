@@ -4247,22 +4247,18 @@ $.dore = function (element, options) {
                         }).then((result) => {
                             /* Read more about isConfirmed, isDenied below */
                             if (result.isConfirmed) {
-
-                                $.ajax({
-                                    url: "jsonresult/deleteproject/" + id,
-                                    type: "GET",
-                                    contentType: "application/json",
-                                    dataType: "json",
-                                    success: function (data) {
-                                        Swal.fire({
-                                            title: 'Proje başarıyla silindi',
-                                            icon: 'success',
-                                            confirmButtonText: 'Tamam',
-                                        })
-
-
-                                    }
-                                });
+                                Swal.fire({
+                                    title: 'Proje başarıyla silindi',
+                                    icon: 'success',
+                                    confirmButtonText: 'Tamam',
+                                }).then((result) => {
+                                    $.ajax({
+                                        url: "jsonresult/deleteproject/" + id,
+                                        type: "GET",
+                                        contentType: "application/json",
+                                        dataType: "json",
+                                    });
+                                })
 
                             }
                         });

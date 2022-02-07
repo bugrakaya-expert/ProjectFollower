@@ -45,7 +45,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="third-tab" data-toggle="tab" href="#third" role="tab"
-                                   aria-controls="third" aria-selected="false">Proje Açıklama</a>
+                                   aria-controls="third" aria-selected="false">Proje Detay</a>
                             </li>
                         </ul>
                     </div>
@@ -62,7 +62,7 @@
                                         TaskLength++;
                                         TaskIdString = "control-mission" + TaskLength.ToString();
 
-                                        <div class="row">
+                                        <div class="row mb-4">
                                             <div class="col-10">
                                                 @if (item.Done)
                                                 {
@@ -74,10 +74,19 @@
                                                 }
 
                                             </div>
-                                            <div class="col-2 text-end">
-                                                <div class="custom-control custom-checkbox">
+
+                                            <div class="col-2 text-end d-flex justify-content-center align-items-center">
+                                                <div class="custom-control custom-checkbox" style="display:inline-block">
                                                     @*<input value="@item.Done.ToString()" id="@item.Id" type="text" class="taskvalue" />*@
-                                                    <input type="checkbox" class="custom-control-input taskvalue" id="@item.Id" name="[@TaskLength].RightsCode" value="@item.Done" checked="@item.Done">
+                                                    @if (User.IsInRole(UserRoles.Admin))
+                                                    {
+                                                        <input type="checkbox" class="custom-control-input taskvalue" id="@item.Id" name="[@TaskLength].RightsCode" value="@item.Done" checked="@item.Done">
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="checkbox" class="custom-control-input taskvalue" id="@item.Id" name="[@TaskLength].RightsCode" value="@item.Done" checked="@item.Done" disabled>
+                                                    }
+
                                                     @if (item.Done)
                                                     {
                                                         <label class="custom-control-label" for="@item.Id">Tamamlandı</label>
@@ -88,16 +97,25 @@
                                                     }
 
                                                 </div>
+                                                @if (User.IsInRole(UserRoles.Admin))
+                                                {
+                                                    <a type="button" href="/proje-detaylari/gorev-kaldir/@item.Id" class="glyph-icon simple-icon-trash ml-4" style="font-size: 16px; text-align: right;"></a>
+                                                }
+
                                             </div>
                                         </div>
 
                                     }
-
-                                    <div class="row mb-4">
-                                        <div class="col-12 text-right">
-                                            <button type="button" class="btn btn-primary btn-sm mb-0" id="taskbtn">Görevleri Düzenlemeyi Kaydet</button>
+                                    @if (User.IsInRole(UserRoles.Admin))
+                                    {
+                                        <div class="row mb-4">
+                                            <div class="col-12 text-right">
+                                                <button type="button" data-toggle="modal" data-target="#add-mission" class="btn btn-secondary mb-0 mr-1">Görev Ekle</button>
+                                                <button type="button" class="btn btn-primary btn-sm mb-0" id="taskbtn">Görevleri Düzenlemeyi Kaydet</button>
+                                            </div>
                                         </div>
-                                    </div>
+                                    }
+
                                 </form>
                                 <div class="separator mb-5"></div>
 
@@ -114,20 +132,34 @@
                                                          class="img-thumbnail border-0 rounded-circle list-thumbnail align-self-center xsmall" />
                                                 </a>
                                                 <div class="pl-3 flex-grow-1">
-                                                    <a href="#">
-                                                        <p class="font-weight-medium mb-0">@item.FullName</p>
-                                                        <p class="text-muted mb-0 text-small">@item.CommentTime</p>
-                                                    </a>
+                                                    <p class="font-weight-medium mb-0">@item.FullName</p>
+                                                    <p class="text-muted mb-0 text-small">@item.CommentTime</p>
                                                     <p class="mt-3">
                                                         @item.Comment
                                                     </p>
                                                 </div>
+                                                @if (item.UserEmail == User.Identity.Name || User.IsInRole(UserRoles.Admin))
+                                                {
+                                                    <div class="dropleft">
+                                                        <div class="glyph-icon simple-icon-options" type="button"
+                                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></div>
+                                                        <div class="dropdown-menu">
+                                                            <a class="dropdown-item" style="cursor: default; color: #b2b2b2; " href="javascript:void(0)">Düzenle</a>
+                                                            <form asp-controller="Home" asp-action="DeleteComment" method="post" asp-route-id="@item.Id">
+                                                                @*<input hidden value="@item.Id" />*@
+                                                                <button class="dropdown-item" type="submit">Sil</button>
+                                                            </form>
+
+                                                        </div>
+                                                    </div>
+                                                }
+
                                             </div>
                                         }
                                     }
                                     else
                                     {
-                                        <h3>Henüz yorum yapılmamış..</h3>
+                                        <h5>Henüz yorum yapılmamış..</h5>
                                     }
                                 </div>
 
@@ -156,7 +188,7 @@
                                                         <i class="simple-icon-doc preview-icon"></i>
                                                     </div>
                                                 </div>
-                                                <div class="pl-3 w-80 dz-details position-relative">
+                                                <div class="pl-3 w-90 dz-details position-relative">
                                                     <div>
                                                         <span data-dz-name="">@item.FileName</span>
                                                     </div>
@@ -167,9 +199,13 @@
                                                 <a href="@link" class="download-icon" data-dz-remove="" download>
                                                     <i class="glyph-icon simple-icon-cloud-download"></i>
                                                 </a>
-                                                <a href="/proje-detaylari/dokuman-kaldir/@item.Id" class="download-icon ml-4" data-dz-remove="">
-                                                    <i class="glyph-icon simple-icon-trash"></i>
-                                                </a>
+                                                @if (User.IsInRole(UserRoles.Admin))
+                                                {
+
+                                                    <a href="/proje-detaylari/dokuman-kaldir/@item.Id" class="download-icon ml-4" data-dz-remove="">
+                                                        <i class="glyph-icon simple-icon-trash"></i>
+                                                    </a>
+                                                }
                                             </div>
                                         }
 
@@ -192,7 +228,7 @@
                                                 </div>
                                             </div>
                                             <div class="text-zero top-right-button-container">
-                                                <button type="submit" class="btn btn-primary top-right-button mr-1">YENİ DOSYA EKLE</button>
+                                                <button type="submit" class="btn btn-primary top-right-button mr-1">Yeni Dosya Ekle</button>
                                             </div>
                                         </div>
                                     </div>
@@ -204,11 +240,13 @@
                                     <div class="col-8">
                                         <p class="font-weight-bold">Proje Açıklaması</p>
                                     </div>
-                                    <div class="col-4 text-right">
-                                        <button data-toggle="modal" data-target="#project-details" class="btn btn-primary btn-sm mb-0">Düzenle</button>
-                                    </div>
-                                </div>
-                                <div id="desc">@Html.Raw(Model.Project.Description)</div>
+                                    @if (User.IsInRole(UserRoles.Admin))
+                                    {
+                                        <div class="col-4 text-right">
+                                            <button data-toggle="modal" data-target="#project-details" class="btn btn-primary btn-sm mb-0">Projeyi Düzenle</button>
+                                        </div>
+                                    }
+                                </div><div id="desc">@Html.Raw(Model.Project.Description)</div>
                             </div>
                         </div>
                     </div>
@@ -290,11 +328,25 @@
             <form>
                 <div class="modal-body">
                     <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Proje Adı:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Açıklama:</label>
                         <div class="input-group">
                             <div id="quillEditor" style="min-height: 10rem; width: 100%">
                                 <div class="ql-editor">@Html.Raw(Model.Project.Description)</div>
                             </div>
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Proje Bitiş Tarihi:</label>
+                        <input class="form-control datepicker" placeholder="" autocomplete="off" value="31.01.2022" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Proje Üyeleri:</label>
+                        <select class="form-control select2-multiple" multiple="multiple" data-width="100%" required>
+                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -303,6 +355,33 @@
                         Kapat
                     </button>
                     <button type="button" class="btn btn-primary" id="submitDesc">Değişiklikleri Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="add-mission" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Görev Ekle</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="AddTask" asp-controller="Home" method="post" asp-route-ProjectsId="@Model.Project.Id">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="mission-name" class="col-form-label">Görev Adı:</label>
+                        <input type="text" class="form-control" id="mission-name" asp-for="ProjectTaskItem.Description">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-dismiss="modal">
+                        Kapat
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="addMission">Görev Ekle</button>
                 </div>
             </form>
         </div>
@@ -396,6 +475,8 @@
                             showCancelButton: false,
                             icon: "success",
                             confirmButtonText: 'Tamam',
+                        }).then((result) => {
+                            location.reload();
                         });
                     }
                 });

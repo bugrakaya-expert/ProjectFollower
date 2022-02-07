@@ -18,6 +18,6 @@ namespace ProjectFollower.Models.DbModels
         public Customers Customers { get; set; }
         public int PriorityId { get; set; }
         public string Description { get; set; }
-        public bool AllDay { get; set; }
+        //public bool AllDay { get; set; }
     }
 }

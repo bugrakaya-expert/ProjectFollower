@@ -180,6 +180,7 @@ namespace ProjectFollower.Controllers
             var getDocuments = _uow.CompanyDocuments.GetAll(i => i.CustomerId == id);
             var Customer = new CustomerVM()
             {
+                Id=getCustomer.Id,
                 AuthorizedName = getCustomer.AuthorizedName,
                 Description = getCustomer.Description,
                 ImageUrl = getCustomer.ImageUrl,
@@ -191,18 +192,125 @@ namespace ProjectFollower.Controllers
 
             return View(Customer);
         }
+        [HttpPost]
+        public IActionResult UpdateCustomer(CustomerVM customervm)
+        {
+            var _customerItem = _uow.Customers.GetFirstOrDefault(i => i.Id == customervm.Id, includeProperties: "CompanyType");
+            _customerItem.AuthorizedName = customervm.AuthorizedName;
+            _customerItem.Description = customervm.Description;
+            _customerItem.Email = customervm.Email;
+            _customerItem.Name = customervm.Name;
+            _customerItem.Phone = customervm.Phone;
+                /*
+            var _customer = new Customers()
+            {
+                Id=customervm.Id,
+                AuthorizedName = customervm.AuthorizedName,
+                Description = customervm.Description,
+                Name = customervm.Name,
+                Phone = customervm.Phone,
+                Email = customervm.Email,
+                CompanyTypeId=_customerItem.CompanyTypeId,
+                CompanyType=_customerItem.CompanyType,
+                ImageUrl=_customerItem.ImageUrl
+            };*/
+            _uow.Customers.Update(_customerItem);
+            _uow.Save();
+            return Redirect("/musteriler/" + _customerItem.Id);
+
+        }
+        [HttpPost]
+        public IActionResult AddDocuments(CustomerVM customerVM, ICollection<IFormFile> filess)
+        {
+            #region Authentication Index
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var Claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            if (Claims != null)
+            {
+                var ApplicationUser = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == Claims.Value);
+
+            }
+            else
+                return View("SignIn");
+            #endregion Authentication Index
+            var _customer = _uow.Customers.GetFirstOrDefault(i => i.Id == customerVM.Id);
+            var _CompanyType = _uow.CompanyType.GetFirstOrDefault(i => i.Id == _customer.CompanyTypeId);
+
+            var DocumentList = new List<CompanyDocuments>();
+
+
+            //var GetCustomer = _uow.Customers.GetFirstOrDefault(i => i.Email==customervm.Email);
+
+            string webRootPath = _hostEnvironment.WebRootPath;
+            var customerpath = webRootPath + LocFilePaths.DIR_Customer_Doc+_customer.Email;
+            var files = HttpContext.Request.Form.Files;
+            string FileName = "";
+            if (files.Count() > 0)
+            {
+                //string fileName = Guid.NewGuid().ToString();
+                var uploads = Path.Combine(customerpath);
+
+                if (!(Directory.Exists(uploads)))
+                    Directory.CreateDirectory(uploads);
+
+
+                foreach (var item in files)
+                {
+                    //var extension = Path.GetExtension(item.FileName);
+                    using (var fileStream = new FileStream(Path.Combine(uploads, item.FileName), FileMode.Create))
+                    {
+                        item.CopyTo(fileStream);
+                        
+                        var Document = new CompanyDocuments()
+                        {
+                            CustomerId = _customer.Id,
+                            FileName = item.FileName,
+                        };
+
+                        _uow.CompanyDocuments.Add(Document);
+                    }
+                    FileName = item.FileName;
+
+                }
+                _uow.Save();
+            }
+            //_uow.Customers.Add(customer);
+            //_uow.Save();
+            return Redirect("/musteriler/" + _customer.Id);
+        }
+        [HttpGet("jsonresult/removeCustomerDocument/{id}")]
+        public JsonResult DeleteDocument(string id)
+        {
+            var _customerDocument = _uow.CompanyDocuments.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
+            var _customer = _uow.Customers.GetFirstOrDefault(i => i.Id == _customerDocument.CustomerId);
+            string webRootPath = _hostEnvironment.WebRootPath;
+            var customerpath = webRootPath + LocFilePaths.DIR_Customer_Doc + _customer.Email;
+            var documentPath = customerpath + @"\" + _customerDocument.FileName;
+
+                if (System.IO.File.Exists(documentPath))
+                System.IO.File.Delete(documentPath);
+
+                
+
+
+
+            _uow.CompanyDocuments.Remove(_customerDocument);
+            _uow.Save();
+            return Json(null);
+            
+        }
         [HttpGet("musteriler/sil/{id}")]
         public IActionResult Remove(Guid id, bool status)
         {
-
+            string webRootPath = _hostEnvironment.WebRootPath;
             if (status)
             {
                 var getCustomer = _uow.Customers.GetFirstOrDefault(i => i.Id == id);
                 var getDocuments = _uow.CompanyDocuments.GetAll(i => i.CustomerId == id);
 
                 if (getDocuments.Count() > 0)
-                    if ((Directory.Exists(LocFilePaths.DIR_Customer_Doc + getCustomer.Name)))
-                        Directory.Delete(LocFilePaths.DIR_Customer_Doc + getCustomer.Name,true);
+                    if ((Directory.Exists(webRootPath + LocFilePaths.DIR_Customer_Doc + getCustomer.Email)))
+                        Directory.Delete(webRootPath + LocFilePaths.DIR_Customer_Doc + getCustomer.Email, true);
 
                 _uow.Customers.Remove(getCustomer);
                 _uow.CompanyDocuments.RemoveRange(getDocuments);

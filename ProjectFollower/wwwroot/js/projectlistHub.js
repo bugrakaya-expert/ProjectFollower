@@ -6,11 +6,12 @@ var connection = new signalR.HubConnectionBuilder().withUrl("/homeHub").build();
 console.log("Web Socket Connected. - Custom Message -");
 
 connection.on("SendData", function (projectList) {
-
+    window.location.reload(true)
+    /*
     var arcStatus = 0;
     console.log("ready!");
     $("#tbody").html("");
-
+    
     function voidAjx() {
         $.ajax({
             type: "GET",
@@ -89,7 +90,7 @@ connection.on("SendData", function (projectList) {
     }
 
 
-    voidAjx();
+    voidAjx();*/
 
 
 

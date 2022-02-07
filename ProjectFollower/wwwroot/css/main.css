@@ -73,3 +73,7 @@ ul.context-menu-list.simple-icon-settings::before {
 .mission-completed{
     text-decoration: line-through;
 }
+.alert ul {
+    margin: 0px;
+    list-style: none;
+}

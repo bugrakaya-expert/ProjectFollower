@@ -83,7 +83,7 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex flex-row-reverse">
+            <div class="text-right">
 
                 <button class="btn btn-primary btn-lg mr-3" type="submit" onclick="return validateInput()"><i class="iconsminds-add"></i> Kullanıcı Oluştur</button>
                 <button class="btn btn-danger btn-lg" asp-controller="Users" asp-action="Index"><i class="iconsminds-close"></i>İptal Et</button>
@@ -128,7 +128,9 @@
                 showCancelButton: false,
                 icon: '@Model.ModalMessage.Icon',
                 confirmButtonText: 'Tamam'
-            })
+            }).then(function () {
+                window.location = "/users";
+            });
             </text>
         }
     }

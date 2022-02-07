@@ -9,6 +9,7 @@ namespace ProjectFollower.Models.ViewModels
     public class CommentVM
     {
         //public ProjectComments ProjectComments { get; set; }
+        public Guid Id { get; set; }
         public string ProjectsId { get; set; }
         //public string ApplicationUserId { get; set; }
         public string UserEmail { get; set; }

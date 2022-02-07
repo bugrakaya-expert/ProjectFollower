@@ -18,7 +18,7 @@
 
         DevExpress.localization.locale(navigator.language);
         function showToast(event, value, type) {
-            DevExpress.ui.notify(`${event} "${value}" task`, type, 800);
+            DevExpress.ui.notify(`${event} "${value}" `, type, 800);
         }
         $(document).ready(function () {
             var testdata;
@@ -28,17 +28,19 @@
                 contentType: "application/json",
                 dataType: "json",
                 success: function (data) {
+                    var scheduler = data.scheduler;
                     var schedulerPriorityObj = data.schedulerPriority;
                     var customersObj = data.customers;
                     $(() => {
                         $('#scheduler').dxScheduler({
                             timeZone: 'America/Los_Angeles',
-                            dataSource: data,
+                            dataSource: scheduler,
                             views: ['agenda', 'month'],
-                            currentView: 'agenda',
-                            currentDate: new Date(2021, 5, 3),
+                            currentView: 'month',
+                            currentDate: new Date($.now()),
                             showAllDayPanel: false,
                             height: 700,
+                            FixedWidth:true,
                             crossScrollingEnabled: true,
                             cellDuration: 20,
                             editing: {
@@ -55,6 +57,9 @@
                             onAppointmentUpdated(e) {
                                 showToast('Güncellendi', e.appointmentData.text, 'info');
                                 console.log(e.appointmentData.id);
+                                console.log(e.appointmentData.priorityId);
+                                console.log(e.appointmentData.customersId);
+
                             },
                             onAppointmentDeleted(e) {
                                 showToast('Silindi', e.appointmentData.text, 'warning');
@@ -62,44 +67,22 @@
                             },
                             resources: [
                                 {
-                                    fieldExpr: 'id',
+                                    fieldExpr: 'customersId',
                                     allowMultiple: false,
                                     dataSource: customersObj,
-                                    label: 'Companies',
-                                }, {
-                                    fieldExpr: 'id',
-                                    dataSource: schedulerPriorityObj,
-                                    label: 'Priority',
+                                    label: 'Firma',
                                     useColorAsDefault: false,
+                                }, {
+                                    fieldExpr: 'priorityId',
+                                    dataSource: schedulerPriorityObj,
+                                    label: 'Durum',
+                                    useColorAsDefault: true,
                                 }],
                             height: 600,
                         });
                     });
-                    console.log(schedulerPriorityObj.id);
-
                 }
             });
-
-            const data = [{
-                id: 1,
-                text: 'Google AdWords Strategy',
-                startDate: new Date("2021-05-03T16:00:00.000Z"),
-                endDate: new Date('2021-05-03T16:30:00.000Z'),
-                customersId: 3,
-                priorityId: 2,
-                description: 'sa',
-                allDay: true
-            }, {
-                id: 2,
-                text: 'New Brochures',
-                startDate: new Date("2021-05-03T16:00:00.000Z"),
-                endDate: new Date('2021-05-03T16:30:00.000Z'),
-                customersId: 1,
-                priorityId: 1,
-                description: 'sa',
-                allDay: true
-                }];
-            console.log(data);
 
         });
 

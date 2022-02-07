@@ -211,7 +211,8 @@ namespace ProjectFollower.Controllers
                     Lastname = Input.Lastname,
                     DepartmentId=Input.DepartmentId,
                     EmailConfirmed=true,
-                    ImageUrl= Input.ImageUrl
+                    ImageUrl= Input.ImageUrl,
+                    UserRole=UserRoles.Personel
                 };
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
@@ -329,6 +330,20 @@ namespace ProjectFollower.Controllers
             return RedirectToAction("NewUser");
         }
 
+
+        [HttpGet("kullanici/rol-yukselt/{id}")]
+        public async Task<IActionResult> UpsertUser(string id)
+        {
+            var appUser = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == id);
+            appUser.UserRole = UserRoles.Manager;
+            _uow.ApplicationUser.Update(appUser);
+            var currentRoles = await _userManager.GetRolesAsync(appUser);
+            await _userManager.RemoveFromRoleAsync(appUser, UserRoles.Personel);
+            await _userManager.AddToRoleAsync(appUser, UserRoles.Manager);
+            _uow.Save();
+            return Redirect("/users");
+
+        }
         #region API
         [HttpGet("jsonresult/getdepartmentsjson")]
         public JsonResult GetDepartments()
@@ -369,6 +384,7 @@ namespace ProjectFollower.Controllers
                     {
                         Users Useritem = new Users()
                         {
+                            Id=item.Id,
                             AppUserName = item.AppUserName,
                             DepartmentId = item.DepartmentId,
                             Department = item.Department,
@@ -406,8 +422,24 @@ namespace ProjectFollower.Controllers
             var Claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             if (Claims != null)
             {
-                var users = _uow.ApplicationUser.GetAll(r => r.UserRole == UserRoles.Admin,includeProperties: "Department");
-                foreach (var item in users)
+                var AdminUsers = _uow.ApplicationUser.GetAll(r => r.UserRole == UserRoles.Admin,includeProperties: "Department");
+                var ManagerUsers = _uow.ApplicationUser.GetAll(r => r.UserRole == UserRoles.Manager, includeProperties: "Department");
+                foreach (var item in AdminUsers)
+                {
+                    Users Useritem = new Users()
+                    {
+                        AppUserName = item.AppUserName,
+                        DepartmentId = item.DepartmentId,
+                        Department = item.Department,
+                        FullName = item.FirstName + " " + item.Lastname,
+                        IdentityNumber = item.IdentityNumber,
+                        Email = item.Email,
+                        ImageUrl = item.ImageUrl,
+                        Role = item.Role
+                    };
+                    _Users.Add(Useritem);
+                }
+                foreach (var item in ManagerUsers)
                 {
                     Users Useritem = new Users()
                     {

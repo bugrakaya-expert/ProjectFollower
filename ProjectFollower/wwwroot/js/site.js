@@ -35,7 +35,7 @@ function editUserFunc() {
 
     $.ajax({
         type: "POST",
-        url: "jsonresult/edituserpassjson",
+        url: "/jsonresult/edituserpassjson",
         data: {
             editUserPass: {
                 currentPassword: $("#modalCurrentPassword").val(),

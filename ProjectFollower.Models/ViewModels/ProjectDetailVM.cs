@@ -15,5 +15,6 @@ namespace ProjectFollower.Models.ViewModels
         public IEnumerable<ProjectDocuments> ProjectDocuments { get; set; }
         public IEnumerable<CommentVM> CommentVM { get; set; }
         public IEnumerable<Users> Users { get; set; }
+        public ProjectTasks ProjectTaskItem { get; set; }
     }
 }
