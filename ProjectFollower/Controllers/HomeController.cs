@@ -107,6 +107,7 @@ namespace ProjectFollower.Controllers
             foreach (var item in _responsibles)
             {
                 var AppUser = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == item.UserId.ToString(),includeProperties: "Department");
+                var ImageUrl = WebRootPaths.DIR_Users_Main + AppUser.Id + "/" + WebRootPaths.Img + AppUser.ImageUrl;
                 var User = new Users()
                 {
                     FirstName = AppUser.FirstName,
@@ -116,7 +117,7 @@ namespace ProjectFollower.Controllers
                     Department=AppUser.Department,
                     DepartmentId=AppUser.DepartmentId,
                     AppUserName=AppUser.AppUserName,
-                    ImageUrl=AppUser.ImageUrl
+                    ImageUrl= ImageUrl
                 };
                 _users.Add(User);
             }
@@ -219,6 +220,8 @@ namespace ProjectFollower.Controllers
                 };
                 _uow.ResponsibleUsers.Add(ResponsibleUser);
             }
+            if (ProjectVM.TaskDesc==null)
+                return NoContent();
             foreach (var item in ProjectVM.TaskDesc)
             {
                 var ProjectTask = new ProjectTasks()
@@ -234,7 +237,7 @@ namespace ProjectFollower.Controllers
             if (files.Count() > 0)
             {
                 //string fileName = Guid.NewGuid().ToString();
-                var uploads = Path.Combine(webRootPath, webRootPath+LocFilePaths.DIR_Projects_Doc + ProjectVM.Name);
+                var uploads = Path.Combine(webRootPath, webRootPath+LocFilePaths.DIR_Projects_Doc + Project.Id);
 
                 if (!Directory.Exists(uploads))
                 {
@@ -272,9 +275,10 @@ namespace ProjectFollower.Controllers
                 }
             }
             _uow.Save();
+            /*
             WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
-            await WebSocAct.ListProjects_WebSocket(GetClaim());
-            return RedirectToAction("Dashboard","Home");
+            await WebSocAct.ListProjects_WebSocket(GetClaim());*/
+            return View("Dashboard");
         }
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [HttpPost("proje-detaylari/dokuman-guncelle")]
@@ -286,7 +290,7 @@ namespace ProjectFollower.Controllers
             if (files.Count() > 0)
             {
                 //string fileName = Guid.NewGuid().ToString();
-                var uploads = Path.Combine(webRootPath, webRootPath + LocFilePaths.DIR_Projects_Doc + Project.Name);
+                var uploads = Path.Combine(webRootPath, webRootPath + LocFilePaths.DIR_Projects_Doc + Project.Id);
 
                 #region Check Customer Directories
                 if (!Directory.Exists(uploads))
@@ -326,7 +330,7 @@ namespace ProjectFollower.Controllers
             var Document = _uow.ProjectDocuments.GetFirstOrDefault(i => i.Id == Guid.Parse(id), includeProperties: "Projects");
 
             //string fileName = Guid.NewGuid().ToString();
-            var downloads = Path.Combine(webRootPath, LocFilePaths.DIR_Projects_Doc + Document.Projects.Name);
+            var downloads = Path.Combine(webRootPath, LocFilePaths.DIR_Projects_Doc + Document.Projects.Id);
             
             using (var fileStream = new FileStream(Path.Combine(downloads, Document.FileName), FileMode.Open, System.IO.FileAccess.Read))
             {
@@ -343,7 +347,6 @@ namespace ProjectFollower.Controllers
             {
                 await fileStream.CopyToAsync(context.HttpContext.Response.Body);
             }*/
-            return null;
         }
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [HttpGet("proje-detaylari/dokuman-kaldir/{id}")]

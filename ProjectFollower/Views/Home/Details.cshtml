@@ -106,15 +106,14 @@
                                         </div>
 
                                     }
-                                    @if (User.IsInRole(UserRoles.Admin))
-                                    {
-                                        <div class="row mb-4">
-                                            <div class="col-12 text-right">
-                                                <button type="button" data-toggle="modal" data-target="#add-mission" class="btn btn-secondary mb-0 mr-1">Görev Ekle</button>
-                                                <button type="button" class="btn btn-primary btn-sm mb-0" id="taskbtn">Görevleri Düzenlemeyi Kaydet</button>
-                                            </div>
+
+                                    <div class="row mb-4">
+                                        <div class="col-12 text-right">
+                                            <button type="button" data-toggle="modal" data-target="#add-mission" class="btn btn-secondary mb-0 mr-1">Görev Ekle</button>
+                                            <button type="button" class="btn btn-primary btn-sm mb-0" id="taskbtn">Görevleri Düzenlemeyi Kaydet</button>
                                         </div>
-                                    }
+                                    </div>
+
 
                                 </form>
                                 <div class="separator mb-5"></div>
@@ -180,7 +179,7 @@
                                     {
                                         foreach (var item in Model.ProjectDocuments)
                                         {
-                                            string link = LocFilePaths.DIR_Projects_Doc + item.Projects.Name + "/" + item.FileName;
+                                            string link = LocFilePaths.DIR_Projects_Doc + item.Projects.Id + "/" + item.FileName;
                                             <div class="d-flex flex-row mb-3 border-bottom">
                                                 <div class="p-0 position-relative tab-icon">
                                                     <div class="preview-container">
@@ -261,7 +260,7 @@
                                 <h1 class="p-0 m-0">@Model.Project.Customers.Name</h1>
                             </div>
                             <div class="col-4">
-                                <img src="/assets/customers/@Model.Project.Customers.Email/img/@Model.Project.Customers.ImageUrl" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left ml-2" />
+                                <img src="/assets/customers/@Model.Project.Customers.Id/img/@Model.Project.Customers.ImageUrl" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left ml-2" />
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -306,7 +305,7 @@
                     <div class="card-body text-center pt-5 pb-5">
                         @foreach (var item in Model.Users)
                         {
-                            string img = customerpath + item.Email + "/img/" + item.ImageUrl;
+                            string img = item.ImageUrl;
                             <img alt="thumb" class="img-thumbnail border-0 rounded-circle mb-4 list-thumbnail mx-auto" src="@img">
                         }
                     </div>
@@ -383,7 +382,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="mission-name" class="col-form-label">Görev Adı:</label>
-                        <input type="text" class="form-control" id="mission-name" asp-for="ProjectTaskItem.Description">
+                        <textarea style="height:5rem" type="text" class="form-control" id="mission-name" asp-for="ProjectTaskItem.Description"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">

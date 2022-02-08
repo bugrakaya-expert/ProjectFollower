@@ -130,79 +130,9 @@ namespace ProjectFollower.Controllers
             {
                 string webRootPath = _hostEnvironment.WebRootPath;
                 var files = HttpContext.Request.Form.Files;
-                var userpath = webRootPath + LocFileForWeb.DIR_Users_Main + Input.Email;
+                var extension = Path.GetExtension(files[0].FileName);
 
-                Console.WriteLine(files.Count.ToString());
-                //System.Diagnostics.Debug.WriteLine(files.ToString());
-                
-                if (files.Count() > 0)
-                {
-                    string fileName = Guid.NewGuid().ToString();
-                    var uploads = Path.Combine(userpath+@"\"+ LocFileForWeb.Img);
-
-
-                    #region Check Users Directories
-                    if (!(Directory.Exists(uploads)))
-                        Directory.CreateDirectory(uploads);
-                    /*
-                    if (!(Directory.Exists(WebRootPaths.DIR_Users_Main)))
-                        Directory.CreateDirectory(WebRootPaths.DIR_Users_Main);
-                    if (!(Directory.Exists(WebRootPaths.DIR_Users_Img)))
-                        Directory.CreateDirectory(WebRootPaths.DIR_Users_Img);*/
-                    #endregion Check Users Directories
-
-
-                    //var imageUrl = productVM.Product.ImageUrl;
-
-                    var extension = Path.GetExtension(files[0].FileName);
-
-                    /*
-                    if (productVM.Product.ImageUrl != null)
-                    {
-                        var imagePath = Path.Combine(webRootPath, productVM.Product.ImageUrl.TrimStart('\\'));
-                        if (System.IO.File.Exists(imagePath))
-                        {
-                            System.IO.File.Delete(imagePath);
-                        }
-                    }*/
-
-                    using (var fileStreams = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
-                    {
-                        var stream=files[0].OpenReadStream();
-                        var image = Image.FromStream(stream);
-                        var size = image.Size;
-                        var width = (float)size.Width;
-                        var height = (float)size.Height;
-
-                        float rate = width / height;
-
-                        if (width > 200 || height > 200)
-                        {
-                            ModelState.AddModelError(string.Empty, "Kullanıcı oluşturulamadı! Profil resmi 200px den fazla olamaz.");
-                            ModalMessageVM ModalMessage = new ModalMessageVM()
-                            {
-                                Message = "Kullanıcı oluşturulamadı! Profil resmi 200px den fazla olamaz.",
-                                Icon="warning",
-                                Status = true
-                            };
-                            return RedirectToAction("NewUser",ModalMessage);
-                        }
-                        if (rate !=1)
-                        {
-                            ModelState.AddModelError(string.Empty, "Kullanıcı oluşturulamadı! Profil resmi 1:1 oranında olmalıdır. ");
-                            ModalMessageVM ModalMessage = new ModalMessageVM()
-                            {
-                                Message = "Kullanıcı oluşturulamadı! Profil resmi 1:1 oranında olmalıdır. ",
-                                Icon = "warning",
-                                Status = true
-                            };
-                            return RedirectToAction("NewUser", ModalMessage);
-                        }
-
-                        files[0].CopyTo(fileStreams);
-                    }
-                    Input.ImageUrl = fileName+ extension;
-                }
+                string fileName = Guid.NewGuid().ToString();
                 var user = new ApplicationUser
                 {
                     UserName = Input.Email,
@@ -211,7 +141,7 @@ namespace ProjectFollower.Controllers
                     Lastname = Input.Lastname,
                     DepartmentId=Input.DepartmentId,
                     EmailConfirmed=true,
-                    ImageUrl= Input.ImageUrl,
+                    ImageUrl= fileName+extension,
                     UserRole=UserRoles.Personel
                 };
 
@@ -219,6 +149,74 @@ namespace ProjectFollower.Controllers
 
                 if (result.Succeeded)
                 {
+                    var userpath = webRootPath + LocFileForWeb.DIR_Users_Main + user.Id;
+                    //var userpath = LocFileForWeb.DIR_Users_Main + AppUser.Id + @"\" + LocFileForWeb.Img;
+
+                    Console.WriteLine(files.Count.ToString());
+                    //System.Diagnostics.Debug.WriteLine(files.ToString());
+
+                    if (files.Count() > 0)
+                    {
+                        var uploads = Path.Combine(userpath + @"\" + LocFileForWeb.Img);
+
+
+                        #region Check Users Directories
+                        if (!(Directory.Exists(uploads)))
+                            Directory.CreateDirectory(uploads);
+                        #endregion Check Users Directories
+
+
+                        //var imageUrl = productVM.Product.ImageUrl;
+
+
+                        /*
+                        if (productVM.Product.ImageUrl != null)
+                        {
+                            var imagePath = Path.Combine(webRootPath, productVM.Product.ImageUrl.TrimStart('\\'));
+                            if (System.IO.File.Exists(imagePath))
+                            {
+                                System.IO.File.Delete(imagePath);
+                            }
+                        }*/
+
+                        using (var fileStreams = new FileStream(Path.Combine(uploads, user.ImageUrl), FileMode.Create))
+                        {
+                            var stream = files[0].OpenReadStream();
+                            var image = Image.FromStream(stream);
+                            var size = image.Size;
+                            var width = (float)size.Width;
+                            var height = (float)size.Height;
+
+                            float rate = width / height;
+
+                            if (width > 200 || height > 200)
+                            {
+                                ModelState.AddModelError(string.Empty, "Kullanıcı oluşturulamadı! Profil resmi 200px den fazla olamaz.");
+                                ModalMessageVM _ModalMessage = new ModalMessageVM()
+                                {
+                                    Message = "Kullanıcı oluşturulamadı! Profil resmi 200px den fazla olamaz.",
+                                    Icon = "warning",
+                                    Status = true
+                                };
+                                return RedirectToAction("NewUser", _ModalMessage);
+                            }
+                            if (rate != 1)
+                            {
+                                ModelState.AddModelError(string.Empty, "Kullanıcı oluşturulamadı! Profil resmi 1:1 oranında olmalıdır. ");
+                                ModalMessageVM _ModalMessage = new ModalMessageVM()
+                                {
+                                    Message = "Kullanıcı oluşturulamadı! Profil resmi 1:1 oranında olmalıdır. ",
+                                    Icon = "warning",
+                                    Status = true
+                                };
+                                return RedirectToAction("NewUser", _ModalMessage);
+                            }
+
+                            files[0].CopyTo(fileStreams);
+                        }
+                        Input.ImageUrl = fileName + extension;
+                    }
+
                     _logger.LogInformation("Kayıt işlemi yapıldı.");
 
                     if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
@@ -382,6 +380,7 @@ namespace ProjectFollower.Controllers
 
                     if (item.UserRole == UserRoles.Personel)
                     {
+                        var ImageUrl = WebRootPaths.DIR_Users_Main + item.Id + "/" + WebRootPaths.Img + item.ImageUrl;
                         Users Useritem = new Users()
                         {
                             Id=item.Id,
@@ -391,7 +390,7 @@ namespace ProjectFollower.Controllers
                             FullName = item.FirstName + " " + item.Lastname,
                             IdentityNumber = item.IdentityNumber,
                             Email = item.Email,
-                            ImageUrl = item.ImageUrl,
+                            ImageUrl = ImageUrl,
                             Role = item.Role
                         };
 
@@ -426,6 +425,7 @@ namespace ProjectFollower.Controllers
                 var ManagerUsers = _uow.ApplicationUser.GetAll(r => r.UserRole == UserRoles.Manager, includeProperties: "Department");
                 foreach (var item in AdminUsers)
                 {
+                    var ImageUrl = WebRootPaths.DIR_Users_Main + item.Id + "/" + WebRootPaths.Img+item.ImageUrl;
                     Users Useritem = new Users()
                     {
                         AppUserName = item.AppUserName,
@@ -434,13 +434,14 @@ namespace ProjectFollower.Controllers
                         FullName = item.FirstName + " " + item.Lastname,
                         IdentityNumber = item.IdentityNumber,
                         Email = item.Email,
-                        ImageUrl = item.ImageUrl,
+                        ImageUrl = ImageUrl,
                         Role = item.Role
                     };
                     _Users.Add(Useritem);
                 }
                 foreach (var item in ManagerUsers)
                 {
+                    var ImageUrl = WebRootPaths.DIR_Users_Main + item.Id + "/" + WebRootPaths.Img + item.ImageUrl;
                     Users Useritem = new Users()
                     {
                         AppUserName = item.AppUserName,
@@ -449,7 +450,7 @@ namespace ProjectFollower.Controllers
                         FullName = item.FirstName + " " + item.Lastname,
                         IdentityNumber = item.IdentityNumber,
                         Email = item.Email,
-                        ImageUrl = item.ImageUrl,
+                        ImageUrl = ImageUrl,
                         Role = item.Role
                     };
                     _Users.Add(Useritem);

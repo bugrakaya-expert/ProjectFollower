@@ -266,7 +266,7 @@ namespace ProjectFollower.Controllers
             if (Claims != null)
             {
                 var AppUser = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == Claims.Value);
-                var userpath = WebRootPaths.DIR_Users_Main + AppUser.Email + "/" + WebRootPaths.Img + AppUser.ImageUrl;
+                var userpath = WebRootPaths.DIR_Users_Main + AppUser.Id + "/" + WebRootPaths.Img + AppUser.ImageUrl;
                 imglink = userpath;
             }
             return Json(imglink);
@@ -282,7 +282,7 @@ namespace ProjectFollower.Controllers
             {
                 var AppUser = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == Claims.Value);
                 string webRootPath = _hostEnvironment.WebRootPath;
-                var userpath = LocFileForWeb.DIR_Users_Main + AppUser.Email + @"\" + LocFileForWeb.Img;
+                var userpath = LocFileForWeb.DIR_Users_Main + AppUser.Id + @"\" + LocFileForWeb.Img;
                 var files = HttpContext.Request.Form.Files;
                 string fileName;
                 if (files.Count() < 1)
