@@ -19,7 +19,7 @@ using static ProjectFollower.Utility.ProjectConstant;
 
 namespace ProjectFollower.Controllers
 {
-    [Authorize(Roles = UserRoles.Admin)]
+
     public class CustomersController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
@@ -43,7 +43,7 @@ namespace ProjectFollower.Controllers
             _uow = uow;
             _hostEnvironment = hostEnvironment;
         }
-
+        [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [Route("musteriler")]
         public IActionResult Index()
         {
@@ -61,6 +61,7 @@ namespace ProjectFollower.Controllers
 
             return View();
         }
+        [Authorize(Roles = UserRoles.Admin)]
         [Route("musteriler/ekle")]
         public IActionResult AddCustomer()
         {
@@ -78,7 +79,7 @@ namespace ProjectFollower.Controllers
 
             return View();
         }
-
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpPost("musteriler/ekle")]
         public IActionResult AddCustomerAction(CustomerVM customervm, ICollection<IFormFile> filess)
         {
@@ -162,6 +163,7 @@ namespace ProjectFollower.Controllers
             return RedirectToAction("Index", "Customers");
         }
 
+        [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [Route("musteriler/{id}")]
         public IActionResult Details(Guid id)
         {
@@ -192,6 +194,7 @@ namespace ProjectFollower.Controllers
 
             return View(Customer);
         }
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpPost]
         public IActionResult UpdateCustomer(CustomerVM customervm)
         {
@@ -219,6 +222,7 @@ namespace ProjectFollower.Controllers
             return Redirect("/musteriler/" + _customerItem.Id);
 
         }
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpPost]
         public IActionResult AddDocuments(CustomerVM customerVM, ICollection<IFormFile> filess)
         {
@@ -278,6 +282,7 @@ namespace ProjectFollower.Controllers
             //_uow.Save();
             return Redirect("/musteriler/" + _customer.Id);
         }
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpGet("jsonresult/removeCustomerDocument/{id}")]
         public JsonResult DeleteDocument(string id)
         {
@@ -299,6 +304,7 @@ namespace ProjectFollower.Controllers
             return Json(null);
             
         }
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpGet("musteriler/sil/{id}")]
         public IActionResult Remove(Guid id, bool status)
         {
@@ -321,6 +327,7 @@ namespace ProjectFollower.Controllers
             return RedirectToAction("Index","Customers");
         }
         #region API
+        [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [HttpGet("jsonresult/getallcustomers")]
         public JsonResult GetCustomers()
         {
@@ -336,6 +343,7 @@ namespace ProjectFollower.Controllers
 
             return Json(customers);
         }
+        [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [HttpGet("jsonresult/getcompanytypesjson")]
         public JsonResult GetDepartments()
         {

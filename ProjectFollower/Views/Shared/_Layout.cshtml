@@ -125,66 +125,72 @@
 
                         if (User.IsInRole(UserRoles.Admin))
                         {
-                            <li class="@Html.ActiveClass("Home")">
-                                <a asp-controller="Home" asp-action="Index">
-                                    <i class="simple-icon-grid"></i>
-                                    <span>Projeler</span>
-                                </a>
-                            </li>
-                            <li class="@Html.ActiveClass("Scheduler")">
-                                <a asp-controller="Scheduler" asp-action="Index">
-                                    <i class="simple-icon-calendar"></i>
-                                    <span>Takvim</span>
-                                </a>
-                            </li>
-                            <li class="@Html.ActiveClass("Users")">
-                                <a asp-controller="Users" asp-action="Index">
-                                    <i class="simple-icon-people"></i>
-                                    <span>Kullanıcılar</span>
-                                </a>
-                            </li>
-                            <li class="@Html.ActiveClass("Customers")">
-                                <a asp-controller="Customers" asp-action="Index">
-                                    <i class="simple-icon-organization"></i>
-                                    <span>Müşteriler</span>
-                                </a>
-                            </li>
+                        <li class="@Html.ActiveClass("Home")">
+                            <a asp-controller="Home" asp-action="Index">
+                                <i class="simple-icon-grid"></i>
+                                <span>Projeler</span>
+                            </a>
+                        </li>
+                        <li class="@Html.ActiveClass("Scheduler")">
+                            <a asp-controller="Scheduler" asp-action="Index">
+                                <i class="simple-icon-calendar"></i>
+                                <span>Takvim</span>
+                            </a>
+                        </li>
+                        <li class="@Html.ActiveClass("Users")">
+                            <a asp-controller="Users" asp-action="Index">
+                                <i class="simple-icon-people"></i>
+                                <span>Kullanıcılar</span>
+                            </a>
+                        </li>
+                        <li class="@Html.ActiveClass("Customers")">
+                            <a asp-controller="Customers" asp-action="Index">
+                                <i class="simple-icon-organization"></i>
+                                <span>Müşteriler</span>
+                            </a>
+                        </li>
                         }
                         else if (User.IsInRole(UserRoles.Personel))
                         {
-                            <li class="@Html.ActiveClass("Home")">
-                                <a asp-controller="Home" asp-action="Index">
-                                    <i class="simple-icon-grid"></i>
-                                    <span>Projeler</span>
-                                </a>
-                            </li>
-                            <li class="@Html.ActiveClass("Scheduler")">
-                                <a asp-controller="Scheduler" asp-action="Index">
-                                    <i class="simple-icon-calendar"></i>
-                                    <span>Takvim</span>
-                                </a>
-                            </li>
+                        <li class="@Html.ActiveClass("Home")">
+                            <a asp-controller="Home" asp-action="Index">
+                                <i class="simple-icon-grid"></i>
+                                <span>Projeler</span>
+                            </a>
+                        </li>
+                        <li class="@Html.ActiveClass("Scheduler")">
+                            <a asp-controller="Scheduler" asp-action="Index">
+                                <i class="simple-icon-calendar"></i>
+                                <span>Takvim</span>
+                            </a>
+                        </li>
+                        <li class="@Html.ActiveClass("Customers")">
+                            <a asp-controller="Customers" asp-action="Index">
+                                <i class="simple-icon-organization"></i>
+                                <span>Müşteriler</span>
+                            </a>
+                        </li>
                         }
                         else if (User.IsInRole(UserRoles.Manager))
                         {
-                            <li class="@Html.ActiveClass("Home")">
-                                <a asp-controller="Home" asp-action="Index">
-                                    <i class="simple-icon-grid"></i>
-                                    <span>Projeler</span>
-                                </a>
-                            </li>
-                            <li class="@Html.ActiveClass("Scheduler")">
-                                <a asp-controller="Scheduler" asp-action="Index">
-                                    <i class="simple-icon-calendar"></i>
-                                    <span>Takvim</span>
-                                </a>
-                            </li>
-                            <li class="@Html.ActiveClass("Customers")">
-                                <a asp-controller="Customers" asp-action="Index">
-                                    <i class="simple-icon-organization"></i>
-                                    <span>Müşteriler</span>
-                                </a>
-                            </li>
+                        <li class="@Html.ActiveClass("Home")">
+                            <a asp-controller="Home" asp-action="Index">
+                                <i class="simple-icon-grid"></i>
+                                <span>Projeler</span>
+                            </a>
+                        </li>
+                        <li class="@Html.ActiveClass("Scheduler")">
+                            <a asp-controller="Scheduler" asp-action="Index">
+                                <i class="simple-icon-calendar"></i>
+                                <span>Takvim</span>
+                            </a>
+                        </li>
+                        <li class="@Html.ActiveClass("Customers")">
+                            <a asp-controller="Customers" asp-action="Index">
+                                <i class="simple-icon-organization"></i>
+                                <span>Müşteriler</span>
+                            </a>
+                        </li>
                         }
                     }
                 </ul>
