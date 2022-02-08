@@ -12,5 +12,6 @@ namespace ProjectFollower.Models.ViewModels
         [ForeignKey("ApplicationUserId")]
         public Guid ApplicationUserId { get; set; }*/
         public IEnumerable<ApplicationUser> ApplicationUser { get; set; }
+        public IEnumerable<ResponsibleUsers> ResponsibleUserSelected { get; set; }
     }
 }

@@ -261,7 +261,7 @@
                                 <h1 class="p-0 m-0">@Model.Project.Customers.Name</h1>
                             </div>
                             <div class="col-4">
-                                <img src="/img/orj/firmalar/poligon.jpg" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left ml-2" />
+                                <img src="/assets/customers/@Model.Project.Customers.Email/img/@Model.Project.Customers.ImageUrl" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left ml-2" />
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -341,11 +341,21 @@
                     </div>
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Proje Bitiş Tarihi:</label>
-                        <input id="dateval" class="form-control datepicker" placeholder="" autocomplete="off" value="@DateTime.Now.ToString("dd/MM/yyyy")" required />
+                        <input id="dateval" class="form-control datepicker" placeholder="" autocomplete="off" value="@Model.Project.EndingDate" required />
                     </div>
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Proje Üyeleri:</label>
-                        <select class="form-control select2-multiple" multiple="multiple" data-width="100%" required>
+                        <select class="form-control select2-multiple" multiple="multiple" data-width="100%" asp-for="UserId" id="userid" required>
+                            @foreach (var item in Model.DepartmentsVMs)
+                            {
+                                <optgroup label="@item.Name">
+                                    @foreach (var itemUser in item.ApplicationUser)
+                                    {
+                                        <option value="@itemUser.Id">@itemUser.FirstName</option>
+                                    }
+
+                                </optgroup>
+                            }
                         </select>
                     </div>
                 </div>
@@ -413,7 +423,9 @@
                 $('#htmlstr').val(htmlString);
                 console.log("submitdesc Action 3");
                 //$('#descDetail').submit();
-
+                var userId = [];
+                userId = $('#userid').val();
+                console.log("UserId Arrays: "+userId);
                 $.ajax({
                     type: "POST",
                     url: "/jsonresult/updatedescription",
@@ -423,7 +435,8 @@
                             description: $('.ql-editor').html(),
                             EndingDate: $('#dateval').val(),
                             Name: $('#projectname').val()
-                        }
+                        },
+                        userId: userId
                     },
                     success: function (received) {
                         console.log(received);

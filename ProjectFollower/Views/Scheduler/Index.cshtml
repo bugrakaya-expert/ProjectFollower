@@ -4,7 +4,7 @@
 <main>
     <div class="row">
         <div class="col-12">
-            <div id="scheduler"></div>
+            <div id="scheduler" Width="100%"></div>
         </div>
     </div>
    
@@ -35,8 +35,9 @@
                         $('#scheduler').dxScheduler({
                             timeZone: 'America/Los_Angeles',
                             dataSource: scheduler,
+                            type: 'date',
                             views: ['agenda', 'month'],
-                            currentView: 'month',
+                            currentView: 'agenda',
                             currentDate: new Date($.now()),
                             showAllDayPanel: false,
                             height: 700,

@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Imaging;
 using static ProjectFollower.Utility.ProjectConstant;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ProjectFollower.Controllers
 {
@@ -270,7 +271,8 @@ namespace ProjectFollower.Controllers
             }
             return Json(imglink);
         }
-        [HttpPost("update-profile-photo")]
+        [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
+        [HttpPost("profil/fotoguncelle")]
         public IActionResult UpdateUserPhoto()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
@@ -283,6 +285,8 @@ namespace ProjectFollower.Controllers
                 var userpath = LocFileForWeb.DIR_Users_Main + AppUser.Email + @"\" + LocFileForWeb.Img;
                 var files = HttpContext.Request.Form.Files;
                 string fileName;
+                if (files.Count() < 1)
+                    return NoContent();
                 var extension = Path.GetExtension(files[0].FileName);
                 if (AppUser.ImageUrl == null)
                 {
@@ -320,18 +324,6 @@ namespace ProjectFollower.Controllers
                         var height = (float)size.Height;
 
                         float rate = width / height;
-
-                        if (width > 200 || height > 200)
-                        {
-                            ModelState.AddModelError(string.Empty, "Kullanıcı oluşturulamadı! Profil resmi 200px den fazla olamaz.");
-                            ModalMessageVM ModalMessage = new ModalMessageVM()
-                            {
-                                Message = "Kullanıcı oluşturulamadı! Profil resmi 200px den fazla olamaz.",
-                                Icon = "warning",
-                                Status = true
-                            };
-                            return RedirectToAction("NewUser", ModalMessage);
-                        }
                         if (rate != 1)
                         {
                             ModelState.AddModelError(string.Empty, "Kullanıcı oluşturulamadı! Profil resmi 1:1 oranında olmalıdır. ");
@@ -343,6 +335,19 @@ namespace ProjectFollower.Controllers
                             };
                             return RedirectToAction("NewUser", ModalMessage);
                         }
+                        /*
+                        if (width > 200 || height > 200)
+                        {
+                            ModelState.AddModelError(string.Empty, "Kullanıcı oluşturulamadı! Profil resmi 200px den fazla olamaz.");
+                            ModalMessageVM ModalMessage = new ModalMessageVM()
+                            {
+                                Message = "Kullanıcı oluşturulamadı! Profil resmi 200px den fazla olamaz.",
+                                Icon = "warning",
+                                Status = true
+                            };
+                            return RedirectToAction("NewUser", ModalMessage);
+                        }*/
+
 
                         files[0].CopyTo(fileStreams);
                     }

@@ -8,7 +8,7 @@ $(document).ready(function () {
 
 
     $.ajax({
-        url: "jsonresult/getphotolinkjson",
+        url: "/jsonresult/getphotolinkjson",
         type: "GET",
         contentType: "application/json",
         dataType: "json",

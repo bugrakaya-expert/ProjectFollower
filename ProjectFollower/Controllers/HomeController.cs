@@ -97,6 +97,7 @@ namespace ProjectFollower.Controllers
         {
             List<Users> _users = new List<Users>();
             List<CommentVM> _commentList = new List<CommentVM>();
+            List<DepartmentsVM> _departmentsVMs = new List<DepartmentsVM>();
             var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id), includeProperties: "Customers");
             var _tasks = _uow.ProjectTasks.GetAll(i => i.ProjectsId == Guid.Parse(id));
             var _documents = _uow.ProjectDocuments.GetAll(i => i.ProjectsId == Guid.Parse(id));
@@ -133,14 +134,33 @@ namespace ProjectFollower.Controllers
                 };
                 _commentList.Add(commentItem);
             }
+            var _responsibleUsersSelected = _uow.ResponsibleUsers.GetAll(i => i.ProjectId == Guid.Parse(id));
+            var _alldepartments = _uow.Department.GetAll();
+
+            foreach (var item in _alldepartments)
+            {
+                var DepartmentUsers = _uow.ApplicationUser.GetAll(i => i.DepartmentId==item.Id);
+                DepartmentsVM departmentsVM = new DepartmentsVM()
+                {
+                    Id=item.Id,
+                    Name=item.Name,
+                    ApplicationUser=DepartmentUsers,
+
+                };
+                _departmentsVMs.Add(departmentsVM);
+            }
+
             var _projectDetailVM = new ProjectDetailVM()
             {
                 Project = _project,
                 ProjectTasks = _tasks,
                 ProjectDocuments = _documents,
                 CommentVM = _commentList,
-                Users=_users
+                Users=_users,
+                DepartmentsVMs= _departmentsVMs,
+                ResponsibleUsers= _responsibleUsersSelected
             };
+            
             return View(_projectDetailVM);
         }
 
@@ -403,6 +423,18 @@ namespace ProjectFollower.Controllers
             _project.Description = description;
             _project.EndingDate = endingDate;
             _project.Name = projectName;
+            var responsibles = _uow.ResponsibleUsers.GetAll(i => i.ProjectId == _project.Id);
+            _uow.ResponsibleUsers.RemoveRange(responsibles);
+            foreach (var item in _projectDetailVM.UserId)
+            {
+                var _responsibles = new ResponsibleUsers()
+                {
+                    ProjectId =_project.Id,
+                    UserId=Guid.Parse(item)
+                };
+                _uow.ResponsibleUsers.Add(_responsibles);
+            }
+
             _uow.Project.Update(_project);
             _uow.Save();
             //return Json("/proje-detaylari/"+id+ "&updated=" + true);

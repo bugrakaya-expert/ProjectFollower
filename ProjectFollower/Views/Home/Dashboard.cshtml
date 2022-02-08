@@ -222,6 +222,7 @@
             $("#tbody").html("");
 
             function voidAjx() {
+                var completed = 0;
                 $.ajax({
                     type: "GET",
                     url: "/jsonresult/getprojectlist/" + archived,
@@ -231,6 +232,7 @@
                         $("#tbody").text("");
 
                         $.each(data.projects, function (i, item) {
+
                             var name = item.name;
                             var id = item.id;
                             var status = "";
@@ -241,23 +243,33 @@
                             var img = "/assets/customers/" + custmail + custImage;
                             var delayedspan = '';
                             if (isDelayed == true) {
-                                delayedspan = `<span class="badge badge-pill badge-danger ml-3">Proje Gecikmiş!</span>`
+                                delayedspan = `<span class="badge badge-pill badge-danger ml-3">Proje Gecikmiş!</span>`;
+                                if (item.status < 3)
+                                    completed++;
                             }
 
                             var custName = item.customers.name;
                             var sequence = item.projectSequence;
                             var dateSequence = item.sequanceDate;
                             //var comptype = item.companyType.name;
-                            if (item.status == 0)
+                            if (item.status == 0) {
                                 status = `<span class="badge badge-pill badge-info">YENİ</span>` + delayedspan;
-                            if (item.status == 1)
+                            }
+                            if (item.status == 1) {
                                 status = `<span class="badge badge-pill badge-warning">YAPIM AŞAMASINDA</span>` + delayedspan;
-                            if (item.status == 2)
+                            }
+                            if (item.status == 2) {
                                 status = `<span class="badge badge-pill badge-secondary">MÜŞTERİ ONAYINDA</span>` + delayedspan;
-                            if (item.status == 3)
+                            }
+                            if (item.status == 3) {
+
                                 status = `<span class="badge badge-pill badge-primary">TAMAMLANDI</span>`;
-                            if (item.status == 4)
+                            }
+
+                            if (item.status == 4) {
                                 status = `<span class="badge badge-pill badge-primary">Arşivli</span>&nbsp;&nbsp; <i class="fas fa-archive fa-2x"></i>`;
+
+                            }
 
                             var htmlstr = `
                                                 <tr class="cardd" id="`+ id + `">
@@ -287,14 +299,17 @@
 
                         });
 
-
                         var alertstr = `
-                    <div class="alert alert-danger alert-dismissible fade show rounded mb-4" role="alert"><strong>Dikkat!</strong> Termini geçmiş `+ data.delayedProjects + ` adet projeniz bulunmakta. <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></div>
+                    <div class="alert alert-danger alert-dismissible fade show rounded mb-4" role="alert"><strong>Dikkat!</strong> Termini geçmiş `+ completed + ` adet projeniz bulunmakta. <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></div>
 `;
-                        if (data.delayedProjects > 0)
+
+                        @*
+                        if ((data.delayedProjects > 0) && (completed==0))*@
+                        if (completed > 0)
                             $("#mp-attention").html(alertstr);
 
 
+                        console.log("sayıldı :" + completed);
 
                     }
                 });
