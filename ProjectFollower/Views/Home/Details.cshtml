@@ -78,14 +78,9 @@
                                             <div class="col-2 text-end d-flex justify-content-center align-items-center">
                                                 <div class="custom-control custom-checkbox" style="display:inline-block">
                                                     @*<input value="@item.Done.ToString()" id="@item.Id" type="text" class="taskvalue" />*@
-                                                    @if (User.IsInRole(UserRoles.Admin))
-                                                    {
-                                                        <input type="checkbox" class="custom-control-input taskvalue" id="@item.Id" name="[@TaskLength].RightsCode" value="@item.Done" checked="@item.Done">
-                                                    }
-                                                    else
-                                                    {
-                                                        <input type="checkbox" class="custom-control-input taskvalue" id="@item.Id" name="[@TaskLength].RightsCode" value="@item.Done" checked="@item.Done" disabled>
-                                                    }
+
+                                                    <input type="checkbox" class="custom-control-input taskvalue" id="@item.Id" name="[@TaskLength].RightsCode" value="@item.Done" checked="@item.Done">
+
 
                                                     @if (item.Done)
                                                     {
@@ -109,7 +104,10 @@
 
                                     <div class="row mb-4">
                                         <div class="col-12 text-right">
-                                            <button type="button" data-toggle="modal" data-target="#add-mission" class="btn btn-secondary mb-0 mr-1">Görev Ekle</button>
+                                            @if (User.IsInRole(UserRoles.Admin))
+                                            {
+                                                <button type="button" data-toggle="modal" data-target="#add-mission" class="btn btn-secondary mb-0 mr-1">Görev Ekle</button>
+                                            }
                                             <button type="button" class="btn btn-primary btn-sm mb-0" id="taskbtn">Görevleri Düzenlemeyi Kaydet</button>
                                         </div>
                                     </div>
@@ -127,7 +125,7 @@
                                         {
                                             <div class="d-flex flex-row mb-3 border-bottom justify-content-between">
                                                 <a href="#">
-                                                    <img src="/assets/users/@item.UserEmail/img/@item.Img" alt="Philip Nelms"
+                                                    <img src="@item.Img" alt="Philip Nelms"
                                                          class="img-thumbnail border-0 rounded-circle list-thumbnail align-self-center xsmall" />
                                                 </a>
                                                 <div class="pl-3 flex-grow-1">
@@ -516,7 +514,7 @@
 
                                             <div class='d-flex flex-row mb-3 border-bottom justify-content-between'>
                                                 <a href='#'>
-                                                    <img src='/assets/users/`+ received.userEmail + `/img/` + received.img + `' alt='` + received.fullName + `'
+                                                    <img src='`+ received.img+`'
                                                          class='img-thumbnail border-0 rounded-circle list-thumbnail align-self-center xsmall' />
                                                 </a>
                                                 <div class='pl-3 flex-grow-1'>

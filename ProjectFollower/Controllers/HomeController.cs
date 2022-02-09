@@ -106,7 +106,7 @@ namespace ProjectFollower.Controllers
 
             foreach (var item in _responsibles)
             {
-                var AppUser = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == item.UserId.ToString(),includeProperties: "Department");
+                var AppUser = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == item.UserId.ToString(), includeProperties: "Department");
                 var ImageUrl = WebRootPaths.DIR_Users_Main + AppUser.Id + "/" + WebRootPaths.Img + AppUser.ImageUrl;
                 var User = new Users()
                 {
@@ -114,24 +114,25 @@ namespace ProjectFollower.Controllers
                     LastName = AppUser.Lastname,
                     FullName = AppUser.FirstName + " " + AppUser.Lastname,
                     Email = AppUser.Email,
-                    Department=AppUser.Department,
-                    DepartmentId=AppUser.DepartmentId,
-                    AppUserName=AppUser.AppUserName,
-                    ImageUrl= ImageUrl
+                    Department = AppUser.Department,
+                    DepartmentId = AppUser.DepartmentId,
+                    AppUserName = AppUser.AppUserName,
+                    ImageUrl = ImageUrl
                 };
                 _users.Add(User);
             }
             foreach (var item in _comments)
             {
                 var UserItem = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == item.UserId);
+                var ImageUrl = WebRootPaths.DIR_Users_Main + UserItem.Id + "/" + WebRootPaths.Img + UserItem.ImageUrl;
                 var commentItem = new CommentVM()
                 {
-                    Id=item.Id,
+                    Id = item.Id,
                     Comment = item.Comment,
                     CommentTime = item.CommentTime.ToString("f"),
                     FullName = UserItem.FirstName + " " + UserItem.Lastname,
-                    Img=UserItem.ImageUrl,
-                    UserEmail=UserItem.Email
+                    Img = ImageUrl,
+                    UserEmail = UserItem.Email
                 };
                 _commentList.Add(commentItem);
             }
@@ -140,12 +141,12 @@ namespace ProjectFollower.Controllers
 
             foreach (var item in _alldepartments)
             {
-                var DepartmentUsers = _uow.ApplicationUser.GetAll(i => i.DepartmentId==item.Id);
+                var DepartmentUsers = _uow.ApplicationUser.GetAll(i => i.DepartmentId == item.Id);
                 DepartmentsVM departmentsVM = new DepartmentsVM()
                 {
-                    Id=item.Id,
-                    Name=item.Name,
-                    ApplicationUser=DepartmentUsers,
+                    Id = item.Id,
+                    Name = item.Name,
+                    ApplicationUser = DepartmentUsers,
 
                 };
                 _departmentsVMs.Add(departmentsVM);
@@ -157,11 +158,11 @@ namespace ProjectFollower.Controllers
                 ProjectTasks = _tasks,
                 ProjectDocuments = _documents,
                 CommentVM = _commentList,
-                Users=_users,
-                DepartmentsVMs= _departmentsVMs,
-                ResponsibleUsers= _responsibleUsersSelected
+                Users = _users,
+                DepartmentsVMs = _departmentsVMs,
+                ResponsibleUsers = _responsibleUsersSelected
             };
-            
+
             return View(_projectDetailVM);
         }
 
@@ -220,7 +221,7 @@ namespace ProjectFollower.Controllers
                 };
                 _uow.ResponsibleUsers.Add(ResponsibleUser);
             }
-            if (ProjectVM.TaskDesc==null)
+            if (ProjectVM.TaskDesc == null)
                 return NoContent();
             foreach (var item in ProjectVM.TaskDesc)
             {
@@ -237,7 +238,7 @@ namespace ProjectFollower.Controllers
             if (files.Count() > 0)
             {
                 //string fileName = Guid.NewGuid().ToString();
-                var uploads = Path.Combine(webRootPath, webRootPath+LocFilePaths.DIR_Projects_Doc + Project.Id);
+                var uploads = Path.Combine(webRootPath, webRootPath + LocFilePaths.DIR_Projects_Doc + Project.Id);
 
                 if (!Directory.Exists(uploads))
                 {
@@ -331,12 +332,12 @@ namespace ProjectFollower.Controllers
 
             //string fileName = Guid.NewGuid().ToString();
             var downloads = Path.Combine(webRootPath, LocFilePaths.DIR_Projects_Doc + Document.Projects.Id);
-            
+
             using (var fileStream = new FileStream(Path.Combine(downloads, Document.FileName), FileMode.Open, System.IO.FileAccess.Read))
             {
                 fileStream.Close();
                 //Response.Headers.Add("content-disposition", "attachment; filename=" + Document.FileName);
-                return File(fileStream, ContentTypes.Jpeg,Document.FileName); // or "application/x-rar-compressed"
+                return File(fileStream, ContentTypes.Jpeg, Document.FileName); // or "application/x-rar-compressed"
                 //return File(fileStream, "application/octet-stream"); // or "application/x-rar-compressed"
             }
             /*
@@ -374,8 +375,8 @@ namespace ProjectFollower.Controllers
         {
             var projectTask = new ProjectTasks()
             {
-                ProjectsId= projectDetailVM.ProjectsId,
-                Description= projectDetailVM.ProjectTaskItem.Description
+                ProjectsId = projectDetailVM.ProjectsId,
+                Description = projectDetailVM.ProjectTaskItem.Description
             };
             _uow.ProjectTasks.Add(projectTask);
             _uow.Save();
@@ -414,7 +415,7 @@ namespace ProjectFollower.Controllers
             return NoContent();
 
         }
-        [Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager)]
         [HttpPost("jsonresult/updatedescription")]
         public JsonResult UpdateDesc(ProjectDetailVM _projectDetailVM)
         {
@@ -432,8 +433,8 @@ namespace ProjectFollower.Controllers
             {
                 var _responsibles = new ResponsibleUsers()
                 {
-                    ProjectId =_project.Id,
-                    UserId=Guid.Parse(item)
+                    ProjectId = _project.Id,
+                    UserId = Guid.Parse(item)
                 };
                 _uow.ResponsibleUsers.Add(_responsibles);
             }
@@ -484,7 +485,7 @@ namespace ProjectFollower.Controllers
                 foreach (var item in Responsibles)
                 {
                     _projectItem = _uow.Project.GetFirstOrDefault(i => i.Id == item.ProjectId);
-                    if (ArchiveStatus == false && _projectItem.Archived==false)
+                    if (ArchiveStatus == false && _projectItem.Archived == false)
                     {
                         _projectItem.SequanceDate = Sequence++;
                         if (DateTime.Now.Date > Convert.ToDateTime(_projectItem.EndingDate))
@@ -499,7 +500,7 @@ namespace ProjectFollower.Controllers
 
                         _projects.Add(_projectItem);
                     }
-                    else if(_projectItem.Archived == false || (_projectItem.Archived == true&& ArchiveStatus==true))
+                    else if (_projectItem.Archived == false || (_projectItem.Archived == true && ArchiveStatus == true))
                     {
                         _projectItem.SequanceDate = Sequence++;
                         if (DateTime.Now.Date > Convert.ToDateTime(_projectItem.EndingDate))
@@ -614,11 +615,11 @@ namespace ProjectFollower.Controllers
 
             return Json(Project);
         }
-        [Authorize(Roles = UserRoles.Admin)]
+
         [HttpPost("jsonresult/updateTasks")]
-        public JsonResult UpdateTasks([FromBody]List<ProjectTasks> projectTasks)
+        public JsonResult UpdateTasks([FromBody] List<ProjectTasks> projectTasks)
         {
-            var ProjectId = _uow.ProjectTasks.GetFirstOrDefault(i=>i.Id== projectTasks[0].Id).ProjectsId;
+            var ProjectId = _uow.ProjectTasks.GetFirstOrDefault(i => i.Id == projectTasks[0].Id).ProjectsId;
             List<ProjectTasks> projectTasksList = new List<ProjectTasks>();
             foreach (var item in projectTasks)
             {
@@ -639,6 +640,38 @@ namespace ProjectFollower.Controllers
             return Json(archived);
         }
         [Authorize(Roles = UserRoles.Admin)]
+        [HttpGet("jsonresult/changeToArchiveState/{id}")]
+        public async Task <JsonResult> ChangetoArchiveState(string id)
+        {
+            var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
+            if (_project.Status == 3 && _project.Archived == false)
+            {
+                _project.Status = 4;
+                _project.Archived = true;
+                _uow.Project.Update(_project);
+                _uow.Save();
+                var _ModalMessage = new ModalMessageVM()
+                {
+                    Message = "Başarıyla güncellendi.",
+                    Icon = "success",
+                    Status = true
+                };
+                WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
+                await WebSocAct.ListProjects_WebSocket(GetClaim());
+                return Json(_ModalMessage);
+            }
+            else
+            {
+                var _ModalMessage = new ModalMessageVM()
+                {
+                    Message = "Proje arşivlenmeye uygun değildir.",
+                    Icon = "warning",
+                    Status = true
+                };
+                return Json(_ModalMessage);
+            }
+        }
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpGet("jsonresult/changeToNewState/{id}")]
         public async Task<JsonResult> ChangetoNewState(string id)
         {
@@ -656,6 +689,7 @@ namespace ProjectFollower.Controllers
         {
             var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
             _project.Status = 1;
+            _project.Archived = false;
             _uow.Project.Update(_project);
             _uow.Save();
             WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
@@ -668,6 +702,7 @@ namespace ProjectFollower.Controllers
         {
             var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
             _project.Status = 2;
+            _project.Archived = false;
             _uow.Project.Update(_project);
             _uow.Save();
             WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
@@ -680,6 +715,7 @@ namespace ProjectFollower.Controllers
         {
             var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
             _project.Status = 3;
+            _project.Archived = false;
             _uow.Project.Update(_project);
             _uow.Save();
             WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
@@ -725,14 +761,14 @@ namespace ProjectFollower.Controllers
 
         public Claim GetClaim()
         {
-            var claimsIdentity = (ClaimsIdentity) User.Identity;
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
             var Claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             if (Claims != null)
             {
                 return Claims;
             }
             return null;
-}
+        }
 
     }
 }

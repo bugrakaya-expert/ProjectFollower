@@ -16,14 +16,13 @@ namespace ProjectFollower.DataAcces.Data
         public DbSet<Department> Department { get; set; }
         public DbSet<Business> Business { get; set; }
         public DbSet<Customers> Customer { get; set; }
-        public DbSet<CompanyType> CompanyType { get; set; }
         public DbSet<CompanyDocuments> CompanyDocuments { get; set; }
         public DbSet<ResponsibleUsers> ResponsibleUsers { get; set; }
         public DbSet<Projects> Projects { get; set; }
         public DbSet<ProjectTasks> ProjectTasks { get; set; }
         public DbSet<ProjectDocuments> ProjectDocuments { get; set; }
         public DbSet<ProjectComments> ProjectComments { get; set; }
-        public DbSet<Scheduler> Scheduler { get; set; }
-        public DbSet<SchedulerPriority> SchedulerPriority { get; set; }
+        //public DbSet<Scheduler> Scheduler { get; set; }
+        //public DbSet<SchedulerPriority> SchedulerPriority { get; set; }
     }
 }

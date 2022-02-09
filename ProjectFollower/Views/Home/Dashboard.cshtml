@@ -239,8 +239,8 @@
                             var isDelayed = item.isDelayed;
                             var endingData = item.endingDate;
                             var custImage = item.customers.imageUrl;
-                            var custmail = item.customers.email + '/img/';
-                            var img = "/assets/customers/" + custmail + custImage;
+                            var custid = item.customers.id + '/img/';
+                            var img = "/assets/customers/" + custid + custImage;
                             var delayedspan = '';
                             if (isDelayed == true) {
                                 delayedspan = `<span class="badge badge-pill badge-danger ml-3">Proje Gecikmiş!</span>`;

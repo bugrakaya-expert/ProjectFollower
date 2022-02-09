@@ -188,7 +188,7 @@ namespace ProjectFollower.Controllers
                             var height = (float)size.Height;
 
                             float rate = width / height;
-
+                            /*
                             if (width > 200 || height > 200)
                             {
                                 ModelState.AddModelError(string.Empty, "Kullanıcı oluşturulamadı! Profil resmi 200px den fazla olamaz.");
@@ -199,7 +199,7 @@ namespace ProjectFollower.Controllers
                                     Status = true
                                 };
                                 return RedirectToAction("NewUser", _ModalMessage);
-                            }
+                            }*/
                             if (rate != 1)
                             {
                                 ModelState.AddModelError(string.Empty, "Kullanıcı oluşturulamadı! Profil resmi 1:1 oranında olmalıdır. ");

@@ -1,0 +1,75 @@
+zoitech www sorunu var!
+__________________________________
+
+ftp.zoitech.co.uk
+h55445
+KzX5fEniw4Ub6j!
+
+________________________________________
+Eski Opus
+934562e
+erengül şentürk bul.
+
+Fatih bey;
+Erengül şentürk ex-168 tanımlandı. Aktif ya da pasifte görünmüyor, stamp list te var.
+Murat kurtsakarya 2 kaşe tanımladı, 1 kaşeyi lost yaptık, aktif listesine ger alınması lazım.
+
+
+
+
+- Yeni bir personel kaydedildi ve onay durumu 0 olarak oldu. Bu yüzden personel listesinde pasive ve aktif listesinde gözükmüyordu,
+gözükmediği için düzenleme yapılamıyordu. Bu sorun ortadan kaldırılmalı
+
+
+
+  ÖRN::
+  UPDATE Personel.Bilgi
+  SET Onay=1
+  where Adi='ERENGUL'
+
+ex-170 erenden iade ye çevrilip tekrar kullanılabilir hale getirilmeli. -Düzeltildi. Ex-170 - Fixed.
+ex-170 çalışandan kaldırılıp lost'dan düşürüldü. Kullanılabilir durumda ve boşta.
+
+
+
+carmen sans font
+_________________________________________________
+
+		=== NEW MISSIONS ===
+__________________________________________________
+
+[08:40, 23.11.2021] Fatih Bey Expert: Eski opusta can metalin icin de bir adam kalmis gozukuyor
+[08:41, 23.11.2021] Fatih Bey Expert: Ancak icine girdigimizde adam gozukmuyor
+[08:41, 23.11.2021] Fatih Bey Expert: Bir de fabrikalarin listeleri fotolarda gordugun gibi sola kaymis gozukuyor
+[08:42, 23.11.2021] Fatih Bey Expert: Bir de bu fabrikalari yatay diktortgenler olarak degilde kare olarak gostersek daha iyi olur
+[08:42, 23.11.2021] Fatih Bey Expert: Bu sekilde revize eder misin
+[08:42, 23.11.2021] Fatih Bey Expert: Sayfada yukari asagi yapmak zorunda kalmaya
+
+
+
+WHERE id=151611
+
+UPDATE dbo.m2LokasyonHavuzu
+SET isDelete=0
+WHERE id=151611;
+
+ALL DONE!
+
+___________________________________________________
+
+
+alyohop
+
+
+alyag
+old pass:30050035qS
+
+new pass:8Aa>g9b^p6
+
+
+
+
+
+
+lastpass
+sc1746

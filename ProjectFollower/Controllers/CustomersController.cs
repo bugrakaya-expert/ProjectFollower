@@ -95,7 +95,7 @@ namespace ProjectFollower.Controllers
                 return View("SignIn");
             #endregion Authentication Index
 
-            var _CompanyType = _uow.CompanyType.GetFirstOrDefault(i => i.Id == customervm.CompanyTypeId);
+            //var _CompanyType = _uow.CompanyType.GetFirstOrDefault(i => i.Id == customervm.CompanyTypeId);
 
             var DocumentList = new List<CompanyDocuments>();
 
@@ -103,13 +103,33 @@ namespace ProjectFollower.Controllers
             //var GetCustomer = _uow.Customers.GetFirstOrDefault(i => i.Email==customervm.Email);
 
             string webRootPath = _hostEnvironment.WebRootPath;
-            var customerpath = LocFileForWeb.DIR_Customer_Main + customervm.Email+ @"\" + LocFileForWeb.Img;
+
             var files = HttpContext.Request.Form.Files;
+            string _imageUrl = "";
+            if (files.Count() > 0)
+            {
+                _imageUrl = files[0].FileName;
+            }
             string FileName="";
+
+            var customer = new Customers()
+            {
+                AuthorizedName = customervm.AuthorizedName,
+                /*CompanyType = _CompanyType,
+                CompanyTypeId = customervm.CompanyTypeId,*/
+                Description = customervm.Description,
+                Email = customervm.Email,
+                ImageUrl = _imageUrl,
+                Name = customervm.Name,
+                Phone = customervm.Phone,
+
+            };
+            _uow.Customers.Add(customer);
+            var customerpath = LocFileForWeb.DIR_Customer_Main + customer.Id + @"\" + LocFileForWeb.Img;
             if (files.Count() > 0)
             {
                 //string fileName = Guid.NewGuid().ToString();
-                var uploads = Path.Combine(webRootPath+ customerpath);
+                var uploads = Path.Combine(webRootPath + customerpath);
 
                 if (!(Directory.Exists(uploads)))
                     Directory.CreateDirectory(uploads);
@@ -133,33 +153,7 @@ namespace ProjectFollower.Controllers
                     FileName = item.FileName;
                 }
             }
-            var customer = new Customers()
-            {
-                AuthorizedName = customervm.AuthorizedName,
-                CompanyType = _CompanyType,
-                CompanyTypeId = customervm.CompanyTypeId,
-                Description = customervm.Description,
-                Email = customervm.Email,
-                ImageUrl = FileName,
-                Name = customervm.Name,
-                Phone = customervm.Phone,
-
-            };
-            _uow.Customers.Add(customer);
             _uow.Save();
-            /*
-            foreach (var document_item in customervm.Documents)
-            {
-                var Document = new CompanyDocuments()
-                {
-                    CustomerId = document_item.CustomerId,
-                    DocumentUrl = document_item.DocumentUrl,
-                };
-                _uow.CompanyDocuments.Add(Document);
-            }
-            */
-            //_uow.Customers.Add(customer);
-            //_uow.Save();
             return RedirectToAction("Index", "Customers");
         }
 
@@ -198,7 +192,7 @@ namespace ProjectFollower.Controllers
         [HttpPost]
         public IActionResult UpdateCustomer(CustomerVM customervm)
         {
-            var _customerItem = _uow.Customers.GetFirstOrDefault(i => i.Id == customervm.Id, includeProperties: "CompanyType");
+            var _customerItem = _uow.Customers.GetFirstOrDefault(i => i.Id == customervm.Id);
             _customerItem.AuthorizedName = customervm.AuthorizedName;
             _customerItem.Description = customervm.Description;
             _customerItem.Email = customervm.Email;
@@ -238,7 +232,7 @@ namespace ProjectFollower.Controllers
                 return View("SignIn");
             #endregion Authentication Index
             var _customer = _uow.Customers.GetFirstOrDefault(i => i.Id == customerVM.Id);
-            var _CompanyType = _uow.CompanyType.GetFirstOrDefault(i => i.Id == _customer.CompanyTypeId);
+            //var _CompanyType = _uow.CompanyType.GetFirstOrDefault(i => i.Id == _customer.CompanyTypeId);
 
             var DocumentList = new List<CompanyDocuments>();
 
@@ -246,7 +240,7 @@ namespace ProjectFollower.Controllers
             //var GetCustomer = _uow.Customers.GetFirstOrDefault(i => i.Email==customervm.Email);
 
             string webRootPath = _hostEnvironment.WebRootPath;
-            var customerpath = webRootPath + LocFilePaths.DIR_Customer_Doc+_customer.Email;
+            var customerpath = webRootPath + LocFilePaths.DIR_Customer_Doc+_customer.Id;
             var files = HttpContext.Request.Form.Files;
             string FileName = "";
             if (files.Count() > 0)
@@ -315,8 +309,8 @@ namespace ProjectFollower.Controllers
                 var getDocuments = _uow.CompanyDocuments.GetAll(i => i.CustomerId == id);
 
                 if (getDocuments.Count() > 0)
-                    if ((Directory.Exists(webRootPath + LocFilePaths.DIR_Customer_Doc + getCustomer.Email)))
-                        Directory.Delete(webRootPath + LocFilePaths.DIR_Customer_Doc + getCustomer.Email, true);
+                    if ((Directory.Exists(webRootPath + LocFilePaths.DIR_Customer_Doc + getCustomer.Id)))
+                        Directory.Delete(webRootPath + LocFilePaths.DIR_Customer_Doc + getCustomer.Id, true);
 
                 _uow.Customers.Remove(getCustomer);
                 _uow.CompanyDocuments.RemoveRange(getDocuments);
@@ -331,7 +325,7 @@ namespace ProjectFollower.Controllers
         [HttpGet("jsonresult/getallcustomers")]
         public JsonResult GetCustomers()
         {
-            var customers = _uow.Customers.GetAll(includeProperties: "CompanyType");
+            var customers = _uow.Customers.GetAll();
             /*
             foreach (var item in customers)
             {
@@ -343,25 +337,14 @@ namespace ProjectFollower.Controllers
 
             return Json(customers);
         }
+        /*
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [HttpGet("jsonresult/getcompanytypesjson")]
         public JsonResult GetDepartments()
         {
-            /*
-            #region Authentication Index
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var Claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            if (Claims != null)
-            {
-                var ApplicationUser = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == Claims.Value);
-            }
-            else
-                return Json(StatusCode(404));
-            #endregion Authentication Index
-            */
             var CompanyTypes = _uow.CompanyType.GetAll();
             return Json(CompanyTypes);
-        }
+        }*/
         #endregion API
 
     }

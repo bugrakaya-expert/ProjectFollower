@@ -44,5 +44,10 @@ namespace ProjectFollower.Hubs
             await _context.Clients.All.SendAsync("SendData", ProjectList);
             //await Clients.All.SendAsync("SendData", ProjectList);
         }
+        public async Task TriggerDashboard(string message)
+        {
+            await Clients.All.SendAsync("ReceiveMessage", message);//Dashboard için gelecek sürümde yapılacak! Sayfa otomatik yenilecek
+
+        }
     }
 }

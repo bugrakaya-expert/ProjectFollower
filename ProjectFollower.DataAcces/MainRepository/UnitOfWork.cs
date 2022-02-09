@@ -16,7 +16,6 @@ namespace ProjectFollower.DataAcces.MainRepository
             Department = new DepartmentRepository(_db);
             Customers = new CustomersRepository(_db);
             CompanyDocuments = new CompanyDocumentsRepository(_db);
-            CompanyType = new CompanyTypeRepository(_db);
             Project = new ProjectRepository(_db);
             ProjectTasks = new ProjectTaskRepository(_db);
             ResponsibleUsers = new ResponsibleUsersRepository(_db);
@@ -30,7 +29,6 @@ namespace ProjectFollower.DataAcces.MainRepository
         public IDepartmentRepository Department { get; private set; }
         public ICustomersRepository Customers { get; private set; }
         public ICompanyDocumentsRepository CompanyDocuments { get; private set; }
-        public ICompanyTypeRepository CompanyType { get; private set; }
         public IProjectRepository Project { get; private set; }
         public IProjectTaskRepository ProjectTasks { get; private set; }
         public IResponsibleUsersRepository ResponsibleUsers { get; private set; }

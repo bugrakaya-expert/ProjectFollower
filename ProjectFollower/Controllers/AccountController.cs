@@ -70,23 +70,8 @@ namespace ProjectFollower.Controllers
             return View("SignIn");
         }
 
-        /*
-        [Route("giris")]
-        public IActionResult SignIn()
-        {
-            #region Authentication Index
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var Claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            if (Claims != null)
-            {
-                var ApplicationUser = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == Claims.Value);
-                //Go Dashboard
-            }
-            #endregion Authentication Index
 
-            return View();
-        }
-        */
+        /*
         [HttpPost("registerUser")]
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
@@ -119,7 +104,7 @@ namespace ProjectFollower.Controllers
                     Lastname = Input.Lastname,
                     AppUserName = Input.AppUserName,
                     IdentityNumber = Input.IdentityNumber,
-                    DepartmentId= Guid.Parse("c4c20233-e1b8-41f4-96e7-136aa1c31ad5")
+                    DepartmentId= Guid.Parse("473591d2-70cf-4a3b-9eea-d0ec8bc32656")
 
 
                 };
@@ -130,15 +115,13 @@ namespace ProjectFollower.Controllers
                 {
                     _logger.LogInformation("Kayıt işlemi yapıldı.");
 
-                    /*Email Send*/
 
 
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        //return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = "~/" });
+
                         return RedirectToAction("SuccessResult", posted);
-                        //return Redirect("~/");
                     }
                     else
                     {
@@ -160,44 +143,8 @@ namespace ProjectFollower.Controllers
 
 
         }
-        /*
-        [HttpPost("login")]
-        public async Task<IActionResult> OnPostAsyncLogin(string returnUrl = null)
-        {
-            returnUrl = returnUrl ?? Url.Content("~/");
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            if (ModelState.IsValid)
-            {
-                var result = await _signInManager.PasswordSignInAsync(SignInInput.Email, SignInInput.Password, SignInInput.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
-                {
-                    var user = _uow.ApplicationUser.GetFirstOrDefault(u => u.Email == SignInInput.Email);
-                    _logger.LogInformation("Kullanıcı giriş yaptı." + "Kullanıcı: " + user.Email);
-                    return LocalRedirect(returnUrl);
-                }
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = SignInInput.RememberMe });
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("Kullanıcı hesabı kilitlendi!");
-                    return RedirectToPage("./Lockout");
-                }
-                else
-                {
-                    _logger.LogInformation("Kullanıcı bilgisi yalnış. - Girilen Email :" + SignInInput.Email);
-                    ModelState.AddModelError(string.Empty, "Sorry, Your e-mail address or password is incorrect. Please check your e-mail and password carefully..");
-                    return View("Index");
-                    //return Page();
-                }
-            }
-
-            // If we got this far, something failed, redisplay form
-            return View("SignIn", model: ModelState.Values);
-        }
         */
-        //[HttpPost("signup")]
+     
         public IActionResult SuccessResult(bool posted)
         {
             if (posted)
@@ -318,12 +265,14 @@ namespace ProjectFollower.Controllers
                     using (var fileStreams = new FileStream(Path.Combine(uploads, fileName), FileMode.Create))
                     {
                         var stream = files[0].OpenReadStream();
+                       /*
                         var image = Image.FromStream(stream);
                         var size = image.Size;
                         var width = (float)size.Width;
                         var height = (float)size.Height;
 
-                        float rate = width / height;
+                        float rate = width / height;*/
+                        /*
                         if (rate != 1)
                         {
                             ModelState.AddModelError(string.Empty, "Kullanıcı oluşturulamadı! Profil resmi 1:1 oranında olmalıdır. ");
@@ -334,7 +283,7 @@ namespace ProjectFollower.Controllers
                                 Status = true
                             };
                             return RedirectToAction("NewUser", ModalMessage);
-                        }
+                        }*/
                         /*
                         if (width > 200 || height > 200)
                         {
@@ -359,6 +308,7 @@ namespace ProjectFollower.Controllers
 
             return Redirect("/");
         }
+
         /*
         [HttpGet("jsonresult/updateUserPhoto")]
         public JsonResult UpdateUserPhoto()

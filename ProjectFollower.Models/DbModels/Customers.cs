@@ -14,11 +14,6 @@ namespace ProjectFollower.Models.DbModels
         public string Name { get; set; }
         public string AuthorizedName { get; set; }
 
-        [ForeignKey("CompanyTypeId")]
-        public Guid CompanyTypeId { get; set; }
-        public CompanyType CompanyType { get; set; }
-
-
         public string Email { get; set; }
         public string Phone { get; set; }
         public string ImageUrl { get; set; }

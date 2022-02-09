@@ -4102,12 +4102,21 @@ $.dore = function (element, options) {
                 }).then((result) => {
                     /* Read more about isConfirmed, isDenied below */
                     if (result.isConfirmed) {
-                        Swal.fire({
-                            title: 'Başarıyla arşivlendi',
-                            icon: 'success',
-                            confirmButtonText: 'Tamam',
-                        })
-                        console.log(this.attr('id'));
+                        var id = this.attr('id');
+                        $.ajax({
+                            url: "jsonresult/changeToArchiveState/" + id,
+                            type: "GET",
+                            contentType: "application/json",
+                            dataType: "json",
+                            success: function (data) {
+                                Swal.fire({
+                                    title: data.message,
+                                    icon: data.icon,
+                                    confirmButtonText: 'Tamam',
+                                });
+
+                            }
+                        });
                     }
                 })
             }

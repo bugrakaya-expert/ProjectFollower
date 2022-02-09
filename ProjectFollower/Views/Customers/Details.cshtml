@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var customerpath = WebRootPaths.DIR_Customer_Main + Model.Email + "/img/" + Model.ImageUrl;
+    var customerpath = WebRootPaths.DIR_Customer_Main + Model.Id + "/img/" + Model.ImageUrl;
 }
 @model ProjectFollower.Models.ViewModels.CustomerVM
 <main>
@@ -77,7 +77,7 @@
                                                                             <strong>0</strong> KB
                                                                         </div>
                                                                     </div>
-                                                                    <a href="@LocFilePaths.DIR_Customer_Doc@Model.Email/@item.FileName" class="download-icon" download>
+                                                                    <a href="@LocFilePaths.DIR_Customer_Doc@Model.Id/@item.FileName" class="download-icon" download>
                                                                         <i class="glyph-icon simple-icon-cloud-download"></i>
                                                                     </a>
                                                                         <a class="trash-icon ml-3 remove-customer-document" href="#" style="font-size:23px;" id="@item.Id">

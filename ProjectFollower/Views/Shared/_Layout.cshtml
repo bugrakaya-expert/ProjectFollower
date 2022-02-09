@@ -131,7 +131,7 @@
                                 <span>Projeler</span>
                             </a>
                         </li>
-                        <li class="@Html.ActiveClass("Scheduler")">
+                        <li class="@Html.ActiveClass("Scheduler") d-none">
                             <a asp-controller="Scheduler" asp-action="Index">
                                 <i class="simple-icon-calendar"></i>
                                 <span>Takvim</span>
@@ -158,7 +158,7 @@
                                 <span>Projeler</span>
                             </a>
                         </li>
-                        <li class="@Html.ActiveClass("Scheduler")">
+                        <li class="@Html.ActiveClass("Scheduler") d-none">
                             <a asp-controller="Scheduler" asp-action="Index">
                                 <i class="simple-icon-calendar"></i>
                                 <span>Takvim</span>
@@ -179,7 +179,7 @@
                                 <span>Projeler</span>
                             </a>
                         </li>
-                        <li class="@Html.ActiveClass("Scheduler")">
+                        <li class="@Html.ActiveClass("Scheduler") d-none">
                             <a asp-controller="Scheduler" asp-action="Index">
                                 <i class="simple-icon-calendar"></i>
                                 <span>Takvim</span>
@@ -266,10 +266,10 @@
                                 <div class="col-sm-6 text-center">
                                     <p>Yeni Profil Fotoğrafı Yükleyin</p><br />
                                     <div class="input-group mb-3 file-avatar ">
-                                        <label class="custom-select custom-select-label" for="file-upload"></label>
-                                        <input type="file" class="d-none" name="file-upload" id="file-upload" />
+                                        <label class="custom-select custom-select-label" for="profile-upload" accept="image/*"></label>
+                                        <input type="file" class="d-none" name="profile-upload" id="profile-upload" accept="image/png, image/gif, image/jpeg"/>
                                         <div class="input-group-append">
-                                            <label class="input-group-text" for="file-upload">Fotoğraf Yükle</label>
+                                            <label class="input-group-text" for="profile-upload" accept="image/*">Fotoğraf Yükle</label>
                                         </div>
                                     </div>
                                 </div>

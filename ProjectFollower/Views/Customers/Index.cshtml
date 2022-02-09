@@ -45,7 +45,6 @@
                                 <th style="visibility: hidden;"></th>
                                 <th>Firma Adı</th>
                                 <th>Firma Yetkilisi</th>
-                                <th>Sektör</th>
                                 <th style="visibility: hidden;"></th>
 
                             </tr>
@@ -179,10 +178,10 @@
                             value: item.id,
                             text: item.name
                         }));*/
-                        var img = '@customerpath' + item.email + '/img/' + item.imageUrl;
+                        var img = '@customerpath' + item.id + '/img/' + item.imageUrl;
                         var name = item.name;
                         var authname = item.authorizedName;
-                        var comptype = item.companyType.name;                        
+                        //var comptype = item.companyType.name;                        
                         var htmlstr = `
                             <tr>
                                 <td>
@@ -194,9 +193,9 @@
                                 <td>
                                     <p class="text-muted">`+authname+`</p>
                                 </td>
-                                <td>
+                                @*<td>
                                     <p class="text-muted">`+comptype+`</p>
-                                </td>
+                                </td>*@
                                 <td class="text-right">
                                     @*<form method="get" action="musteriler/sil/`+ item.id+`">*@
                                     <!--<input name="id" value="`+ item.id +`" hidden/>-->

@@ -1521,20 +1521,25 @@ button {
       height: 70px; } }
 
 .logo {
-  width: 110px;
-  height: 60px;
-  background: url("/logos/white.svg") no-repeat;
+  width: 62px;
+  height: 62px;
+  background: url("/logos/black.png") no-repeat;
   background-position: center center;
-  margin: 0 auto; }
+  margin: 0 auto;
+  background-size:cover;
+}
   @media (max-width: 767px) {
     .logo {
-      width: 80px; } }
+        width: 62px;
+    } }
 
 .logo-mobile {
-  width: 20px;
-  height: 35px;
-  background: url("/logos/mobile.svg") no-repeat;
-  background-position: center center; }
+    width: 35px;
+    height: 35px;
+    background: url("/logos/mobile.svg") no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
 
 #app-container.sub-hidden .menu-button .sub,
 #app-container.menu-sub-hidden .menu-button .sub {

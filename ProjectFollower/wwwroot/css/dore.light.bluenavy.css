@@ -1521,11 +1521,13 @@ button {
       height: 70px; } }
 
 .logo {
-  width: 110px;
-  height: 35px;
-  background: url("../logos/black.svg") no-repeat;
-  background-position: center center;
-  margin: 0 auto; }
+    width: 62px;
+    height: 62px;
+    background: url("../logos/white.png") no-repeat;
+    background-position: center center;
+    margin: 0 auto;
+    background-size: cover;
+}
   @media (max-width: 767px) {
     .logo {
       width: 80px; } }

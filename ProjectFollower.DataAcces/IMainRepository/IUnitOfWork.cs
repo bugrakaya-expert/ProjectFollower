@@ -11,7 +11,6 @@ namespace ProjectFollower.DataAcces.IMainRepository
         IApplicationUserRepository ApplicationUser { get; }
         ICustomersRepository Customers { get; }
         ICompanyDocumentsRepository CompanyDocuments { get; }
-        ICompanyTypeRepository CompanyType { get; }
         IProjectRepository Project { get; }
         IProjectTaskRepository ProjectTasks { get; }
         IResponsibleUsersRepository ResponsibleUsers { get; }
