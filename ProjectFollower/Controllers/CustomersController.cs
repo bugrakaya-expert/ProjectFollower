@@ -110,7 +110,7 @@ namespace ProjectFollower.Controllers
             {
                 _imageUrl = files[0].FileName;
             }
-            string FileName="";
+            string FileName = "";
 
             var customer = new Customers()
             {
@@ -176,7 +176,7 @@ namespace ProjectFollower.Controllers
             var getDocuments = _uow.CompanyDocuments.GetAll(i => i.CustomerId == id);
             var Customer = new CustomerVM()
             {
-                Id=getCustomer.Id,
+                Id = getCustomer.Id,
                 AuthorizedName = getCustomer.AuthorizedName,
                 Description = getCustomer.Description,
                 ImageUrl = getCustomer.ImageUrl,
@@ -198,19 +198,68 @@ namespace ProjectFollower.Controllers
             _customerItem.Email = customervm.Email;
             _customerItem.Name = customervm.Name;
             _customerItem.Phone = customervm.Phone;
-                /*
-            var _customer = new Customers()
+
+            string webRootPath = _hostEnvironment.WebRootPath;
+            var customerpath = LocFileForWeb.DIR_Customer_Main + _customerItem.Id + @"\" + LocFileForWeb.Img;
+            var files = HttpContext.Request.Form.Files;
+
+
+            if (files.Count() > 0)
             {
-                Id=customervm.Id,
-                AuthorizedName = customervm.AuthorizedName,
-                Description = customervm.Description,
-                Name = customervm.Name,
-                Phone = customervm.Phone,
-                Email = customervm.Email,
-                CompanyTypeId=_customerItem.CompanyTypeId,
-                CompanyType=_customerItem.CompanyType,
-                ImageUrl=_customerItem.ImageUrl
-            };*/
+                string FileName = files[0].FileName;
+                var extension = Path.GetExtension(files[0].FileName);
+                var uploads = Path.Combine(webRootPath + customerpath);
+                string FileNameOld = _customerItem.ImageUrl;
+                string fileLocation = uploads + FileName;
+                string fileLocationOld = uploads + FileNameOld;
+
+                if (!(Directory.Exists(uploads)))
+                    Directory.CreateDirectory(uploads);
+                if (System.IO.File.Exists(fileLocationOld))
+                {
+                    System.IO.File.Delete(fileLocationOld);
+                }
+                _customerItem.ImageUrl = FileName;
+                using (var fileStreams = new FileStream(Path.Combine(uploads, FileName), FileMode.Create))
+                {
+                    /*
+                    var stream = files[0].OpenReadStream();
+                    var image = Image.FromStream(stream);
+                    var size = image.Size;
+                    var width = (float)size.Width;
+                    var height = (float)size.Height;
+
+                    float rate = width / height;
+                    */
+                    /*
+                    if (rate != 1)
+                    {
+                        ModelState.AddModelError(string.Empty, "Kullanıcı oluşturulamadı! Profil resmi 1:1 oranında olmalıdır. ");
+                        ModalMessageVM ModalMessage = new ModalMessageVM()
+                        {
+                            Message = "Kullanıcı oluşturulamadı! Profil resmi 1:1 oranında olmalıdır. ",
+                            Icon = "warning",
+                            Status = true
+                        };
+                        return RedirectToAction("NewUser", ModalMessage);
+                    }*/
+                    /*
+                    if (width > 200 || height > 200)
+                    {
+                        ModelState.AddModelError(string.Empty, "Kullanıcı oluşturulamadı! Profil resmi 200px den fazla olamaz.");
+                        ModalMessageVM ModalMessage = new ModalMessageVM()
+                        {
+                            Message = "Kullanıcı oluşturulamadı! Profil resmi 200px den fazla olamaz.",
+                            Icon = "warning",
+                            Status = true
+                        };
+                        return RedirectToAction("NewUser", ModalMessage);
+                    }*/
+
+
+                    files[0].CopyTo(fileStreams);
+                }
+            }
             _uow.Customers.Update(_customerItem);
             _uow.Save();
             return Redirect("/musteriler/" + _customerItem.Id);
@@ -240,7 +289,7 @@ namespace ProjectFollower.Controllers
             //var GetCustomer = _uow.Customers.GetFirstOrDefault(i => i.Email==customervm.Email);
 
             string webRootPath = _hostEnvironment.WebRootPath;
-            var customerpath = webRootPath + LocFilePaths.DIR_Customer_Doc+_customer.Id;
+            var customerpath = webRootPath + LocFilePaths.DIR_Customer_Doc + _customer.Id;
             var files = HttpContext.Request.Form.Files;
             string FileName = "";
             if (files.Count() > 0)
@@ -258,7 +307,7 @@ namespace ProjectFollower.Controllers
                     using (var fileStream = new FileStream(Path.Combine(uploads, item.FileName), FileMode.Create))
                     {
                         item.CopyTo(fileStream);
-                        
+
                         var Document = new CompanyDocuments()
                         {
                             CustomerId = _customer.Id,
@@ -286,17 +335,17 @@ namespace ProjectFollower.Controllers
             var customerpath = webRootPath + LocFilePaths.DIR_Customer_Doc + _customer.Email;
             var documentPath = customerpath + @"\" + _customerDocument.FileName;
 
-                if (System.IO.File.Exists(documentPath))
+            if (System.IO.File.Exists(documentPath))
                 System.IO.File.Delete(documentPath);
 
-                
+
 
 
 
             _uow.CompanyDocuments.Remove(_customerDocument);
             _uow.Save();
             return Json(null);
-            
+
         }
         [Authorize(Roles = UserRoles.Admin)]
         [HttpGet("musteriler/sil/{id}")]
@@ -315,10 +364,10 @@ namespace ProjectFollower.Controllers
                 _uow.Customers.Remove(getCustomer);
                 _uow.CompanyDocuments.RemoveRange(getDocuments);
                 _uow.Save();
-                
+
             }
 
-            return RedirectToAction("Index","Customers");
+            return RedirectToAction("Index", "Customers");
         }
         #region API
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]

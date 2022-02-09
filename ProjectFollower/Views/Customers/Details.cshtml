@@ -155,8 +155,26 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form asp-action="UpdateCustomer" asp-controller="Customers" method="post" asp-route-id="@Model.Id" id="updatecustForm">
+            <form asp-action="UpdateCustomer" asp-controller="Customers" method="post" asp-route-id="@Model.Id" id="updatecustForm" enctype="multipart/form-data" data-pasley-validate>
                 <div class="modal-body">
+                    <div class="form-group">
+                        <div class="row d-flex align-items-center justify-content-center">
+                            <div class="col-sm-6 text-center">
+                                Mevcut Firma Fotoğrafı<br />
+
+                            </div>
+                            <div class="col-sm-6 text-center">
+                                <p>Yeni Firma Fotoğrafı Yükleyinn</p><br />
+                                <div class="input-group mb-3 file-avatar ">
+                                    <label class="custom-select custom-select-label" for="company-upload" accept="image/*"></label>
+                                    <input type="file" class="d-none" name="company-upload" id="company-upload" accept="image/png, image/gif, image/jpeg" />
+                                    <div class="input-group-append">
+                                        <label class="input-group-text" for="company-upload" accept="image/*">Fotoğraf Yükle</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Firma Adı:</label>
                         <input type="text" class="form-control" value="@Model.Name" asp-for="Name">
@@ -181,6 +199,7 @@
                         <label for="recipient-name" class="col-form-label">Firma E-posta:</label>
                         <input type="text" class="form-control" id="company-eposta" value="@Model.Email" asp-for="Email">
                     </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary"
