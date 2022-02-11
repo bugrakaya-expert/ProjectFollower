@@ -98,12 +98,24 @@ namespace ProjectFollower.Controllers
             List<Users> _users = new List<Users>();
             List<CommentVM> _commentList = new List<CommentVM>();
             List<DepartmentsVM> _departmentsVMs = new List<DepartmentsVM>();
+            List<DocumentVM> documentVMs = new List<DocumentVM>();
             var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id), includeProperties: "Customers");
             var _tasks = _uow.ProjectTasks.GetAll(i => i.ProjectsId == Guid.Parse(id));
             var _documents = _uow.ProjectDocuments.GetAll(i => i.ProjectsId == Guid.Parse(id));
             var _comments = _uow.ProjectComments.GetAll(i => i.ProjectsId == Guid.Parse(id));
             var _responsibles = _uow.ResponsibleUsers.GetAll(i => i.ProjectId == Guid.Parse(id));
-
+            foreach (var item in _documents)
+            {
+                var _documentVM = new DocumentVM()
+                {
+                    Id = item.Id,
+                    FileName = item.FileName,
+                    ProjectsId = item.ProjectsId,
+                    Length = item.Length,
+                    Length_MB = (item.Length / 1024) / 1024
+                };
+                documentVMs.Add(_documentVM);
+            }
             foreach (var item in _responsibles)
             {
                 var AppUser = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == item.UserId.ToString(), includeProperties: "Department");
@@ -270,6 +282,7 @@ namespace ProjectFollower.Controllers
                         {
                             ProjectsId = ProjectVM.Id,
                             FileName = item.FileName + extension,
+                            Length = item.Length
                         };
                         _uow.ProjectDocuments.Add(Document);
                     }
@@ -307,13 +320,16 @@ namespace ProjectFollower.Controllers
                     var _filename = item.FileName.Split('.');
                     if (_filename.Count() == 1)
                         extension = Path.GetExtension(item.FileName);
+                    long length = 0;
                     using (var fileStream = new FileStream(Path.Combine(uploads, item.FileName + extension), FileMode.Create))
                     {
+
                         item.CopyTo(fileStream);
                         var Document = new ProjectDocuments()
                         {
                             ProjectsId = Project.Id,
                             FileName = item.FileName + extension,
+                            Length = item.Length
                         };
                         _uow.ProjectDocuments.Add(Document);
                     }
@@ -641,7 +657,7 @@ namespace ProjectFollower.Controllers
         }
         [Authorize(Roles = UserRoles.Admin)]
         [HttpGet("jsonresult/changeToArchiveState/{id}")]
-        public async Task <JsonResult> ChangetoArchiveState(string id)
+        public async Task<JsonResult> ChangetoArchiveState(string id)
         {
             var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
             if (_project.Status == 3 && _project.Archived == false)

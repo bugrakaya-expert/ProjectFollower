@@ -14,5 +14,6 @@ namespace ProjectFollower.Models.DbModels
         public Guid ProjectsId { get; set; }
         public Projects Projects { get; set; }
         public string FileName { get; set; }
+        public long Length { get; set; }
     }
 }

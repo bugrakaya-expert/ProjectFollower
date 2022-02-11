@@ -4103,20 +4103,19 @@ $.dore = function (element, options) {
                     /* Read more about isConfirmed, isDenied below */
                     if (result.isConfirmed) {
                         var id = this.attr('id');
-                        $.ajax({
-                            url: "jsonresult/changeToArchiveState/" + id,
-                            type: "GET",
-                            contentType: "application/json",
-                            dataType: "json",
-                            success: function (data) {
-                                Swal.fire({
-                                    title: data.message,
-                                    icon: data.icon,
-                                    confirmButtonText: 'Tamam',
-                                });
-
-                            }
-                        });
+                        Swal.fire({
+                            title: 'Proje başarıyla güncellendi',
+                            icon: 'success',
+                            confirmButtonText: 'Tamam',
+                        }).then((result) => {
+                            $.ajax({
+                                url: "jsonresult/changeToArchiveState/" + id,
+                                type: "GET",
+                                contentType: "application/json",
+                                dataType: "json",
+                            });
+                        })
+                        var id = this.attr('id');
                     }
                 })
             }
@@ -4131,22 +4130,18 @@ $.dore = function (element, options) {
                     /* Read more about isConfirmed, isDenied below */
                     if (result.isConfirmed) {
                         var id = this.attr('id');
-                        $.ajax({
-                            url: "jsonresult/changeToNewState/" + id,
-                            type: "GET",
-                            contentType: "application/json",
-                            dataType: "json",
-                            success: function (data) {
-                                Swal.fire({
-                                    title: 'Başarıyla güncellendi',
-                                    icon: 'success',
-                                    confirmButtonText: 'Tamam',
-                                });
-
-                            }
-                        });
-
-
+                        Swal.fire({
+                            title: 'Proje başarıyla güncellendi',
+                            icon: 'success',
+                            confirmButtonText: 'Tamam',
+                        }).then((result) => {
+                            $.ajax({
+                                url: "jsonresult/changeToNewState/" + id,
+                                type: "GET",
+                                contentType: "application/json",
+                                dataType: "json",
+                            });
+                        })
                     }
                 })
             }
@@ -4161,22 +4156,18 @@ $.dore = function (element, options) {
                     /* Read more about isConfirmed, isDenied below */
                     if (result.isConfirmed) {
                         var id = this.attr('id');
-                        $.ajax({
-                            url: "jsonresult/changeToConstructionState/" + id,
-                            type: "GET",
-                            contentType: "application/json",
-                            dataType: "json",
-                            success: function (data) {
-                                Swal.fire({
-                                    title: 'Başarıyla güncellendi',
-                                    icon: 'success',
-                                    confirmButtonText: 'Tamam',
-                                });
-
-
-                            }
-                        });
-
+                        Swal.fire({
+                            title: 'Proje başarıyla güncellendi',
+                            icon: 'success',
+                            confirmButtonText: 'Tamam',
+                        }).then((result) => {
+                            $.ajax({
+                                url: "jsonresult/changeToConstructionState/" + id,
+                                type: "GET",
+                                contentType: "application/json",
+                                dataType: "json",
+                            });
+                        })
 
                     }
                 })
@@ -4192,21 +4183,18 @@ $.dore = function (element, options) {
                     /* Read more about isConfirmed, isDenied below */
                     if (result.isConfirmed) {
                         var id = this.attr('id');
-                        $.ajax({
-                            url: "jsonresult/changeToCustomerApproveState/" + id,
-                            type: "GET",
-                            contentType: "application/json",
-                            dataType: "json",
-                            success: function (data) {
-                                Swal.fire({
-                                    title: 'Başarıyla güncellendi',
-                                    icon: 'success',
-                                    confirmButtonText: 'Tamam',
-                                });
-
-
-                            }
-                        });
+                        Swal.fire({
+                            title: 'Proje başarıyla güncellendi',
+                            icon: 'success',
+                            confirmButtonText: 'Tamam',
+                        }).then((result) => {
+                            $.ajax({
+                                url: "jsonresult/changeToCustomerApproveState/" + id,
+                                type: "GET",
+                                contentType: "application/json",
+                                dataType: "json",
+                            });
+                        })
                     }
                 })
             }
@@ -4221,21 +4209,19 @@ $.dore = function (element, options) {
                     /* Read more about isConfirmed, isDenied below */
                     if (result.isConfirmed) {
                         var id = this.attr('id');
-                        $.ajax({
-                            url: "jsonresult/changeToDoneState/" + id,
-                            type: "GET",
-                            contentType: "application/json",
-                            dataType: "json",
-                            success: function (data) {
-                                Swal.fire({
-                                    title: 'Başarıyla güncellendi',
-                                    icon: 'success',
-                                    confirmButtonText: 'Tamam',
-                                });
-
-
-                            }
-                        });
+                        Swal.fire({
+                            title: 'Proje başarıyla güncellendi',
+                            icon: 'success',
+                            confirmButtonText: 'Tamam',
+                        }).then((result) => {
+                            $.ajax({
+                                url: "jsonresult/changeToDoneState/" + id,
+                                type: "GET",
+                                contentType: "application/json",
+                                dataType: "json",
+                            });
+                        })
+                       
                     }
                 })
             }

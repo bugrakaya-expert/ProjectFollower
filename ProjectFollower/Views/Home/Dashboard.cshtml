@@ -243,7 +243,7 @@
                             var img = "/assets/customers/" + custid + custImage;
                             var delayedspan = '';
                             if (isDelayed == true) {
-                                delayedspan = `<span class="badge badge-pill badge-danger ml-3">Proje Gecikmiş!</span>`;
+                                delayedspan = `<span class="badge badge-pill badge-danger ml-3">PROJE GECİKMİŞ!</span>`;
                                 if (item.status < 3)
                                     completed++;
                             }
@@ -267,7 +267,7 @@
                             }
 
                             if (item.status == 4) {
-                                status = `<span class="badge badge-pill badge-primary">Arşivli</span>&nbsp;&nbsp; <i class="fas fa-archive fa-2x"></i>`;
+                                status = `<span class="badge badge-pill badge-primary" style="background-color: #008aff !important;"><i class="fas fa-archive"></i>&nbsp;&nbsp;ARŞİVLENMİŞ</span>`;
 
                             }
 
@@ -286,7 +286,7 @@
                                                         <p class="d-none">`+ dateSequence + `</p> <p>` + endingData + `</p>
                                                     </td>
                                                     <td>
-                                                        <p class="d-none">`+ sequence + `</p>` + status + `
+                                                        <p class="d-none">`+ item.status + `</p>` + status + `
                                                     </td>
                                                     <td class="text-center">
                                                         <a href="/proje-detaylari/`+ item.id + `" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>

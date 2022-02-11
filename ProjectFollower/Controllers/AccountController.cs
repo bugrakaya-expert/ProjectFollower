@@ -144,7 +144,7 @@ namespace ProjectFollower.Controllers
 
         }
         */
-     
+
         public IActionResult SuccessResult(bool posted)
         {
             if (posted)
@@ -235,23 +235,17 @@ namespace ProjectFollower.Controllers
                 if (files.Count() < 1)
                     return NoContent();
                 var extension = Path.GetExtension(files[0].FileName);
-                if (AppUser.ImageUrl == null)
-                {
 
-                    fileName = Guid.NewGuid().ToString()+extension;
-                    AppUser.ImageUrl = fileName;
-                    _uow.ApplicationUser.Update(AppUser);
-                    _uow.Save();
-                }
-                else
-                {
-                    fileName = AppUser.ImageUrl;
-                }
+
+                fileName = files[0].FileName;
+                AppUser.ImageUrl = fileName;
+                _uow.ApplicationUser.Update(AppUser);
+                _uow.Save();
 
 
                 if (files.Count() > 0)
                 {
-                    var uploads = Path.Combine(webRootPath+userpath);
+                    var uploads = Path.Combine(webRootPath + userpath);
                     string fileLocation = uploads + fileName;
 
                     if (!(Directory.Exists(uploads)))
@@ -265,13 +259,13 @@ namespace ProjectFollower.Controllers
                     using (var fileStreams = new FileStream(Path.Combine(uploads, fileName), FileMode.Create))
                     {
                         var stream = files[0].OpenReadStream();
-                       /*
-                        var image = Image.FromStream(stream);
-                        var size = image.Size;
-                        var width = (float)size.Width;
-                        var height = (float)size.Height;
+                        /*
+                         var image = Image.FromStream(stream);
+                         var size = image.Size;
+                         var width = (float)size.Width;
+                         var height = (float)size.Height;
 
-                        float rate = width / height;*/
+                         float rate = width / height;*/
                         /*
                         if (rate != 1)
                         {

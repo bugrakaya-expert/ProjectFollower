@@ -95,8 +95,6 @@ namespace ProjectFollower.Controllers
                 return View("SignIn");
             #endregion Authentication Index
 
-            //var _CompanyType = _uow.CompanyType.GetFirstOrDefault(i => i.Id == customervm.CompanyTypeId);
-
             var DocumentList = new List<CompanyDocuments>();
 
 
@@ -115,8 +113,6 @@ namespace ProjectFollower.Controllers
             var customer = new Customers()
             {
                 AuthorizedName = customervm.AuthorizedName,
-                /*CompanyType = _CompanyType,
-                CompanyTypeId = customervm.CompanyTypeId,*/
                 Description = customervm.Description,
                 Email = customervm.Email,
                 ImageUrl = _imageUrl,
@@ -281,12 +277,8 @@ namespace ProjectFollower.Controllers
                 return View("SignIn");
             #endregion Authentication Index
             var _customer = _uow.Customers.GetFirstOrDefault(i => i.Id == customerVM.Id);
-            //var _CompanyType = _uow.CompanyType.GetFirstOrDefault(i => i.Id == _customer.CompanyTypeId);
 
             var DocumentList = new List<CompanyDocuments>();
-
-
-            //var GetCustomer = _uow.Customers.GetFirstOrDefault(i => i.Email==customervm.Email);
 
             string webRootPath = _hostEnvironment.WebRootPath;
             var customerpath = webRootPath + LocFilePaths.DIR_Customer_Doc + _customer.Id;
@@ -303,7 +295,6 @@ namespace ProjectFollower.Controllers
 
                 foreach (var item in files)
                 {
-                    //var extension = Path.GetExtension(item.FileName);
                     using (var fileStream = new FileStream(Path.Combine(uploads, item.FileName), FileMode.Create))
                     {
                         item.CopyTo(fileStream);
@@ -312,6 +303,7 @@ namespace ProjectFollower.Controllers
                         {
                             CustomerId = _customer.Id,
                             FileName = item.FileName,
+                            Length = item.Length
                         };
 
                         _uow.CompanyDocuments.Add(Document);
