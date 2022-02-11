@@ -92,27 +92,19 @@
                                                     }
 
                                                 </div>
-                                                @if (User.IsInRole(UserRoles.Admin))
-                                                {
-                                                    <a type="button" href="/proje-detaylari/gorev-kaldir/@item.Id" class="glyph-icon simple-icon-trash ml-4" style="font-size: 16px; text-align: right;"></a>
-                                                }
 
+                                                @*<a type="button" href="/proje-detaylari/gorev-kaldir/@item.Id" class="glyph-icon simple-icon-trash ml-4 remove-task" style="font-size: 16px; text-align: right;" id="@item.Id"></a>*@
+                                                <a type="button" class="glyph-icon simple-icon-trash ml-4 remove-task" style="font-size: 16px; text-align: right;" id="@item.Id"></a>
                                             </div>
                                         </div>
 
                                     }
-
                                     <div class="row mb-4">
                                         <div class="col-12 text-right">
-                                            @if (User.IsInRole(UserRoles.Admin))
-                                            {
-                                                <button type="button" data-toggle="modal" data-target="#add-mission" class="btn btn-secondary mb-0 mr-1">Görev Ekle</button>
-                                            }
+                                            <button type="button" data-toggle="modal" data-target="#add-mission" class="btn btn-secondary mb-0 mr-1">Görev Ekle</button>
                                             <button type="button" class="btn btn-primary btn-sm mb-0" id="taskbtn">Görevleri Düzenlemeyi Kaydet</button>
                                         </div>
                                     </div>
-
-
                                 </form>
                                 <div class="separator mb-5"></div>
 
@@ -541,6 +533,21 @@
                 });
             });
 
+            $(document).on("click", ".remove-task", function () {
+                Swal.fire({
+                    title: 'Bu görevi kaldırmak istediğinizden emin misiniz?',
+                    showCancelButton: true,
+                    icon: 'info',
+                    confirmButtonText: 'Kaldır',
+                    cancelButtonText: `İptal Et`,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '/proje-detaylari/gorev-kaldir/' + this.id;
+                    }
+
+                })
+            });
+        });
 
 
             $('#comment-input').keydown(function (event) {
@@ -554,7 +561,6 @@
 
 
 
-        });
     </script>
 
 

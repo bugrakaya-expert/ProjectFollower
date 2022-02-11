@@ -385,7 +385,7 @@ namespace ProjectFollower.Controllers
 
             return Redirect("/proje-detaylari/" + project.Id);
         }
-        [Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [HttpPost]
         public IActionResult AddTask(ProjectDetailVM projectDetailVM)
         {
@@ -398,7 +398,7 @@ namespace ProjectFollower.Controllers
             _uow.Save();
             return Redirect("/proje-detaylari/" + projectDetailVM.ProjectsId);
         }
-        [Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [HttpGet("proje-detaylari/gorev-kaldir/{id}")]
         public IActionResult RemoveTask(string id)
         {

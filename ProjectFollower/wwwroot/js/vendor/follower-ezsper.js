@@ -16,7 +16,6 @@
         $(this).closest('tr').remove();
     });
 
-
     $(".remove-customer-document").click(function () {
         var id = $(this).attr('id');
         Swal.fire({

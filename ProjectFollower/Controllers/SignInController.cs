@@ -77,9 +77,9 @@ namespace ProjectFollower.Controllers
                 }
                 if (result.ToString() == "Failed")
                 {
-                    _logger.LogInformation("Kullanıcı bilgisi yalnış. - Girilen Email :" + Input.Email);
+                    _logger.LogInformation("Kullanıcı bilgisi doğru değil. - Girilen Email :" + Input.Email);
                     //ModelState.AddModelError(string.Empty, "Kullanıcı bilgisi yalnış. Lütfen bilgilerinizi kontrol ediniz.");
-                    ModelState.AddModelError(string.Empty, "Kullanıcı bilgisi yalnış. Lütfen bilgilerinizi kontrol ediniz.");
+                    ModelState.AddModelError(string.Empty, "Kullanıcı bilgilerinden E-posta veya Şifre doğru değil. Lütfen bilgilerinizi kontrol ediniz.");
                     return View("Index");
                 }
                 if (result.IsNotAllowed)
