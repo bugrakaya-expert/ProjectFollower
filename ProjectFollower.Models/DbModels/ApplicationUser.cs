@@ -20,6 +20,7 @@ namespace ProjectFollower.Models.DbModels
         [ForeignKey("DepartmentId")]
         public Department Department { get; set; }
         public string UserRole { get; set; }
+        public bool Active { get; set; }
 
         [NotMapped]
         public string Role { get; set; }

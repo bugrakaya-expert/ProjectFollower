@@ -11,6 +11,7 @@ namespace ProjectFollower.Models.DbModels
         [Key]
         public Guid Id { get; set; }
         [Required(ErrorMessage = "Bir Proje adı girmelisiniz.")]
+        [StringLength(48, ErrorMessage = "Proje adı en fazla {1} karakterle sınırlıdır ")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Firma seçmek zorunludur.")]

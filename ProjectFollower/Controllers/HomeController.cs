@@ -495,7 +495,7 @@ namespace ProjectFollower.Controllers
                 return Json(null);
 
 
-            if (AppUser.UserRole == UserRoles.Personel)
+            if (User.IsInRole(UserRoles.Personel))
             {
                 var Responsibles = _uow.ResponsibleUsers.GetAll(i => i.UserId == Guid.Parse(AppUser.Id));
                 foreach (var item in Responsibles)
@@ -608,6 +608,7 @@ namespace ProjectFollower.Controllers
             await WebSocAct.ListProjects_WebSocket(GetClaim());
             return Json(null);
         }
+        [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [HttpGet("jsonresult/getalluserswithdep")]
         public JsonResult GetJson()
         {
@@ -648,7 +649,7 @@ namespace ProjectFollower.Controllers
 
             return Json(projectTasksList);
         }
-        [Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [HttpGet("jsonresult/changearcstatus/{archived}")]
         public JsonResult ChangeArciveStatus(bool archived)
         {
@@ -693,23 +694,36 @@ namespace ProjectFollower.Controllers
         {
             var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
             _project.Status = 0;
+            _project.Archived = false;
             _uow.Project.Update(_project);
             _uow.Save();
             WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
             await WebSocAct.ListProjects_WebSocket(GetClaim());
             return Json(null);
         }
-        [Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [HttpGet("jsonresult/changeToConstructionState/{id}")]
         public async Task<JsonResult> ChangetoConstructionState(string id)
         {
             var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
-            _project.Status = 1;
-            _project.Archived = false;
-            _uow.Project.Update(_project);
-            _uow.Save();
-            WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
-            await WebSocAct.ListProjects_WebSocket(GetClaim());
+            if (User.IsInRole(UserRoles.Admin))
+            {
+                _project.Status = 1;
+                _project.Archived = false;
+                _uow.Project.Update(_project);
+                _uow.Save();
+                WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
+                await WebSocAct.ListProjects_WebSocket(GetClaim());
+            }
+            if(_project.Status == 0 && User.IsInRole(UserRoles.Personel))
+            {
+                _project.Status = 1;
+                _project.Archived = false;
+                _uow.Project.Update(_project);
+                _uow.Save();
+                WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
+                await WebSocAct.ListProjects_WebSocket(GetClaim());
+            }
             return Json(null);
         }
         [Authorize(Roles = UserRoles.Admin)]

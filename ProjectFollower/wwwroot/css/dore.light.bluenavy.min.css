@@ -2520,9 +2520,8 @@ main .container-fluid {
     border-radius: 0.1rem;
     padding: 0;
     border: initial;
-    height: auto;
     max-width: unset;
-    height: 85px;
+    height: 50px;
     object-fit: cover;
     width: unset;
 }
@@ -3015,7 +3014,7 @@ table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > th:first-child:b
 }
 .data-table-rows table td,
 .data-table-rows table th {
-    padding: 1.5rem;
+    padding: 1rem;
     border: initial;
 }
 .data-table-rows table td {

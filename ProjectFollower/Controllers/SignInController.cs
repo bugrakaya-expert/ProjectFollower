@@ -79,7 +79,7 @@ namespace ProjectFollower.Controllers
                 {
                     _logger.LogInformation("Kullanıcı bilgisi doğru değil. - Girilen Email :" + Input.Email);
                     //ModelState.AddModelError(string.Empty, "Kullanıcı bilgisi yalnış. Lütfen bilgilerinizi kontrol ediniz.");
-                    ModelState.AddModelError(string.Empty, "Kullanıcı bilgilerinden E-posta veya Şifre doğru değil. Lütfen bilgilerinizi kontrol ediniz.");
+                    ModelState.AddModelError(string.Empty, "Giriş bilgilerinden E-posta veya Şifre doğru değil. Lütfen bilgilerinizi kontrol ediniz.");
                     return View("Index");
                 }
                 if (result.IsNotAllowed)
@@ -106,8 +106,10 @@ namespace ProjectFollower.Controllers
                 }
             }
 
-            // If we got this far, something failed, redisplay form
-            return View("SignIn", model: ModelState.Values);
+            _logger.LogInformation("Error: 'ModelState Invalid' - Girilen Email :" + Input.Email);
+            //ModelState.AddModelError(string.Empty, "Kullanıcı bilgisi yalnış. Lütfen bilgilerinizi kontrol ediniz.");
+            ModelState.AddModelError(string.Empty, "Giriş bilgilerinden E-posta veya Şifre doğru değil. Lütfen bilgilerinizi kontrol ediniz.");
+            return View("Index");
         }
 
         [Route("logout")]

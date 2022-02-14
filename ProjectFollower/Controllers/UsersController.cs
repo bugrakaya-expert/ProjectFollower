@@ -374,7 +374,7 @@ namespace ProjectFollower.Controllers
             var Claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             if (Claims != null)
             {
-                var users = _uow.ApplicationUser.GetAll(r=>r.UserRole==UserRoles.Personel,includeProperties: "Department");
+                var users = _uow.ApplicationUser.GetAll(r=>r.UserRole==UserRoles.Personel,includeProperties: "Department").Where(a=>a.Active);
                 foreach (var item in users)
                 {
 
