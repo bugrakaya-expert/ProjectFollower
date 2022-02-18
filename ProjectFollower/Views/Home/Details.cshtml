@@ -117,7 +117,7 @@
                                         {
                                             <div class="d-flex flex-row mb-3 border-bottom justify-content-between">
                                                 <a href="#">
-                                                    <img src="@item.Img" alt="Philip Nelms"
+                                                    <img src="@item.Img" alt="@item.FullName"
                                                          class="img-thumbnail border-0 rounded-circle list-thumbnail align-self-center xsmall" />
                                                 </a>
                                                 <div class="pl-3 flex-grow-1">
@@ -250,7 +250,7 @@
                                 <h1 class="p-0 m-0">@Model.Project.Customers.Name</h1>
                             </div>
                             <div class="col-4">
-                                <img src="/assets/customers/@Model.Project.Customers.Id/img/@Model.Project.Customers.ImageUrl" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left ml-2" />
+                                <img src="/assets/customers/@Model.Project.Customers.Id/img/@Model.Project.Customers.ImageUrl" alt="@Model.Project.Customers.Name" class="list-thumbnail responsive border-0 card-img-left ml-2" />
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -296,7 +296,7 @@
                         @foreach (var item in Model.Users)
                         {
                             string img = item.ImageUrl;
-                            <img alt="thumb" class="img-thumbnail border-0 rounded-circle mb-4 list-thumbnail mx-auto" src="@img">
+                            <img alt="@item.FullName" class="img-thumbnail border-0 rounded-circle mb-4 list-thumbnail mx-auto" src="@img" title="@item.FullName">
                         }
                     </div>
                 </div>
@@ -337,13 +337,21 @@
                         <select class="form-control select2-multiple" multiple="multiple" data-width="100%" asp-for="UserId" id="userid" required>
                             @foreach (var item in Model.DepartmentsVMs)
                             {
-                                <optgroup label="@item.Name">
-                                    @foreach (var itemUser in item.ApplicationUser)
+                            <optgroup label="@item.Name">
+                                @foreach (var itemUser in item.Users)
+                                {
+                                    if (itemUser.IsResponsible)
+                                    {
+                                        <option value="@itemUser.Id" selected>@itemUser.FirstName</option>
+                                    }
+                                    else
                                     {
                                         <option value="@itemUser.Id">@itemUser.FirstName</option>
                                     }
 
-                                </optgroup>
+                                }
+
+                            </optgroup>
                             }
                         </select>
                     </div>
@@ -501,12 +509,12 @@
                         if (received == null)
                             $("#comment-input").val("");
                         else {
-
+                            console.log(received);
                             commenthtml = `
 
                                             <div class='d-flex flex-row mb-3 border-bottom justify-content-between'>
                                                 <a href='#'>
-                                                    <img src='`+ received.img+`'
+                                                    <img src='/assets/users/`+received.userId+`/img/`+ received.img+`'
                                                          class='img-thumbnail border-0 rounded-circle list-thumbnail align-self-center xsmall' />
                                                 </a>
                                                 <div class='pl-3 flex-grow-1'>

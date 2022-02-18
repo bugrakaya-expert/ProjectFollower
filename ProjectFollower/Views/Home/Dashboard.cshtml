@@ -5,6 +5,7 @@
     bool archived = Convert.ToBoolean(Context.Request.Cookies["_kj6ght"]);
 }
 @using static ProjectFollower.Utility.ProjectConstant.UserRoles
+@model ProjectFollower.Models.ViewModels.ProjectVM
 <main>
     @*
         <div class="alert alert-danger alert-dismissible fade show rounded mb-4" role="alert"><strong>Dikkat!</strong> Termini geçmiş 1 adet projeniz bulunmakta. <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></div>
@@ -47,9 +48,9 @@
                             </div>
                         </div>
                         <div class="float-md-right">
-                            <div class="form-group row mb-1 mr-2">
-                                <label class=" d-flex align-items-center mr-2 text-muted"><b>Arşivlenmiş Projeler</b></label>
-                                <div class="custom-switch custom-switch-secondary-inverse mb-2">
+                            <div class="form-group row mb-1">
+                                <label class=" d-flex align-items-center text-muted mr-2"><b>Arşivlenmiş Projeler</b></label>
+                                <div class="custom-switch custom-switch-secondary-inverse mb-2 mr-2">
                                     @if (archived)
                                     {
                                         <input class="custom-switch-input" id="archived" type="checkbox" checked>
@@ -61,8 +62,21 @@
 
                                     <label class="custom-switch-btn" for="archived"></label>
                                 </div>
+
                             </div>
                         </div>
+                        @if (User.IsInRole(Admin))
+                        {
+                            <div class="float-md-right mr-5">
+
+                                <button class="btn btn-outline-dark btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Kişi Filterelemesi</button>
+                                <div class="dropdown-menu dropdown-menu-right " x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(1291px, 96px, 0px);" id="user-filter">
+
+                                </div>
+                            </div>
+                        }
+
+
                     </div>
                 </div>
                 <div class="separator mb-4"></div>
@@ -182,7 +196,105 @@
     <script src="/js/vendor/datatables-index.min.js"></script>
 
     <script>
+        $(document).on("click", ".filter-users", function () {
+            var archived = '@archived';
+            console.log(this.id);
+            var userId = this.id;
+            $.ajax({
+                type: "GET",
+                url: "/jsonresult/getuserbyfilter/" + userId + "/" + archived,
+                contentType: "application/json",
+                dataType: "json",
+                success: function (data) {
+                    $("#tbody").text("");
+
+                    $.each(data.projects, function (i, item) {
+
+                        var name = item.name;
+                        var id = item.id;
+                        var status = "";
+                        var isDelayed = item.isDelayed;
+                        var endingData = item.endingDate;
+                        var custImage = item.customers.imageUrl;
+                        var custid = item.customers.id + '/img/';
+                        var img = "/assets/customers/" + custid + custImage;
+                        var delayedspan = '';
+                        if (isDelayed == true) {
+                            delayedspan = `<span class="badge badge-pill badge-danger ml-3">PROJE GECİKMİŞ!</span>`;
+                            if (item.status < 3)
+                                completed++;
+                        }
+
+                        var custName = item.customers.name;
+                        var sequence = item.projectSequence;
+                        var dateSequence = item.sequanceDate;
+                        //var comptype = item.companyType.name;
+                        if (item.status == 0) {
+                            status = `<span class="badge badge-pill badge-info">YENİ</span>` + delayedspan;
+                        }
+                        if (item.status == 1) {
+                            status = `<span class="badge badge-pill badge-warning">YAPIM AŞAMASINDA</span>` + delayedspan;
+                        }
+                        if (item.status == 2) {
+                            status = `<span class="badge badge-pill badge-secondary">MÜŞTERİ ONAYINDA</span>` + delayedspan;
+                        }
+                        if (item.status == 3) {
+
+                            status = `<span class="badge badge-pill badge-primary">TAMAMLANDI</span>`;
+                        }
+
+                        if (item.status == 4) {
+                            status = `<span class="badge badge-pill badge-primary" style="background-color: #008aff !important;"><i class="fas fa-archive"></i>&nbsp;&nbsp;ARŞİVLENMİŞ</span>`;
+
+                        }
+
+                        var htmlstr = `
+                                                <tr class="cardd" id="`+ id + `">
+                                                    <td>
+                                                        <img src="`+ img + `" alt="` + name + `" class="list-thumbnail responsive border-0 card-img-left" />
+                                                    </td>
+                                                    <td>
+                                                        <p class="d-none">`+ dateSequence + `</p> <p>` + custName + `</p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="list-item-heading">`+ name + `</p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="d-none">`+ dateSequence + `</p> <p>` + endingData + `</p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="d-none">`+ item.status + `</p>` + status + `
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <a href="/proje-detaylari/`+ item.id + `" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
+                                                    </td>
+                                                </tr>
+`;
+
+                        $("#tbody").append(htmlstr);
+
+
+                    });
+
+                    var alertstr = `
+                    <div class="alert alert-danger alert-dismissible fade show rounded mb-4" role="alert"><strong>Dikkat!</strong> Termini geçmiş `+ completed + ` adet projeniz bulunmakta. <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></div>
+`;
+
+                    @*
+                        if ((data.delayedProjects > 0) && (completed == 0))*@
+                        if (completed > 0)
+                        $("#mp-attention").html(alertstr);
+
+
+                    console.log("sayıldı :" + completed);
+
+                }
+            });
+        });
+
         $(document).ready(function () {
+
+
 
             var archived = '@archived';
             function changeArcStatus() {
@@ -319,6 +431,27 @@
 
 
             voidAjx();
+
+            $.ajax({
+                type: "GET",
+                url: "/jsonresult/getallusers/",
+                contentType: "application/json",
+                dataType: "json",
+                success: function (data) {
+                    $("#user-filter").text("");
+
+                    $.each(data, function (i, item) {
+
+                        var users = `<a type="button" class="dropdown-item filter-users" href="#" id="` + item.id+`">`+item.fullName+`</a>`;
+
+                        $("#user-filter").append(users);
+
+                    });
+
+                }
+            });
+
+
             /*
             $('#datatableRow').DataTable({
                 "order": [[3, 'desc']]

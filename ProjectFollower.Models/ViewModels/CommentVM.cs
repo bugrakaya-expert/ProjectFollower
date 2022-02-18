@@ -12,6 +12,7 @@ namespace ProjectFollower.Models.ViewModels
         public Guid Id { get; set; }
         public string ProjectsId { get; set; }
         //public string ApplicationUserId { get; set; }
+        public string UserId { get; set; }
         public string UserEmail { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

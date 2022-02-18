@@ -421,8 +421,8 @@ namespace ProjectFollower.Controllers
             var Claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             if (Claims != null)
             {
-                var AdminUsers = _uow.ApplicationUser.GetAll(r => r.UserRole == UserRoles.Admin,includeProperties: "Department");
-                var ManagerUsers = _uow.ApplicationUser.GetAll(r => r.UserRole == UserRoles.Manager, includeProperties: "Department");
+                var AdminUsers = _uow.ApplicationUser.GetAll(r => r.UserRole == UserRoles.Admin,includeProperties: "Department").Where(a=>a.Active);
+                var ManagerUsers = _uow.ApplicationUser.GetAll(r => r.UserRole == UserRoles.Manager, includeProperties: "Department").Where(a => a.Active);
                 foreach (var item in AdminUsers)
                 {
                     var ImageUrl = WebRootPaths.DIR_Users_Main + item.Id + "/" + WebRootPaths.Img+item.ImageUrl;

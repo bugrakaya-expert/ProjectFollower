@@ -87,7 +87,26 @@ namespace ProjectFollower.Controllers
         {
             var AppUser = _uow.ApplicationUser.GetFirstOrDefault(id => id.Id == GetClaim().Value);
 
-            return View();
+            List<DepartmentsVM> departmentsVM = new List<DepartmentsVM>();
+            var GetDepartments = _uow.Department.GetAll();
+            foreach (var item in GetDepartments)
+            {
+                var UserWidtDep = _uow.ApplicationUser.GetAll(i => i.DepartmentId == item.Id).Where(a => a.Active);
+                var DepartmentItem = new DepartmentsVM()
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    ApplicationUser = UserWidtDep,
+                };
+                departmentsVM.Add(DepartmentItem);
+            }
+
+            ProjectVM Project = new ProjectVM()
+            {
+                DepartmentsVMs = departmentsVM
+            };
+
+            return View(Project);
         }
 
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
@@ -154,11 +173,42 @@ namespace ProjectFollower.Controllers
             foreach (var item in _alldepartments)
             {
                 var DepartmentUsers = _uow.ApplicationUser.GetAll(i => i.DepartmentId == item.Id);
+                List<Users> UserList = new List<Users>();
+                foreach (var useritem in DepartmentUsers)
+                {
+                    var _responsible = _uow.ResponsibleUsers.GetAll(i => i.ProjectId == Guid.Parse(id)).Where(i=>i.UserId==Guid.Parse(useritem.Id));
+                    if (_responsible.Count() > 0)
+                    {
+                        var _user = new Users()
+                        {
+                            Id = useritem.Id,
+                            FirstName = useritem.FirstName,
+                            LastName = useritem.Lastname,
+                            IsResponsible=true
+
+                        };
+                        UserList.Add(_user);
+                    }
+                    else
+                    {
+                        var _user = new Users()
+                        {
+                            Id = useritem.Id,
+                            FirstName = useritem.FirstName,
+                            LastName = useritem.Lastname,
+                            IsResponsible = false
+
+                        };
+                        UserList.Add(_user);
+                    }
+
+
+                }
                 DepartmentsVM departmentsVM = new DepartmentsVM()
                 {
                     Id = item.Id,
                     Name = item.Name,
-                    ApplicationUser = DepartmentUsers,
+                    Users = UserList,
 
                 };
                 _departmentsVMs.Add(departmentsVM);
@@ -186,7 +236,7 @@ namespace ProjectFollower.Controllers
             var GetDepartments = _uow.Department.GetAll();
             foreach (var item in GetDepartments)
             {
-                var UserWidtDep = _uow.ApplicationUser.GetAll(i => i.DepartmentId == item.Id);
+                var UserWidtDep = _uow.ApplicationUser.GetAll(i => i.DepartmentId == item.Id).Where(a=>a.Active);
                 var DepartmentItem = new DepartmentsVM()
                 {
                     Id = item.Id,
@@ -771,6 +821,7 @@ namespace ProjectFollower.Controllers
                 _uow.ProjectComments.Add(projectComments);
                 var Comment = new CommentVM()
                 {
+                    UserId=AppUser.Id,
                     Comment = projectComments.Comment,
                     CommentTime = projectComments.CommentTime.ToString("F"),
                     Img = AppUser.ImageUrl,
@@ -786,6 +837,112 @@ namespace ProjectFollower.Controllers
             //var project = new Projects();
 
 
+        }
+        [HttpGet("jsonresult/getallusers")]
+        public JsonResult GetAllUsers()
+        {
+            List<Users> _Users = new List<Users>();
+
+
+            #region Authentication Index
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var Claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            if (Claims != null)
+            {
+                var AllUsers = _uow.ApplicationUser.GetAll(a => a.Active, includeProperties: "Department");
+                foreach (var item in AllUsers)
+                {
+                    var ImageUrl = WebRootPaths.DIR_Users_Main + item.Id + "/" + WebRootPaths.Img + item.ImageUrl;
+                    Users Useritem = new Users()
+                    {
+                        Id = item.Id,
+                        AppUserName = item.AppUserName,
+                        DepartmentId = item.DepartmentId,
+                        Department = item.Department,
+                        FullName = item.FirstName + " " + item.Lastname,
+                        IdentityNumber = item.IdentityNumber,
+                        Email = item.Email,
+                        ImageUrl = ImageUrl,
+                        Role = item.Role
+                    };
+                    _Users.Add(Useritem);
+                }
+            }
+            else
+                return Json(StatusCode(404));
+            #endregion Authentication Index
+
+
+
+            //_Users.AddRange((IEnumerable<Users>)(Users)users);
+
+
+            return Json(_Users);
+        }
+        [Authorize(Roles = UserRoles.Admin)]
+        [HttpGet("jsonresult/getuserbyfilter/{id}/{arcstatus}")]
+        public JsonResult GetUserByFilter(string id,bool ArchiveStatus)
+        {
+            IEnumerable<Projects> Projects;
+            List<Projects> _projects = new List<Projects>();
+            Projects _projectItem = new Projects();
+            List<ProjectListVM> ProjectListVMs = new List<ProjectListVM>();
+            ApplicationUser AppUser = new ApplicationUser();
+
+            var Responsibles = _uow.ResponsibleUsers.GetAll(i => i.UserId == Guid.Parse(id));
+            foreach (var item in Responsibles)
+            {
+                _projectItem = _uow.Project.GetFirstOrDefault(i => i.Id == item.ProjectId,includeProperties: "Customers");
+                if (ArchiveStatus == false && _projectItem.Archived == false)
+                {
+                    _projectItem.SequanceDate = Sequence++;
+                    if (DateTime.Now.Date > Convert.ToDateTime(_projectItem.EndingDate))
+                    {
+                        _projectItem.ProjectSequence = 1;
+                        _projectItem.IsDelayed = true;
+                        if (_projectItem.Status < 3)
+                            Delayeds++;
+                    }
+                    else
+                        _projectItem.ProjectSequence = 2;
+
+                    _projects.Add(_projectItem);
+                }
+                else if (_projectItem.Archived == false || (_projectItem.Archived == true && ArchiveStatus == true))
+                {
+                    _projectItem.SequanceDate = Sequence++;
+                    if (DateTime.Now.Date > Convert.ToDateTime(_projectItem.EndingDate))
+                    {
+                        _projectItem.ProjectSequence = 1;
+                        _projectItem.IsDelayed = true;
+                        if (_projectItem.Archived)
+                            _projectItem.Status = 4;
+                        else
+                        {
+                            if (_projectItem.Status < 3)
+                                Delayeds++;
+                        }
+
+                    }
+                    if (_projectItem.Archived)
+                        _projectItem.Status = 4;
+                    else
+                        _projectItem.ProjectSequence = 2;
+
+                    _projects.Add(_projectItem);
+                }
+            }
+            var FilteredProject = _projects.OrderBy(d => Convert.ToDateTime(d.EndingDate));
+            /*var ProjectList = new List<Projects>();
+            ProjectList.AddRange(FilteredProject);*/
+            Thread.Sleep(150);
+            var _ProjectListVM = new ProjectListVM()
+            {
+                Projects = FilteredProject,
+                DelayedProjects = Delayeds
+            };
+
+            return Json(_ProjectListVM);
         }
         #endregion API
 

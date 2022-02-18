@@ -17,6 +17,7 @@ namespace ProjectFollower.Models.ViewModels
         public string IdentityNumber { get; set; }
         public string ImageUrl { get; set; }
         public string Role { get; set; }
+        public bool IsResponsible { get; set; }
         public Guid DepartmentId { get; set; }
 
         [ForeignKey("DepartmentId")]

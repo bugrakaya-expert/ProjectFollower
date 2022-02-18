@@ -24,5 +24,7 @@ namespace ProjectFollower.Models.DbModels
 
         [NotMapped]
         public string Role { get; set; }
+        [NotMapped]
+        public bool IsResponsible { get; set; }
     }
 }
