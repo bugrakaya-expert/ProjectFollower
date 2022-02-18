@@ -48,30 +48,6 @@
                                     <span>Öngörülen Bitiş Tarihi</span>
                                 </label>
 
-                                @*
-                                    <label class="form-group has-top-label">
-                                        <select class="form-control select2-multiple" multiple="multiple" data-width="100%">
-                                            <optgroup label="Grafik Tasarım">
-                                                <option value="AK">Ayşe</option>
-                                                <option value="HI">Kubilay</option>
-                                            </optgroup>
-                                            <optgroup label="Sosyal Medya">
-                                                <option value="CA">Niran</option>
-                                                <option value="damla">Damla</option>
-                                            </optgroup>
-                                            <optgroup label="Video">
-                                                <option value="cihangir">Cihangir</option>
-                                            </optgroup>
-                                            <optgroup label="Yazılım">
-                                                <option value="emre">Emre</option>
-                                                <option value="bugra">Buğra</option>
-                                            </optgroup>
-                                            <option value="TNOGZ" disabled="disabled">The Twilight Zone</option>
-                                            <option value="TPZ">Herkes</option>
-                                        </select>
-                                        <span>Proje Üyeleri</span>
-                                    </label>
-                                *@
                                 <span asp-validation-for="UserId" class="text-danger"></span>
                                 <label class="form-group has-top-label">
                                     <select class="form-control select2-multiple" multiple="multiple" data-width="100%" asp-for="UserId" required>
@@ -111,8 +87,23 @@
                         <div class="card-body">
                             <h5 class="card-title">Proje Görevleri</h5>
                             <label class="form-group has-top-label">
-                                <input class="form-control" id="mission-textbox" style="display: inline-block;">
+                                <input class="form-control" id="mission-textbox" style="display: inline-block;" id="mission-textbox">
                                 <span>Görev Tanımı</span>
+                            </label>
+                            <label class="form-group has-top-label">
+                                <select class="form-control select2-multiple" multiple="multiple" data-width="100%" asp-for="UserId" id="mission-players">
+                                    @foreach (var item in Model.DepartmentsVMs)
+                                    {
+                                        <optgroup label="@item.Name">
+                                            @foreach (var itemUser in item.ApplicationUser)
+                                            {
+                                                <option value="@itemUser.FirstName">@itemUser.FirstName</option>
+                                            }
+
+                                        </optgroup>
+                                    }
+                                </select>
+                                <span>Proje Üyeleri</span>
                             </label>
                             <button type="button" class="btn btn-outline-secondary mb-1 taskAct" id="mission-add">Görev Ekle</button>
                         </div>
@@ -126,6 +117,7 @@
                                 <thead>
                                     <tr>
                                         <th>Görev Tanımı</th>
+                                        <th>Görevli(ler)</th>
                                         <th class="d-none"></th>
                                     </tr>
                                 </thead>
@@ -260,7 +252,7 @@
 
 
         });
-                /*
+                        /*
 $("#submitForm").trigger("click");*/
 
 

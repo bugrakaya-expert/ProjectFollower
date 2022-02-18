@@ -221,8 +221,12 @@
                         var delayedspan = '';
                         if (isDelayed == true) {
                             delayedspan = `<span class="badge badge-pill badge-danger ml-3">PROJE GECİKMİŞ!</span>`;
-                            if (item.status < 3)
+                            if (item.status < 2) {
                                 completed++;
+                                console.log("Gecikmiş: "+completed);
+                            }
+
+
                         }
 
                         var custName = item.customers.name;
@@ -236,7 +240,7 @@
                             status = `<span class="badge badge-pill badge-warning">YAPIM AŞAMASINDA</span>` + delayedspan;
                         }
                         if (item.status == 2) {
-                            status = `<span class="badge badge-pill badge-secondary">MÜŞTERİ ONAYINDA</span>` + delayedspan;
+                            status = `<span class="badge badge-pill badge-secondary">MÜŞTERİ ONAYINDA</span>`;
                         }
                         if (item.status == 3) {
 
@@ -282,8 +286,10 @@
 
                     @*
                         if ((data.delayedProjects > 0) && (completed == 0))*@
-                        if (completed > 0)
+                    if (completed > 0) {
                         $("#mp-attention").html(alertstr);
+                    }
+
 
 
                     console.log("sayıldı :" + completed);
@@ -356,7 +362,7 @@
                             var delayedspan = '';
                             if (isDelayed == true) {
                                 delayedspan = `<span class="badge badge-pill badge-danger ml-3">PROJE GECİKMİŞ!</span>`;
-                                if (item.status < 3)
+                                if (item.status < 2)
                                     completed++;
                             }
 
@@ -371,7 +377,7 @@
                                 status = `<span class="badge badge-pill badge-warning">YAPIM AŞAMASINDA</span>` + delayedspan;
                             }
                             if (item.status == 2) {
-                                status = `<span class="badge badge-pill badge-secondary">MÜŞTERİ ONAYINDA</span>` + delayedspan;
+                                status = `<span class="badge badge-pill badge-secondary">MÜŞTERİ ONAYINDA</span>`;
                             }
                             if (item.status == 3) {
 
