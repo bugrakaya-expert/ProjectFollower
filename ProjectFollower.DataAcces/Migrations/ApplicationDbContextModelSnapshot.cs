@@ -427,6 +427,56 @@ namespace ProjectFollower.DataAcces.Migrations
                     b.ToTable("ResponsibleUsers");
                 });
 
+            modelBuilder.Entity("ProjectFollower.Models.DbModels.Scheduler", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<Guid>("CustomersId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PriorityId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomersId");
+
+                    b.ToTable("Scheduler");
+                });
+
+            modelBuilder.Entity("ProjectFollower.Models.DbModels.SchedulerPriority", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Color")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SchedulerPriority");
+                });
+
             modelBuilder.Entity("ProjectFollower.Models.DbModels.ApplicationUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
@@ -539,6 +589,15 @@ namespace ProjectFollower.DataAcces.Migrations
                 });
 
             modelBuilder.Entity("ProjectFollower.Models.DbModels.Projects", b =>
+                {
+                    b.HasOne("ProjectFollower.Models.DbModels.Customers", "Customers")
+                        .WithMany()
+                        .HasForeignKey("CustomersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ProjectFollower.Models.DbModels.Scheduler", b =>
                 {
                     b.HasOne("ProjectFollower.Models.DbModels.Customers", "Customers")
                         .WithMany()

@@ -81,6 +81,20 @@ namespace ProjectFollower.Controllers
             return Json(_schedulerVM);
 
         }
+        [HttpPost("postscheduler")]
+        public JsonResult SetScheduler([FromBody]Scheduler scheduler)
+        {
+            _uow.Scheduler.Add(scheduler);
+            _uow.Save();
+            return Json(scheduler);
+        }
+        [HttpPost("updatescheduler")]
+        public JsonResult UpdateScheduler([FromBody] Scheduler scheduler)
+        {
+            _uow.Scheduler.Update(scheduler);
+            _uow.Save();
+            return Json(scheduler);
+        }
         #endregion API
     }
 }

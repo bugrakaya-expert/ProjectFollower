@@ -33,14 +33,14 @@
                     var customersObj = data.customers;
                     $(() => {
                         $('#scheduler').dxScheduler({
-                            timeZone: 'America/Los_Angeles',
                             dataSource: scheduler,
-                            type: 'date',
+                            type: 'shortdate',
                             views: ['agenda', 'month'],
                             currentView: 'agenda',
                             currentDate: new Date($.now()),
                             showAllDayPanel: false,
                             height: 700,
+                            allDay: true,
                             FixedWidth:true,
                             crossScrollingEnabled: true,
                             cellDuration: 20,
@@ -52,15 +52,41 @@
                                 allowDragging: true,
                             },
                             onAppointmentAdded(e) {
-                                showToast('Eklendi', e.appointmentData.text, 'success');
-                                console.log(e.appointmentData.id);
+                                $.ajax({
+                                    type: "POST",
+                                    url: "/postscheduler",
+                                    data: JSON.stringify(e.appointmentData),
+                                    contentType: "application/json; charset=utf-8",
+                                    dataType: "json",
+                                    success: function (response) {
+                                        showToast('Güncellendi', e.appointmentDatatext, 'info');
+                                    },
+                                    failure: function (response) {
+                                        alert(response.responseText);
+                                    },
+                                    error: function (response) {
+                                        alert(response.responseText);
+                                    }
+                                });
+                                
                             },
                             onAppointmentUpdated(e) {
-                                showToast('Güncellendi', e.appointmentData.text, 'info');
-                                console.log(e.appointmentData.id);
-                                console.log(e.appointmentData.priorityId);
-                                console.log(e.appointmentData.customersId);
-
+                                $.ajax({
+                                    type: "POST",
+                                    url: "/updatescheduler",
+                                    data: JSON.stringify(e.appointmentData),
+                                    contentType: "application/json; charset=utf-8",
+                                    dataType: "json",
+                                    success: function (response) {
+                                        showToast('Güncellendi', e.appointmentDatatext, 'info');
+                                    },
+                                    failure: function (response) {
+                                        alert(response.responseText);
+                                    },
+                                    error: function (response) {
+                                        alert(response.responseText);
+                                    }
+                                });
                             },
                             onAppointmentDeleted(e) {
                                 showToast('Silindi', e.appointmentData.text, 'warning');

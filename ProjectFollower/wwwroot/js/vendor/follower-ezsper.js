@@ -1,16 +1,20 @@
 (function ($) {
     $('#mission-add').click(function () {
         var listvalue = $('#mission-textbox').val();
-        var playervalue = $('#mission-players').val();
+        var playerid = $('#mission-players').val();
+        var playervalue = new Array();
+        $('.select2-selection__choice').each(function () {
+            playervalue.push( $(this).attr('title'));
+        });
         if (!playervalue.length || !listvalue.length) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: 'Görev tanımında boş alan bırakamazsın!',
+                text: 'Proje görevlerinde boş alan bırakamazsın!',
                 confirmButtonText: 'Tamam'
             })
         } else {
-            $('#mission-list').append('<tr>' + '<td><p class="list-item-heading">' + listvalue + '</p></td>' + '<td><p class="text-muted">' + playervalue + '</p></td>' + '<td class="d-flex justify-content-end"><button type="button" class="btn btn-danger mb-1 deleteli"><i class="simple-icon-trash mr-2"></i>Sil</button><td></tr>');
+            $('#mission-list').append('<tr>' + '<td><p class="list-item-heading">' + listvalue + '</p></td>' + '<td><p value="' + playerid + '" class="text-muted">' + playervalue + '</p></td>' + '<td class="d-flex justify-content-end"><button type="button" class="btn btn-danger mb-1 deleteli"><i class="simple-icon-trash mr-2"></i>Sil</button><td></tr>');
             $("#mission-textbox").val("");
         }
     });

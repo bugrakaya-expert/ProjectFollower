@@ -110,7 +110,6 @@ namespace ProjectFollower.Controllers
         }
 
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
-        //[Route("proje-detaylari/{id}&updated={status}")]
         [Route("proje-detaylari/{id}")]
         public IActionResult Details(string id)
         {
@@ -228,6 +227,7 @@ namespace ProjectFollower.Controllers
             return View(_projectDetailVM);
         }
 
+
         [Authorize(Roles = UserRoles.Admin)]
         [Route("yeni-proje")]
         public IActionResult ProjectNew()
@@ -253,9 +253,11 @@ namespace ProjectFollower.Controllers
 
             return View(Project);
         }
+
+
         [Authorize(Roles = UserRoles.Admin)]
         [HttpPost("yeni-proje")]
-        public async Task<IActionResult> ProjectNewPost(ProjectVM ProjectVM)
+        public IActionResult ProjectNewPost(ProjectVM ProjectVM)
         {
             var Users = new List<ApplicationUser>();
 
@@ -339,11 +341,10 @@ namespace ProjectFollower.Controllers
                 }
             }
             _uow.Save();
-            /*
-            WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
-            await WebSocAct.ListProjects_WebSocket(GetClaim());*/
-            return View("Dashboard");
+            return Redirect("/");
         }
+
+
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [HttpPost("proje-detaylari/dokuman-guncelle")]
         public IActionResult UpdateDocuments(ProjectDetailVM projectDetailVM)
@@ -388,6 +389,8 @@ namespace ProjectFollower.Controllers
             }
             return Redirect("/proje-detaylari/" + projectDetailVM.Project.Id);
         }
+
+
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [HttpGet("proje-detaylari/dokuman-indir/{id}")]
         public IActionResult DownloadFile(string id)
@@ -415,6 +418,8 @@ namespace ProjectFollower.Controllers
                 await fileStream.CopyToAsync(context.HttpContext.Response.Body);
             }*/
         }
+
+
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [HttpGet("proje-detaylari/dokuman-kaldir/{id}")]
         public IActionResult RemoveDocument(string id)
@@ -435,6 +440,8 @@ namespace ProjectFollower.Controllers
 
             return Redirect("/proje-detaylari/" + project.Id);
         }
+
+
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [HttpPost]
         public IActionResult AddTask(ProjectDetailVM projectDetailVM)
@@ -448,6 +455,8 @@ namespace ProjectFollower.Controllers
             _uow.Save();
             return Redirect("/proje-detaylari/" + projectDetailVM.ProjectsId);
         }
+
+
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [HttpGet("proje-detaylari/gorev-kaldir/{id}")]
         public IActionResult RemoveTask(string id)
@@ -458,6 +467,8 @@ namespace ProjectFollower.Controllers
             _uow.Save();
             return Redirect("/proje-detaylari/" + project.Id);
         }
+
+
         [Authorize(Roles = UserRoles.Admin)]
         [HttpGet("proje-detaylari/gorev-degistir/{id}")]
         public IActionResult ChangTask(ProjectDetailVM ProjectDetailVM)
@@ -466,6 +477,9 @@ namespace ProjectFollower.Controllers
             //return Redirect("/proje-detaylari/" + project.Id);
             return Redirect("/");
         }
+
+
+        [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [HttpPost("jsonresult/deletecomment/")]
         public IActionResult DeleteComment(string id)
         {
@@ -481,6 +495,9 @@ namespace ProjectFollower.Controllers
             return NoContent();
 
         }
+
+
+        #region API
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager)]
         [HttpPost("jsonresult/updatedescription")]
         public JsonResult UpdateDesc(ProjectDetailVM _projectDetailVM)
@@ -510,10 +527,6 @@ namespace ProjectFollower.Controllers
             //return Json("/proje-detaylari/"+id+ "&updated=" + true);
             return Json(_project.Description);
         }
-
-        //[Authorize(Roles = UserRoles.Admin)]
-        //[HttpPost("proje-detaylari")]
-        #region API
 
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [HttpGet("jsonresult/getprojectlist/{ArchiveStatus}")]
@@ -647,15 +660,13 @@ namespace ProjectFollower.Controllers
         }
         [Authorize(Roles = UserRoles.Admin)]
         [HttpGet("jsonresult/deleteproject/{id}")]
-        public async Task<JsonResult> DeleteProject(string id)
+        public JsonResult DeleteProject(string id)
         {
             var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
             var _responsibles = _uow.ResponsibleUsers.GetAll(i => i.ProjectId == Guid.Parse(id));
             _uow.Project.Remove(_project);
             _uow.ResponsibleUsers.RemoveRange(_responsibles);
             _uow.Save();
-            WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
-            await WebSocAct.ListProjects_WebSocket(GetClaim());
             return Json(null);
         }
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
@@ -708,7 +719,7 @@ namespace ProjectFollower.Controllers
         }
         [Authorize(Roles = UserRoles.Admin)]
         [HttpGet("jsonresult/changeToArchiveState/{id}")]
-        public async Task<JsonResult> ChangetoArchiveState(string id)
+        public JsonResult ChangetoArchiveState(string id)
         {
             var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
             if (_project.Status == 3 && _project.Archived == false)
@@ -723,8 +734,6 @@ namespace ProjectFollower.Controllers
                     Icon = "success",
                     Status = true
                 };
-                WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
-                await WebSocAct.ListProjects_WebSocket(GetClaim());
                 return Json(_ModalMessage);
             }
             else
@@ -738,22 +747,20 @@ namespace ProjectFollower.Controllers
                 return Json(_ModalMessage);
             }
         }
-        [Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [HttpGet("jsonresult/changeToNewState/{id}")]
-        public async Task<JsonResult> ChangetoNewState(string id)
+        public JsonResult ChangetoNewState(string id)
         {
             var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
             _project.Status = 0;
             _project.Archived = false;
             _uow.Project.Update(_project);
             _uow.Save();
-            WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
-            await WebSocAct.ListProjects_WebSocket(GetClaim());
             return Json(null);
         }
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [HttpGet("jsonresult/changeToConstructionState/{id}")]
-        public async Task<JsonResult> ChangetoConstructionState(string id)
+        public JsonResult ChangetoConstructionState(string id)
         {
             var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
             if (User.IsInRole(UserRoles.Admin))
@@ -762,8 +769,6 @@ namespace ProjectFollower.Controllers
                 _project.Archived = false;
                 _uow.Project.Update(_project);
                 _uow.Save();
-                WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
-                await WebSocAct.ListProjects_WebSocket(GetClaim());
             }
             if(_project.Status == 0 && User.IsInRole(UserRoles.Personel))
             {
@@ -771,35 +776,29 @@ namespace ProjectFollower.Controllers
                 _project.Archived = false;
                 _uow.Project.Update(_project);
                 _uow.Save();
-                WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
-                await WebSocAct.ListProjects_WebSocket(GetClaim());
             }
             return Json(null);
         }
         [Authorize(Roles = UserRoles.Admin)]
         [HttpGet("jsonresult/changeToCustomerApproveState/{id}")]
-        public async Task<JsonResult> ChangetoCustomerApprove(string id)
+        public JsonResult ChangetoCustomerApprove(string id)
         {
             var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
             _project.Status = 2;
             _project.Archived = false;
             _uow.Project.Update(_project);
             _uow.Save();
-            WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
-            await WebSocAct.ListProjects_WebSocket(GetClaim());
             return Json(null);
         }
         [Authorize(Roles = UserRoles.Admin)]
         [HttpGet("jsonresult/changeToDoneState/{id}")]
-        public async Task<JsonResult> ChangetoDone(string id)
+        public JsonResult ChangetoDone(string id)
         {
             var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
             _project.Status = 3;
             _project.Archived = false;
             _uow.Project.Update(_project);
             _uow.Save();
-            WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
-            await WebSocAct.ListProjects_WebSocket(GetClaim());
             return Json(null);
         }
 
@@ -883,66 +882,86 @@ namespace ProjectFollower.Controllers
         [HttpGet("jsonresult/getuserbyfilter/{id}/{arcstatus}")]
         public JsonResult GetUserByFilter(string id,bool ArchiveStatus)
         {
-            IEnumerable<Projects> Projects;
             List<Projects> _projects = new List<Projects>();
             Projects _projectItem = new Projects();
             List<ProjectListVM> ProjectListVMs = new List<ProjectListVM>();
             ApplicationUser AppUser = new ApplicationUser();
-
-            var Responsibles = _uow.ResponsibleUsers.GetAll(i => i.UserId == Guid.Parse(id));
-            foreach (var item in Responsibles)
+            try
             {
-                _projectItem = _uow.Project.GetFirstOrDefault(i => i.Id == item.ProjectId,includeProperties: "Customers");
-                if (ArchiveStatus == false && _projectItem.Archived == false)
+                var Responsibles = _uow.ResponsibleUsers.GetAll(i => i.UserId == Guid.Parse(id));
+                foreach (var item in Responsibles)
                 {
-                    _projectItem.SequanceDate = Sequence++;
-                    if (DateTime.Now.Date > Convert.ToDateTime(_projectItem.EndingDate))
+                    _projectItem = _uow.Project.GetFirstOrDefault(i => i.Id == item.ProjectId, includeProperties: "Customers");
+                    if(_projectItem != null)
                     {
-                        _projectItem.ProjectSequence = 1;
-                        _projectItem.IsDelayed = true;
-                        if (_projectItem.Status < 3)
-                            Delayeds++;
-                    }
-                    else
-                        _projectItem.ProjectSequence = 2;
-
-                    _projects.Add(_projectItem);
-                }
-                else if (_projectItem.Archived == false || (_projectItem.Archived == true && ArchiveStatus == true))
-                {
-                    _projectItem.SequanceDate = Sequence++;
-                    if (DateTime.Now.Date > Convert.ToDateTime(_projectItem.EndingDate))
-                    {
-                        _projectItem.ProjectSequence = 1;
-                        _projectItem.IsDelayed = true;
-                        if (_projectItem.Archived)
-                            _projectItem.Status = 4;
-                        else
+                        if (ArchiveStatus == false && _projectItem.Archived == false)
                         {
-                            if (_projectItem.Status < 3)
-                                Delayeds++;
+                            _projectItem.SequanceDate = Sequence++;
+                            if (DateTime.Now.Date > Convert.ToDateTime(_projectItem.EndingDate))
+                            {
+                                _projectItem.ProjectSequence = 1;
+                                _projectItem.IsDelayed = true;
+                                if (_projectItem.Status < 3)
+                                    Delayeds++;
+                            }
+                            else
+                                _projectItem.ProjectSequence = 2;
+
+                            _projects.Add(_projectItem);
                         }
+                        else if (_projectItem.Archived == false || (_projectItem.Archived == true && ArchiveStatus == true))
+                        {
+                            _projectItem.SequanceDate = Sequence++;
+                            if (DateTime.Now.Date > Convert.ToDateTime(_projectItem.EndingDate))
+                            {
+                                _projectItem.ProjectSequence = 1;
+                                _projectItem.IsDelayed = true;
+                                if (_projectItem.Archived)
+                                    _projectItem.Status = 4;
+                                else
+                                {
+                                    if (_projectItem.Status < 3)
+                                        Delayeds++;
+                                }
 
+                            }
+                            if (_projectItem.Archived)
+                                _projectItem.Status = 4;
+                            else
+                                _projectItem.ProjectSequence = 2;
+
+                            _projects.Add(_projectItem);
+                        }
                     }
-                    if (_projectItem.Archived)
-                        _projectItem.Status = 4;
-                    else
-                        _projectItem.ProjectSequence = 2;
 
-                    _projects.Add(_projectItem);
                 }
+
+                /*var ProjectList = new List<Projects>();
+                ProjectList.AddRange(FilteredProject);*/
+                Thread.Sleep(150);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
             var FilteredProject = _projects.OrderBy(d => Convert.ToDateTime(d.EndingDate));
-            /*var ProjectList = new List<Projects>();
-            ProjectList.AddRange(FilteredProject);*/
-            Thread.Sleep(150);
             var _ProjectListVM = new ProjectListVM()
             {
                 Projects = FilteredProject,
                 DelayedProjects = Delayeds
             };
-
             return Json(_ProjectListVM);
+        }
+        [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
+        [HttpGet("jsonresult/refreshpage_socket/")]
+        public async Task<JsonResult> WEB_SOCKET_REFRESH_PAGE(string id)
+        {
+            
+            WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
+            await WebSocAct.ListProjects_WebSocket(GetClaim());
+            return Json(null);
         }
         #endregion API
 

@@ -63,7 +63,7 @@
                                         TaskIdString = "control-mission" + TaskLength.ToString();
 
                                         <div class="row mb-4">
-                                            <div class="col-10">
+                                            <div class="col-8">
                                                 @if (item.Done)
                                                 {
                                                     <p class="mission-completed">@item.Description</p>
@@ -75,7 +75,7 @@
 
                                             </div>
 
-                                            <div class="col-2 text-end d-flex justify-content-center align-items-center">
+                                            <div class="col-4 text-end d-flex justify-content-center align-items-center">
                                                 <div class="custom-control custom-checkbox" style="display:inline-block">
                                                     @*<input value="@item.Done.ToString()" id="@item.Id" type="text" class="taskvalue" />*@
 
@@ -106,34 +106,37 @@
                                         </div>
                                     </div>
                                 </form>
+                                @*
+                                    <table class="table table-borderless">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Görev</th>
+                                                <th scope="col">Durum</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.ProjectTasks)
+                                            {
+                                                TaskLength++;
+                                                TaskIdString = "control-mission" + TaskLength.ToString();
+                                            }
+                                                <tr>
 
-                                <table class="table table-borderless">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Görev</th>
-                                            <th scope="col">İşlemler</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>Websitesi Tasarımı</td>
-                                            <td>
-                                                <input type="checkbox" class="custom-control-input taskvalue">
-                                                <a type="button" class="glyph-icon simple-icon-trash ml-4 remove-task" style="font-size: 16px; text-align: right;"></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">2</th>
-                                            <td>Websitesi Database</td>
-                                            <td>
-                                                <input type="checkbox" class="custom-control-input taskvalue">
-                                                <a type="button" class="glyph-icon simple-icon-trash ml-4 remove-task" style="font-size: 16px; text-align: right;"></a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                                    <th scope="row">1</th>
+                                                    <td>Emre</td>
+                                                    <td>Websitesi Tasarımı</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">2</th>
+                                                    <td>Buğra</td>
+                                                    <td>Database</td>
+
+                                                </tr>
+                                            </tbody>
+                                    </table>
+                                *@
+
                                 <div class="separator mb-5"></div>
 
                                 <p class="font-weight-bold">Yorumlar</p>
@@ -295,12 +298,19 @@
                                     }
                                     @if (Model.Project.Status == 2)
                                     {
-                                        <span class="badge badge-pill badge-secondary mb-1">YAPIM AŞAMASINDA</span>
+                                        <span class="badge badge-pill badge-secondary mb-1">MÜŞTERİ ONAYINDA</span>
                                     }
                                     @if (Model.Project.Status == 3)
                                     {
-                                        <span class="badge badge-pill badge-primary mb-1">YAPIM AŞAMASINDA</span>
+                                        <span class="badge badge-pill badge-primary mb-1">TAMAMLANDI</span>
                                     }
+                                    @if (Model.Project.Status == 4)
+                                    {
+                                        <span class="badge badge-pill badge-primary" style="background-color: #008aff !important;"><i class="fas fa-archive"></i>&nbsp;&nbsp;ARŞİVLENMİŞ</span>
+                                    }
+
+
+
                                     @*<span class="badge badge-pill badge-warning mb-1">YAPIM AŞAMASINDA</span>*@
                                 </p>
                             </div>
@@ -365,21 +375,21 @@
                         <select class="form-control select2-multiple" multiple="multiple" data-width="100%" asp-for="UserId" id="userid" required>
                             @foreach (var item in Model.DepartmentsVMs)
                             {
-                            <optgroup label="@item.Name">
-                                @foreach (var itemUser in item.Users)
-                                {
-                                    if (itemUser.IsResponsible)
+                                <optgroup label="@item.Name">
+                                    @foreach (var itemUser in item.Users)
                                     {
-                                        <option value="@itemUser.Id" selected>@itemUser.FirstName</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="@itemUser.Id">@itemUser.FirstName</option>
+                                        if (itemUser.IsResponsible)
+                                        {
+                                            <option value="@itemUser.Id" selected>@itemUser.FirstName</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@itemUser.Id">@itemUser.FirstName</option>
+                                        }
+
                                     }
 
-                                }
-
-                            </optgroup>
+                                </optgroup>
                             }
                         </select>
                     </div>
@@ -408,7 +418,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="mission-name" class="col-form-label">Görev Adı:</label>
-                        <textarea style="height:5rem" type="text" class="form-control" id="mission-name" asp-for="ProjectTaskItem.Description"></textarea>
+                        <textarea style="height:5rem" type="text" class="form-control" id="mission-name" required min asp-for="ProjectTaskItem.Description"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -264,6 +264,16 @@ h6 {
 .list-item-heading {
   font-size: 1rem; }
 
+@media (max-width: 1444px) {
+    .list-item-heading {
+        font-size: 0.8rem;
+    }
+}
+
+.custom-control-label {
+    min-width: 90px;
+}
+
 .truncate {
   text-overflow: ellipsis;
   white-space: nowrap;

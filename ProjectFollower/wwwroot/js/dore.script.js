@@ -2926,11 +2926,11 @@ $.dore = function (element, options) {
         destroy: true,
         info: false,
         sDom: '<"row view-filter"<"col-sm-12"<"float-left"l><"float-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',
-        pageLength: 8,
+        pageLength: 999999999,
         language: {
           paginate: {
-            previous: "<i class='simple-icon-arrow-left'></i>",
-            next: "<i class='simple-icon-arrow-right'></i>"
+            previous: "<i class='simple-icon-arrow-left d-none'></i>",
+            next: "<i class='simple-icon-arrow-right d-none'></i>"
           }
         },
         drawCallback: function () {
@@ -2941,7 +2941,7 @@ $.dore = function (element, options) {
             .find("a")
             .addClass("next");
 
-          $(".dataTables_wrapper .pagination").addClass("pagination-sm");
+            $(".dataTables_wrapper .pagination").addClass("pagination-sm  d-none");
         }
       });
 
@@ -4103,18 +4103,33 @@ $.dore = function (element, options) {
                     /* Read more about isConfirmed, isDenied below */
                     if (result.isConfirmed) {
                         var id = this.attr('id');
-                        Swal.fire({
-                            title: 'Proje başarıyla güncellendi',
-                            icon: 'success',
-                            confirmButtonText: 'Tamam',
-                        }).then((result) => {
                             $.ajax({
                                 url: "jsonresult/changeToArchiveState/" + id,
                                 type: "GET",
                                 contentType: "application/json",
                                 dataType: "json",
+                                success: function (data) {
+                                    Swal.fire({
+                                        title: 'Proje başarıyla güncellendi',
+                                        icon: 'success',
+                                        confirmButtonText: 'Tamam',
+                                    }).then((result) => {
+                                        location.reload();
+                                        return data;
+                                    })
+
+                                },
+                                error: function (data) {
+                                    Swal.fire({
+                                        title: 'Projeyi arşivleme yetkiniz bulunamamaktadır',
+                                        icon: 'error',
+                                        confirmButtonText: 'Tamam',
+                                    }).then((result) => {
+                                        return data;
+                                    })
+
+                                }
                             });
-                        })
                         var id = this.attr('id');
                     }
                 })
@@ -4130,18 +4145,38 @@ $.dore = function (element, options) {
                     /* Read more about isConfirmed, isDenied below */
                     if (result.isConfirmed) {
                         var id = this.attr('id');
-                        Swal.fire({
-                            title: 'Proje başarıyla güncellendi',
-                            icon: 'success',
-                            confirmButtonText: 'Tamam',
-                        }).then((result) => {
                             $.ajax({
                                 url: "jsonresult/changeToNewState/" + id,
                                 type: "GET",
                                 contentType: "application/json",
                                 dataType: "json",
+                                success: function (data) {
+                                    Swal.fire({
+                                        title: 'Proje başarıyla güncellendi',
+                                        icon: 'success',
+                                        confirmButtonText: 'Tamam',
+                                    }).then((result) => {
+                                        $.ajax({
+                                            url: "jsonresult/refreshpage_socket/",
+                                            type: "GET",
+                                            contentType: "application/json",
+                                            dataType: "json",
+                                        });
+                                        return data;
+                                    })
+
+                                },
+                                error: function (data) {
+                                    Swal.fire({
+                                        title: 'Projeyi yeni statüsüne alma yetkiniz bulunmamaktadır',
+                                        icon: 'error',
+                                        confirmButtonText: 'Tamam',
+                                    }).then((result) => {
+                                        return data;
+                                    })
+
+                                }
                             });
-                        })
                     }
                 })
             }
@@ -4156,18 +4191,38 @@ $.dore = function (element, options) {
                     /* Read more about isConfirmed, isDenied below */
                     if (result.isConfirmed) {
                         var id = this.attr('id');
-                        Swal.fire({
-                            title: 'Proje başarıyla güncellendi',
-                            icon: 'success',
-                            confirmButtonText: 'Tamam',
-                        }).then((result) => {
                             $.ajax({
                                 url: "jsonresult/changeToConstructionState/" + id,
                                 type: "GET",
                                 contentType: "application/json",
                                 dataType: "json",
+                                success: function (data) {
+                                    Swal.fire({
+                                        title: 'Proje başarıyla güncellendi',
+                                        icon: 'success',
+                                        confirmButtonText: 'Tamam',
+                                    }).then((result) => {
+                                        $.ajax({
+                                            url: "jsonresult/refreshpage_socket/",
+                                            type: "GET",
+                                            contentType: "application/json",
+                                            dataType: "json",
+                                        });
+                                        return data;
+                                    })
+
+                                },
+                                error: function (data) {
+                                    Swal.fire({
+                                        title: 'Projeyi yeni statüsüne alma yetkiniz bulunmamaktadır',
+                                        icon: 'error',
+                                        confirmButtonText: 'Tamam',
+                                    }).then((result) => {
+                                        return data;
+                                    })
+
+                                }
                             });
-                        })
 
                     }
                 })
@@ -4183,18 +4238,38 @@ $.dore = function (element, options) {
                     /* Read more about isConfirmed, isDenied below */
                     if (result.isConfirmed) {
                         var id = this.attr('id');
-                        Swal.fire({
-                            title: 'Proje başarıyla güncellendi',
-                            icon: 'success',
-                            confirmButtonText: 'Tamam',
-                        }).then((result) => {
                             $.ajax({
                                 url: "jsonresult/changeToCustomerApproveState/" + id,
                                 type: "GET",
                                 contentType: "application/json",
                                 dataType: "json",
+                                success: function (data) {
+                                    Swal.fire({
+                                        title: 'Proje başarıyla güncellendi',
+                                        icon: 'success',
+                                        confirmButtonText: 'Tamam',
+                                    }).then((result) => {
+                                        $.ajax({
+                                            url: "jsonresult/refreshpage_socket/",
+                                            type: "GET",
+                                            contentType: "application/json",
+                                            dataType: "json",
+                                        });
+                                        return data;
+                                    })
+                                    
+                                },
+                                error: function (data) {
+                                    Swal.fire({
+                                        title: 'Projeyi müşteri onayına alma yetkiniz bulunmamaktadır',
+                                        icon: 'error',
+                                        confirmButtonText: 'Tamam',
+                                    }).then((result) => {
+                                        return data;
+                                    })
+
+                                }
                             });
-                        })
                     }
                 })
             }
@@ -4209,18 +4284,39 @@ $.dore = function (element, options) {
                     /* Read more about isConfirmed, isDenied below */
                     if (result.isConfirmed) {
                         var id = this.attr('id');
-                        Swal.fire({
-                            title: 'Proje başarıyla güncellendi',
-                            icon: 'success',
-                            confirmButtonText: 'Tamam',
-                        }).then((result) => {
                             $.ajax({
                                 url: "jsonresult/changeToDoneState/" + id,
                                 type: "GET",
                                 contentType: "application/json",
                                 dataType: "json",
+                                success: function (data) {
+                                    Swal.fire({
+                                        title: 'Proje başarıyla güncellendi',
+                                        icon: 'success',
+                                        confirmButtonText: 'Tamam',
+                                    }).then((result) => {
+                                        $.ajax({
+                                            url: "jsonresult/refreshpage_socket/",
+                                            type: "GET",
+                                            contentType: "application/json",
+                                            dataType: "json",
+                                        });
+                                        return data;
+                                    })
+
+                                },
+                                error: function (data) {
+                                    Swal.fire({
+                                        title: 'Projeyi tamamlandı statüsüne alma yetkiniz bulunmamaktadır',
+                                        icon: 'error',
+                                        confirmButtonText: 'Tamam',
+                                    }).then((result) => {
+                                        return data;
+                                    })
+
+                                }
                             });
-                        })
+                        
                        
                     }
                 })
@@ -4242,18 +4338,37 @@ $.dore = function (element, options) {
                         }).then((result) => {
                             /* Read more about isConfirmed, isDenied below */
                             if (result.isConfirmed) {
-                                Swal.fire({
-                                    title: 'Proje başarıyla silindi',
-                                    icon: 'success',
-                                    confirmButtonText: 'Tamam',
-                                }).then((result) => {
                                     $.ajax({
                                         url: "jsonresult/deleteproject/" + id,
                                         type: "GET",
                                         contentType: "application/json",
                                         dataType: "json",
+                                        success: function (data) {
+                                            Swal.fire({
+                                                title: 'Proje başarıyla silindi',
+                                                icon: 'success',
+                                                confirmButtonText: 'Tamam',
+                                            }).then((result) => {
+                                                $.ajax({
+                                                    url: "jsonresult/refreshpage_socket/",
+                                                    type: "GET",
+                                                    contentType: "application/json",
+                                                    dataType: "json",
+                                                });
+                                                return data;
+                                            })
+                                        },
+                                        error: function (data) {
+                                            Swal.fire({
+                                                title: 'Projeyi silme yetkiniz bulunamamaktadır',
+                                                icon: 'error',
+                                                confirmButtonText: 'Tamam',
+                                            }).then((result) => {
+                                                return data;
+                                            })
+
+                                        }
                                     });
-                                })
 
                             }
                         });

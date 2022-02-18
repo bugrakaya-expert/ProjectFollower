@@ -28,7 +28,7 @@
                     <div class="text-zero top-right-button-container">
                         @if (User.IsInRole(Admin))
                         {
-                            <a asp-controller="Home" asp-action="ProjectNew" type="button" class="btn btn-primary btn-lg top-right-button mr-1">YENİ PROJE EKLE</a>
+                        <a asp-controller="Home" asp-action="ProjectNew" type="button" class="btn btn-primary btn-lg top-right-button mr-1">YENİ PROJE EKLE</a>
                         }
 
                     </div>
@@ -53,11 +53,11 @@
                                 <div class="custom-switch custom-switch-secondary-inverse mb-2 mr-2">
                                     @if (archived)
                                     {
-                                        <input class="custom-switch-input" id="archived" type="checkbox" checked>
+                                    <input class="custom-switch-input" id="archived" type="checkbox" checked>
                                     }
                                     else
                                     {
-                                        <input class="custom-switch-input" id="archived" type="checkbox">
+                                    <input class="custom-switch-input" id="archived" type="checkbox">
                                     }
 
                                     <label class="custom-switch-btn" for="archived"></label>
@@ -67,13 +67,13 @@
                         </div>
                         @if (User.IsInRole(Admin))
                         {
-                            <div class="float-md-right mr-5">
+                        <div class="float-md-right mr-5">
 
-                                <button class="btn btn-outline-dark btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Kişi Filterelemesi</button>
-                                <div class="dropdown-menu dropdown-menu-right " x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(1291px, 96px, 0px);" id="user-filter">
+                            <button class="btn btn-outline-dark btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Kişi Filterelemesi</button>
+                            <div class="dropdown-menu dropdown-menu-right " x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(1291px, 96px, 0px);" id="user-filter">
 
-                                </div>
                             </div>
+                        </div>
                         }
 
 
@@ -93,6 +93,7 @@
                                 <th style="visibility: hidden;"></th>
                                 <th data-sorter="false">Firma Adı</th>
                                 <th data-sorter="false">Proje Adı</th>
+                                <th data-sorter="false">Oluşturma Tarihi</th>
                                 <th data-sorter="false">Deadline</th>
                                 <th data-sorter="false">Durum</th>
                                 <th style="visibility: hidden;"></th>
@@ -194,9 +195,10 @@
     <script src="/js/vendor/jquery.validate/jquery.validate.min.js"></script>
     <script src="/js/vendor/jquery.validate/additional-methods.min.js"></script>
     <script src="/js/vendor/datatables-index.min.js"></script>
-
+    <script src="~/js/projectlistHub.js"></script>
     <script>
         $(document).on("click", ".filter-users", function () {
+            var completed = 0;
             var archived = '@archived';
             console.log(this.id);
             var userId = this.id;
@@ -214,6 +216,7 @@
                         var id = item.id;
                         var status = "";
                         var isDelayed = item.isDelayed;
+                        var createDate = item.creationDate;
                         var endingData = item.endingDate;
                         var custImage = item.customers.imageUrl;
                         var custid = item.customers.id + '/img/';
@@ -262,6 +265,9 @@
                                                     </td>
                                                     <td>
                                                         <p class="list-item-heading">`+ name + `</p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="d-none">`+ dateSequence + `</p> <p>` + createDate + `</p>
                                                     </td>
                                                     <td>
                                                         <p class="d-none">`+ dateSequence + `</p> <p>` + endingData + `</p>
@@ -356,6 +362,7 @@
                             var status = "";
                             var isDelayed = item.isDelayed;
                             var endingData = item.endingDate;
+                            var createDate = item.creationDate;
                             var custImage = item.customers.imageUrl;
                             var custid = item.customers.id + '/img/';
                             var img = "/assets/customers/" + custid + custImage;
@@ -399,6 +406,9 @@
                                                     </td>
                                                     <td>
                                                         <p class="list-item-heading">`+ name + `</p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="d-none">`+ dateSequence + `</p> <p>` + createDate + `</p>
                                                     </td>
                                                     <td>
                                                         <p class="d-none">`+ dateSequence + `</p> <p>` + endingData + `</p>

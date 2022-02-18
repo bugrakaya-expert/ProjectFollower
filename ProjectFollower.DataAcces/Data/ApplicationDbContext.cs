@@ -22,7 +22,7 @@ namespace ProjectFollower.DataAcces.Data
         public DbSet<ProjectTasks> ProjectTasks { get; set; }
         public DbSet<ProjectDocuments> ProjectDocuments { get; set; }
         public DbSet<ProjectComments> ProjectComments { get; set; }
-        //public DbSet<Scheduler> Scheduler { get; set; }
-        //public DbSet<SchedulerPriority> SchedulerPriority { get; set; }
+        public DbSet<Scheduler> Scheduler { get; set; }
+        public DbSet<SchedulerPriority> SchedulerPriority { get; set; }
     }
 }

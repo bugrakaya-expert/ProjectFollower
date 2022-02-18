@@ -11,13 +11,22 @@ namespace ProjectFollower.Models.DbModels
         [Key]
         public int Id { get; set; }
         public string Text { get; set; }
+        [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
+        [DataType(DataType.Date)]
         public DateTime EndDate { get; set; }
         [ForeignKey("CustomersId")]
         public Guid CustomersId { get; set; }
         public Customers Customers { get; set; }
         public int PriorityId { get; set; }
         public string Description { get; set; }
-        //public bool AllDay { get; set; }
+        [NotMapped]
+        public bool AllDay { get; set; }
+        public Scheduler()
+        {
+            AllDay = true;
+        }
+
+
     }
 }
