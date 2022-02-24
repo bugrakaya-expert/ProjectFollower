@@ -25,7 +25,22 @@ Mevcut Profil Fotoğrafı<br />
     });
 
 
+    $.ajax({
+        url: "/jsonresult/getallcustomers",
+        type: "GET",
+        contentType: "application/json",
+        dataType: "json",
+        success: function (data) {
 
+            $.each(data, function (i, item) {
+
+                $('#customers').append($('<option>', {
+                    value: item.id,
+                    text: item.name
+                }));
+            });
+        }
+    });
 
 
 

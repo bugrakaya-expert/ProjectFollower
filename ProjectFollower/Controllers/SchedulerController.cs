@@ -36,8 +36,8 @@ namespace ProjectFollower.Controllers
         }
 
 
-        [Route("scheduler")]
-        public IActionResult Index()
+        [HttpPost("scheduler")]
+        public IActionResult Index(string customerid)
         {
             #region Authentication Index
             var claimsIdentity = (ClaimsIdentity)User.Identity;
@@ -45,7 +45,8 @@ namespace ProjectFollower.Controllers
             if (Claims != null)
             {
                 var ApplicationUser = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == Claims.Value);
-                return View();//Go Dashboard
+                var customer = _uow.Customers.GetFirstOrDefault(i => i.Id == Guid.Parse(customerid));
+                return View(customer);//Go Dashboard
             }
 
             #endregion Authentication Index
@@ -53,15 +54,17 @@ namespace ProjectFollower.Controllers
             return RedirectToAction("Index", "SignIn");
         }
 
+
         #region API
-        [HttpGet("getscheduler")]
-        public JsonResult GetScheduler()
+        [HttpGet("getscheduler/{id}")]
+        public JsonResult GetScheduler(string id)
         {
             List<SchedulerCustomerVM> schedulerCustomer = new List<SchedulerCustomerVM>();
-            var scheduler = _uow.Scheduler.GetAll();
+            var companies = _uow.Customers.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
+            var scheduler = _uow.Scheduler.GetAll(i=>i.CustomersId==Guid.Parse(id));
             var schedulerpriorities = _uow.SchedulerPriority.GetAll();
-            var companies = _uow.Customers.GetAll();
 
+            /*
             foreach (var item in companies)
             {
                 var _schedulerCustomer = new SchedulerCustomerVM()
@@ -70,19 +73,26 @@ namespace ProjectFollower.Controllers
                     Text = item.Name
                 };
                 schedulerCustomer.Add(_schedulerCustomer);
-            }
+            }*/
+            var _schedulerCustomerItem = new  SchedulerCustomerVM()
+            {
+                Id = companies.Id.ToString(),
+                Text = companies.Name
+            };
+            var _schedulerCustomer = new List<SchedulerCustomerVM>();
+            _schedulerCustomer.Add(_schedulerCustomerItem);
             var _schedulerVM = new SchedulerVM()
             {
                 Scheduler = scheduler,
                 SchedulerPriority = schedulerpriorities,
-                Customers = schedulerCustomer
+                Customers = _schedulerCustomer
             };
 
             return Json(_schedulerVM);
 
         }
         [HttpPost("postscheduler")]
-        public JsonResult SetScheduler([FromBody]Scheduler scheduler)
+        public JsonResult SetScheduler([FromBody] Scheduler scheduler)
         {
             _uow.Scheduler.Add(scheduler);
             _uow.Save();
@@ -94,6 +104,14 @@ namespace ProjectFollower.Controllers
             _uow.Scheduler.Update(scheduler);
             _uow.Save();
             return Json(scheduler);
+        }
+        [HttpGet("deletescheduler/{id}")]
+        public JsonResult DeleteScheduler(int id)
+        {
+            var scheduler = _uow.Scheduler.GetFirstOrDefault(i => i.Id == id);
+            _uow.Scheduler.Remove(scheduler);
+            _uow.Save();
+            return Json(null);
         }
         #endregion API
     }

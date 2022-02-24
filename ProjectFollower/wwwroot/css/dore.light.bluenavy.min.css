@@ -1721,6 +1721,7 @@ button {
 .menu .main-menu ul li a:focus,
 .menu .main-menu ul li a:hover {
     color: #00365a;
+    cursor: pointer;
 }
 .menu .main-menu ul li i {
     font-size: 32px;

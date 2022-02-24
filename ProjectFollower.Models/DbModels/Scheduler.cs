@@ -14,7 +14,7 @@ namespace ProjectFollower.Models.DbModels
         [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
         [DataType(DataType.Date)]
-        public DateTime EndDate { get; set; }
+        //public DateTime EndDate { get; set; }
         [ForeignKey("CustomersId")]
         public Guid CustomersId { get; set; }
         public Customers Customers { get; set; }

@@ -358,7 +358,7 @@ $.dore = function (element, options) {
         $("#app-container").addClass("menu-mobile");
       } else if (windowWidth < subHiddenBreakpoint) {
         $("#app-container").removeClass("menu-mobile");
-        if ($("#app-container").hasClass("menu-default")) {
+        if ($("#app-container").hasClass("menu-main-hidden")) {
           $("#app-container").removeClass(allMenuClassNames);
           $("#app-container").addClass("menu-default menu-sub-hidden");
         }

@@ -779,6 +779,7 @@ namespace ProjectFollower.Controllers
             }
             return Json(null);
         }
+
         [Authorize(Roles = UserRoles.Admin)]
         [HttpGet("jsonresult/changeToCustomerApproveState/{id}")]
         public JsonResult ChangetoCustomerApprove(string id)
@@ -790,6 +791,7 @@ namespace ProjectFollower.Controllers
             _uow.Save();
             return Json(null);
         }
+
         [Authorize(Roles = UserRoles.Admin)]
         [HttpGet("jsonresult/changeToDoneState/{id}")]
         public JsonResult ChangetoDone(string id)
@@ -878,6 +880,7 @@ namespace ProjectFollower.Controllers
 
             return Json(_Users);
         }
+
         [Authorize(Roles = UserRoles.Admin)]
         [HttpGet("jsonresult/getuserbyfilter/{id}/{arcstatus}")]
         public JsonResult GetUserByFilter(string id,bool ArchiveStatus)
@@ -954,6 +957,50 @@ namespace ProjectFollower.Controllers
             };
             return Json(_ProjectListVM);
         }
+
+        [Authorize(Roles = UserRoles.Admin)]
+        [HttpGet("jsonresult/getstatusbyfilter/{id}")]
+        public JsonResult GetStatusByFilter(int id)
+        {
+            var _FilteredProjects = new List<Projects>();
+            var _projects = _uow.Project.GetAll(i => i.Status == id,includeProperties:"Customers");
+            //var FilteredProject = _projects.OrderBy(d => Convert.ToDateTime(d.EndingDate));
+            foreach (var item in _projects)
+            {
+                item.SequanceDate = Sequence++;
+                if (DateTime.Now.Date > Convert.ToDateTime(item.EndingDate))
+                {
+                    item.ProjectSequence = 1;
+                    item.IsDelayed = true;
+                    if (item.Status < 3)
+                        Delayeds++;
+                }
+                else
+                    item.ProjectSequence = 2;
+                var _project = new Projects()
+                {
+                    Id=item.Id,
+                    Archived=item.Archived,
+                    IsDelayed=item.IsDelayed,
+                    CustomersId=item.CustomersId,
+                    Customers = item.Customers,
+                    Name=item.Name,
+                    CreationDate=item.CreationDate,
+                    EndingDate=item.EndingDate,
+                    SequanceDate=item.SequanceDate,
+                    Status=item.Status
+                    
+                };
+                _FilteredProjects.Add(_project);
+            }
+            var _ProjectListVM = new ProjectListVM()
+            {
+                Projects = _FilteredProjects,
+                DelayedProjects = Delayeds
+            };
+            return Json(_ProjectListVM);
+        }
+
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [HttpGet("jsonresult/refreshpage_socket/")]
         public async Task<JsonResult> WEB_SOCKET_REFRESH_PAGE(string id)
