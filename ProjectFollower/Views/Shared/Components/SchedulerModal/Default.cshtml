@@ -1,0 +1,31 @@
+﻿@model ProjectFollower.Models.DbModels.Customers
+
+<div class="modal fade" id="schedulerModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="schedulerModalLabel">Firma Takvim</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="openscheduler-form" asp-action="Index" asp-controller="Scheduler" method="get" asp-route-customerid="@Model.Id">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="modalCurrentPassword">Firma Seçiniz</label>
+                        <select class="form-control select-single" data-width="100%" asp-for="Id" id="customers">
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-dismiss="modal">
+                        Kapat
+                    </button>
+                    <button type="submit" class="btn btn-primary" asp-controller="Scheduler" asp-action="Index">Devam Et</button>
+                    @*<button type="submit" class="btn btn-primary" id="modalsubmit">Değişiklikleri Kaydet</button>*@
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

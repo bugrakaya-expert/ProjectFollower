@@ -366,7 +366,7 @@ namespace ProjectFollower.Controllers
         [HttpGet("jsonresult/getallcustomers")]
         public JsonResult GetCustomers()
         {
-            var customers = _uow.Customers.GetAll();
+            var customers = _uow.Customers.GetAll().OrderBy(i=>i.Name);
             /*
             foreach (var item in customers)
             {

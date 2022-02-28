@@ -1,8 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using ProjectFollower.DataAcces.IMainRepository;
+using ProjectFollower.Extensions;
+using ProjectFollower.Hubs;
 using ProjectFollower.Models.DbModels;
 using ProjectFollower.Models.ViewModels;
 using System;
@@ -10,9 +14,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using static ProjectFollower.Utility.ProjectConstant;
 
 namespace ProjectFollower.Controllers
 {
+
     public class SchedulerController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
@@ -20,32 +26,37 @@ namespace ProjectFollower.Controllers
         //private readonly RoleManager<ApplicationUser> _roleManager;
         private readonly ILogger<AccountController> _logger;
         private readonly IUnitOfWork _uow;
-
+        protected IHubContext<HomeHub> _context;
+        public WebSocketActionExtensions WebSocket;
 
         public SchedulerController(
         UserManager<IdentityUser> userManager,
         SignInManager<IdentityUser> signInManager,
         ILogger<AccountController> logger,
+                IHubContext<HomeHub> context,
         IUnitOfWork uow
             )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _context = context;
             _uow = uow;
         }
 
-
-        [HttpPost("scheduler")]
-        public IActionResult Index(string customerid)
+        [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
+        [HttpGet]
+        public IActionResult Index(Customers _customer)
         {
+
             #region Authentication Index
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var Claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             if (Claims != null)
             {
+                var customerid = _customer.Id.ToString();
                 var ApplicationUser = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == Claims.Value);
-                var customer = _uow.Customers.GetFirstOrDefault(i => i.Id == Guid.Parse(customerid));
+                var customer = _uow.Customers.GetFirstOrDefault(i => i.Id == _customer.Id);
                 return View(customer);//Go Dashboard
             }
 
@@ -56,6 +67,17 @@ namespace ProjectFollower.Controllers
 
 
         #region API
+        [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
+        [HttpGet("jsonresult/trigger_WebSocket/{id}")]
+        public async Task<JsonResult> WEB_SOCKET_REFRESH_PAGE(string id)
+        {
+
+            WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
+            await WebSocAct.SchedulerQuery_WebSocket(GetClaim(), id);
+            return Json(null);
+        }
+
+        [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [HttpGet("getscheduler/{id}")]
         public JsonResult GetScheduler(string id)
         {
@@ -91,6 +113,8 @@ namespace ProjectFollower.Controllers
             return Json(_schedulerVM);
 
         }
+
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpPost("postscheduler")]
         public JsonResult SetScheduler([FromBody] Scheduler scheduler)
         {
@@ -98,6 +122,8 @@ namespace ProjectFollower.Controllers
             _uow.Save();
             return Json(scheduler);
         }
+
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpPost("updatescheduler")]
         public JsonResult UpdateScheduler([FromBody] Scheduler scheduler)
         {
@@ -105,6 +131,8 @@ namespace ProjectFollower.Controllers
             _uow.Save();
             return Json(scheduler);
         }
+
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpGet("deletescheduler/{id}")]
         public JsonResult DeleteScheduler(int id)
         {
@@ -114,5 +142,15 @@ namespace ProjectFollower.Controllers
             return Json(null);
         }
         #endregion API
+        public Claim GetClaim()
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var Claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            if (Claims != null)
+            {
+                return Claims;
+            }
+            return null;
+        }
     }
 }

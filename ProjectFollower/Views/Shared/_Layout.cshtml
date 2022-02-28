@@ -158,7 +158,7 @@
                                     <span>Projeler</span>
                                 </a>
                             </li>
-                            <li class="@Html.ActiveClass("Scheduler") d-none">
+                            <li class="@Html.ActiveClass("Scheduler")">
                                 <a data-toggle="modal" data-target="#schedulerModal">
                                     <i class="simple-icon-calendar"></i>
                                     <span>Takvim</span>
@@ -333,37 +333,42 @@
             </div>
         </div>
     </div>
-    <!-- Modal Şifre Değiştir -->
-    <div class="modal fade" id="schedulerModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="schedulerModalLabel">Firma Takvim</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form id="openscheduler-form" asp-action="Index" asp-controller="Scheduler" method="post">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="modalCurrentPassword">Firma Seçiniz</label>
-                            <select class="form-control select-single" data-width="100%" id="customers" name="customerid">
-
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary"
-                                data-dismiss="modal">
-                            Kapat
+    @await Component.InvokeAsync("SchedulerModal")
+    @*@Html.Partial("_SchedulerModal.cshtml");*@
+    @*
+        <!-- Modal Scheduler -->
+        <div class="modal fade" id="schedulerModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="schedulerModalLabel">Firma Takvim</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
                         </button>
-                        <button type="submit" class="btn btn-primary" asp-controller="Scheduler" asp-action="Index">Devam Et</button>
-                        @*<button type="submit" class="btn btn-primary" id="modalsubmit">Değişiklikleri Kaydet</button>*@
                     </div>
-                </form>
+                    <form id="openscheduler-form" action="/scheduler/" method="get" asp-route-customerid="">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="modalCurrentPassword">Firma Seçiniz</label>
+                                <select class="form-control select-single" data-width="100%" name="Id">
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary"
+                                    data-dismiss="modal">
+                                Kapat
+                            </button>
+                            <button type="submit" class="btn btn-primary" asp-controller="Scheduler" asp-action="Index">Devam Et</button>
+                            @*<button type="submit" class="btn btn-primary" id="modalsubmit">Değişiklikleri Kaydet</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
+    *@
+
     <footer class="page-footer pt-3">
         <div class="footer-content">
             <div class="container-fluid">

@@ -62,5 +62,10 @@ namespace ProjectFollower.Extensions
 
             //return _ProjectListVM;
         }
+        public async Task SchedulerQuery_WebSocket(Claim Claims, string id)
+        {
+            HomeHub Hub = new HomeHub(_context);
+            await Hub.TriggerSchedulerChange(id);
+        }
     }
 }

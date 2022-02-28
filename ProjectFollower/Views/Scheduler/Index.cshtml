@@ -2,6 +2,14 @@
 @{
 }
 @model ProjectFollower.Models.DbModels.Customers
+<style>
+    .dx-scheduler-work-space-both-scrollbar .dx-scheduler-date-table {
+        float: none;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-image: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url("/assets/customers/@Model.Id/img/@Model.ImageUrl");
+    }
+</style>
 <main>
     <div class="row">
         <div class="col-12">
@@ -15,17 +23,21 @@
 
 @section scripts
 {
+    <script src="~/js/schedulerHub.js"></script>
     <script>
 
+
+        const CustomerId = '@Model.Id';
         DevExpress.localization.locale(navigator.language);
         function showToast(event, value, type) {
             DevExpress.ui.notify(`${event} "${value}" `, type, 800);
         }
         $(document).ready(function () {
             //var customersObj = { text: "Model.Name", id: "Model.Id" };
+
             $.ajax({
                 type: "GET",
-                url: "/getscheduler/" + "@Model.Id",
+                url: "/getscheduler/" + '@Model.Id',
                 contentType: "application/json",
                 dataType: "json",
                 success: function (data) {
@@ -63,6 +75,15 @@
                                     dataType: "json",
                                     success: function (response) {
                                         showToast('Oluşturuldu', e.appointmentData.text, 'info');
+                                        $.ajax({
+                                            type: "GET",
+                                            url: "/jsonresult/trigger_WebSocket/" + "@Model.Id",
+                                            contentType: "application/json",
+                                            dataType: "json",
+                                            success: function (data) {
+                                                console.log("Web Socket Requets Sended from scheduler. Id: " + '@Model.Id')
+                                            }
+                                        });
                                     },
                                     failure: function (response) {
                                         alert(response.responseText);
@@ -82,6 +103,15 @@
                                     dataType: "json",
                                     success: function (response) {
                                         showToast('Güncellendi', e.appointmentData.text, 'info');
+                                            $.ajax({
+                                            type: "GET",
+                                            url: "/jsonresult/trigger_WebSocket/" + "@Model.Id",
+                                            contentType: "application/json",
+                                            dataType: "json",
+                                            success: function (data) {
+                                                console.log("Web Socket Requets Sended from scheduler. Id: " + '@Model.Id')
+                                            }
+                                        });
                                     },
                                     failure: function (response) {
                                         alert(response.responseText);
@@ -99,6 +129,15 @@
                                     dataType: "json",
                                     success: function (response) {
                                         showToast('Silindi', e.appointmentData.text, 'info');
+                                        $.ajax({
+                                            type: "GET",
+                                            url: "/jsonresult/trigger_WebSocket/" + "@Model.Id",
+                                            contentType: "application/json",
+                                            dataType: "json",
+                                            success: function (data) {
+                                                console.log("Web Socket Requets Sended from scheduler. Id: " + '@Model.Id')
+                                            }
+                                        });
                                     },
                                     failure: function (response) {
                                         alert(response.responseText);
@@ -129,11 +168,11 @@
                                     editorType: 'dxSelectBox',
                                     dataField: 'customersId',
                                     editorOptions: {
-                                        items: customersObj,                                        placeholder: customersObj[0].text,
+                                        items: customersObj, placeholder: customersObj[0].text,
                                         displayExpr: 'text',
                                         valueExpr: 'id',
                                         value: customersObj[0].id,
-                                        readOnly:true,
+                                        readOnly: true,
                                     },
                                 }, {
                                     label: {
@@ -156,7 +195,7 @@
                                         width: '100%',
                                         type: 'date',
                                     },
-                                    }, {
+                                }, {
                                     colSpan: 2,
                                     label: {
                                         text: 'Açıklama',
@@ -179,14 +218,46 @@
                             height: 900,
                         });
                     });
+
+
+
                 }
+
+            }).done(function (result) {
+                $(document).ready(function () {
+                    $(".dx-toolbar-items-container").append(`
+<div class="dx-toolbar-after pr-2"><select class="form-control select-single mt-2" data-width="100%" name="Id" id="customer_scheduler">
+<option disabled selected>Takvimler</option>
+</select></div>
+
+`);
+                    $.ajax({
+                        url: "/jsonresult/getallcustomers",
+                        type: "GET",
+                        contentType: "application/json",
+                        dataType: "json",
+                        success: function (data) {
+
+                            $.each(data, function (i, item) {
+
+                                $('#customer_scheduler').append($('<option>', {
+                                    value: item.id,
+                                    text: item.name
+                                }));
+                            });
+                        }
+                    }).done(function (result) {
+                        $('#customer_scheduler').on('change', function () {
+
+                            window.location.replace("/Scheduler?Id="+this.value);
+                        });
+                    });
+                    
+                });
             });
 
+
         });
-
-
-
-
 
 
     </script>
