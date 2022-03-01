@@ -114,6 +114,14 @@ namespace ProjectFollower.Controllers
 
         }
 
+        [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
+        [HttpGet("getCustomersforScheduler/")]
+        public JsonResult GetCustomers()
+        {
+            var customers = _uow.Customers.GetAll(s => s.SchedulerEnabled).OrderBy(i => i.Name);
+            return Json(customers);
+        }
+
         [Authorize(Roles = UserRoles.Admin)]
         [HttpPost("postscheduler")]
         public JsonResult SetScheduler([FromBody] Scheduler scheduler)

@@ -7,6 +7,7 @@ connection.on("SchedulerQuery", function (id) {
     console.log("WebSocket Working Id: "+id);
     console.log("Working on CustomerId:" + CustomerId);
     if (CustomerId == id) {
+        var customerNamePublic = "";
         $.ajax({
             type: "GET",
             url: "/getscheduler/" + id,
@@ -16,7 +17,7 @@ connection.on("SchedulerQuery", function (id) {
                 var scheduler = data.scheduler;
                 var schedulerPriorityObj = data.schedulerPriority;
                 var customersObj = data.customers;
-                console.log(customersObj);
+                customerNamePublic = data.customers[0].text;
                 $(() => {
                     $('#scheduler').dxScheduler({
                         dataSource: scheduler,
@@ -30,6 +31,7 @@ connection.on("SchedulerQuery", function (id) {
                         FixedWidth: true,
                         crossScrollingEnabled: true,
                         cellDuration: 20,
+                        startDayHour: 15,
                         editing: {
                             allowAdding: true,
                             allowDeleting: true,
@@ -38,7 +40,8 @@ connection.on("SchedulerQuery", function (id) {
                             allowDragging: true,
                         },
                         onAppointmentAdded(e) {
-                            console.log(e.appointmentData);
+                            const endDate = new Date(2099, 4, 10, 13, 0)
+                            e.appointmentData.endDate = endDate;
                             $.ajax({
                                 type: "POST",
                                 url: "/postscheduler",
@@ -185,13 +188,13 @@ connection.on("SchedulerQuery", function (id) {
         }).done(function (result) {
             $(document).ready(function () {
                 $(".dx-toolbar-items-container").append(`
-<div class="dx-toolbar-after pr-2"><select class="form-control select-single mt-2" data-width="100%" name="Id" id="customer_scheduler">
-<option disabled selected>Takvimler</option>
+<div class="dx-toolbar-after pr-2"><select class="form-control select-single mt-2" data-width="100%" name="Id" id="customer-scheduler-alt">
+<option disabled selected>[ `+ customerNamePublic +` ]</option>
 </select></div>
 
 `);
                 $.ajax({
-                    url: "/jsonresult/getallcustomers",
+                    url: "/getCustomersforScheduler",
                     type: "GET",
                     contentType: "application/json",
                     dataType: "json",
@@ -199,14 +202,14 @@ connection.on("SchedulerQuery", function (id) {
 
                         $.each(data, function (i, item) {
 
-                            $('#customer_scheduler').append($('<option>', {
+                            $('#customer-scheduler-alt').append($('<option>', {
                                 value: item.id,
                                 text: item.name
                             }));
                         });
                     }
                 }).done(function (result) {
-                    $('#customer_scheduler').on('change', function () {
+                    $('#customer-scheduler-alt').on('change', function () {
 
                         window.location.replace("/Scheduler?Id=" + this.value);
                     });

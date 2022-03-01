@@ -42,6 +42,22 @@ Mevcut Profil Fotoğrafı<br />
         }
     });
 
+    $.ajax({
+        url: "/getCustomersforScheduler",
+        type: "GET",
+        contentType: "application/json",
+        dataType: "json",
+        success: function (data) {
+
+            $.each(data, function (i, item) {
+
+                $('#customer-scheduler').append($('<option>', {
+                    value: item.id,
+                    text: item.name
+                }));
+            });
+        }
+    });
 
 
 });

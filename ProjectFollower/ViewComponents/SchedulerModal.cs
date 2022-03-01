@@ -30,7 +30,7 @@ namespace ProjectFollower.ViewComponents
             if (Claims != null)
             {
                 Customers _customer = new Customers();
-                var customers = _uow.Customers.GetAll();
+                var customers = _uow.Customers.GetAll(s=>s.SchedulerEnabled);
                 return View("default", _customer);
             }
             return View("ERROR NAME");

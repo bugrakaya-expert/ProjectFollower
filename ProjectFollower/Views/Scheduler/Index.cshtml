@@ -9,6 +9,17 @@
         background-repeat: no-repeat;
         background-image: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url("/assets/customers/@Model.Id/img/@Model.ImageUrl");
     }
+    .dx-scheduler-date-table-current-date .dx-scheduler-date-table-cell-text {
+        font-weight: 900;
+        font-size:large;
+        text-decoration: underline;
+        color:cornflowerblue;
+    }
+    .dx-scheduler-header {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 100px;
+    }
 </style>
 <main>
     <div class="row">
@@ -34,30 +45,32 @@
         }
         $(document).ready(function () {
             //var customersObj = { text: "Model.Name", id: "Model.Id" };
-
+            var customerNamePublic = "";
             $.ajax({
                 type: "GET",
                 url: "/getscheduler/" + '@Model.Id',
                 contentType: "application/json",
                 dataType: "json",
                 success: function (data) {
+                    const now = new Date();
                     var scheduler = data.scheduler;
                     var schedulerPriorityObj = data.schedulerPriority;
                     var customersObj = data.customers;
-                    console.log(customersObj);
+                    customerNamePublic = data.customers[0].text;
                     $(() => {
                         $('#scheduler').dxScheduler({
                             dataSource: scheduler,
                             type: 'date',
                             views: ['month'],
                             currentView: 'month',
-                            currentDate: new Date($.now()),
+                            currentDate: now,
                             showAllDayPanel: false,
                             maxAppointmentsPerCell: 5,
                             allDay: true,
                             FixedWidth: true,
                             crossScrollingEnabled: true,
                             cellDuration: 20,
+                            startDayHour: 15,
                             editing: {
                                 allowAdding: true,
                                 allowDeleting: true,
@@ -66,7 +79,8 @@
                                 allowDragging: true,
                             },
                             onAppointmentAdded(e) {
-                                console.log(e.appointmentData);
+                                const endDate = new Date(2099, 4, 10, 13, 0)
+                                e.appointmentData.endDate = endDate;
                                 $.ajax({
                                     type: "POST",
                                     url: "/postscheduler",
@@ -86,10 +100,10 @@
                                         });
                                     },
                                     failure: function (response) {
-                                        alert(response.responseText);
+                                        alert("Kayıt başarısız! - Failure response");
                                     },
                                     error: function (response) {
-                                        alert(response.responseText);
+                                        alert("Kayıt başarısız! - Error response");
                                     }
                                 });
 
@@ -114,10 +128,10 @@
                                         });
                                     },
                                     failure: function (response) {
-                                        alert(response.responseText);
+                                        alert("Güncelleme başarısız! - Failure response");
                                     },
                                     error: function (response) {
-                                        alert(response.responseText);
+                                        alert("Güncelleme başarısız! - Error response");
                                     }
                                 });
                             },
@@ -226,13 +240,13 @@
             }).done(function (result) {
                 $(document).ready(function () {
                     $(".dx-toolbar-items-container").append(`
-<div class="dx-toolbar-after pr-2"><select class="form-control select-single mt-2" data-width="100%" name="Id" id="customer_scheduler">
-<option disabled selected>Takvimler</option>
+<div class="dx-toolbar-after pr-2"><select class="form-control select-single mt-2" data-width="100%" name="Id" id="customer-scheduler-alt">
+<option disabled selected>[ `+ customerNamePublic+` ]</option>
 </select></div>
 
 `);
                     $.ajax({
-                        url: "/jsonresult/getallcustomers",
+                        url: "/getCustomersforScheduler",
                         type: "GET",
                         contentType: "application/json",
                         dataType: "json",
@@ -240,15 +254,14 @@
 
                             $.each(data, function (i, item) {
 
-                                $('#customer_scheduler').append($('<option>', {
+                                $('#customer-scheduler-alt').append($('<option>', {
                                     value: item.id,
                                     text: item.name
                                 }));
                             });
                         }
                     }).done(function (result) {
-                        $('#customer_scheduler').on('change', function () {
-
+                        $('#customer-scheduler-alt').on('change', function () {
                             window.location.replace("/Scheduler?Id="+this.value);
                         });
                     });

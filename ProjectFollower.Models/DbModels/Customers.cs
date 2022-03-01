@@ -18,5 +18,6 @@ namespace ProjectFollower.Models.DbModels
         public string Phone { get; set; }
         public string ImageUrl { get; set; }
         public string Description { get; set; }
+        public bool SchedulerEnabled { get; set; }
     }
 }
