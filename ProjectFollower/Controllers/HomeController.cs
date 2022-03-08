@@ -609,7 +609,7 @@ namespace ProjectFollower.Controllers
                 Thread.Sleep(150);
                 var _ProjectListVM = new ProjectListVM()
                 {
-                    Projects = FilteredProject,
+                    Projects = FilteredProject.ToList(),
                     DelayedProjects = Delayeds
                 };
 
@@ -618,7 +618,6 @@ namespace ProjectFollower.Controllers
             else
             {
                 var FilteredProject = Projects.OrderBy(d => Convert.ToDateTime(d.EndingDate));
-                Thread.Sleep(150);
                 foreach (var item in FilteredProject)
                 {
                     item.SequanceDate = Sequence++;
@@ -952,7 +951,7 @@ namespace ProjectFollower.Controllers
             var FilteredProject = _projects.OrderBy(d => Convert.ToDateTime(d.EndingDate));
             var _ProjectListVM = new ProjectListVM()
             {
-                Projects = FilteredProject,
+                Projects = FilteredProject.ToList(),
                 DelayedProjects = Delayeds
             };
             return Json(_ProjectListVM);

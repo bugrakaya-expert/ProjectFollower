@@ -7,7 +7,7 @@ namespace ProjectFollower.Models.ViewModels
 {
     public class ProjectListVM
     {
-        public IEnumerable<Projects> Projects {get;set;}
+        public List<Projects> Projects {get;set;}
         
         public int DelayedProjects { get; set; }
     }
