@@ -20,6 +20,38 @@
         position: sticky;
         top: 100px;
     }
+    .acil {
+        width: 15px;
+        padding: 10px;
+        margin: 10px;
+        background-color: #D94A4A;
+    }
+    .normal {
+        width: 15px;
+        padding: 10px;
+        margin: 10px;
+        background-color: #0476D9;
+    }
+    .story {
+        width: 15px;
+        padding: 10px;
+        margin: 10px;
+        background-color: #CF00AC;
+    }
+    .hazirlik {
+        width: 15px;
+        padding: 10px;
+        margin: 10px;
+        background-color: #F2D335;
+    }
+    .tamamlandi {
+        width: 15px;
+        padding: 10px;
+        margin: 10px;
+        background-color: #04BFAD;
+    }
+
+
 </style>
 <main>
     <div class="row">
@@ -245,6 +277,7 @@
 </select></div>
 
 `);
+                    $(".dx-toolbar-center").append(`<div class="kutu"></div>`)
                     $.ajax({
                         url: "/getCustomersforScheduler",
                         type: "GET",
