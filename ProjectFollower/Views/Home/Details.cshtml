@@ -6,6 +6,7 @@
     int TaskLength = 0;
     string TaskIdString = "";
     var customerpath = DIR_Users_Main;
+    int playercount = 0;
 }
 @model ProjectFollower.Models.ViewModels.ProjectDetailVM
 @using static ProjectFollower.Utility.ProjectConstant
@@ -53,17 +54,26 @@
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="first" role="tabpanel"
                                  aria-labelledby="first-tab">
-
-                                <p class="font-weight-bold">Görevler</p>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <p class="font-weight-bold">Görevler</p>
+                                    </div>
+                                    <div class="col-3">
+                                        <p class="font-weight-bold" style="text-align:end">Görevliler</p>
+                                    </div>
+                                </div>
+                                
+                                
                                 @*<form action="/proje-detaylari/gorev-degistir/@Model.Project.Id" method="get">*@
                                 <form id="sectionTasks">
                                     @foreach (var item in Model.ProjectTasks)
                                     {
+                                        playercount = 0;
                                         TaskLength++;
                                         TaskIdString = "control-mission" + TaskLength.ToString();
 
                                         <div class="row mb-4">
-                                            <div class="col-8">
+                                            <div class="col-6">
                                                 @if (item.Done)
                                                 {
                                                     <p class="mission-completed">@item.Description</p>
@@ -74,8 +84,28 @@
                                                 }
 
                                             </div>
+                                            
+                                            <div class="col-3" style="text-align:end">
+                                                <p>
+                                                    @foreach (var playerItem in item.TaskPlayers)
+                                                    {
+                                                        if (item.TaskPlayers.Count() == playercount+1)
+                                                        {
+                                                            <span>@playerItem.FirstName</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>@playerItem.FirstName</span><text>,</text>
+                                                        }
+                                                        playercount++;
+                                                    }
+                                                </p>
+        
 
-                                            <div class="col-4 text-end d-flex justify-content-center align-items-center">
+                                                    </div>
+        
+
+                                                    <div class="col-3 text-end d-flex justify-content-center align-items-center">
                                                 <div class="custom-control custom-checkbox" style="display:inline-block">
                                                     @*<input value="@item.Done.ToString()" id="@item.Id" type="text" class="taskvalue" />*@
 
@@ -107,34 +137,34 @@
                                     </div>
                                 </form>
                                 @*
-                                    <table class="table table-borderless">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">#</th>
-                                                <th scope="col">Görev</th>
-                                                <th scope="col">Durum</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (var item in Model.ProjectTasks)
-                                            {
-                                                TaskLength++;
-                                                TaskIdString = "control-mission" + TaskLength.ToString();
-                                            }
-                                                <tr>
+        <table class="table table-borderless">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Görev</th>
+                    <th scope="col">Durum</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ProjectTasks)
+                {
+                    TaskLength++;
+                    TaskIdString = "control-mission" + TaskLength.ToString();
+                }
+                    <tr>
 
-                                                    <th scope="row">1</th>
-                                                    <td>Emre</td>
-                                                    <td>Websitesi Tasarımı</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">2</th>
-                                                    <td>Buğra</td>
-                                                    <td>Database</td>
+                        <th scope="row">1</th>
+                        <td>Emre</td>
+                        <td>Websitesi Tasarımı</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Buğra</td>
+                        <td>Database</td>
 
-                                                </tr>
-                                            </tbody>
-                                    </table>
+                    </tr>
+                </tbody>
+        </table>
                                 *@
 
                                 <div class="separator mb-5"></div>
@@ -417,6 +447,21 @@
             <form asp-action="AddTask" asp-controller="Home" method="post" asp-route-ProjectsId="@Model.Project.Id">
                 <div class="modal-body">
                     <div class="form-group">
+                        <label class="form-group has-top-label gorev-players pb-1">
+                            <select class="form-control select2-multiple" multiple="multiple" data-width="100%" id="mission-players">
+                                @foreach (var item in Model.DepartmentsVMs)
+                                {
+                                    <optgroup label="@item.Name">
+                                        @foreach (var itemUser in item.ApplicationUser)
+                                        {
+                                            <option data-name="@itemUser.FirstName" value="@itemUser.Id">@itemUser.FirstName</option>
+                                        }
+
+                                    </optgroup>
+                                }
+                            </select>
+                            <span>Görev Üyeleri</span>
+                        </label>
                         <label for="mission-name" class="col-form-label">Görev Adı:</label>
                         <textarea style="height:5rem" type="text" class="form-control" id="mission-name" required min asp-for="ProjectTaskItem.Description"></textarea>
                     </div>

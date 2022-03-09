@@ -23,6 +23,7 @@ namespace ProjectFollower.DataAcces.MainRepository
             ProjectComments = new ProjectCommentsRepository(_db);
             SchedulerPriority = new SchedulerPriorityRepository(_db);
             Scheduler = new SchedulerRepository(_db);
+            TaskPlayers = new TaskPlayersRepository(_db);
         }
         //public ICategoryRepository Category { get; private set; }
         public IApplicationUserRepository ApplicationUser { get; private set; }
@@ -36,6 +37,7 @@ namespace ProjectFollower.DataAcces.MainRepository
         public IProjectCommentsRepository ProjectComments { get; private set; }
         public ISchedulerPriorityRepository SchedulerPriority { get; private set; }
         public ISchedulerRepository Scheduler { get; private set; }
+        public ITaskPlayersRepository TaskPlayers { get; private set; }
         public void Dispose()
         {
             _db.Dispose();

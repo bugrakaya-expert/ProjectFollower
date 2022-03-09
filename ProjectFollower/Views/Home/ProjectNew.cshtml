@@ -87,12 +87,12 @@
                         <div class="card-body">
                             <h5 class="card-title">Proje Görevleri</h5>
                             <label class="form-group has-top-label">
-                                <input class="form-control" id="mission-textbox" style="display: inline-block;" id="mission-textbox">
+                                <input class="form-control" id="mission-textbox" style="display: inline-block;">
                                 <span>Görev Tanımı</span>
                             </label>
-                            @*
-                            <label class="form-group has-top-label">
-                                <select class="form-control select2-multiple" multiple="multiple" data-width="100%" asp-for="UserId" id="mission-players">
+                            
+                            <label class="form-group has-top-label gorev-players">
+                                <select class="form-control select2-multiple" multiple="multiple" data-width="100%" id="mission-players">
                                     @foreach (var item in Model.DepartmentsVMs)
                                     {
                                         <optgroup label="@item.Name">
@@ -104,9 +104,9 @@
                                         </optgroup>
                                     }
                                 </select>
-                                <span>Proje Üyeleri</span>
+                                <span>Görev Üyeleri</span>
                             </label>
-                            *@
+                            
                             <button type="button" class="btn btn-outline-secondary mb-1 taskAct" id="mission-add">Görev Ekle</button>
                         </div>
                     </div>
@@ -119,6 +119,7 @@
                                 <thead>
                                     <tr>
                                         <th>Görev Tanımı</th>
+                                        <th>Görevli</th>
                                         <th class="d-none"></th>
                                     </tr>
                                 </thead>
@@ -203,7 +204,7 @@
 
                 var htmlString = $('.ql-editor').html();
                 $('#htmlstr').val(htmlString);
-                $('.list-item-heading').each(function () {
+                $('.get-task-item').each(function () {
                     /*var taskAct = $(".list-item-heading").html();*/
                     var taskAct = $(this).html();
                     console.log(taskAct);

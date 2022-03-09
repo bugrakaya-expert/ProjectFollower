@@ -19,5 +19,7 @@ namespace ProjectFollower.Models.ViewModels
         public string[] UserId { get; set; }
 
         public string[] TaskDesc { get; set; }
+/*
+        public List<ProjectTasks> ProjectTasks { get; set; }*/
     }
 }

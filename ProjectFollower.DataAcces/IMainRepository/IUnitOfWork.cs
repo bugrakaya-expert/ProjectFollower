@@ -18,6 +18,7 @@ namespace ProjectFollower.DataAcces.IMainRepository
         IProjectCommentsRepository ProjectComments { get; }
         ISchedulerPriorityRepository SchedulerPriority { get; }
         ISchedulerRepository Scheduler { get; }
+        ITaskPlayersRepository TaskPlayers { get; }
         void Save();
     }
 }

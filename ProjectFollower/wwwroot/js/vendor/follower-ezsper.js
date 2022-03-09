@@ -3,7 +3,7 @@
         var listvalue = $('#mission-textbox').val();
         var playerid = $('#mission-players').val();
         var playervalue = new Array();
-        $('.select2-selection__choice').each(function () {
+        $('.gorev-players .select2-selection__choice').each(function () {
             playervalue.push( $(this).attr('title'));
         });
         if (!playervalue.length || !listvalue.length) {
@@ -14,7 +14,8 @@
                 confirmButtonText: 'Tamam'
             })
         } else {
-            $('#mission-list').append('<tr>' + '<td><p class="list-item-heading">' + listvalue + '</p></td>' + '<td class="d-flex justify-content-end"><button type="button" class="btn btn-danger mb-1 deleteli"><i class="simple-icon-trash mr-2"></i>Sil</button><td></tr>');
+            console.log("eklenenler: "+playervalue);
+            $('#mission-list').append('<tr>' + '<td><p class="list-item-heading get-task-item">' + listvalue + '</p></td>' + '<td><p class="list-item-heading get-task-item d-none">' + playerid + '</p></td>' + '<td><p class="">' + playervalue + '</p></td>' + '<td class="d-flex justify-content-end"><button type="button" class="btn btn-danger mb-1 deleteli"><i class="simple-icon-trash mr-2"></i>Sil</button><td></tr>');
             $("#mission-textbox").val("");
         }
     });

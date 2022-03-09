@@ -30,6 +30,7 @@ namespace ProjectFollower.Controllers
         protected IHubContext<HomeHub> _context;
         private readonly IUnitOfWork _uow;
         private readonly IWebHostEnvironment _hostEnvironment;
+        private ProjectTasks ProjectTaskItem = new ProjectTasks();
 
         public HomeController(
         UserManager<IdentityUser> userManager,
@@ -117,6 +118,8 @@ namespace ProjectFollower.Controllers
             List<CommentVM> _commentList = new List<CommentVM>();
             List<DepartmentsVM> _departmentsVMs = new List<DepartmentsVM>();
             List<DocumentVM> documentVMs = new List<DocumentVM>();
+            List<ProjectTasks> _projectTasks = new List<ProjectTasks>();
+
             var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id), includeProperties: "Customers");
             var _tasks = _uow.ProjectTasks.GetAll(i => i.ProjectsId == Guid.Parse(id));
             var _documents = _uow.ProjectDocuments.GetAll(i => i.ProjectsId == Guid.Parse(id));
@@ -175,7 +178,7 @@ namespace ProjectFollower.Controllers
                 List<Users> UserList = new List<Users>();
                 foreach (var useritem in DepartmentUsers)
                 {
-                    var _responsible = _uow.ResponsibleUsers.GetAll(i => i.ProjectId == Guid.Parse(id)).Where(i=>i.UserId==Guid.Parse(useritem.Id));
+                    var _responsible = _uow.ResponsibleUsers.GetAll(i => i.ProjectId == Guid.Parse(id)).Where(i => i.UserId == Guid.Parse(useritem.Id));
                     if (_responsible.Count() > 0)
                     {
                         var _user = new Users()
@@ -183,7 +186,7 @@ namespace ProjectFollower.Controllers
                             Id = useritem.Id,
                             FirstName = useritem.FirstName,
                             LastName = useritem.Lastname,
-                            IsResponsible=true
+                            IsResponsible = true
 
                         };
                         UserList.Add(_user);
@@ -203,20 +206,41 @@ namespace ProjectFollower.Controllers
 
 
                 }
+                var _appUser = _uow.ApplicationUser.GetAll(i => i.DepartmentId == item.Id).Where(s=>s.Active);
                 DepartmentsVM departmentsVM = new DepartmentsVM()
                 {
                     Id = item.Id,
                     Name = item.Name,
                     Users = UserList,
+                    ApplicationUser=_appUser
 
                 };
                 _departmentsVMs.Add(departmentsVM);
             }
-
+            foreach (var item in _tasks)
+            {
+                var _players = _uow.TaskPlayers.GetAll(i => i.ProjectTaskId == item.Id.ToString()).ToList();
+                List<TaskPlayers> _taskplayers = new List<TaskPlayers>();
+                foreach (var playerItem in _players)
+                {
+                    var username = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == playerItem.UserId);
+                    var taskPlayerItem = new TaskPlayers()
+                    {
+                        Id=playerItem.Id,
+                        FirstName = username.FirstName,
+                        LastName = username.Lastname,
+                        ProjectTaskId=playerItem.ProjectTaskId,
+                        UserId=playerItem.UserId
+                    };
+                    _taskplayers.Add(taskPlayerItem);
+                }
+                item.TaskPlayers=_taskplayers;
+                _projectTasks.Add(item);
+            }
             var _projectDetailVM = new ProjectDetailVM()
             {
                 Project = _project,
-                ProjectTasks = _tasks,
+                ProjectTasks = _projectTasks,
                 ProjectDocuments = _documents,
                 CommentVM = _commentList,
                 Users = _users,
@@ -236,7 +260,7 @@ namespace ProjectFollower.Controllers
             var GetDepartments = _uow.Department.GetAll();
             foreach (var item in GetDepartments)
             {
-                var UserWidtDep = _uow.ApplicationUser.GetAll(i => i.DepartmentId == item.Id).Where(a=>a.Active);
+                var UserWidtDep = _uow.ApplicationUser.GetAll(i => i.DepartmentId == item.Id).Where(a => a.Active);
                 var DepartmentItem = new DepartmentsVM()
                 {
                     Id = item.Id,
@@ -287,15 +311,38 @@ namespace ProjectFollower.Controllers
             }
             if (ProjectVM.TaskDesc == null)
                 return NoContent();
+            int t = 0;
             foreach (var item in ProjectVM.TaskDesc)
             {
-                var ProjectTask = new ProjectTasks()
+
+                if (t % 2 == 0)
                 {
-                    Description = item,
-                    ProjectsId = Project.Id
-                };
-                _uow.ProjectTasks.Add(ProjectTask);
+                    var ProjectTask = new ProjectTasks()
+                    {
+                        Description = item,
+                        ProjectsId = Project.Id
+                    };
+                    _uow.ProjectTasks.Add(ProjectTask);
+                    //_uow.Save();
+                    ProjectTaskItem = ProjectTask;
+                }
+                else
+                {
+                    string[] ids = item.Split(',');
+                    foreach (var itemm in ids)
+                    {
+                        var TaskPlayer = new TaskPlayers()
+                        {
+                            ProjectTaskId = ProjectTaskItem.Id.ToString(),
+                            UserId = itemm
+                        };
+                        _uow.TaskPlayers.Add(TaskPlayer);
+                    }
+                }
+                t++;
             }
+
+
 
             string webRootPath = _hostEnvironment.WebRootPath;
             var files = HttpContext.Request.Form.Files;
@@ -769,7 +816,7 @@ namespace ProjectFollower.Controllers
                 _uow.Project.Update(_project);
                 _uow.Save();
             }
-            if(_project.Status == 0 && User.IsInRole(UserRoles.Personel))
+            if (_project.Status == 0 && User.IsInRole(UserRoles.Personel))
             {
                 _project.Status = 1;
                 _project.Archived = false;
@@ -821,7 +868,7 @@ namespace ProjectFollower.Controllers
                 _uow.ProjectComments.Add(projectComments);
                 var Comment = new CommentVM()
                 {
-                    UserId=AppUser.Id,
+                    UserId = AppUser.Id,
                     Comment = projectComments.Comment,
                     CommentTime = projectComments.CommentTime.ToString("F"),
                     Img = AppUser.ImageUrl,
@@ -882,7 +929,7 @@ namespace ProjectFollower.Controllers
 
         [Authorize(Roles = UserRoles.Admin)]
         [HttpGet("jsonresult/getuserbyfilter/{id}/{arcstatus}")]
-        public JsonResult GetUserByFilter(string id,bool ArchiveStatus)
+        public JsonResult GetUserByFilter(string id, bool ArchiveStatus)
         {
             List<Projects> _projects = new List<Projects>();
             Projects _projectItem = new Projects();
@@ -894,7 +941,7 @@ namespace ProjectFollower.Controllers
                 foreach (var item in Responsibles)
                 {
                     _projectItem = _uow.Project.GetFirstOrDefault(i => i.Id == item.ProjectId, includeProperties: "Customers");
-                    if(_projectItem != null)
+                    if (_projectItem != null)
                     {
                         if (ArchiveStatus == false && _projectItem.Archived == false)
                         {
@@ -962,7 +1009,7 @@ namespace ProjectFollower.Controllers
         public JsonResult GetStatusByFilter(int id)
         {
             var _FilteredProjects = new List<Projects>();
-            var _projects = _uow.Project.GetAll(i => i.Status == id,includeProperties:"Customers");
+            var _projects = _uow.Project.GetAll(i => i.Status == id, includeProperties: "Customers");
             //var FilteredProject = _projects.OrderBy(d => Convert.ToDateTime(d.EndingDate));
             foreach (var item in _projects)
             {
@@ -978,17 +1025,17 @@ namespace ProjectFollower.Controllers
                     item.ProjectSequence = 2;
                 var _project = new Projects()
                 {
-                    Id=item.Id,
-                    Archived=item.Archived,
-                    IsDelayed=item.IsDelayed,
-                    CustomersId=item.CustomersId,
+                    Id = item.Id,
+                    Archived = item.Archived,
+                    IsDelayed = item.IsDelayed,
+                    CustomersId = item.CustomersId,
                     Customers = item.Customers,
-                    Name=item.Name,
-                    CreationDate=item.CreationDate,
-                    EndingDate=item.EndingDate,
-                    SequanceDate=item.SequanceDate,
-                    Status=item.Status
-                    
+                    Name = item.Name,
+                    CreationDate = item.CreationDate,
+                    EndingDate = item.EndingDate,
+                    SequanceDate = item.SequanceDate,
+                    Status = item.Status
+
                 };
                 _FilteredProjects.Add(_project);
             }
@@ -1004,7 +1051,7 @@ namespace ProjectFollower.Controllers
         [HttpGet("jsonresult/refreshpage_socket/")]
         public async Task<JsonResult> WEB_SOCKET_REFRESH_PAGE(string id)
         {
-            
+
             WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
             await WebSocAct.ListProjects_WebSocket(GetClaim());
             return Json(null);
