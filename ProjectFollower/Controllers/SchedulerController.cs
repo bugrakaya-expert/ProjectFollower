@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -9,8 +10,11 @@ using ProjectFollower.Extensions;
 using ProjectFollower.Hubs;
 using ProjectFollower.Models.DbModels;
 using ProjectFollower.Models.ViewModels;
+using Syncfusion.HtmlConverter;
+using Syncfusion.Pdf;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -27,12 +31,14 @@ namespace ProjectFollower.Controllers
         private readonly ILogger<AccountController> _logger;
         private readonly IUnitOfWork _uow;
         protected IHubContext<HomeHub> _context;
+        private readonly IHostingEnvironment _hostingEnvironment;
         public WebSocketActionExtensions WebSocket;
 
         public SchedulerController(
         UserManager<IdentityUser> userManager,
         SignInManager<IdentityUser> signInManager,
         ILogger<AccountController> logger,
+        IHostingEnvironment hostingEnvironment,
                 IHubContext<HomeHub> context,
         IUnitOfWork uow
             )
@@ -41,6 +47,7 @@ namespace ProjectFollower.Controllers
             _signInManager = signInManager;
             _logger = logger;
             _context = context;
+            _hostingEnvironment = hostingEnvironment;
             _uow = uow;
         }
 
@@ -64,7 +71,63 @@ namespace ProjectFollower.Controllers
 
             return RedirectToAction("Index", "SignIn");
         }
+        [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
+        [HttpPost("export-pdf")]
+        public IActionResult DownloadPDF(string htmlstring,string customerId)
+        {
 
+
+            string baseUrl = "https://localhost:5001/Scheduler/schedulerpdf";
+
+
+            HtmlToPdfConverter htmlConverter = new HtmlToPdfConverter();
+            WebKitConverterSettings webkitConverterSettings = new WebKitConverterSettings();
+            webkitConverterSettings.WebKitPath = Path.Combine(_hostingEnvironment.ContentRootPath, "ExtensionLibs/QtBinariesDotNetCore");
+
+            webkitConverterSettings.Orientation = PdfPageOrientation.Landscape;
+            webkitConverterSettings.EnableRepeatTableHeader = true;
+            webkitConverterSettings.MediaType = MediaType.Print;
+            //webkitConverterSettings.Margin.Bottom = 40;
+            webkitConverterSettings.Margin.Bottom = 30;
+            webkitConverterSettings.Margin.Top = 20;
+
+            htmlConverter.ConverterSettings = webkitConverterSettings;
+            PdfDocument document = new PdfDocument();
+            document = htmlConverter.Convert(SchedulerHtml.Before+htmlstring+SchedulerHtml.After, baseUrl);
+            MemoryStream ms = new MemoryStream();
+
+            document.Save(ms);
+            document.Close(true);
+            ms.Position = 0;
+
+            Console.WriteLine("Pdf Converted.");
+            /*
+            var output = new FileContentResult(ms.ToArray(), "application/pdf");
+            output.FileDownloadName = projectCode + ".pdf";
+
+            return output;*/
+
+            //return File(ms, "application/pdf", projectCode + ".pdf", true);// Download Directly Pdf
+
+            return File(ms, "application/octet-stream", "pdfcode" + ".pdf", true);// Download Directly Pdf
+
+            #region Authentication Index
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var Claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            if (Claims != null)
+            {
+                return View(null);//Go Dashboard
+            }
+
+            #endregion Authentication Index
+
+            return RedirectToAction("Index", "SignIn");
+        }
+
+        public IActionResult schedulerpdf()
+        {
+            return View();
+        }
 
         #region API
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]

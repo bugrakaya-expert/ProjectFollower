@@ -78,6 +78,16 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-12 text-right mt-3">
+            <form id="export-frm" asp-action="DownloadPDF" asp-controller="Scheduler" method="post" target="_blank">
+                <input id="htmlstring" type="text" name="htmlstring" value="" />
+                <input id="customerId" type="text" name="customerId" value="" />
+                <a id="export-btn" type="button" class="btn btn-primary btn-lg top-right-button mr-1" href="#">EXPORT PDF</a>
+            </form>
+
+        </div>
+    </div>
 
 </main>
 
@@ -324,11 +334,16 @@
                             window.location.replace("/Scheduler?Id="+this.value);
                         });
                     });
-                    
+
                 });
             });
 
 
+            $("#export-btn").click(function () {
+                $("#htmlstring").val($("#scheduler").html());
+                $("#customerId").val('@Model.Id')
+                $("#export-frm").submit();
+            });
         });
 
 
