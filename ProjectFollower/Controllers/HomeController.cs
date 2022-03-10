@@ -499,6 +499,15 @@ namespace ProjectFollower.Controllers
                 Description = projectDetailVM.ProjectTaskItem.Description
             };
             _uow.ProjectTasks.Add(projectTask);
+            foreach (var item in projectDetailVM.UserId)
+            {
+                var player = new TaskPlayers()
+                {
+                    ProjectTaskId = projectTask.Id.ToString(),
+                    UserId = item
+                };
+                _uow.TaskPlayers.Add(player);
+            }
             _uow.Save();
             return Redirect("/proje-detaylari/" + projectDetailVM.ProjectsId);
         }
@@ -509,7 +518,9 @@ namespace ProjectFollower.Controllers
         public IActionResult RemoveTask(string id)
         {
             var task = _uow.ProjectTasks.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
+            var players = _uow.TaskPlayers.GetAll(i => i.ProjectTaskId == task.Id.ToString());
             var project = _uow.Project.GetFirstOrDefault(i => i.Id == task.ProjectsId);
+            _uow.TaskPlayers.RemoveRange(players);
             _uow.ProjectTasks.Remove(task);
             _uow.Save();
             return Redirect("/proje-detaylari/" + project.Id);
@@ -708,8 +719,17 @@ namespace ProjectFollower.Controllers
         [HttpGet("jsonresult/deleteproject/{id}")]
         public JsonResult DeleteProject(string id)
         {
+            List<TaskPlayers> _taskplayers = new List<TaskPlayers>();
             var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
             var _responsibles = _uow.ResponsibleUsers.GetAll(i => i.ProjectId == Guid.Parse(id));
+            var tasks = _uow.ProjectTasks.GetAll(i => i.ProjectsId == _project.Id);
+
+            foreach (var item in tasks)
+            {
+                var players = _uow.TaskPlayers.GetAll(i => i.ProjectTaskId == item.Id.ToString());
+                _taskplayers.AddRange(players);
+            }
+            _uow.TaskPlayers.RemoveRange(_taskplayers);
             _uow.Project.Remove(_project);
             _uow.ResponsibleUsers.RemoveRange(_responsibles);
             _uow.Save();

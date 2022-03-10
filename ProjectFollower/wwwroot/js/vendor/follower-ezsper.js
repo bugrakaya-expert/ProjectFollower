@@ -15,7 +15,7 @@
             })
         } else {
             console.log("eklenenler: "+playervalue);
-            $('#mission-list').append('<tr>' + '<td><p class="list-item-heading get-task-item">' + listvalue + '</p></td>' + '<td><p class="list-item-heading get-task-item d-none">' + playerid + '</p></td>' + '<td><p class="">' + playervalue + '</p></td>' + '<td class="d-flex justify-content-end"><button type="button" class="btn btn-danger mb-1 deleteli"><i class="simple-icon-trash mr-2"></i>Sil</button><td></tr>');
+            $('#mission-list').append('<tr>' + '<td><p class="list-item-heading get-task-item">' + listvalue + '</p></td>' + '<td class="d-none"><p class="list-item-heading get-task-item">' + playerid + '</p></td>' + '<td><p class="">' + playervalue + '</p></td>' + '<td class="d-flex justify-content-end"><button type="button" class="btn btn-danger mb-1 deleteli"><i class="simple-icon-trash mr-2"></i>Sil</button><td></tr>');
             $("#mission-textbox").val("");
         }
     });

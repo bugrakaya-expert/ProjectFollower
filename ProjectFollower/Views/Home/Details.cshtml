@@ -72,21 +72,21 @@
                                         TaskLength++;
                                         TaskIdString = "control-mission" + TaskLength.ToString();
 
-                                        <div class="row mb-4">
+                                        <div class="row mb-4  d-flex align-items-center justify-content-end">
                                             <div class="col-6">
                                                 @if (item.Done)
                                                 {
-                                                    <p class="mission-completed">@item.Description</p>
+                                                    <p class="mission-completed m-0">@item.Description</p>
                                                 }
                                                 else
                                                 {
-                                                    <p>@item.Description</p>
+                                                    <p class="m-0">@item.Description</p>
                                                 }
 
                                             </div>
                                             
-                                            <div class="col-3" style="text-align:end">
-                                                <p>
+                                            <div class="col-3 d-flex align-items-center justify-content-end" >
+                                                <p class="m-0">
                                                     @foreach (var playerItem in item.TaskPlayers)
                                                     {
                                                         if (item.TaskPlayers.Count() == playercount+1)
@@ -448,15 +448,14 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label class="form-group has-top-label gorev-players pb-1">
-                            <select class="form-control select2-multiple" multiple="multiple" data-width="100%" id="mission-players">
+                            <select class="form-control select2-multiple" multiple="multiple" data-width="100%" id="mission-players" asp-for="UserId">
                                 @foreach (var item in Model.DepartmentsVMs)
                                 {
                                     <optgroup label="@item.Name">
                                         @foreach (var itemUser in item.ApplicationUser)
                                         {
-                                            <option data-name="@itemUser.FirstName" value="@itemUser.Id">@itemUser.FirstName</option>
+                                            <option value="@itemUser.Id">@itemUser.FirstName</option>
                                         }
-
                                     </optgroup>
                                 }
                             </select>
