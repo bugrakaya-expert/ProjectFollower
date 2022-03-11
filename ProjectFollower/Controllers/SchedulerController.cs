@@ -73,7 +73,7 @@ namespace ProjectFollower.Controllers
         }
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [HttpPost("export-pdf")]
-        public IActionResult DownloadPDF(string htmlstring,string customerId)
+        public IActionResult DownloadPDF(string htmlstring, string customerId)
         {
 
 
@@ -93,7 +93,7 @@ namespace ProjectFollower.Controllers
 
             htmlConverter.ConverterSettings = webkitConverterSettings;
             PdfDocument document = new PdfDocument();
-            document = htmlConverter.Convert(SchedulerHtml.Before+htmlstring+SchedulerHtml.After, baseUrl);
+            document = htmlConverter.Convert(SchedulerHtml.Before + htmlstring + SchedulerHtml.After, baseUrl);
             MemoryStream ms = new MemoryStream();
 
             document.Save(ms);
@@ -123,11 +123,58 @@ namespace ProjectFollower.Controllers
 
             return RedirectToAction("Index", "SignIn");
         }
-
-        public IActionResult schedulerpdf()
+        [HttpGet]
+        public IActionResult schedulerpdf(string id, string date)
         {
-            return View();
+            string[] DateArr = date.Split(' ');
+            DateTime schedulerhDate = new DateTime();
+
+            string Month_str = DateArr[0];
+            string Year_str = DateArr[1];
+
+            int Month = 0;
+            int Day = 2;
+            int Year = int.Parse(Year_str);
+
+            if (Month_str == "Ocak")
+                Month = 1;
+            if (Month_str == "Şubat")
+                Month = 2;
+            if (Month_str == "Mart")
+                Month = 3;
+            if (Month_str == "Nisan")
+                Month = 4;
+            if (Month_str == "Mayıs")
+                Month = 5;
+            if (Month_str == "Haziran")
+                Month = 6;
+            if (Month_str == "Temmuz")
+                Month = 7;
+            if (Month_str == "Ağustos")
+                Month = 8;
+            if (Month_str == "Eylül")
+                Month = 9;
+            if (Month_str == "Ekim")
+                Month = 10;
+            if (Month_str == "Kasım")
+                Month = 11;
+            if (Month_str == "Aralık")
+                Month = 12;
+
+            schedulerhDate = new DateTime(Year, Month, Day);
+
+            date = schedulerhDate.ToString("dd/MM/yyyy");
+            var customer = _uow.Customers.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
+            var scheduler = new SchedulerItemVM()
+            {
+                Customers = customer,
+                StartDate = date
+            };
+            return View(scheduler);//Go Dashboard
         }
+
+
+
 
         #region API
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
@@ -146,7 +193,7 @@ namespace ProjectFollower.Controllers
         {
             List<SchedulerCustomerVM> schedulerCustomer = new List<SchedulerCustomerVM>();
             var companies = _uow.Customers.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
-            var scheduler = _uow.Scheduler.GetAll(i=>i.CustomersId==Guid.Parse(id));
+            var scheduler = _uow.Scheduler.GetAll(i => i.CustomersId == Guid.Parse(id));
             var schedulerpriorities = _uow.SchedulerPriority.GetAll();
 
             /*
@@ -159,7 +206,7 @@ namespace ProjectFollower.Controllers
                 };
                 schedulerCustomer.Add(_schedulerCustomer);
             }*/
-            var _schedulerCustomerItem = new  SchedulerCustomerVM()
+            var _schedulerCustomerItem = new SchedulerCustomerVM()
             {
                 Id = companies.Id.ToString(),
                 Text = companies.Name
@@ -225,3 +272,4 @@ namespace ProjectFollower.Controllers
         }
     }
 }
+

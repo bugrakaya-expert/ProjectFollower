@@ -69,20 +69,58 @@
     .dx-textarea .dx-texteditor-input{
         min-height:15rem;
     }
+    @*
+    @@page {
+        size: A4 landscape;
+    }
+    body {
+        writing-mode:vertical-lr;
+    }*@
+
 
 </style>
 <main>
     <div class="row">
         <div class="col-12">
-            <div id="scheduler" Width="100%"></div>
+            <div id="scheduler" Width="100%">
+                <link rel="stylesheet" href="~/font/iconsmind-s/css/iconsminds.css" />
+                <link rel="stylesheet" type="text/css" href="https://cdn3.devexpress.com/jslib/21.2.4/css/dx.common.css" />
+                <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+                <link rel="stylesheet" type="text/css" href="~/css/vendor/dx-light.css" />
+                <link rel="stylesheet" href="~/css/vendor/dropzone.min.css" />
+                <link rel="stylesheet" href="~/css/vendor/quill.snow.css" />
+                <link rel="stylesheet" href="~/css/vendor/quill.bubble.css" />
+                <link rel="stylesheet" href="~/css/vendor/dataTables.bootstrap4.min.css" />
+                <link rel="stylesheet" href="~/css/vendor/datatables.responsive.bootstrap4.min.css" />
+                <link rel="stylesheet" href="~/font/simple-line-icons/css/simple-line-icons.css" />
+                <link rel="stylesheet" href="~/css/vendor/bootstrap.min.css" />
+                <link rel="stylesheet" href="~/css/vendor/bootstrap.rtl.only.min.css" />
+                <link rel="stylesheet" href="~/css/vendor/component-custom-switch.min.css" />
+                <link rel="stylesheet" href="~/css/vendor/perfect-scrollbar.css" />
+                <link rel="stylesheet" href="~/css/vendor/bootstrap-float-label.min.css" />
+                <link rel="stylesheet" href="~/css/vendor/select2.min.css" />
+                <link rel="stylesheet" href="~/css/vendor/select2-bootstrap.min.css" />
+                <link rel="stylesheet" href="~/css/vendor/bootstrap-datepicker3.min.css" />
+                <link rel="stylesheet" href="~/css/vendor/bootstrap-tagsinput.css" />
+                <link rel="stylesheet" href="~/css/vendor/dropzone.min.css" />
+                <link rel="stylesheet" href="~/css/vendor/sweetalert2.min.css" />
+                <link rel="stylesheet" href="~/css/vendor/nouislider.min.css" />
+                <link rel="stylesheet" href="~/css/vendor/bootstrap-stars.css" />
+                <link rel="stylesheet" href="~/css/vendor/cropper.min.css" />
+                <link rel="stylesheet" href="~/css/vendor/dataTables.bootstrap4.min.css" />
+                <link rel="stylesheet" href="~/css/vendor/datatables.responsive.bootstrap4.min.css" />
+                <link rel="stylesheet" href="~/css/vendor/component-custom-switch.min.css" />
+                <link rel="stylesheet" href="~/css/vendor/jquery.contextMenu.min.css" />
+                <link rel="stylesheet" href="~/css/main.css" />
+
+            </div>
         </div>
     </div>
 
     <div class="row">
         <div class="col-12 text-right mt-3">
-            <form id="export-frm" asp-action="DownloadPDF" asp-controller="Scheduler" method="post" target="_blank">
-                <input id="htmlstring" type="text" name="htmlstring" value="" />
-                <input id="customerId" type="text" name="customerId" value="" />
+            <form id="export-frm" asp-action="schedulerpdf" asp-controller="Scheduler" asp-route-id="@Model.Id" method="get" target="_blank">
+                <input hidden id="scheduler-date" name="date" />
                 <a id="export-btn" type="button" class="btn btn-primary btn-lg top-right-button mr-1" href="#">EXPORT PDF</a>
             </form>
 
@@ -95,6 +133,8 @@
 @section scripts
 {
     <script src="~/js/schedulerHub.js"></script>
+    <script src="~/js/printer.js"></script>
+
     <script>
 
 
@@ -333,16 +373,18 @@
                         $('#customer-scheduler-alt').on('change', function () {
                             window.location.replace("/Scheduler?Id="+this.value);
                         });
+                       
                     });
 
                 });
             });
 
-
+            
             $("#export-btn").click(function () {
-                $("#htmlstring").val($("#scheduler").html());
-                $("#customerId").val('@Model.Id')
+                var selectedate = $(".dx-button-text").html();
+                $("#scheduler-date").val(selectedate);
                 $("#export-frm").submit();
+
             });
         });
 
