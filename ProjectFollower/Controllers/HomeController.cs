@@ -56,7 +56,6 @@ namespace ProjectFollower.Controllers
 
         public int Sequence = 0;
         public int Delayeds = 0;
-
         public IActionResult Index()
         {
             #region Authentication Index
@@ -388,7 +387,7 @@ namespace ProjectFollower.Controllers
                 }
             }
             _uow.Save();
-            return Redirect("/");
+            return Redirect("/dashboard?status=true");
         }
 
 

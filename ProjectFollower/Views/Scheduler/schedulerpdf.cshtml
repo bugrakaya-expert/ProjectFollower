@@ -3,11 +3,14 @@
 }
 @model ProjectFollower.Models.ViewModels.SchedulerItemVM
 <style>
+
     .dx-scheduler-work-space-both-scrollbar .dx-scheduler-date-table {
         float: none;
         background-position: center;
         background-repeat: no-repeat;
-        background-image: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url("/assets/customers/@Model.Customers.Id/img/@Model.Customers.ImageUrl");
+        background:none;
+        background-image:none;
+
     }
     .dx-scheduler-date-table-current-date {
         font-weight: 400;
@@ -79,22 +82,6 @@
         background-color:aliceblue;
         z-index:9999;
     }
-    @*html {
-        transform: rotate(90deg);
-        transform-origin: bottom left;
-        position: absolute;
-        top: -100vw;
-        height: 100vw;
-        width: 100vh;
-    }*@
-    @*
-    @@page {
-        size: A4 landscape;
-    }
-    body {
-        writing-mode:vertical-lr;
-    }*@
-
 
 </style>
 <main>
@@ -162,7 +149,12 @@
         }
         $(document).ready(function () {
             var data = "/assets/customers/@Model.Customers.Id/img/@Model.Customers.ImageUrl";
-            var date = '@Model.StartDate';
+            var gunceltarih = '@Model.StartDate';
+            const dateArr = gunceltarih.split(".");
+            const day=dateArr[0];
+            const month=dateArr[1];
+            const year=dateArr[2];
+            const date = new Date(month+"."+day+"."+year);
             //var customersObj = { text: "Model.Name", id: "Model.Id" };
             var customerNamePublic = "";
             $.ajax({
@@ -171,7 +163,6 @@
                 contentType: "application/json",
                 dataType: "json",
                 success: function (data) {
-                    const now = new Date();
                     var scheduler = data.scheduler;
                     var schedulerPriorityObj = data.schedulerPriority;
                     var customersObj = data.customers;
@@ -284,7 +275,6 @@
 
                             onAppointmentFormOpening(data) {
                                 const { form } = data;
-                                console.log(customersObj[0].id);
                                 form.option('items', [{
                                     label: {
                                         text: 'Adı',
@@ -363,6 +353,10 @@
 <div class="dx-toolbar-after pr-2"><select class="form-control select-single mt-2" data-width="100%" name="Id" id="customer-scheduler-alt">
 <option disabled selected>[ `+ customerNamePublic+` ]</option>
 </select></div>
+
+`);
+                    $(".dx-toolbar-items-container").append(`
+<div class="dx-toolbar-after customer-background pr-2" style="display:block!important"><p style="padding-right:15px; padding-top:5px;">@Model.Customers.Name</p></div>
 
 `);
                     $(".dx-toolbar-center").append(`

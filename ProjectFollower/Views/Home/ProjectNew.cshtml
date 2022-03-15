@@ -86,27 +86,28 @@
                     <div class="card mb-4">
                         <div class="card-body">
                             <h5 class="card-title">Proje Görevleri</h5>
+                            <span asp-validation-for="UserId" class="text-danger"></span>
                             <label class="form-group has-top-label">
-                                <input class="form-control" id="mission-textbox" style="display: inline-block;">
+                                <input class="form-control" id="mission-textbox" style="display: inline-block;" >
                                 <span>Görev Tanımı</span>
                             </label>
-                            
+
                             <label class="form-group has-top-label gorev-players">
                                 <select class="form-control select2-multiple" multiple="multiple" data-width="100%" id="mission-players">
                                     @foreach (var item in Model.DepartmentsVMs)
                                     {
-                                        <optgroup label="@item.Name">
-                                            @foreach (var itemUser in item.ApplicationUser)
+                                    <optgroup label="@item.Name">
+                                        @foreach (var itemUser in item.ApplicationUser)
                                             {
-                                                <option data-name="@itemUser.FirstName" value="@itemUser.Id">@itemUser.FirstName</option>
+                                        <option data-name="@itemUser.FirstName" value="@itemUser.Id">@itemUser.FirstName</option>
                                             }
 
-                                        </optgroup>
+                                    </optgroup>
                                     }
                                 </select>
                                 <span>Görev Üyeleri</span>
                             </label>
-                            
+
                             <button type="button" class="btn btn-outline-secondary mb-1 taskAct" id="mission-add">Görev Ekle</button>
                         </div>
                     </div>

@@ -12,9 +12,8 @@
                 title: 'Oops...',
                 text: 'Proje görevlerinde boş alan bırakamazsın!',
                 confirmButtonText: 'Tamam'
-            })
+            });
         } else {
-            console.log("eklenenler: "+playervalue);
             $('#mission-list').append('<tr>' + '<td><p class="list-item-heading get-task-item">' + listvalue + '</p></td>' + '<td class="d-none"><p class="list-item-heading get-task-item">' + playerid + '</p></td>' + '<td><p class="">' + playervalue + '</p></td>' + '<td class="d-flex justify-content-end"><button type="button" class="btn btn-danger mb-1 deleteli"><i class="simple-icon-trash mr-2"></i>Sil</button><td></tr>');
             $("#mission-textbox").val("");
         }
@@ -22,6 +21,28 @@
     $('#mission-list').on('click', '.deleteli', function (e) {
         $(this).closest('tr').remove();
     });
+    $('#submitForm').on('click', function () {
+        if (!$('#mission-list').children('tr').length) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Proje görevlerinde boş alan bırakamazsın!',
+                confirmButtonText: 'Tamam'
+            })
+        } 
+    });
+    let searchParams = new URLSearchParams(window.location.search);
+    let param = searchParams.get('status');
+    if (param == "true") {
+        Swal.fire({
+            icon: 'success',
+            title: 'Başarılı...',
+            text: 'Proje başarıyla eklendi!',
+            confirmButtonText: 'Tamam'
+        }).then((result) => {
+            window.location.href = 'dashboard';  
+        });
+    }
 
     $(".remove-customer-document").click(function () {
         var id = $(this).attr('id');

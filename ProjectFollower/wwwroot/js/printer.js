@@ -9429,7 +9429,7 @@ function printScheduler(data) {
   position: absolute;
   color: #333;
   background-color: #fff;
-  border: 1px solid rgba(221,221,221,.6);
+  border: 1px solid rgba(82,82,82,.6);
   text-align: left;
 }
 .dx-tile-content {
@@ -17285,16 +17285,16 @@ input.dx-hidden {
 }
 .dx-scheduler-work-space-day.dx-scheduler-work-space-both-scrollbar:not(.dx-scheduler-work-space-count):not(.dx-scheduler-work-space-grouped) .dx-scheduler-header-panel-empty-cell,
 .dx-scheduler-work-space-day.dx-scheduler-work-space-both-scrollbar:not(.dx-scheduler-work-space-count):not(.dx-scheduler-work-space-grouped) .dx-scheduler-time-panel {
-  border-right: 1px solid rgba(221,221,221,.6);
+  border-right: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-work-space-day.dx-scheduler-work-space-vertical-grouped .dx-scheduler-all-day-table-cell {
-  border-top: 1px solid rgba(221,221,221,.6);
+  border-top: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-work-space-day.dx-scheduler-work-space-count:not(.dx-scheduler-work-space-grouped) .dx-scheduler-all-day-table-cell,
 .dx-scheduler-work-space-day.dx-scheduler-work-space-count:not(.dx-scheduler-work-space-grouped) .dx-scheduler-date-table-cell,
 .dx-scheduler-work-space-day.dx-scheduler-work-space-count:not(.dx-scheduler-work-space-grouped) .dx-scheduler-header-panel-cell {
-  border-left: 1px solid rgba(221,221,221,.6);
-  border-right: 1px solid rgba(221,221,221,.6);
+  border-left: 1px solid rgba(82,82,82,.6);
+  border-right: 1px solid rgba(82,82,82,.6);
 }
 .dx-rtl .dx-scheduler-work-space-day:not(.dx-scheduler-work-space-count):not(.dx-scheduler-work-space-grouped) .dx-scheduler-header-panel-empty-cell,
 .dx-scheduler-work-space-day.dx-scheduler-work-space-count:not(.dx-scheduler-work-space-grouped) .dx-scheduler-all-day-table-cell:first-child,
@@ -17310,7 +17310,7 @@ input.dx-hidden {
 .dx-rtl .dx-scheduler-work-space-day.dx-scheduler-work-space-count:not(.dx-scheduler-work-space-grouped) .dx-scheduler-header-panel-cell:first-child,
 .dx-rtl .dx-scheduler-work-space-day:not(.dx-scheduler-work-space-count):not(.dx-scheduler-work-space-grouped).dx-scheduler-work-space-both-scrollbar .dx-scheduler-header-panel-empty-cell,
 .dx-rtl .dx-scheduler-work-space-day:not(.dx-scheduler-work-space-count):not(.dx-scheduler-work-space-grouped).dx-scheduler-work-space-both-scrollbar .dx-scheduler-time-panel {
-  border-left: 1px solid rgba(221,221,221,.6);
+  border-left: 1px solid rgba(82,82,82,.6);
   border-right: none;
 }
 .dx-scheduler-work-space-month .dx-scheduler-header-panel {
@@ -17356,8 +17356,8 @@ input.dx-hidden {
   float: left;
 }
 .dx-scheduler-work-space-month.dx-scheduler-work-space-vertical-grouped .dx-scheduler-group-header {
-  -webkit-box-shadow: 0 -2px 0 rgba(221,221,221,.6);
-  box-shadow: 0 -2px 0 rgba(221,221,221,.6);
+  -webkit-box-shadow: 0 -2px 0 rgba(82,82,82,.6);
+  box-shadow: 0 -2px 0 rgba(82,82,82,.6);
   border-bottom: none;
 }
 .dx-scheduler-work-space-month.dx-scheduler-work-space-vertical-grouped .dx-scheduler-date-table-cell {
@@ -17636,10 +17636,10 @@ input.dx-hidden {
 }
 .dx-scheduler-timeline.dx-scheduler-work-space-grouped .dx-scheduler-group-row .dx-scheduler-group-header {
   border: none;
-  border-top: 1px solid rgba(221,221,221,.6);
+  border-top: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-timeline.dx-scheduler-work-space-grouped.dx-scheduler-work-space-group-by-date .dx-scheduler-group-row .dx-scheduler-group-header {
-  border-right: 1px solid rgba(221,221,221,.6);
+  border-right: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-timeline.dx-scheduler-work-space-grouped.dx-scheduler-work-space-group-by-date .dx-scheduler-group-row .dx-scheduler-last-group-cell {
   border-right: 1px solid #c4c4c4;
@@ -17648,7 +17648,7 @@ input.dx-hidden {
   border-left: none;
 }
 .dx-rtl .dx-scheduler-timeline.dx-scheduler-work-space-grouped .dx-scheduler-date-table-cell:first-child {
-  border-left: 1px solid rgba(221,221,221,.6);
+  border-left: 1px solid rgba(82,82,82,.6);
   border-right: none;
 }
 .dx-scheduler:not(.dx-scheduler-native) .dx-scheduler-timeline .dx-scheduler-date-table .dx-scheduler-date-table-row {
@@ -17860,7 +17860,7 @@ input.dx-hidden {
   background-color: #c4c4c4;
 }
 .dx-scheduler-work-space {
-  border: 1px solid rgba(221,221,221,.6);
+  border: 1px solid rgba(82,82,82,.6);
   background-color: #fff;
   position: relative;
   display: -webkit-box;
@@ -17879,24 +17879,24 @@ input.dx-hidden {
   float: left;
 }
 .dx-scheduler-work-space.dx-scheduler-timeline-month:not(.dx-scheduler-agenda) .dx-scheduler-all-day-title {
-  border-top: 1px solid rgba(221,221,221,.6);
+  border-top: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-work-space.dx-scheduler-timeline-month:not(.dx-scheduler-agenda) .dx-scheduler-date-table-cell {
   border-right: none;
 }
 .dx-scheduler-work-space.dx-scheduler-work-space-grouped:not(.dx-scheduler-agenda) .dx-scheduler-all-day-panel td {
-  border-top: 1px solid rgba(221,221,221,.6);
+  border-top: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-work-space:not(.dx-scheduler-work-space-all-day):not(.dx-scheduler-work-space-month):not(.dx-scheduler-timeline) .dx-scheduler-header-panel,
 .dx-scheduler-work-space:not(.dx-scheduler-work-space-all-day):not(.dx-scheduler-work-space-month):not(.dx-scheduler-timeline) .dx-scheduler-header-panel-empty-cell {
-  border-bottom: 2px solid rgba(221,221,221,.6);
+  border-bottom: 2px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-work-space:not(.dx-scheduler-work-space-all-day):not(.dx-scheduler-work-space-month):not(.dx-scheduler-timeline).dx-scheduler-work-space-vertical-grouped.dx-scheduler-work-space-both-scrollbar .dx-scheduler-header-panel,
 .dx-scheduler-work-space:not(.dx-scheduler-work-space-all-day):not(.dx-scheduler-work-space-month):not(.dx-scheduler-timeline).dx-scheduler-work-space-vertical-grouped.dx-scheduler-work-space-both-scrollbar .dx-scheduler-header-panel-empty-cell {
   border-bottom: none;
 }
 .dx-scheduler-work-space.dx-scheduler-work-space-month:not(.dx-scheduler-work-space-vertical-grouped) .dx-scheduler-header-panel {
-  border-bottom: 1px solid rgba(221,221,221,.6);
+  border-bottom: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-header-panel-container {
   display: -webkit-box;
@@ -17920,8 +17920,8 @@ input.dx-hidden {
   -ms-flex-negative: 0;
   flex-shrink: 0;
   width: 0;
-  border-bottom: 1px solid rgba(221,221,221,.6);
-  border-right: 1px solid rgba(221,221,221,.6);
+  border-bottom: 1px solid rgba(82,82,82,.6);
+  border-right: 1px solid rgba(82,82,82,.6);
   margin-top: 10px;
 }
 .dx-scheduler-header-tables-container {
@@ -18010,7 +18010,7 @@ input.dx-hidden {
   min-width: 0;
 }
 .dx-scheduler-group-flex-container .dx-scheduler-group-row:last-child .dx-scheduler-group-header {
-  border-right: 1px solid rgba(221,221,221,.6);
+  border-right: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-group-flex-container .dx-scheduler-group-row .dx-scheduler-group-header {
   display: -webkit-box;
@@ -18041,7 +18041,7 @@ input.dx-hidden {
   overflow: hidden;
   text-overflow: ellipsis;
   border: none;
-  border-top: 1px solid rgba(221,221,221,.6);
+  border-top: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-header-scrollable {
   height: auto;
@@ -18054,7 +18054,7 @@ input.dx-hidden {
 .dx-scheduler-all-day-table-cell,
 .dx-scheduler-date-table-cell,
 .dx-scheduler-header-panel-cell {
-  border-left: 1px solid rgba(221,221,221,.6);
+  border-left: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-all-day-table-cell:first-child,
 .dx-scheduler-date-table-cell:first-child,
@@ -18063,16 +18063,16 @@ input.dx-hidden {
 }
 .dx-scheduler-all-day-table-cell,
 .dx-scheduler-date-table-cell {
-  border-top: 1px solid rgba(221,221,221,.6);
+  border-top: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-date-table-cell,
 .dx-scheduler-header-panel-cell {
-  border-right: 1px solid rgba(221,221,221,.6);
+  border-right: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-work-space-day.dx-scheduler-work-space-count .dx-scheduler-all-day-title,
 .dx-scheduler-work-space-week .dx-scheduler-all-day-title,
 .dx-scheduler-work-space-work-week .dx-scheduler-all-day-title {
-  border-top: 1px solid rgba(221,221,221,.6);
+  border-top: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-timeline .dx-scheduler-all-day-panel,
 .dx-scheduler-timeline .dx-scheduler-all-day-title,
@@ -18126,7 +18126,7 @@ input.dx-hidden {
 .dx-rtl .dx-scheduler-work-space-count.dx-scheduler-work-space-work-week .dx-scheduler-all-day-table-cell:nth-child(5n),
 .dx-rtl .dx-scheduler-work-space-count.dx-scheduler-work-space-work-week .dx-scheduler-date-table-cell:nth-child(5n),
 .dx-rtl .dx-scheduler-work-space-count.dx-scheduler-work-space-work-week .dx-scheduler-header-panel-cell:nth-child(5n) {
-  border-right: 1px solid rgba(221,221,221,.6);
+  border-right: 1px solid rgba(82,82,82,.6);
   border-left: 1px solid #c4c4c4;
 }
 .dx-scheduler-header-panel {
@@ -18170,14 +18170,14 @@ input.dx-hidden {
   position: relative;
 }
 .dx-scheduler-all-day-panel .dx-scheduler-all-day-table-cell {
-  border-bottom: 2px solid rgba(221,221,221,.6);
+  border-bottom: 2px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-all-day-title {
   color: #333;
   width: 100px;
   position: relative;
   text-align: center;
-  border-bottom: 2px solid rgba(221,221,221,.6);
+  border-bottom: 2px solid rgba(82,82,82,.6);
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -18207,7 +18207,7 @@ input.dx-hidden {
   flex: 0 0 auto;
   width: 100px;
   border-collapse: collapse;
-  border-right: 1px solid rgba(221,221,221,.6);
+  border-right: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-small .dx-scheduler-time-panel {
   width: 50px;
@@ -18239,7 +18239,7 @@ input.dx-hidden {
   width: 10%;
   height: 1px;
   right: 0;
-  background-color: rgba(221,221,221,.6);
+  background-color: rgba(82,82,82,.6);
 }
 .dx-scheduler-time-panel-cell.dx-scheduler-time-panel-current-time-cell {
   color: #337ab7;
@@ -18341,7 +18341,7 @@ input.dx-hidden {
 .dx-scheduler-work-space-vertical-grouped .dx-scheduler-work-space-vertical-group-table {
   height: 100%;
   min-height: 100px;
-  border-top: 1px solid rgba(221,221,221,.6);
+  border-top: 1px solid rgba(82,82,82,.6);
   border-spacing: 0;
   display: -webkit-box;
   display: -webkit-flex;
@@ -18369,25 +18369,25 @@ input.dx-hidden {
   height: 50px;
 }
 .dx-scheduler-work-space-vertical-grouped .dx-scheduler-time-panel-cell.dx-scheduler-first-group-cell {
-  border-top: 1px solid rgba(221,221,221,.6);
+  border-top: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-work-space-vertical-grouped .dx-scheduler-time-panel-cell.dx-scheduler-first-group-cell > div {
   margin-top: 0;
 }
 .dx-scheduler-work-space-vertical-grouped .dx-scheduler-time-panel-cell.dx-scheduler-last-group-cell {
   border-bottom: none;
-  -webkit-box-shadow: inset 0 -1px 0 rgba(221,221,221,.6);
-  box-shadow: inset 0 -1px 0 rgba(221,221,221,.6);
+  -webkit-box-shadow: inset 0 -1px 0 rgba(82,82,82,.6);
+  box-shadow: inset 0 -1px 0 rgba(82,82,82,.6);
 }
 .dx-scheduler-work-space-vertical-grouped .dx-scheduler-date-table-cell.dx-scheduler-last-group-cell {
-  border-bottom: 2px solid rgba(221,221,221,.6);
+  border-bottom: 2px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-work-space-vertical-grouped.dx-scheduler-work-space-both-scrollbar .dx-scheduler-date-table-scrollable,
 .dx-scheduler-work-space-vertical-grouped.dx-scheduler-work-space-both-scrollbar .dx-scheduler-sidebar-scrollable {
-  border-top: 1px solid rgba(221,221,221,.6);
+  border-top: 1px solid rgba(82,82,82,.6);
 }
 .dx-rtl .dx-scheduler-header-panel-empty-cell {
-  border-left: 1px solid rgba(221,221,221,.6);
+  border-left: 1px solid rgba(82,82,82,.6);
   border-right: none;
 }
 .dx-rtl .dx-scheduler-date-table-scrollable-content,
@@ -18397,7 +18397,7 @@ input.dx-hidden {
 .dx-rtl .dx-scheduler-sidebar-scrollable .dx-scheduler-group-row:last-child .dx-scheduler-group-header,
 .dx-rtl .dx-scheduler-work-space-vertical-grouped .dx-scheduler-group-row:last-child .dx-scheduler-group-header {
   border-right: none;
-  border-left: 1px solid rgba(221,221,221,.6);
+  border-left: 1px solid rgba(82,82,82,.6);
 }
 .dx-rtl .dx-scheduler-header-panel {
   left: 0;
@@ -18421,18 +18421,18 @@ input.dx-hidden {
 }
 .dx-rtl .dx-scheduler-work-space-week .dx-scheduler-all-day-table-cell,
 .dx-rtl .dx-scheduler-work-space-work-week .dx-scheduler-all-day-table-cell {
-  border-right: 1px solid rgba(221,221,221,.6);
+  border-right: 1px solid rgba(82,82,82,.6);
   border-left: none;
 }
 .dx-rtl.dx-scheduler-work-space-both-scrollbar .dx-scheduler-time-panel {
-  border-left: 1px solid rgba(221,221,221,.6);
+  border-left: 1px solid rgba(82,82,82,.6);
   border-right: none;
 }
 .dx-rtl.dx-scheduler-work-space-both-scrollbar .dx-scheduler-all-day-table-row .dx-scheduler-all-day-table-cell:first-child,
 .dx-rtl.dx-scheduler-work-space-both-scrollbar .dx-scheduler-date-table-row .dx-scheduler-date-table-cell:first-child,
 .dx-rtl.dx-scheduler-work-space-both-scrollbar .dx-scheduler-header-row .dx-scheduler-header-panel-cell:first-child {
   border-right: none;
-  border-left: 1px solid rgba(221,221,221,.6);
+  border-left: 1px solid rgba(82,82,82,.6);
 }
 .dx-rtl .dx-scheduler-timeline.dx-scheduler-work-space-grouped .dx-scheduler-sidebar-scrollable {
   float: right;
@@ -18448,10 +18448,10 @@ input.dx-hidden {
 .dx-rtl .dx-scheduler-date-table-cell:first-child,
 .dx-rtl .dx-scheduler-header-panel-cell:first-child {
   border-right: none;
-  border-left: 1px solid rgba(221,221,221,.6);
+  border-left: 1px solid rgba(82,82,82,.6);
 }
 .dx-rtl .dx-scheduler-time-panel {
-  border-left: 1px solid rgba(221,221,221,.6);
+  border-left: 1px solid rgba(82,82,82,.6);
   border-right: none;
 }
 .dx-scheduler-small .dx-scheduler-work-space-day .dx-scheduler-header-panel-empty-cell,
@@ -18552,7 +18552,7 @@ input.dx-hidden {
   background-color: #fff;
 }
 .dx-scheduler-header {
-  border: 1px solid rgba(221,221,221,.6);
+  border: 1px solid rgba(82,82,82,.6);
   position: relative;
   z-index: 1;
   width: 100%;
@@ -19050,7 +19050,7 @@ input.dx-hidden {
   background-color: #ebebeb;
 }
 .dx-scheduler-header-panel .dx-scheduler-group-row:not(:first-child) {
-  border-bottom: 1px solid rgba(221,221,221,.6);
+  border-bottom: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-header-panel .dx-scheduler-group-row:not(:first-child) .dx-scheduler-group-header {
   color: #333;
@@ -19066,7 +19066,7 @@ input.dx-hidden {
   background-color: #fff;
 }
 .dx-scheduler-work-space.dx-scheduler-work-space-grouped .dx-scheduler-all-day-title {
-  border-top: 1px solid rgba(221,221,221,.6);
+  border-top: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-work-space.dx-scheduler-work-space-grouped.dx-scheduler-agenda .dx-scheduler-date-table-cell {
   border: none;
@@ -19126,7 +19126,7 @@ input.dx-hidden {
 .dx-rtl .dx-scheduler-work-space-grouped .dx-scheduler-group-row th,
 .dx-rtl .dx-scheduler-work-space.dx-scheduler-work-space-grouped .dx-scheduler-last-group-cell {
   border-left: 1px solid #aaa;
-  border-right: 1px solid rgba(221,221,221,.6);
+  border-right: 1px solid rgba(82,82,82,.6);
 }
 .dx-rtl .dx-scheduler-work-space-grouped .dx-scheduler-group-row th:last-child,
 .dx-rtl .dx-scheduler-work-space.dx-scheduler-work-space-grouped .dx-scheduler-last-group-cell:last-child {
@@ -19137,8 +19137,8 @@ input.dx-hidden {
 .dx-scheduler-work-space-grouped.dx-scheduler-work-space-group-by-date .dx-scheduler-group-row th,
 .dx-scheduler-work-space-grouped.dx-scheduler-work-space-vertical-grouped .dx-scheduler-group-row th,
 .dx-scheduler-work-space-grouped.dx-scheduler-work-space-vertical-grouped .dx-scheduler-last-group-cell {
-  border-right: 1px solid rgba(221,221,221,.6);
-  border-left: 1px solid rgba(221,221,221,.6);
+  border-right: 1px solid rgba(82,82,82,.6);
+  border-left: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-work-space-grouped.dx-scheduler-work-space-group-by-date .dx-scheduler-date-table-cell.dx-scheduler-last-group-cell,
 .dx-scheduler-work-space-grouped.dx-scheduler-work-space-group-by-date .dx-scheduler-group-header.dx-scheduler-last-group-cell,
@@ -19154,7 +19154,7 @@ input.dx-hidden {
 .dx-rtl .dx-scheduler-work-space-grouped.dx-scheduler-work-space-group-by-date .dx-scheduler-group-header.dx-scheduler-last-group-cell,
 .dx-rtl .dx-scheduler-work-space-grouped.dx-scheduler-work-space-group-by-date .dx-scheduler-header-panel-cell {
   border-left: 1px solid #aaa;
-  border-right: 1px solid rgba(221,221,221,.6);
+  border-right: 1px solid rgba(82,82,82,.6);
 }
 .dx-rtl .dx-scheduler-work-space-grouped.dx-scheduler-work-space-group-by-date .dx-scheduler-date-table-cell.dx-scheduler-last-group-cell:last-child,
 .dx-rtl .dx-scheduler-work-space-grouped.dx-scheduler-work-space-group-by-date .dx-scheduler-group-header.dx-scheduler-last-group-cell:last-child,
@@ -19233,8 +19233,8 @@ input.dx-hidden {
 }
 .dx-scheduler-agenda .dx-scheduler-date-table-cell,
 .dx-scheduler-agenda .dx-scheduler-time-panel-cell {
-  -webkit-box-shadow: inset 0 -1px 0 0 rgba(221,221,221,.6);
-  box-shadow: inset 0 -1px 0 0 rgba(221,221,221,.6);
+  -webkit-box-shadow: inset 0 -1px 0 0 rgba(82,82,82,.6);
+  box-shadow: inset 0 -1px 0 0 rgba(82,82,82,.6);
 }
 .dx-scheduler-agenda .dx-scheduler-date-table-last-row .dx-scheduler-date-table-cell,
 .dx-scheduler-agenda .dx-scheduler-date-table-last-row .dx-scheduler-time-panel-cell {
@@ -32229,7 +32229,7 @@ input.dx-hidden {
   position: absolute;
   color: #333;
   background-color: #fff;
-  border: 1px solid rgba(221,221,221,.6);
+  border: 1px solid rgba(82,82,82,.6);
   text-align: left;
 }
 .dx-tile-content {
@@ -40085,16 +40085,16 @@ input.dx-hidden {
 }
 .dx-scheduler-work-space-day.dx-scheduler-work-space-both-scrollbar:not(.dx-scheduler-work-space-count):not(.dx-scheduler-work-space-grouped) .dx-scheduler-header-panel-empty-cell,
 .dx-scheduler-work-space-day.dx-scheduler-work-space-both-scrollbar:not(.dx-scheduler-work-space-count):not(.dx-scheduler-work-space-grouped) .dx-scheduler-time-panel {
-  border-right: 1px solid rgba(221,221,221,.6);
+  border-right: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-work-space-day.dx-scheduler-work-space-vertical-grouped .dx-scheduler-all-day-table-cell {
-  border-top: 1px solid rgba(221,221,221,.6);
+  border-top: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-work-space-day.dx-scheduler-work-space-count:not(.dx-scheduler-work-space-grouped) .dx-scheduler-all-day-table-cell,
 .dx-scheduler-work-space-day.dx-scheduler-work-space-count:not(.dx-scheduler-work-space-grouped) .dx-scheduler-date-table-cell,
 .dx-scheduler-work-space-day.dx-scheduler-work-space-count:not(.dx-scheduler-work-space-grouped) .dx-scheduler-header-panel-cell {
-  border-left: 1px solid rgba(221,221,221,.6);
-  border-right: 1px solid rgba(221,221,221,.6);
+  border-left: 1px solid rgba(82,82,82,.6);
+  border-right: 1px solid rgba(82,82,82,.6);
 }
 .dx-rtl .dx-scheduler-work-space-day:not(.dx-scheduler-work-space-count):not(.dx-scheduler-work-space-grouped) .dx-scheduler-header-panel-empty-cell,
 .dx-scheduler-work-space-day.dx-scheduler-work-space-count:not(.dx-scheduler-work-space-grouped) .dx-scheduler-all-day-table-cell:first-child,
@@ -40110,7 +40110,7 @@ input.dx-hidden {
 .dx-rtl .dx-scheduler-work-space-day.dx-scheduler-work-space-count:not(.dx-scheduler-work-space-grouped) .dx-scheduler-header-panel-cell:first-child,
 .dx-rtl .dx-scheduler-work-space-day:not(.dx-scheduler-work-space-count):not(.dx-scheduler-work-space-grouped).dx-scheduler-work-space-both-scrollbar .dx-scheduler-header-panel-empty-cell,
 .dx-rtl .dx-scheduler-work-space-day:not(.dx-scheduler-work-space-count):not(.dx-scheduler-work-space-grouped).dx-scheduler-work-space-both-scrollbar .dx-scheduler-time-panel {
-  border-left: 1px solid rgba(221,221,221,.6);
+  border-left: 1px solid rgba(82,82,82,.6);
   border-right: none;
 }
 .dx-scheduler-work-space-month .dx-scheduler-header-panel {
@@ -40156,8 +40156,8 @@ input.dx-hidden {
   float: left;
 }
 .dx-scheduler-work-space-month.dx-scheduler-work-space-vertical-grouped .dx-scheduler-group-header {
-  -webkit-box-shadow: 0 -2px 0 rgba(221,221,221,.6);
-  box-shadow: 0 -2px 0 rgba(221,221,221,.6);
+  -webkit-box-shadow: 0 -2px 0 rgba(82,82,82,.6);
+  box-shadow: 0 -2px 0 rgba(82,82,82,.6);
   border-bottom: none;
 }
 .dx-scheduler-work-space-month.dx-scheduler-work-space-vertical-grouped .dx-scheduler-date-table-cell {
@@ -40436,10 +40436,10 @@ input.dx-hidden {
 }
 .dx-scheduler-timeline.dx-scheduler-work-space-grouped .dx-scheduler-group-row .dx-scheduler-group-header {
   border: none;
-  border-top: 1px solid rgba(221,221,221,.6);
+  border-top: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-timeline.dx-scheduler-work-space-grouped.dx-scheduler-work-space-group-by-date .dx-scheduler-group-row .dx-scheduler-group-header {
-  border-right: 1px solid rgba(221,221,221,.6);
+  border-right: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-timeline.dx-scheduler-work-space-grouped.dx-scheduler-work-space-group-by-date .dx-scheduler-group-row .dx-scheduler-last-group-cell {
   border-right: 1px solid #c4c4c4;
@@ -40448,7 +40448,7 @@ input.dx-hidden {
   border-left: none;
 }
 .dx-rtl .dx-scheduler-timeline.dx-scheduler-work-space-grouped .dx-scheduler-date-table-cell:first-child {
-  border-left: 1px solid rgba(221,221,221,.6);
+  border-left: 1px solid rgba(82,82,82,.6);
   border-right: none;
 }
 .dx-scheduler:not(.dx-scheduler-native) .dx-scheduler-timeline .dx-scheduler-date-table .dx-scheduler-date-table-row {
@@ -40660,7 +40660,7 @@ input.dx-hidden {
   background-color: #c4c4c4;
 }
 .dx-scheduler-work-space {
-  border: 1px solid rgba(221,221,221,.6);
+  border: 1px solid rgba(82,82,82,.6);
   background-color: #fff;
   position: relative;
   display: -webkit-box;
@@ -40679,24 +40679,24 @@ input.dx-hidden {
   float: left;
 }
 .dx-scheduler-work-space.dx-scheduler-timeline-month:not(.dx-scheduler-agenda) .dx-scheduler-all-day-title {
-  border-top: 1px solid rgba(221,221,221,.6);
+  border-top: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-work-space.dx-scheduler-timeline-month:not(.dx-scheduler-agenda) .dx-scheduler-date-table-cell {
   border-right: none;
 }
 .dx-scheduler-work-space.dx-scheduler-work-space-grouped:not(.dx-scheduler-agenda) .dx-scheduler-all-day-panel td {
-  border-top: 1px solid rgba(221,221,221,.6);
+  border-top: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-work-space:not(.dx-scheduler-work-space-all-day):not(.dx-scheduler-work-space-month):not(.dx-scheduler-timeline) .dx-scheduler-header-panel,
 .dx-scheduler-work-space:not(.dx-scheduler-work-space-all-day):not(.dx-scheduler-work-space-month):not(.dx-scheduler-timeline) .dx-scheduler-header-panel-empty-cell {
-  border-bottom: 2px solid rgba(221,221,221,.6);
+  border-bottom: 2px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-work-space:not(.dx-scheduler-work-space-all-day):not(.dx-scheduler-work-space-month):not(.dx-scheduler-timeline).dx-scheduler-work-space-vertical-grouped.dx-scheduler-work-space-both-scrollbar .dx-scheduler-header-panel,
 .dx-scheduler-work-space:not(.dx-scheduler-work-space-all-day):not(.dx-scheduler-work-space-month):not(.dx-scheduler-timeline).dx-scheduler-work-space-vertical-grouped.dx-scheduler-work-space-both-scrollbar .dx-scheduler-header-panel-empty-cell {
   border-bottom: none;
 }
 .dx-scheduler-work-space.dx-scheduler-work-space-month:not(.dx-scheduler-work-space-vertical-grouped) .dx-scheduler-header-panel {
-  border-bottom: 1px solid rgba(221,221,221,.6);
+  border-bottom: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-header-panel-container {
   display: -webkit-box;
@@ -40720,8 +40720,8 @@ input.dx-hidden {
   -ms-flex-negative: 0;
   flex-shrink: 0;
   width: 0;
-  border-bottom: 1px solid rgba(221,221,221,.6);
-  border-right: 1px solid rgba(221,221,221,.6);
+  border-bottom: 1px solid rgba(82,82,82,.6);
+  border-right: 1px solid rgba(82,82,82,.6);
   margin-top: 10px;
 }
 .dx-scheduler-header-tables-container {
@@ -40767,7 +40767,7 @@ input.dx-hidden {
   font-weight: 400;
 }
 .dx-scheduler-date-table-other-month {
-  opacity: .5;
+  opacity: 1;
 }
 .dx-scheduler-work-space-flex-container {
   display: -webkit-box;
@@ -40810,7 +40810,7 @@ input.dx-hidden {
   min-width: 0;
 }
 .dx-scheduler-group-flex-container .dx-scheduler-group-row:last-child .dx-scheduler-group-header {
-  border-right: 1px solid rgba(221,221,221,.6);
+  border-right: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-group-flex-container .dx-scheduler-group-row .dx-scheduler-group-header {
   display: -webkit-box;
@@ -40841,7 +40841,7 @@ input.dx-hidden {
   overflow: hidden;
   text-overflow: ellipsis;
   border: none;
-  border-top: 1px solid rgba(221,221,221,.6);
+  border-top: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-header-scrollable {
   height: auto;
@@ -40854,7 +40854,7 @@ input.dx-hidden {
 .dx-scheduler-all-day-table-cell,
 .dx-scheduler-date-table-cell,
 .dx-scheduler-header-panel-cell {
-  border-left: 1px solid rgba(221,221,221,.6);
+  border-left: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-all-day-table-cell:first-child,
 .dx-scheduler-date-table-cell:first-child,
@@ -40863,16 +40863,16 @@ input.dx-hidden {
 }
 .dx-scheduler-all-day-table-cell,
 .dx-scheduler-date-table-cell {
-  border-top: 1px solid rgba(221,221,221,.6);
+  border-top: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-date-table-cell,
 .dx-scheduler-header-panel-cell {
-  border-right: 1px solid rgba(221,221,221,.6);
+  border-right: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-work-space-day.dx-scheduler-work-space-count .dx-scheduler-all-day-title,
 .dx-scheduler-work-space-week .dx-scheduler-all-day-title,
 .dx-scheduler-work-space-work-week .dx-scheduler-all-day-title {
-  border-top: 1px solid rgba(221,221,221,.6);
+  border-top: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-timeline .dx-scheduler-all-day-panel,
 .dx-scheduler-timeline .dx-scheduler-all-day-title,
@@ -40926,7 +40926,7 @@ input.dx-hidden {
 .dx-rtl .dx-scheduler-work-space-count.dx-scheduler-work-space-work-week .dx-scheduler-all-day-table-cell:nth-child(5n),
 .dx-rtl .dx-scheduler-work-space-count.dx-scheduler-work-space-work-week .dx-scheduler-date-table-cell:nth-child(5n),
 .dx-rtl .dx-scheduler-work-space-count.dx-scheduler-work-space-work-week .dx-scheduler-header-panel-cell:nth-child(5n) {
-  border-right: 1px solid rgba(221,221,221,.6);
+  border-right: 1px solid rgba(82,82,82,.6);
   border-left: 1px solid #c4c4c4;
 }
 .dx-scheduler-header-panel {
@@ -40970,14 +40970,14 @@ input.dx-hidden {
   position: relative;
 }
 .dx-scheduler-all-day-panel .dx-scheduler-all-day-table-cell {
-  border-bottom: 2px solid rgba(221,221,221,.6);
+  border-bottom: 2px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-all-day-title {
   color: #333;
   width: 100px;
   position: relative;
   text-align: center;
-  border-bottom: 2px solid rgba(221,221,221,.6);
+  border-bottom: 2px solid rgba(82,82,82,.6);
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -41007,7 +41007,7 @@ input.dx-hidden {
   flex: 0 0 auto;
   width: 100px;
   border-collapse: collapse;
-  border-right: 1px solid rgba(221,221,221,.6);
+  border-right: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-small .dx-scheduler-time-panel {
   width: 50px;
@@ -41039,7 +41039,7 @@ input.dx-hidden {
   width: 10%;
   height: 1px;
   right: 0;
-  background-color: rgba(221,221,221,.6);
+  background-color: rgba(82,82,82,.6);
 }
 .dx-scheduler-time-panel-cell.dx-scheduler-time-panel-current-time-cell {
   color: #337ab7;
@@ -41144,7 +41144,7 @@ input.dx-hidden {
 .dx-scheduler-work-space-vertical-grouped .dx-scheduler-work-space-vertical-group-table {
   height: 100%;
   min-height: 100px;
-  border-top: 1px solid rgba(221,221,221,.6);
+  border-top: 1px solid rgba(82,82,82,.6);
   border-spacing: 0;
   display: -webkit-box;
   display: -webkit-flex;
@@ -41172,25 +41172,25 @@ input.dx-hidden {
   height: 50px;
 }
 .dx-scheduler-work-space-vertical-grouped .dx-scheduler-time-panel-cell.dx-scheduler-first-group-cell {
-  border-top: 1px solid rgba(221,221,221,.6);
+  border-top: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-work-space-vertical-grouped .dx-scheduler-time-panel-cell.dx-scheduler-first-group-cell > div {
   margin-top: 0;
 }
 .dx-scheduler-work-space-vertical-grouped .dx-scheduler-time-panel-cell.dx-scheduler-last-group-cell {
   border-bottom: none;
-  -webkit-box-shadow: inset 0 -1px 0 rgba(221,221,221,.6);
-  box-shadow: inset 0 -1px 0 rgba(221,221,221,.6);
+  -webkit-box-shadow: inset 0 -1px 0 rgba(82,82,82,.6);
+  box-shadow: inset 0 -1px 0 rgba(82,82,82,.6);
 }
 .dx-scheduler-work-space-vertical-grouped .dx-scheduler-date-table-cell.dx-scheduler-last-group-cell {
-  border-bottom: 2px solid rgba(221,221,221,.6);
+  border-bottom: 2px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-work-space-vertical-grouped.dx-scheduler-work-space-both-scrollbar .dx-scheduler-date-table-scrollable,
 .dx-scheduler-work-space-vertical-grouped.dx-scheduler-work-space-both-scrollbar .dx-scheduler-sidebar-scrollable {
-  border-top: 1px solid rgba(221,221,221,.6);
+  border-top: 1px solid rgba(82,82,82,.6);
 }
 .dx-rtl .dx-scheduler-header-panel-empty-cell {
-  border-left: 1px solid rgba(221,221,221,.6);
+  border-left: 1px solid rgba(82,82,82,.6);
   border-right: none;
 }
 .dx-rtl .dx-scheduler-date-table-scrollable-content,
@@ -41200,7 +41200,7 @@ input.dx-hidden {
 .dx-rtl .dx-scheduler-sidebar-scrollable .dx-scheduler-group-row:last-child .dx-scheduler-group-header,
 .dx-rtl .dx-scheduler-work-space-vertical-grouped .dx-scheduler-group-row:last-child .dx-scheduler-group-header {
   border-right: none;
-  border-left: 1px solid rgba(221,221,221,.6);
+  border-left: 1px solid rgba(82,82,82,.6);
 }
 .dx-rtl .dx-scheduler-header-panel {
   left: 0;
@@ -41224,18 +41224,18 @@ input.dx-hidden {
 }
 .dx-rtl .dx-scheduler-work-space-week .dx-scheduler-all-day-table-cell,
 .dx-rtl .dx-scheduler-work-space-work-week .dx-scheduler-all-day-table-cell {
-  border-right: 1px solid rgba(221,221,221,.6);
+  border-right: 1px solid rgba(82,82,82,.6);
   border-left: none;
 }
 .dx-rtl.dx-scheduler-work-space-both-scrollbar .dx-scheduler-time-panel {
-  border-left: 1px solid rgba(221,221,221,.6);
+  border-left: 1px solid rgba(82,82,82,.6);
   border-right: none;
 }
 .dx-rtl.dx-scheduler-work-space-both-scrollbar .dx-scheduler-all-day-table-row .dx-scheduler-all-day-table-cell:first-child,
 .dx-rtl.dx-scheduler-work-space-both-scrollbar .dx-scheduler-date-table-row .dx-scheduler-date-table-cell:first-child,
 .dx-rtl.dx-scheduler-work-space-both-scrollbar .dx-scheduler-header-row .dx-scheduler-header-panel-cell:first-child {
   border-right: none;
-  border-left: 1px solid rgba(221,221,221,.6);
+  border-left: 1px solid rgba(82,82,82,.6);
 }
 .dx-rtl .dx-scheduler-timeline.dx-scheduler-work-space-grouped .dx-scheduler-sidebar-scrollable {
   float: right;
@@ -41251,10 +41251,10 @@ input.dx-hidden {
 .dx-rtl .dx-scheduler-date-table-cell:first-child,
 .dx-rtl .dx-scheduler-header-panel-cell:first-child {
   border-right: none;
-  border-left: 1px solid rgba(221,221,221,.6);
+  border-left: 1px solid rgba(82,82,82,.6);
 }
 .dx-rtl .dx-scheduler-time-panel {
-  border-left: 1px solid rgba(221,221,221,.6);
+  border-left: 1px solid rgba(82,82,82,.6);
   border-right: none;
 }
 .dx-scheduler-small .dx-scheduler-work-space-day .dx-scheduler-header-panel-empty-cell,
@@ -41355,7 +41355,7 @@ input.dx-hidden {
   background-color: #fff;
 }
 .dx-scheduler-header {
-  border: 1px solid rgba(221,221,221,.6);
+  border: 1px solid rgba(82,82,82,.6);
   position: relative;
   z-index: 1;
   width: 100%;
@@ -41853,7 +41853,7 @@ input.dx-hidden {
   background-color: #ebebeb;
 }
 .dx-scheduler-header-panel .dx-scheduler-group-row:not(:first-child) {
-  border-bottom: 1px solid rgba(221,221,221,.6);
+  border-bottom: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-header-panel .dx-scheduler-group-row:not(:first-child) .dx-scheduler-group-header {
   color: #333;
@@ -41869,7 +41869,7 @@ input.dx-hidden {
   background-color: #fff;
 }
 .dx-scheduler-work-space.dx-scheduler-work-space-grouped .dx-scheduler-all-day-title {
-  border-top: 1px solid rgba(221,221,221,.6);
+  border-top: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-work-space.dx-scheduler-work-space-grouped.dx-scheduler-agenda .dx-scheduler-date-table-cell {
   border: none;
@@ -41929,7 +41929,7 @@ input.dx-hidden {
 .dx-rtl .dx-scheduler-work-space-grouped .dx-scheduler-group-row th,
 .dx-rtl .dx-scheduler-work-space.dx-scheduler-work-space-grouped .dx-scheduler-last-group-cell {
   border-left: 1px solid #aaa;
-  border-right: 1px solid rgba(221,221,221,.6);
+  border-right: 1px solid rgba(82,82,82,.6);
 }
 .dx-rtl .dx-scheduler-work-space-grouped .dx-scheduler-group-row th:last-child,
 .dx-rtl .dx-scheduler-work-space.dx-scheduler-work-space-grouped .dx-scheduler-last-group-cell:last-child {
@@ -41940,8 +41940,8 @@ input.dx-hidden {
 .dx-scheduler-work-space-grouped.dx-scheduler-work-space-group-by-date .dx-scheduler-group-row th,
 .dx-scheduler-work-space-grouped.dx-scheduler-work-space-vertical-grouped .dx-scheduler-group-row th,
 .dx-scheduler-work-space-grouped.dx-scheduler-work-space-vertical-grouped .dx-scheduler-last-group-cell {
-  border-right: 1px solid rgba(221,221,221,.6);
-  border-left: 1px solid rgba(221,221,221,.6);
+  border-right: 1px solid rgba(82,82,82,.6);
+  border-left: 1px solid rgba(82,82,82,.6);
 }
 .dx-scheduler-work-space-grouped.dx-scheduler-work-space-group-by-date .dx-scheduler-date-table-cell.dx-scheduler-last-group-cell,
 .dx-scheduler-work-space-grouped.dx-scheduler-work-space-group-by-date .dx-scheduler-group-header.dx-scheduler-last-group-cell,
@@ -41957,7 +41957,7 @@ input.dx-hidden {
 .dx-rtl .dx-scheduler-work-space-grouped.dx-scheduler-work-space-group-by-date .dx-scheduler-group-header.dx-scheduler-last-group-cell,
 .dx-rtl .dx-scheduler-work-space-grouped.dx-scheduler-work-space-group-by-date .dx-scheduler-header-panel-cell {
   border-left: 1px solid #aaa;
-  border-right: 1px solid rgba(221,221,221,.6);
+  border-right: 1px solid rgba(82,82,82,.6);
 }
 .dx-rtl .dx-scheduler-work-space-grouped.dx-scheduler-work-space-group-by-date .dx-scheduler-date-table-cell.dx-scheduler-last-group-cell:last-child,
 .dx-rtl .dx-scheduler-work-space-grouped.dx-scheduler-work-space-group-by-date .dx-scheduler-group-header.dx-scheduler-last-group-cell:last-child,
@@ -42036,8 +42036,8 @@ input.dx-hidden {
 }
 .dx-scheduler-agenda .dx-scheduler-date-table-cell,
 .dx-scheduler-agenda .dx-scheduler-time-panel-cell {
-  -webkit-box-shadow: inset 0 -1px 0 0 rgba(221,221,221,.6);
-  box-shadow: inset 0 -1px 0 0 rgba(221,221,221,.6);
+  -webkit-box-shadow: inset 0 -1px 0 0 rgba(82,82,82,.6);
+  box-shadow: inset 0 -1px 0 0 rgba(82,82,82,.6);
 }
 .dx-scheduler-agenda .dx-scheduler-date-table-last-row .dx-scheduler-date-table-cell,
 .dx-scheduler-agenda .dx-scheduler-date-table-last-row .dx-scheduler-time-panel-cell {
