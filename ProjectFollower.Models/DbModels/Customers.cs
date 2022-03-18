@@ -10,11 +10,13 @@ namespace ProjectFollower.Models.DbModels
     {
         [Key]
         public Guid Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Bir firma adı girmelisiniz.")]
         public string Name { get; set; }
+        [Required(ErrorMessage = "Bir firma yetkilisi adı adresi girmelisiniz.")]
         public string AuthorizedName { get; set; }
-
+        [Required(ErrorMessage = "Bir firma e-posta adresi girmelisiniz.")]
         public string Email { get; set; }
+        [Required(ErrorMessage = "Bir firma telefon numarası girmelisiniz.")]
         public string Phone { get; set; }
         public string ImageUrl { get; set; }
         public string Description { get; set; }

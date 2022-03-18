@@ -3,16 +3,10 @@
 var connection = new signalR.HubConnectionBuilder().withUrl("/homeHub").build();
 //var connection = new signalR.HubConnectionBuilder().configureLogging(signalR.LogLevel.None).withUrl("/homeHub").build();
 //connection.start();
+console.clear();
 
 connection.on("SendData", function (projectList) {
     window.location.reload(true)
-
-
-
-
-
-    console.log("after each: "+projectList);
-
 
 
     //$("#messageTxt").append(projectList);

@@ -31,7 +31,8 @@ namespace ProjectFollower.Controllers
         private readonly IUnitOfWork _uow;
         private readonly IWebHostEnvironment _hostEnvironment;
         private ProjectTasks ProjectTaskItem = new ProjectTasks();
-
+        public List<NotificationVM> Notifications = new List<NotificationVM>();
+        public IEnumerable<NotificationVM> INotifications;
         public HomeController(
         UserManager<IdentityUser> userManager,
         SignInManager<IdentityUser> signInManager,
@@ -69,10 +70,7 @@ namespace ProjectFollower.Controllers
                 {
                     Response.Cookies.Append("_kj6ght", "False");
                 }
-
-
-
-                var ApplicationUser = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == Claims.Value);
+                Response.Cookies.Append("_nb59x45k9", GetClaim().Value);
                 return RedirectToAction("Dashboard", "Home");//Go Dashboard
             }
 
@@ -86,7 +84,7 @@ namespace ProjectFollower.Controllers
         public IActionResult Dashboard()
         {
             var AppUser = _uow.ApplicationUser.GetFirstOrDefault(id => id.Id == GetClaim().Value);
-
+            Response.Cookies.Append("_nb59x45k9", GetClaim().Value);
             List<DepartmentsVM> departmentsVM = new List<DepartmentsVM>();
             var GetDepartments = _uow.Department.GetAll();
             foreach (var item in GetDepartments)
@@ -142,6 +140,7 @@ namespace ProjectFollower.Controllers
                 var ImageUrl = WebRootPaths.DIR_Users_Main + AppUser.Id + "/" + WebRootPaths.Img + AppUser.ImageUrl;
                 var User = new Users()
                 {
+                    Id=AppUser.Id,
                     FirstName = AppUser.FirstName,
                     LastName = AppUser.Lastname,
                     FullName = AppUser.FirstName + " " + AppUser.Lastname,
@@ -280,7 +279,7 @@ namespace ProjectFollower.Controllers
 
         [Authorize(Roles = UserRoles.Admin)]
         [HttpPost("yeni-proje")]
-        public IActionResult ProjectNewPost(ProjectVM ProjectVM)
+        public async Task<IActionResult> ProjectNewPost(ProjectVM ProjectVM)
         {
             var Users = new List<ApplicationUser>();
 
@@ -306,8 +305,17 @@ namespace ProjectFollower.Controllers
                     ProjectId = Project.Id,
                     UserId = Guid.Parse(User.Id)
                 };
+                var _notify = new NotificationVM()
+                {
+                    UserId = User.Id,
+                    Date = DateTime.Now.ToString("dd/MM/yyyy"),
+                    Title = "Yeni Proje",
+                    Message = "Adınıza yeni bir proje açıldı. Detaylar için <a href='/proje-detaylari/" + Project.Id + "'>tıklayınız</a>"
+                };
+                Notifications.Add(_notify);
                 _uow.ResponsibleUsers.Add(ResponsibleUser);
             }
+            INotifications = Notifications;
             if (ProjectVM.TaskDesc == null)
                 return NoContent();
             int t = 0;
@@ -386,8 +394,13 @@ namespace ProjectFollower.Controllers
                     }
                 }
             }
-            _uow.Save();
-            return Redirect("/dashboard?status=true");
+            //_uow.Save();
+
+
+            WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
+            await WebSocAct.SendNotification_WebSocket(GetClaim(),INotifications);
+            return NoContent();
+            //return Redirect("/dashboard?status=true");
         }
 
 
@@ -492,13 +505,9 @@ namespace ProjectFollower.Controllers
         [HttpPost]
         public IActionResult AddTask(ProjectDetailVM projectDetailVM)
         {
-            var projectTask = new ProjectTasks()
-            {
-                ProjectsId = projectDetailVM.ProjectsId,
-                Description = projectDetailVM.ProjectTaskItem.Description
-            };
-            _uow.ProjectTasks.Add(projectTask);
-            foreach (var item in projectDetailVM.UserId)
+            var _appUserId = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == GetClaim().Value).Id;
+            /*
+            if (!(User.IsInRole(UserRoles.Admin)))
             {
                 var player = new TaskPlayers()
                 {
@@ -506,12 +515,37 @@ namespace ProjectFollower.Controllers
                     UserId = item
                 };
                 _uow.TaskPlayers.Add(player);
+            }*/
+            var projectTask = new ProjectTasks()
+            {
+                ProjectsId = projectDetailVM.ProjectsId,
+                Description = projectDetailVM.ProjectTaskItem.Description
+            };
+            _uow.ProjectTasks.Add(projectTask);
+            if (!(User.IsInRole(UserRoles.Admin)))
+            {
+                var player = new TaskPlayers()
+                {
+                    ProjectTaskId = projectTask.Id.ToString(),
+                    UserId = _appUserId,
+                };
+                _uow.TaskPlayers.Add(player);
+            }
+            else
+            {
+                foreach (var item in projectDetailVM.UserId)
+                {
+                    var player = new TaskPlayers()
+                    {
+                        ProjectTaskId = projectTask.Id.ToString(),
+                        UserId = item
+                    };
+                    _uow.TaskPlayers.Add(player);
+                }
             }
             _uow.Save();
             return Redirect("/proje-detaylari/" + projectDetailVM.ProjectsId);
         }
-
-
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [HttpGet("proje-detaylari/gorev-kaldir/{id}")]
         public IActionResult RemoveTask(string id)

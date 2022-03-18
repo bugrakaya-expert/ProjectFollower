@@ -49,5 +49,12 @@ namespace ProjectFollower.Hubs
             await _context.Clients.All.SendAsync("SchedulerQuery", id);
 
         }
+        public async Task SendNotification(IEnumerable<NotificationVM> notification)
+        {
+            foreach (var item in notification)
+            {
+                await _context.Clients.All.SendAsync("SendNotification", item);
+            }
+        }
     }
 }

@@ -95,4 +95,11 @@
         });
     });
 
+    var notnews = true;
+    $('#notificationButton').on("click", function () {
+        $(".notification-unread i").css("animation", "none");
+        $(".notification-unread .count").css("animation", "none");
+    });
+
+
 })(jQuery);

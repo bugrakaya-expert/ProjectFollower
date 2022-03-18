@@ -3180,54 +3180,54 @@ $.dore = function (element, options) {
     }
 
     /* 03.12. Notification */
-    function showNotification(placementFrom, placementAlign, type) {
-      $.notify(
-        {
-          title: "Bootstrap Notify",
-          message: "Here is a notification!",
-          target: "_blank"
-        },
-        {
-          element: "body",
-          position: null,
-          type: type,
-          allow_dismiss: true,
-          newest_on_top: false,
-          showProgressbar: false,
-          placement: {
-            from: placementFrom,
-            align: placementAlign
-          },
-          offset: 20,
-          spacing: 10,
-          z_index: 1031,
-          delay: 4000,
-          timer: 2000,
-          url_target: "_blank",
-          mouse_over: null,
-          animate: {
-            enter: "animated fadeInDown",
-            exit: "animated fadeOutUp"
-          },
-          onShow: null,
-          onShown: null,
-          onClose: null,
-          onClosed: null,
-          icon_type: "class",
-          template:
-            '<div data-notify="container" class="col-11 col-sm-3 alert  alert-{0} " role="alert">' +
-            '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-            '<span data-notify="icon"></span> ' +
-            '<span data-notify="title">{1}</span> ' +
-            '<span data-notify="message">{2}</span>' +
-            '<div class="progress" data-notify="progressbar">' +
-            '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
-            "</div>" +
-            '<a href="{3}" target="{4}" data-notify="url"></a>' +
-            "</div>"
-        }
-      );
-    }
+      function showNotification(placementFrom, placementAlign, type, message) {
+          $.notify(
+              {
+                  title: "Bootstrap Notify",
+                  message: message,
+                  target: "_blank"
+              },
+              {
+                  element: "body",
+                  position: null,
+                  type: type,
+                  allow_dismiss: true,
+                  newest_on_top: false,
+                  showProgressbar: false,
+                  placement: {
+                      from: placementFrom,
+                      align: placementAlign,
+                  },
+                  offset: 20,
+                  spacing: 10,
+                  z_index: 1031,
+                  delay: 4000,
+                  timer: 2000,
+                  url_target: "_blank",
+                  mouse_over: null,
+                  animate: {
+                      enter: "animated fadeInDown",
+                      exit: "animated fadeOutUp"
+                  },
+                  onShow: null,
+                  onShown: null,
+                  onClose: null,
+                  onClosed: null,
+                  icon_type: "class",
+                  template:
+                      '<div data-notify="container" class="col-11 col-sm-3 alert  alert-{0} " role="alert">' +
+                      '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                      '<span data-notify="icon"></span> ' +
+                      '<span data-notify="title">{1}</span> ' +
+                      '<span data-notify="message">{2}</span>' +
+                      '<div class="progress" data-notify="progressbar">' +
+                      '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+                      "</div>" +
+                      '<a href="{3}" target="{4}" data-notify="url"></a>' +
+                      "</div>"
+              }
+          );
+      }
 
     $("body").on("click", ".notify-btn", function (event) {
       event.preventDefault();
@@ -4085,7 +4085,62 @@ $.dore = function (element, options) {
       }
     }
 
-    /*03.35. Context Menu */
+      /*03.35. Context Menu */
+    $(function () {
+        $.contextMenu({
+            selector: ".notification-item",
+            delay: 500,
+            autoHide: true,
+            callback: function (key, options) {
+                var m = "clicked: " + key;
+                var y = key;
+                if (y == "archive") {
+                    var id = this.attr('id');
+                    $.ajax({
+                        url: "jsonresult/getprojectdetail/" + id,
+                        type: "GET",
+                        contentType: "application/json",
+                        dataType: "json",
+                        success: function (data) {
+                            Swal.fire({
+                                title: 'Bildirim başarıyla okundu olarak işaretlendi',
+                                icon: 'success',
+                                confirmButtonText: 'Tamam',
+                            })
+                        }
+                    });
+                }
+                if (y == "delete") {
+                    var id = this.attr('id');
+                    $.ajax({
+                        url: "jsonresult/getprojectdetail/" + id,
+                        type: "GET",
+                        contentType: "application/json",
+                        dataType: "json",
+                        success: function (data) {
+                            Swal.fire({
+                                title: 'Bildirim başarıyla silindi',
+                                icon: 'success',
+                                confirmButtonText: 'Tamam',
+                            })
+                        }
+                    });
+                }
+            },
+            events: {
+                show: function (options) {
+                    var $list = options.$trigger.parents(".list");
+                    if ($list && $list.length > 0) {
+                        $list.data("shiftSelectable").rightClick(options.$trigger);
+                    }
+                }
+            },
+            items: {
+                archive: { name: "Okundu olarak işaretle", className: "simple-icon-check" },
+                delete: { name: "Sil", className: "simple-icon-trash" },
+            },
+        });
+    });
     if ($().contextMenu) {
       $.contextMenu({
         selector: ".list .cardd",

@@ -1,8 +1,8 @@
 ﻿"use strict";
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/homeHub").build();
+console.clear();
 
-console.log("WebSocket Custom Connected.");
 connection.on("SchedulerQuery", function (id) {
     console.log("WebSocket Working Id: "+id);
     console.log("Working on CustomerId:" + CustomerId);

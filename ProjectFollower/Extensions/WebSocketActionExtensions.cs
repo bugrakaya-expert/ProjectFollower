@@ -67,5 +67,10 @@ namespace ProjectFollower.Extensions
             HomeHub Hub = new HomeHub(_context);
             await Hub.TriggerSchedulerChange(id);
         }
+        public async Task SendNotification_WebSocket(Claim Claims, IEnumerable<NotificationVM> notification)
+        {
+            HomeHub Hub = new HomeHub(_context);
+            await Hub.SendNotification(notification);
+        }
     }
 }

@@ -62,8 +62,8 @@
                                         <p class="font-weight-bold" style="text-align:end">Görevliler</p>
                                     </div>
                                 </div>
-                                
-                                
+
+
                                 @*<form action="/proje-detaylari/gorev-degistir/@Model.Project.Id" method="get">*@
                                 <form id="sectionTasks">
                                     @foreach (var item in Model.ProjectTasks)
@@ -84,28 +84,30 @@
                                                 }
 
                                             </div>
-                                            
-                                            <div class="col-3 d-flex align-items-center justify-content-end" >
+
+                                            <div class="col-3 d-flex align-items-center justify-content-end">
                                                 <p class="m-0">
                                                     @foreach (var playerItem in item.TaskPlayers)
                                                     {
-                                                        if (item.TaskPlayers.Count() == playercount+1)
+                                                        if (item.TaskPlayers.Count() == playercount + 1)
                                                         {
                                                             <span>@playerItem.FirstName</span>
                                                         }
                                                         else
                                                         {
-                                                            <span>@playerItem.FirstName</span><text>,</text>
+                                                            <span>@playerItem.FirstName</span>
+
+                                                            <text>,</text>
                                                         }
                                                         playercount++;
                                                     }
                                                 </p>
-        
 
-                                                    </div>
-        
 
-                                                    <div class="col-3 text-end d-flex justify-content-center align-items-center">
+                                            </div>
+
+
+                                            <div class="col-3 text-end d-flex justify-content-center align-items-center">
                                                 <div class="custom-control custom-checkbox" style="display:inline-block">
                                                     @*<input value="@item.Done.ToString()" id="@item.Id" type="text" class="taskvalue" />*@
 
@@ -137,34 +139,34 @@
                                     </div>
                                 </form>
                                 @*
-        <table class="table table-borderless">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Görev</th>
-                    <th scope="col">Durum</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.ProjectTasks)
-                {
-                    TaskLength++;
-                    TaskIdString = "control-mission" + TaskLength.ToString();
-                }
-                    <tr>
+                                    <table class="table table-borderless">
+                                    <thead>
+                                    <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Görev</th>
+                                    <th scope="col">Durum</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach (var item in Model.ProjectTasks)
+                                    {
+                                    TaskLength++;
+                                    TaskIdString = "control-mission" + TaskLength.ToString();
+                                    }
+                                    <tr>
 
-                        <th scope="row">1</th>
-                        <td>Emre</td>
-                        <td>Websitesi Tasarımı</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Buğra</td>
-                        <td>Database</td>
+                                    <th scope="row">1</th>
+                                    <td>Emre</td>
+                                    <td>Websitesi Tasarımı</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row">2</th>
+                                    <td>Buğra</td>
+                                    <td>Database</td>
 
-                    </tr>
-                </tbody>
-        </table>
+                                    </tr>
+                                    </tbody>
+                                    </table>
                                 *@
 
                                 <div class="separator mb-5"></div>
@@ -179,7 +181,7 @@
                                             <div class="d-flex flex-row mb-3 border-bottom justify-content-between">
                                                 <a href="#">
                                                     <img src="@item.Img" alt="@item.FullName"
-                                                         class="img-thumbnail border-0 rounded-circle list-thumbnail align-self-center xsmall" />
+                                                 class="img-thumbnail border-0 rounded-circle list-thumbnail align-self-center xsmall" />
                                                 </a>
                                                 <div class="pl-3 flex-grow-1">
                                                     <p class="font-weight-medium mb-0">@item.FullName</p>
@@ -192,7 +194,7 @@
                                                 {
                                                     <div class="dropleft">
                                                         <div class="glyph-icon simple-icon-options" type="button"
-                                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></div>
+                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></div>
                                                         <div class="dropdown-menu">
                                                             <a class="dropdown-item" style="cursor: default; color: #b2b2b2; " href="javascript:void(0)">Düzenle</a>
                                                             <form asp-controller="Home" asp-action="DeleteComment" method="post" asp-route-id="@item.Id">
@@ -416,9 +418,7 @@
                                         {
                                             <option value="@itemUser.Id">@itemUser.FirstName</option>
                                         }
-
                                     }
-
                                 </optgroup>
                             }
                         </select>
@@ -447,20 +447,24 @@
             <form asp-action="AddTask" asp-controller="Home" method="post" asp-route-ProjectsId="@Model.Project.Id">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label class="form-group has-top-label gorev-players pb-1">
-                            <select class="form-control select2-multiple" multiple="multiple" data-width="100%" id="mission-players" asp-for="UserId">
-                                @foreach (var item in Model.DepartmentsVMs)
-                                {
-                                    <optgroup label="@item.Name">
-                                        @foreach (var itemUser in item.ApplicationUser)
+                        @if (User.IsInRole(UserRoles.Admin))
+                        {
+                            <label class="form-group has-top-label gorev-players pb-1">
+                                <select class="form-control select2-multiple" multiple="multiple" data-width="100%" id="mission-players" asp-for="UserId">
+                                    <optgroup label="Görev Üyeleri">
+                                        @foreach (var item in Model.Users)
                                         {
-                                            <option value="@itemUser.Id">@itemUser.FirstName</option>
+
+                                            <option value="@item.Id">@item.FirstName</option>
+
                                         }
                                     </optgroup>
-                                }
-                            </select>
-                            <span>Görev Üyeleri</span>
-                        </label>
+                                    
+                                </select>
+                                <span>Görev Üyeleri</span>
+                            </label>
+                        }
+
                         <label for="mission-name" class="col-form-label">Görev Adı:</label>
                         <textarea style="height:5rem" type="text" class="form-control" id="mission-name" required min asp-for="ProjectTaskItem.Description"></textarea>
                     </div>
@@ -478,180 +482,180 @@
 </div>
 @*
     <form asp-action="UpdateDesc" asp-controller="Home" method="post" id="descDetail">
-        <input type="text" id="htmlstr" class="form-control form-text" asp-for="@Model.Project.Description" />
-        <input type="text" id="projectid" class="form-control form-text" asp-for="@Model.Project.Id" />
+    <input type="text" id="htmlstr" class="form-control form-text" asp-for="@Model.Project.Description" />
+    <input type="text" id="projectid" class="form-control form-text" asp-for="@Model.Project.Id" />
     </form>*@
 
 
 @section scripts
 {
-    <script src="/js/vendor/quill.min.js"></script>
+<script src="/js/vendor/quill.min.js"></script>
 
-    <script>
-        function test() {
-            //alert("I am here");
-        }
+<script>
+            function test() {
+                //alert("I am here");
+            }
 
-        $(document).ready(function () {
+            $(document).ready(function () {
 
-            $(document).on("click", "#submitDesc", function () {
-                console.log("submitdesc Action");
+                $(document).on("click", "#submitDesc", function () {
+                    console.log("submitdesc Action");
 
-                var htmlString = $('.ql-editor').html();
-                console.log("submitdesc Action 2");
-                $('#htmlstr').val(htmlString);
-                console.log("submitdesc Action 3");
-                //$('#descDetail').submit();
-                var userId = [];
-                userId = $('#userid').val();
-                console.log("UserId Arrays: "+userId);
-                $.ajax({
-                    type: "POST",
-                    url: "/jsonresult/updatedescription",
-                    data: {
-                        project: {
-                            id: '@Model.Project.Id',
-                            description: $('.ql-editor').html(),
-                            EndingDate: $('#dateval').val(),
-                            Name: $('#projectname').val()
+                    var htmlString = $('.ql-editor').html();
+                    console.log("submitdesc Action 2");
+                    $('#htmlstr').val(htmlString);
+                    console.log("submitdesc Action 3");
+                    //$('#descDetail').submit();
+                    var userId = [];
+                    userId = $('#userid').val();
+                    console.log("UserId Arrays: "+userId);
+                    $.ajax({
+                        type: "POST",
+                        url: "/jsonresult/updatedescription",
+                        data: {
+                            project: {
+                                id: '@Model.Project.Id',
+                                description: $('.ql-editor').html(),
+                                EndingDate: $('#dateval').val(),
+                                Name: $('#projectname').val()
+                            },
+                            userId: userId
                         },
-                        userId: userId
-                    },
-                    success: function (received) {
-                        console.log(received);
-                        $('#desc').html("");
-                        $('#desc').append(received);
-                        $('#project-details').modal('toggle');
-
-                        Swal.fire({
-                            title: "Güncelleme başarılı.",
-                            showCancelButton: false,
-                            icon: "success",
-                            confirmButtonText: 'Tamam',
-                        })
-
-
-                    }
-                });
-
-            });
-            $(document).on("click", "#taskbtn", function () {
-                var formdata = [];
-                $('.taskvalue:checkbox').each(function () {
-                    var item = {};
-                    //here the item name should be the same as your model
-                    item['id'] = this.id,
-                    item['done'] = $(this).is(':checked')
-                    formdata.push(item);
-                });
-
-                //here the model should be the same as your controller parameter name
-                formdata = JSON.stringify(formdata);
-                console.log(formdata);
-                $.ajax({
-                    //contentType: 'application/json; charset=utf-8',//this statement should be added
-                    url: "/jsonresult/updateTasks",
-                    type: "POST",
-                    dataType: "json",
-                    contentType: "application/json",
-                    traditional: true,
-                    /*
-                    data: {
-                        projectId: 'Model.Project.Id',
-                        projectTasks: "",
-                    },
-                    */
-                    data: formdata,
-                    //dataType: "json",
-                    success: function (received) {
-                        Swal.fire({
-                            title: "Güncelleme başarılı.",
-                            showCancelButton: false,
-                            icon: "success",
-                            confirmButtonText: 'Tamam',
-                        }).then((result) => {
-                            location.reload();
-                        });
-                    }
-                });
-            });
-            $(document).on("click", "#comment-button", function () {
-                console.log($('#comment-input').val());
-                var comment = $('#comment-input').val();
-                $.ajax({
-                    type: "POST",
-                    //url: "/jsonresult/addcomment/" + '@Model.Project.Id' + "/" + comment,
-                    url: "/jsonresult/addcomment/",
-                    data: {
-                        projectsId: '@Model.Project.Id',
-                        comment: comment
-
-                    },
-                    success: function (received) {
-                        if (received == null)
-                            $("#comment-input").val("");
-                        else {
+                        success: function (received) {
                             console.log(received);
-                            commenthtml = `
+                            $('#desc').html("");
+                            $('#desc').append(received);
+                            $('#project-details').modal('toggle');
 
-                                            <div class='d-flex flex-row mb-3 border-bottom justify-content-between'>
-                                                <a href='#'>
-                                                    <img src='/assets/users/`+received.userId+`/img/`+ received.img+`'
-                                                         class='img-thumbnail border-0 rounded-circle list-thumbnail align-self-center xsmall' />
-                                                </a>
-                                                <div class='pl-3 flex-grow-1'>
+                            Swal.fire({
+                                title: "Güncelleme başarılı.",
+                                showCancelButton: false,
+                                icon: "success",
+                                confirmButtonText: 'Tamam',
+                            })
+
+
+                        }
+                    });
+
+                });
+                $(document).on("click", "#taskbtn", function () {
+                    var formdata = [];
+                    $('.taskvalue:checkbox').each(function () {
+                        var item = {};
+                        //here the item name should be the same as your model
+                        item['id'] = this.id,
+                        item['done'] = $(this).is(':checked')
+                        formdata.push(item);
+                    });
+
+                    //here the model should be the same as your controller parameter name
+                    formdata = JSON.stringify(formdata);
+                    console.log(formdata);
+                    $.ajax({
+                        //contentType: 'application/json; charset=utf-8',//this statement should be added
+                        url: "/jsonresult/updateTasks",
+                        type: "POST",
+                        dataType: "json",
+                        contentType: "application/json",
+                        traditional: true,
+                        /*
+                        data: {
+                            projectId: 'Model.Project.Id',
+                            projectTasks: "",
+                        },
+                        */
+                        data: formdata,
+                        //dataType: "json",
+                        success: function (received) {
+                            Swal.fire({
+                                title: "Güncelleme başarılı.",
+                                showCancelButton: false,
+                                icon: "success",
+                                confirmButtonText: 'Tamam',
+                            }).then((result) => {
+                                location.reload();
+                            });
+                        }
+                    });
+                });
+                $(document).on("click", "#comment-button", function () {
+                    console.log($('#comment-input').val());
+                    var comment = $('#comment-input').val();
+                    $.ajax({
+                        type: "POST",
+                        //url: "/jsonresult/addcomment/" + '@Model.Project.Id' + "/" + comment,
+                        url: "/jsonresult/addcomment/",
+                        data: {
+                            projectsId: '@Model.Project.Id',
+                            comment: comment
+
+                        },
+                        success: function (received) {
+                            if (received == null)
+                                $("#comment-input").val("");
+                            else {
+                                console.log(received);
+                                commenthtml = `
+
+                                                <div class='d-flex flex-row mb-3 border-bottom justify-content-between'>
                                                     <a href='#'>
-                                                        <p class='font-weight-medium mb-0'>`+ received.fullName + `</p>
-                                                        <p class='text-muted mb-0 text-small'>`+ received.commentTime + `</p>
+                                                        <img src='/assets/users/`+received.userId+`/img/`+ received.img+`'
+                                                             class='img-thumbnail border-0 rounded-circle list-thumbnail align-self-center xsmall' />
                                                     </a>
-                                                    <p class='mt-3'>
-                                                        `+ received.comment + `
-                                                    </p>
+                                                    <div class='pl-3 flex-grow-1'>
+                                                        <a href='#'>
+                                                            <p class='font-weight-medium mb-0'>`+ received.fullName + `</p>
+                                                            <p class='text-muted mb-0 text-small'>`+ received.commentTime + `</p>
+                                                        </a>
+                                                        <p class='mt-3'>
+                                                            `+ received.comment + `
+                                                        </p>
+                                                    </div>
                                                 </div>
-                                            </div>
-`;
-                            $("#comments").append(commenthtml);
-                            $("#commentnone").hide();
+    `;
+                                $("#comments").append(commenthtml);
+                                $("#commentnone").hide();
 
-                            $("#comment-input").val("");
+                                $("#comment-input").val("");
+                            }
+
+
+
+
+                        }
+                    });
+                });
+
+                $(document).on("click", ".remove-task", function () {
+                    Swal.fire({
+                        title: 'Bu görevi kaldırmak istediğinizden emin misiniz?',
+                        showCancelButton: true,
+                        icon: 'info',
+                        confirmButtonText: 'Kaldır',
+                        cancelButtonText: `İptal Et`,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/proje-detaylari/gorev-kaldir/' + this.id;
                         }
 
-
-
-
-                    }
+                    })
                 });
             });
 
-            $(document).on("click", ".remove-task", function () {
-                Swal.fire({
-                    title: 'Bu görevi kaldırmak istediğinizden emin misiniz?',
-                    showCancelButton: true,
-                    icon: 'info',
-                    confirmButtonText: 'Kaldır',
-                    cancelButtonText: `İptal Et`,
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = '/proje-detaylari/gorev-kaldir/' + this.id;
+
+                $('#comment-input').keydown(function (event) {
+                    var keyCode = (event.keyCode ? event.keyCode : event.which);
+                    if (keyCode == 13) {
+                        $('#comment-button').trigger('click');
+                        test();
                     }
-
-                })
-            });
-        });
-
-
-            $('#comment-input').keydown(function (event) {
-                var keyCode = (event.keyCode ? event.keyCode : event.which);
-                if (keyCode == 13) {
-                    $('#comment-button').trigger('click');
-                    test();
-                }
-            });
+                });
 
 
 
 
-    </script>
+</script>
 
 
 }

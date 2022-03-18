@@ -84,6 +84,66 @@
                         <label class="custom-switch-btn" for="switchDark"></label>
                     </div>
                 </div>
+                <div class="position-relative d-inline-block">
+                    <button class="header-icon btn btn-empty notification-unread" type="button" id="notificationButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="simple-icon-bell" tabindex="1"></i>
+                        <span class="count" tabindex="1">3</span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right mt-3 pb-0 position-absolute" id="notificationDropdown">
+                        <div>
+                            <div class="d-flex flex-row justify-content-center align-items-center py-2 border-bottom">
+                                <h3 class="m-0">Bildirimler</h3>
+                            </div>
+                            @*Max son 5 Notification*@
+                            <div class="d-flex flex-row align-items-center notification-item p-2 border-bottom">
+                                <a href="#">
+                                    <img src="/assets/customers/b1ba221f-0aff-466c-a2c7-08d9f60b54f2/img/412a889e-1af4-4a1b-a29a-3e22717a8248.jpg" alt="Notification Image"
+                                         class="img-thumbnail list-thumbnail xsmall border-0 rounded-circle" />
+                                </a>
+                                <div class="pl-3">
+                                    <a href="#">
+                                        <p class="font-weight-bold mb-1">Yeni bir mesaj!</p>
+                                        <p class="font-weight-medium mb-1">Poligon Video Çekimi</p>
+                                        <p class="text-muted mb-0 text-small">09.04.2018 - 12:45</p>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-row align-items-center notification-item p-2 border-bottom">
+                                <a href="#">
+                                    <img src="/assets/customers/b1ba221f-0aff-466c-a2c7-08d9f60b54f2/img/412a889e-1af4-4a1b-a29a-3e22717a8248.jpg" alt="Notification Image"
+                                         class="img-thumbnail list-thumbnail xsmall border-0 rounded-circle" />
+                                </a>
+                                <div class="pl-3">
+                                    <a href="#">
+                                        <p class="font-weight-bold mb-1">Proje güncellendi!</p>
+                                        <p class="font-weight-medium mb-1">8 MART FOTOĞRAF VE VİDEO ÇEKİMİ</p>
+                                        <p class="text-muted mb-0 text-small">09.04.2018 - 12:45</p>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-row align-items-center notification-item p-2 border-bottom">
+                                <a href="#">
+                                    <img src="/assets/customers/62495772-dd8f-4ec6-9877-08d9f76677c2/img/log-darkk.png" alt="Notification Image"
+                                         class="img-thumbnail list-thumbnail xsmall border-0 rounded-circle" />
+                                </a>
+                                <div class="pl-3">
+                                    <a href="#">
+                                        <p class="font-weight-bold mb-1">Yeni bir proje!</p>
+                                        <p class="font-weight-medium mb-1">Elit Dijital Web Sitesi.</p>
+                                        <p class="text-muted mb-0 text-small">09.04.2018 - 12:45</p>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-row justify-content-center notification-all p-2">
+                                <a href="#">
+                                    <p class="font-weight-bold m-0">Hepsini Gör</p>
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
                 <button class="header-icon btn btn-empty d-none d-sm-inline-block" type="button" id="fullScreenButton">
                     <i class="simple-icon-size-fullscreen"></i>
                     <i class="simple-icon-size-actual"></i>
@@ -172,7 +232,7 @@
             </div>
         </div>
     </div>
-
+    <div id="testidareabgr"></div>
     @RenderBody()
     <!-- Modal Statü Değiştir -->
     <div class="modal fade" id="statuModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -349,7 +409,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12 col-sm-6">
-                        <p class="mb-0 text-muted">Sürüm Tarihi: 10.03.2022</p>
+                        <p class="mb-0 text-muted">Sürüm Tarihi: 15.03.2022</p>
                     </div>
                     <div class="col-12 col-sm-12">
                         <p class="mb-0 text-muted">All rights reserved. &copy; Many Points 2022.</p>
@@ -360,6 +420,7 @@
     </footer>
 
     <script src="~/js/vendor/jquery-3.3.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
     <script src="~/js/vendor/bootstrap.bundle.min.js"></script>
     <script src="~/js/vendor/moment.min.js"></script>
     <script src="~/js/vendor/perfect-scrollbar.min.js"></script>
@@ -384,8 +445,9 @@
     <script src="https://cdn3.devexpress.com/jslib/21.2.4/js/dx.all.js"></script>
     <script src="https://cdn3.devexpress.com/jslib/21.2.4/js/localization/dx.messages.tr.js"></script>
     <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script src="~/js/print/print.min.js"></script>
-
+    <script src="~/js/notificationHub.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>

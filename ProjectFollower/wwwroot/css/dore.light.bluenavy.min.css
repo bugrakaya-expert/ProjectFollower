@@ -1355,10 +1355,106 @@ button {
 }
 .navbar #notificationDropdown {
     width: 260px;
-    padding: 1.5rem;
-    height: 280px;
     right: 15px;
 }
+.navbar #notificationDropdown .notification-item:hover {
+    background: #184f901f;
+    cursor: pointer;
+}
+.navbar #notificationDropdown .notification-item:hover a {
+    color: #00365a;
+}
+.navbar #notificationDropdown .notification-all:hover {
+    background: #184f901f;
+    cursor: pointer;
+}
+.notification-unread i {
+    transition: all ease 0.2s;
+    animation: color-change-wshadow 6s infinite;
+}
+.notification-unread .count {
+    transition: all ease 0.2s;
+    animation: color-change 6s infinite;
+}
+.notification-unread:hover .count {
+    transition:all ease 0.2s;
+    animation: none;
+}
+.notification-unread:hover i {
+    transition: all ease 0.2s;
+    animation: none;
+}
+
+@keyframes color-change-wshadow {
+    0% {
+        color: #8f8f8f;
+    }
+
+    15% {
+        color: #A29F5F;
+    }
+
+    30% {
+        color: #B6AF30;
+    }
+
+    50% {
+        color: #C9BF00;
+    }
+
+    70% {
+        color: #B6AF30;
+    }
+
+    85% {
+        color: #A29F5F;
+    }
+
+    100% {
+        color: #8f8f8f;
+    }
+}
+@keyframes color-change {
+    0% {
+        border-color: #8f8f8f;
+        color: #8f8f8f;
+    }
+
+    15% {
+        border-color: #A29F5F;
+        color: #A29F5F;
+    }
+
+    30% {
+        border-color: #B6AF30;
+        color: #B6AF30;
+    }
+
+    50% {
+        border-color: #C9BF00;
+        color: #C9BF00;
+    }
+
+    70% {
+        border-color: #B6AF30;
+        color: #B6AF30;
+    }
+
+    85% {
+        border-color: #A29F5F;
+        color: #A29F5F;
+    }
+
+    100% {
+        border-color: #8f8f8f;
+        color: #8f8f8f;
+    }
+}
+
+.navbar #notificationDropdown .notification-all:hover a {
+    color: #00365a;
+}
+
 .navbar #iconMenuDropdown {
     width: 240px;
     padding: 1.5rem;
@@ -1559,16 +1655,14 @@ button {
         padding-right: 0.3rem;
     }
 }
-.navbar .header-icon:hover {
-    color: #00365a;
-}
+
 .navbar .header-icon#fullScreenButton i:last-of-type {
     display: none;
 }
 .navbar .header-icon#notificationButton .count {
     font-size: 9px;
-    color: #00365a;
-    border: 1px solid #00365a;
+    color: #8f8f8f;
+    border: 1px solid #8f8f8f;
     border-radius: 10px;
     position: absolute;
     width: 18px;
@@ -1584,6 +1678,7 @@ button {
         right: -1px;
     }
 }
+
 .navbar .user {
     color: #878787;
     position: relative;
