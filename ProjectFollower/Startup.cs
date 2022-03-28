@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
@@ -18,6 +19,8 @@ using ProjectFollower.Models.DbModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 
 namespace ProjectFollower
@@ -124,6 +127,44 @@ namespace ProjectFollower
                 endpoints.MapRazorPages();
                 endpoints.MapHub<HomeHub>("/homeHub");
             });
+            var _addresses = app.ServerFeatures.Get<IServerAddressesFeature>().Addresses;
+            var HostString = "";
+            foreach (var item in _addresses)
+            {
+                HostString += "\n" + item;
+            }
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("\nIPV4: " + GetAllLocalIPv4().FirstOrDefault());
+            Console.ForegroundColor = ConsoleColor.White;
+
+        }
+        public static string[] GetAllLocalIPv4()
+        {
+            List<string> ipAddrList = new List<string>();
+            foreach (NetworkInterface item in NetworkInterface.GetAllNetworkInterfaces())
+            {
+                if (item.NetworkInterfaceType == NetworkInterfaceType.Ethernet && item.OperationalStatus == OperationalStatus.Up)
+                {
+                    foreach (UnicastIPAddressInformation ip in item.GetIPProperties().UnicastAddresses)
+                    {
+                        if (ip.Address.AddressFamily == AddressFamily.InterNetwork)
+                        {
+                            ipAddrList.Add(ip.Address.ToString());
+                        }
+                    }
+                }
+                else if (item.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 && item.OperationalStatus == OperationalStatus.Up)
+                {
+                    foreach (UnicastIPAddressInformation ip in item.GetIPProperties().UnicastAddresses)
+                    {
+                        if (ip.Address.AddressFamily == AddressFamily.InterNetwork)
+                        {
+                            ipAddrList.Add(ip.Address.ToString());
+                        }
+                    }
+                }
+            }
+            return ipAddrList.ToArray();
         }
     }
 }

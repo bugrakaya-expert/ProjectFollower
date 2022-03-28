@@ -1,0 +1,162 @@
+﻿
+@{ ViewData["Title"] = "Index";
+}
+<style>
+    .dx-item-content.dx-box-item-content.dx-box-flex.dx-box dx-widget.dx-visibility-change-handler.dx-collection .dx-box-item:first-child {
+        display: none !important;
+    }
+</style>
+<main>
+    <div class="row">
+        <div class="col-12 text-right mt-3">
+            <div id="scheduler"></div>
+        </div>
+    </div>
+</main>
+
+        @section scripts
+{
+            <script>
+
+                DevExpress.localization.locale(navigator.language);
+                $(() => {
+                    $('#scheduler').dxScheduler({
+                        timeZone: 'America/Los_Angeles',
+                        dataSource: data,
+                        views: ['week', 'month'],
+                        currentView: 'week',
+                        currentDate: new Date(2021, 2, 29),
+                        startDayHour: 8,
+                        endDayHour: 18,
+                        showAllDayPanel: false,
+                        allDay: false,
+                        height: 900,
+                        resources: [
+                            {
+                                fieldExpr: 'employeeID',
+                                allowMultiple: true,
+                                dataSource: employees,
+                                label: 'Employee',
+                            },
+                            {
+                                fieldExpr: 'companyID',
+                                allowMultiple: false,
+                                dataSource: company,
+                                label: 'Company',
+                            },
+                        ],
+                        /*appointmentTemplate(model) {
+
+                            return $(`${"<div class='movie'>"
+                                + "<img src='"}' />`
+                                + `<div class='movie-text'></div>`
+                                + '</div>');
+                        },*/
+                    }).dxScheduler('instance');
+                });
+
+                 console.log(true);
+                 
+
+                const employees = [{
+                    text: 'John Heart',
+                    id: 1,
+                    color: '#56ca85',
+                    avatar: 'images/gym/coach-man.png',
+                    age: 27,
+                    discipline: 'ABS, Fitball, StepFit',
+                }, {
+                    text: 'Sandra Johnson',
+                    id: 2,
+                    color: '#ff9747',
+                    avatar: 'images/gym/coach-woman.png',
+                    age: 25,
+                    discipline: 'ABS, Fitball, StepFit',
+                }];
+                const company = [{
+                    text: 'John Heart',
+                    id: 1,
+                    color: '#56ca85',
+                    avatar: 'images/gym/coach-man.png',
+                    age: 27,
+                    discipline: 'ABS, Fitball, StepFit',
+                }, {
+                    text: 'Sandra Johnson',
+                    id: 2,
+                    color: '#ff9747',
+                    avatar: 'images/gym/coach-woman.png',
+                    age: 25,
+                    discipline: 'ABS, Fitball, StepFit',
+                }];
+                const data = [
+                    {
+                        text: 'Website Re-Design Plan',
+                        startDate: new Date('2021-03-29T16:30:00.000Z'),
+                        endDate: new Date('2021-03-29T18:30:00.000Z'),
+                    }, {
+                        text: 'Book Flights to San Fran for Sales Trip',
+                        startDate: new Date('2021-03-29T19:00:00.000Z'),
+                        endDate: new Date('2021-03-29T20:00:00.000Z'),
+                        allDay: true,
+                    }, {
+                        text: 'Install New Router in Dev Room',
+                        startDate: new Date('2021-03-29T21:30:00.000Z'),
+                        endDate: new Date('2021-03-29T22:30:00.000Z'),
+                    }, {
+                        text: 'Approve Personal Computer Upgrade Plan',
+                        startDate: new Date('2021-03-30T17:00:00.000Z'),
+                        endDate: new Date('2021-03-30T18:00:00.000Z'),
+                    }, {
+                        text: 'Final Budget Review',
+                        startDate: new Date('2021-03-30T19:00:00.000Z'),
+                        endDate: new Date('2021-03-30T20:35:00.000Z'),
+                    }, {
+                        text: 'New Brochures',
+                        startDate: new Date('2021-03-30T21:30:00.000Z'),
+                        endDate: new Date('2021-03-30T22:45:00.000Z'),
+                    }, {
+                        text: 'Install New Database',
+                        startDate: new Date('2021-03-31T16:45:00.000Z'),
+                        endDate: new Date('2021-03-31T18:15:00.000Z'),
+                    }, {
+                        text: 'Approve New Online Marketing Strategy',
+                        startDate: new Date('2021-03-31T19:00:00.000Z'),
+                        endDate: new Date('2021-03-31T21:00:00.000Z'),
+                    }, {
+                        text: 'Upgrade Personal Computers',
+                        startDate: new Date('2021-03-31T22:15:00.000Z'),
+                        endDate: new Date('2021-03-31T23:30:00.000Z'),
+                    }, {
+                        text: 'Customer Workshop',
+                        startDate: new Date('2021-04-01T18:00:00.000Z'),
+                        endDate: new Date('2021-04-01T19:00:00.000Z'),
+                        allDay: true,
+                    }, {
+                        text: 'Prepare 2021 Marketing Plan',
+                        startDate: new Date('2021-04-01T18:00:00.000Z'),
+                        endDate: new Date('2021-04-01T20:30:00.000Z'),
+                    }, {
+                        text: 'Brochure Design Review',
+                        startDate: new Date('2021-04-01T21:00:00.000Z'),
+                        endDate: new Date('2021-04-01T22:30:00.000Z'),
+                    }, {
+                        text: 'Create Icons for Website',
+                        startDate: new Date('2021-04-02T17:00:00.000Z'),
+                        endDate: new Date('2021-04-02T18:30:00.000Z'),
+                    }, {
+                        text: 'Upgrade Server Hardware',
+                        startDate: new Date('2021-04-02T21:30:00.000Z'),
+                        endDate: new Date('2021-04-02T23:00:00.000Z'),
+                    }, {
+                        text: 'Submit New Website Design',
+                        startDate: new Date('2021-04-02T23:30:00.000Z'),
+                        endDate: new Date('2021-04-03T01:00:00.000Z'),
+                    }, {
+                        text: 'Launch New Website',
+                        startDate: new Date('2021-04-02T19:20:00.000Z'),
+                        endDate: new Date('2021-04-02T21:00:00.000Z'),
+                    },
+                ];
+
+            </script>
+        }

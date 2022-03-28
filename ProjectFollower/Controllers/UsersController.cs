@@ -30,7 +30,8 @@ namespace ProjectFollower.Controllers
         private readonly ILogger<UsersController> _logger;
         private readonly IUnitOfWork _uow;
         private readonly IWebHostEnvironment _hostEnvironment;
-
+        private string extension = "";
+        private string fileName = "";
         public UsersController(
         UserManager<IdentityUser> userManager,
         SignInManager<IdentityUser> signInManager,
@@ -130,9 +131,11 @@ namespace ProjectFollower.Controllers
             {
                 string webRootPath = _hostEnvironment.WebRootPath;
                 var files = HttpContext.Request.Form.Files;
-                var extension = Path.GetExtension(files[0].FileName);
-
-                string fileName = Guid.NewGuid().ToString();
+                if(files.Count() > 0)
+                {
+                    extension = Path.GetExtension(files[0].FileName);
+                    fileName = Guid.NewGuid().ToString();
+                }
                 var user = new ApplicationUser
                 {
                     UserName = Input.Email,
@@ -142,7 +145,8 @@ namespace ProjectFollower.Controllers
                     DepartmentId=Input.DepartmentId,
                     EmailConfirmed=true,
                     ImageUrl= fileName+extension,
-                    UserRole=UserRoles.Personel
+                    UserRole=UserRoles.Personel,
+                    Active=true
                 };
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
@@ -380,7 +384,11 @@ namespace ProjectFollower.Controllers
 
                     if (item.UserRole == UserRoles.Personel)
                     {
-                        var ImageUrl = WebRootPaths.DIR_Users_Main + item.Id + "/" + WebRootPaths.Img + item.ImageUrl;
+                        string ImageUrl;
+                        if (item.ImageUrl == "")
+                            ImageUrl = WebRootPaths.EmptyAvatar;
+                        else
+                            ImageUrl = WebRootPaths.DIR_Users_Main + item.Id + "/" + WebRootPaths.Img + item.ImageUrl;
                         Users Useritem = new Users()
                         {
                             Id=item.Id,

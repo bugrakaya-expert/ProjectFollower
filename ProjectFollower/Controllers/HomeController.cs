@@ -138,9 +138,11 @@ namespace ProjectFollower.Controllers
             {
                 var AppUser = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == item.UserId.ToString(), includeProperties: "Department");
                 var ImageUrl = WebRootPaths.DIR_Users_Main + AppUser.Id + "/" + WebRootPaths.Img + AppUser.ImageUrl;
+                if (AppUser.ImageUrl == "")
+                    ImageUrl = WebRootPaths.EmptyAvatar;
                 var User = new Users()
                 {
-                    Id=AppUser.Id,
+                    Id = AppUser.Id,
                     FirstName = AppUser.FirstName,
                     LastName = AppUser.Lastname,
                     FullName = AppUser.FirstName + " " + AppUser.Lastname,
@@ -156,6 +158,8 @@ namespace ProjectFollower.Controllers
             {
                 var UserItem = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == item.UserId);
                 var ImageUrl = WebRootPaths.DIR_Users_Main + UserItem.Id + "/" + WebRootPaths.Img + UserItem.ImageUrl;
+                if (UserItem.ImageUrl == "")
+                    ImageUrl = WebRootPaths.EmptyAvatar;
                 var commentItem = new CommentVM()
                 {
                     Id = item.Id,
@@ -204,13 +208,13 @@ namespace ProjectFollower.Controllers
 
 
                 }
-                var _appUser = _uow.ApplicationUser.GetAll(i => i.DepartmentId == item.Id).Where(s=>s.Active);
+                var _appUser = _uow.ApplicationUser.GetAll(i => i.DepartmentId == item.Id).Where(s => s.Active);
                 DepartmentsVM departmentsVM = new DepartmentsVM()
                 {
                     Id = item.Id,
                     Name = item.Name,
                     Users = UserList,
-                    ApplicationUser=_appUser
+                    ApplicationUser = _appUser
 
                 };
                 _departmentsVMs.Add(departmentsVM);
@@ -224,15 +228,15 @@ namespace ProjectFollower.Controllers
                     var username = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == playerItem.UserId);
                     var taskPlayerItem = new TaskPlayers()
                     {
-                        Id=playerItem.Id,
+                        Id = playerItem.Id,
                         FirstName = username.FirstName,
                         LastName = username.Lastname,
-                        ProjectTaskId=playerItem.ProjectTaskId,
-                        UserId=playerItem.UserId
+                        ProjectTaskId = playerItem.ProjectTaskId,
+                        UserId = playerItem.UserId
                     };
                     _taskplayers.Add(taskPlayerItem);
                 }
-                item.TaskPlayers=_taskplayers;
+                item.TaskPlayers = _taskplayers;
                 _projectTasks.Add(item);
             }
             var _projectDetailVM = new ProjectDetailVM()
@@ -394,13 +398,16 @@ namespace ProjectFollower.Controllers
                     }
                 }
             }
+
             //_uow.Save();
 
-
+            
             WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
             await WebSocAct.SendNotification_WebSocket(GetClaim(),INotifications);
+            
             return NoContent();
-            //return Redirect("/dashboard?status=true");
+
+            return Redirect("/dashboard?status=true");
         }
 
 
@@ -919,12 +926,16 @@ namespace ProjectFollower.Controllers
                 projectComments.UserId = AppUser.Id;
                 projectComments.CommentTime = DateTime.Now;
                 _uow.ProjectComments.Add(projectComments);
+                var userpath = WebRootPaths.DIR_Users_Main + AppUser.Id + "/" + WebRootPaths.Img + AppUser.ImageUrl;
+                if (AppUser.ImageUrl == "")
+                    userpath = WebRootPaths.EmptyAvatar;
+
                 var Comment = new CommentVM()
                 {
                     UserId = AppUser.Id,
                     Comment = projectComments.Comment,
                     CommentTime = projectComments.CommentTime.ToString("F"),
-                    Img = AppUser.ImageUrl,
+                    Img = userpath,
                     FullName = AppUser.FirstName + " " + AppUser.Lastname,
                     UserEmail = AppUser.Email
                 };

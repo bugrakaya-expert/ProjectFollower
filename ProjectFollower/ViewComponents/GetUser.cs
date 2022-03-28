@@ -31,6 +31,8 @@ namespace ProjectFollower.ViewComponents
                 var AppUser = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == Claims.Value);
                 string webRootPath = _hostEnvironment.WebRootPath;
                 var userpath = WebRootPaths.DIR_Users_Main + AppUser.Id + "/" + WebRootPaths.Img + AppUser.ImageUrl;
+                if (AppUser.ImageUrl == "")
+                    userpath = WebRootPaths.EmptyAvatar;
                 var _user = new Users()
                 {
                     FullName = AppUser.FirstName + " " + AppUser.Lastname,

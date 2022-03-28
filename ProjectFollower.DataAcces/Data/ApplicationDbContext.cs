@@ -25,5 +25,6 @@ namespace ProjectFollower.DataAcces.Data
         public DbSet<Scheduler> Scheduler { get; set; }
         public DbSet<SchedulerPriority> SchedulerPriority { get; set; }
         public DbSet <TaskPlayers> TaskPlayers { get; set; }
+        public DbSet <Notifications>  Notifications { get; set; }
     }
 }

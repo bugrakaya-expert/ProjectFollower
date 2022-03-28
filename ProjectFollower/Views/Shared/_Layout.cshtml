@@ -84,6 +84,11 @@
                         <label class="custom-switch-btn" for="switchDark"></label>
                     </div>
                 </div>
+
+
+
+
+                <!--Notification-->
                 <div class="position-relative d-inline-block">
                     <button class="header-icon btn btn-empty notification-unread" type="button" id="notificationButton"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -95,7 +100,7 @@
                             <div class="d-flex flex-row justify-content-center align-items-center py-2 border-bottom">
                                 <h3 class="m-0">Bildirimler</h3>
                             </div>
-                            @*Max son 5 Notification*@
+                            <!--Max son 5 Notification-->
                             <div class="d-flex flex-row align-items-center notification-item p-2 border-bottom">
                                 <a href="#">
                                     <img src="/assets/customers/b1ba221f-0aff-466c-a2c7-08d9f60b54f2/img/412a889e-1af4-4a1b-a29a-3e22717a8248.jpg" alt="Notification Image"
@@ -144,6 +149,12 @@
                         </div>
                     </div>
                 </div>
+                <!--Notification-->
+
+
+
+
+
                 <button class="header-icon btn btn-empty d-none d-sm-inline-block" type="button" id="fullScreenButton">
                     <i class="simple-icon-size-fullscreen"></i>
                     <i class="simple-icon-size-actual"></i>
@@ -170,6 +181,12 @@
                                 <a data-toggle="modal" data-target="#schedulerModal">
                                     <i class="simple-icon-calendar"></i>
                                     <span>Takvim</span>
+                                </a>
+                            </li>
+                            <li class="@Html.ActiveClass("Meeting")">
+                                <a asp-controller="Meeting" asp-action="Index">
+                                    <i class="simple-icon-briefcase"></i>
+                                    <span>Toplantı</span>
                                 </a>
                             </li>
                             <li class="@Html.ActiveClass("Users")">
@@ -199,6 +216,12 @@
                                     <span>Takvim</span>
                                 </a>
                             </li>
+                            <li class="@Html.ActiveClass("Meeting")">
+                                <a asp-controller="Meeting" asp-action="Index">
+                                    <i class="simple-icon-briefcase"></i>
+                                    <span>Toplantı</span>
+                                </a>
+                            </li>
                             <li class="@Html.ActiveClass("Customers")">
                                 <a asp-controller="Customers" asp-action="Index">
                                     <i class="simple-icon-organization"></i>
@@ -218,6 +241,12 @@
                                 <a data-toggle="modal" data-target="#schedulerModal">
                                     <i class="simple-icon-calendar"></i>
                                     <span>Takvim</span>
+                                </a>
+                            </li>
+                            <li class="@Html.ActiveClass("Meeting")">
+                                <a asp-controller="Meeting" asp-action="Index">
+                                    <i class="simple-icon-briefcase"></i>
+                                    <span>Toplantı</span>
                                 </a>
                             </li>
                             <li class="@Html.ActiveClass("Customers")">
@@ -409,7 +438,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12 col-sm-6">
-                        <p class="mb-0 text-muted">Sürüm Tarihi: 15.03.2022</p>
+                        <p class="mb-0 text-muted">Sürüm Tarihi: 21.03.2022</p>
                     </div>
                     <div class="col-12 col-sm-12">
                         <p class="mb-0 text-muted">All rights reserved. &copy; Many Points 2022.</p>

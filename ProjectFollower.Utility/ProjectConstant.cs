@@ -44,6 +44,8 @@ namespace ProjectFollower.Utility
 
         public static class WebRootPaths
         {
+            public const string EmptyAvatar = "/images/profile-avatar.jpg";
+
             public const string RootAsset = "/assets/";
             public const string Customers = "customers/";
             public const string Users = "users/";
