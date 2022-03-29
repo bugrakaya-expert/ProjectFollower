@@ -1,0 +1,164 @@
+﻿
+@{
+    ViewData["Title"] = "Notification";
+}
+
+<main>
+    <div class="container-fluid disable-text-selection">
+        <div class="row">
+            <div class="col-12">
+                <div class="mb-3">
+                    <h1>Bildirimler</h1>
+                    <div class="text-zero top-right-button-container">
+                        <div class="btn-group">
+                            <div class="btn btn-primary btn-lg pl-4 pr-0 check-button notification-button">
+                                <label class="custom-control custom-checkbox mb-0 d-inline-block">
+                                    <input type="checkbox" class="custom-control-input" id="checkAll">
+                                    <span class="custom-control-label notification-select-all">Tümünü Seç</span>
+                                </label>
+                            </div>
+                            <button type="button"
+                                    class="btn btn-lg btn-primary dropdown-toggle dropdown-toggle-split"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="#" id="check-readed">Seçilenleri okundu olarak işaretle</a>
+                                <a class="dropdown-item" href="#">Seçilenleri sil</a>
+                            </div>
+                        </div>
+                    </div>
+                    <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
+                        <ol class="breadcrumb pt-0">
+                            <li class="breadcrumb-item">
+                                <a href="/">Anasayfa</a>
+                            </li>
+                            <li class="breadcrumb-item active">
+                                <a href="#0">Bildirimler</a>
+                            </li>
+                        </ol>
+                    </nav>
+
+                </div>
+                <div class="separator mb-5"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 list" data-check-all="checkAll">
+
+                <div class="card d-flex flex-row mb-3 card-notification">
+                    <a class="d-flex" href="Pages.Product.Detail.html">
+                        <img src="img/products/fat-rascal-thumb.jpg" alt="Fat Rascal"
+                             class="list-thumbnail responsive border-0 card-img-left" />
+                    </a>
+                    <div class="pl-2 d-flex flex-grow-1 min-width-zero">
+                        <div class="card-body align-self-center d-flex flex-column flex-lg-row justify-content-between min-width-zero align-items-lg-center">
+                            <a href="Pages.Product.Detail.html" class="w-15 w-sm-100">
+                                <p class="list-item-heading mb-0 truncate">Fat Rascal</p>
+                            </a>
+                            <p class="mb-0 text-muted text-small w-40 w-sm-100">Cupcakes</p>
+                            <p class="mb-0 text-muted text-small w-15 w-sm-100">13.04.2018</p>
+                            <div class="w-15 w-sm-100">
+                                <span class="badge badge-pill badge-primary">OKUNDU</span>
+                            </div>
+                        </div>
+                        <label class="custom-control custom-checkbox mb-1 align-self-center pr-4">
+                            <input type="checkbox" class="custom-control-input">
+                            <span class="custom-control-label">&nbsp;</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section Scripts{ 
+    <script>
+        var readeditem = "";
+        $.ajax({
+            url: '/api/getnotify',
+            type : 'GET',
+            dataType:'json',
+            success: function (data) {
+                $.each(data, function (key, value) {
+                    if (value.readed == true) {
+                        readeditem = `<span class="badge badge-pill badge-primary">OKUNDU</span>`
+                    } else {
+                        readeditem =`<span class="badge badge-pill badge-info">YENİ</span>`
+                    }
+                    var item = `<div class="card d-flex flex-row mb-3 card-notification">
+                    <a class="d-flex" href="Pages.Product.Detail.html">
+                        <img src="img/products/fat-rascal-thumb.jpg" alt="Fat Rascal"
+                             class="list-thumbnail responsive border-0 card-img-left" />
+                    </a>
+                    <div class="pl-2 d-flex flex-grow-1 min-width-zero">
+                        <div class="card-body align-self-center d-flex flex-column flex-lg-row justify-content-between min-width-zero align-items-lg-center">
+                            <a href="Pages.Product.Detail.html" class="w-15 w-sm-100">
+                                <p class="list-item-heading mb-0 truncate">`+ value.title +`</p>
+                            </a>
+                            <p class="mb-0 text-muted text-small w-40 w-sm-100">`+ value.message +`</p>
+                            <p class="mb-0 text-muted text-small w-15 w-sm-100">`+ value.date +`</p>
+                            <div class="w-15 w-sm-100">` + readeditem + `</div>
+                        </div>
+                        <label class="custom-control custom-checkbox mb-1 align-self-center pr-4">
+                            <input type="checkbox" class="custom-control-input notifyvalue" id=`+value.id+` >
+                            <span class="custom-control-label">&nbsp;</span>
+                        </label>
+                    </div>
+                </div>`
+                    $(".list").append(item)
+                });
+            },
+            error : function(request,error)
+            {
+                alert("Request: "+JSON.stringify(request));
+            }
+        });
+        /* Notification Update Read */
+        $(document).on("click", "#check-readed", function () {
+            var formdata = [];
+            $('.notifyvalue:checkbox').each(function () {
+                if ($(this).is(":checked")) {
+
+                    var item = {};
+                    //here the item name should be the same as your model
+                    item['id'] = this.id,
+                    item['done'] = $(this).is(':checked')
+                    formdata.push(item);
+                }
+            });
+
+            //here the model should be the same as your controller parameter name
+            formdata = JSON.stringify(formdata);
+            console.log(formdata);
+            /*$.ajax({
+                //contentType: 'application/json; charset=utf-8',//this statement should be added
+                url: "/api/getnotify",
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json",
+                traditional: true,
+                
+                data: {
+                    projectId: 'Model.Project.Id',
+                    projectTasks: "",
+                },
+                */
+               /* data: formdata,
+                //dataType: "json",
+                success: function (received) {
+                    Swal.fire({
+                        title: "Güncelleme başarılı.",
+                        showCancelButton: false,
+                        icon: "success",
+                        confirmButtonText: 'Tamam',
+                    }).then((result) => {
+                        location.reload();
+                    });
+                }
+            });*/
+        });
+    </script>
+} 

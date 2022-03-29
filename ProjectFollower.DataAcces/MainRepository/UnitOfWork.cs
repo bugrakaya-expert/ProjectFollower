@@ -25,6 +25,8 @@ namespace ProjectFollower.DataAcces.MainRepository
             Scheduler = new SchedulerRepository(_db);
             TaskPlayers = new TaskPlayersRepository(_db);
             Notifications = new NotificationRepository(_db);
+            Meeting = new MeetingRepository(_db);
+            ResponsibleMeeting = new ResponsibleMeetingRepository(_db);
         }
         //public ICategoryRepository Category { get; private set; }
         public IApplicationUserRepository ApplicationUser { get; private set; }
@@ -40,6 +42,8 @@ namespace ProjectFollower.DataAcces.MainRepository
         public ISchedulerRepository Scheduler { get; private set; }
         public ITaskPlayersRepository TaskPlayers { get; private set; }
         public INotificationRepository Notifications { get; private set; }
+        public IMeetingRepository Meeting { get; private set; }
+        public IResponsibleMeetingRepository ResponsibleMeeting { get; private set; }
         public void Dispose()
         {
             _db.Dispose();

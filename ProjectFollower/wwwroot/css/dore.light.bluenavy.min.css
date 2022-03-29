@@ -1391,23 +1391,23 @@ button {
     }
 
     15% {
-        color: #A29F5F;
+        color: #6e767a;
     }
 
     30% {
-        color: #B6AF30;
+        color: #4c7f97;
     }
 
     50% {
-        color: #C9BF00;
+        color: #1f83b1;
     }
 
     70% {
-        color: #B6AF30;
+        color: #4c7f97;
     }
 
     85% {
-        color: #A29F5F;
+        color: #6e767a;
     }
 
     100% {
@@ -1421,28 +1421,28 @@ button {
     }
 
     15% {
-        border-color: #A29F5F;
-        color: #A29F5F;
+        border-color: #6e767a;
+        color: #6e767a;
     }
 
     30% {
-        border-color: #B6AF30;
-        color: #B6AF30;
+        border-color: #4c7f97;
+        color: #4c7f97;
     }
 
     50% {
-        border-color: #C9BF00;
-        color: #C9BF00;
+        border-color: #1f83b1;
+        color: #1f83b1;
     }
 
     70% {
-        border-color: #B6AF30;
-        color: #B6AF30;
+        border-color: #4c7f97;
+        color: #4c7f97;
     }
 
     85% {
-        border-color: #A29F5F;
-        color: #A29F5F;
+        border-color: #6e767a;
+        color: #6e767a;
     }
 
     100% {
@@ -2534,6 +2534,9 @@ main .container-fluid {
     background: #fff;
     border-radius: 0.1rem;
     box-shadow: 0 1px 15px rgba(0, 0, 0, 0.04), 0 1px 6px rgba(0, 0, 0, 0.04);
+}
+.card-notification.card{
+    height:50px;
 }
 .card .card-header .card-icon {
     right: 5px;
@@ -8977,4 +8980,11 @@ footer.page-footer .footer-content {
 }
 .theme-button{
     display: none;
+}
+.notification-select-all {
+    font-size: 16px;
+    cursor: pointer;
+}
+.notification-button{
+    padding-right:1rem!important;
 }

@@ -44,8 +44,14 @@ namespace ProjectFollower.Controllers
         [BindProperty]
         public SignInInput Input { get; set; }
         [Route("signin")]
-        public IActionResult Index()
+        public IActionResult Index(string returnUrl)
         {
+            /*
+            string[]? _slashdetails = returnUrl.Split("proje-detaylari");
+            if(_slashdetails.Count() > 0)
+            {
+                returnUrl = "proje-detaylari/" + _slashdetails[1];
+            }*/
             #region Authentication Index
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var Claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);

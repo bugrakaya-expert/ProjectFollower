@@ -29,7 +29,10 @@ namespace ProjectFollower.DataAcces.MainRepository
         {
             dbSet.Add(entity);
         }
-
+        public void AddRange(IEnumerable<T> entity)
+        {
+            dbSet.AddRange(entity);
+        }
         public T Get(int id)
         {
             return dbSet.Find(id);

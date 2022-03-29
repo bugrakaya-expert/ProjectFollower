@@ -20,6 +20,8 @@ namespace ProjectFollower.DataAcces.IMainRepository
         ISchedulerRepository Scheduler { get; }
         ITaskPlayersRepository TaskPlayers { get; }
         INotificationRepository Notifications { get; }
+        IMeetingRepository Meeting { get; }
+        IResponsibleMeetingRepository ResponsibleMeeting { get; }
         void Save();
     }
 }

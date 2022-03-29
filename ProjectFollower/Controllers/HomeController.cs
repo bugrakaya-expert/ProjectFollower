@@ -31,7 +31,7 @@ namespace ProjectFollower.Controllers
         private readonly IUnitOfWork _uow;
         private readonly IWebHostEnvironment _hostEnvironment;
         private ProjectTasks ProjectTaskItem = new ProjectTasks();
-        public List<NotificationVM> Notifications = new List<NotificationVM>();
+        public List<NotificationVM> NotificationVMs = new List<NotificationVM>();
         public IEnumerable<NotificationVM> INotifications;
         public HomeController(
         UserManager<IdentityUser> userManager,
@@ -106,7 +106,6 @@ namespace ProjectFollower.Controllers
 
             return View(Project);
         }
-
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [Route("proje-detaylari/{id}")]
         public IActionResult Details(string id)
@@ -253,7 +252,6 @@ namespace ProjectFollower.Controllers
             return View(_projectDetailVM);
         }
 
-
         [Authorize(Roles = UserRoles.Admin)]
         [Route("yeni-proje")]
         public IActionResult ProjectNew()
@@ -279,7 +277,6 @@ namespace ProjectFollower.Controllers
 
             return View(Project);
         }
-
 
         [Authorize(Roles = UserRoles.Admin)]
         [HttpPost("yeni-proje")]
@@ -316,10 +313,10 @@ namespace ProjectFollower.Controllers
                     Title = "Yeni Proje",
                     Message = "Adınıza yeni bir proje açıldı. Detaylar için <a href='/proje-detaylari/" + Project.Id + "'>tıklayınız</a>"
                 };
-                Notifications.Add(_notify);
+                NotificationVMs.Add(_notify);
                 _uow.ResponsibleUsers.Add(ResponsibleUser);
             }
-            INotifications = Notifications;
+            INotifications = NotificationVMs;
             if (ProjectVM.TaskDesc == null)
                 return NoContent();
             int t = 0;
@@ -398,18 +395,29 @@ namespace ProjectFollower.Controllers
                     }
                 }
             }
-
-            //_uow.Save();
+            foreach (var item in NotificationVMs)
+            {
+                var _notify = new Notifications()
+                {
+                    Date = item.Date,
+                    Message = item.Message,
+                    Title = item.Title,
+                    UserId = item.UserId,
+                    ProjectId=Project.Id.ToString()
+                };
+                _uow.Notifications.Add(_notify);
+            }
+            //_uow.Notifications.AddRange((IEnumerable<Notifications>)NotificationVMs); TEST
+            _uow.Save();
 
             
             WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
             await WebSocAct.SendNotification_WebSocket(GetClaim(),INotifications);
             
-            return NoContent();
+            //return NoContent();
 
             return Redirect("/dashboard?status=true");
         }
-
 
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [HttpPost("proje-detaylari/dokuman-guncelle")]
@@ -593,8 +601,12 @@ namespace ProjectFollower.Controllers
             return NoContent();
 
         }
-
-
+        [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
+        [Route("notification")]
+        public IActionResult Notification()
+        {
+            return View();
+        }
         #region API
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager)]
         [HttpPost("jsonresult/updatedescription")]
@@ -1119,6 +1131,14 @@ namespace ProjectFollower.Controllers
             WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
             await WebSocAct.ListProjects_WebSocket(GetClaim());
             return Json(null);
+        }
+        //[Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
+        [HttpGet("api/getnotify")]
+        public async Task<IEnumerable<Notifications>> GetNotifications()
+        {
+            await Task.Delay(1);
+            return _uow.Notifications.GetAll(i => i.UserId == GetClaim().Value);
+
         }
         #endregion API
 

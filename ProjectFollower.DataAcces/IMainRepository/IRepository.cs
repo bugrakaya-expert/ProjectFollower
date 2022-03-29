@@ -20,6 +20,7 @@ namespace ProjectFollower.DataAcces.IMainRepository
             string includeProperties = null);
 
         void Add(T entity);
+        void AddRange(IEnumerable<T> entity);
         void Remove(int id);
         void Remove(T entity);
         void RemoveRange(IEnumerable<T> entity);
