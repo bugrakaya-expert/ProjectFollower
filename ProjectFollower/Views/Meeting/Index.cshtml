@@ -2,8 +2,8 @@
 @{ ViewData["Title"] = "Index";
 }
 <style>
-    .dx-item-content.dx-box-item-content.dx-box-flex.dx-box dx-widget.dx-visibility-change-handler.dx-collection .dx-box-item:first-child {
-        display: none !important;
+    .dx-textarea .dx-texteditor-input {
+        min-height: 15rem;
     }
 </style>
 <main>
@@ -21,246 +21,180 @@
                     DevExpress.ui.notify(`${event} "${value}" `, type, 800);
                 }
                 DevExpress.localization.locale(navigator.language);
-                $(() => {
-                    $('#scheduler').dxScheduler({
-                        timeZone: 'America/Los_Angeles',
-                        dataSource: data,
-                        views: ['week', 'month'],
-                        currentView: 'week',
-                        currentDate: new Date(2021, 2, 29),
-                        startDayHour: 8,
-                        endDayHour: 18,
-                        showAllDayPanel: false,
-                        allDay: false,
-                        height: 900,
-                        onAppointmentAdded(e) {
-                            showToast('Oluşturuldu', e.appointmentData.text, 'info');
-                           /* const endDate = new Date(2099, 4, 10, 13, 0)
-                            e.appointmentData.endDate = endDate;
-                            $.ajax({
-                                type: "POST",
-                                url: "/postscheduler",
-                                data: JSON.stringify(e.appointmentData),
-                                contentType: "application/json; charset=utf-8",
-                                dataType: "json",
-                                success: function (response) {
-                                    showToast('Oluşturuldu', e.appointmentData.text, 'info');
+                var customerNamePublic = "";
+                $.ajax({
+                    timeZone: 'Turkey',
+                    type: "GET",
+                    url: "/api/getMeetings",
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function (data) {
+                        var meetingsObj = data.meetings;
+                        var customersObj = data.customer;
+                        var usersObj = data.responsibleMeetings;
+                        const now = new Date();
+                        /*
+                        const now = new Date();
+                        var scheduler = data.scheduler;
+                        var schedulerPriorityObj = data.schedulerPriority;
+                        customerNamePublic = data.customers[0].text;*/
+                        console.log(data);
+                        $(() => {
+                            $('#scheduler').dxScheduler({
+                                dataSource: meetingsObj,
+                                views: ['workWeek', 'month'],
+                                currentView: 'workWeek',
+                                currentDate: now,
+                                startDayHour: 8,
+                                endDayHour: 18,
+                                showAllDayPanel: false,
+                                allDay: false,
+                                height: 700,
+                                onAppointmentAdded(e) {
                                     $.ajax({
-                                        type: "GET",
-                                        url: "/jsonresult/trigger_WebSocket/" + 
-                                        contentType: "application/json",
-                                        dataType: "json",
-                                        success: function (data) {
-                                            console.log("Web Socket Requets Sended from scheduler. Id:)
-                                        }
-                                    });
-                                },
-                                failure: function (response) {
-                                    alert("Kayıt başarısız! - Failure response");
-                                },
-                                error: function (response) {
-                                    alert("Kayıt başarısız! - Error response");
-                                }
-                            });*/
+                                         type: "POST",
+                                         url: "/api/addMeetings",
+                                         data: JSON.stringify(e.appointmentData),
+                                         contentType: "application/json; charset=utf-8",
+                                         dataType: "json",
+                                         success: function (response) {
+                                             showToast('Oluşturuldu', e.appointmentData.text, 'success');
+                                         },
+                                         failure: function (response) {
+                                             alert("Kayıt başarısız! - Failure response");
+                                         },
+                                         error: function (response) {
+                                             alert("Kayıt başarısız! - Error response");
+                                         }
+                                     });
 
-                        },
-                        onAppointmentUpdated(e) {
-                            showToast('Güncellendi', e.appointmentData.text, 'info');
-                           /* $.ajax({
-                                type: "POST",
-                                url: "/updatescheduler",
-                                data: JSON.stringify(e.appointmentData),
-                                contentType: "application/json; charset=utf-8",
-                                dataType: "json",
-                                success: function (response) {
+                                },
+                                onAppointmentUpdated(e) {
                                     showToast('Güncellendi', e.appointmentData.text, 'info');
+                                    console.log(e.appointmentData);
                                     $.ajax({
-                                        type: "GET",
-                                        url: "/jsonresult/trigger_WebSocket/" + ,
-                                        contentType: "application/json",
+                                        type: "POST",
+                                        url: "/api/updateMeetings",
+                                        data: JSON.stringify(e.appointmentData),
+                                        contentType: "application/json; charset=utf-8",
                                         dataType: "json",
-                                        success: function (data) {
-                                            console.log("Web Socket Requets Sended from scheduler. Id: " + )
+                                        success: function (response) {
+                                            showToast('Güncellendi', e.appointmentData.text, 'info');
+                                        },
+                                        failure: function (response) {
+                                            alert("Kayıt başarısız! - Failure response");
+                                        },
+                                        error: function (response) {
+                                            alert("Kayıt başarısız! - Error response");
                                         }
                                     });
                                 },
-                                failure: function (response) {
-                                    alert("Güncelleme başarısız! - Failure response");
-                                },
-                                error: function (response) {
-                                    alert("Güncelleme başarısız! - Error response");
-                                }
-                            });*/
-                        },
-                        onAppointmentDeleted(e) {
-                            showToast('Silindi', e.appointmentData.text, 'info');
-                            /*$.ajax({
-                                type: "GET",
-                                url: "/deletescheduler/" + JSON.stringify(e.appointmentData.id),
-                                contentType: "application/json; charset=utf-8",
-                                dataType: "json",
-                                success: function (response) {
-                                    showToast('Silindi', e.appointmentData.text, 'info');
+                                onAppointmentDeleted(e) {
+                                    showToast('Silindi', e.appointmentData.text, 'error');
                                     $.ajax({
-                                        type: "GET",
-                                        url: "/jsonresult/trigger_WebSocket/" +,
-                                        contentType: "application/json",
+                                        type: "POST",
+                                        url: "/api/removeMeetings",
+                                        data: JSON.stringify(e.appointmentData),
+                                        contentType: "application/json; charset=utf-8",
                                         dataType: "json",
-                                        success: function (data) {
-                                            console.log("Web Socket Requets Sended from scheduler. Id: " +)
+                                        success: function (response) {
+                                            showToast('Silindi', e.appointmentData.text, 'error');
+                                        },
+                                        failure: function (response) {
+                                            alert("Kayıt başarısız! - Failure response");
+                                        },
+                                        error: function (response) {
+                                            alert("Kayıt başarısız! - Error response");
                                         }
                                     });
                                 },
-                                failure: function (response) {
-                                    alert(response.responseText);
-                                },
-                                error: function (response) {
-                                    alert(response.responseText);
-                                }
-                            });*/
-                        },
-                        resources: [
-                            {
-                                fieldExpr: 'employeeID',
-                                allowMultiple: true,
-                                dataSource: employees,
-                                label: 'Employee',
-                            },
-                            {
-                                fieldExpr: 'companyID',
-                                allowMultiple: false,
-                                dataSource: company,
-                                label: 'Company',
-                            },
-                        ],
-                        /*appointmentTemplate(model) {
 
-                            return $(`${"<div class='movie'>"
-                                + "<img src='"}' />`
-                                + `<div class='movie-text'></div>`
-                                + '</div>');
-                        },*/
-                    }).dxScheduler('instance');
+                                onAppointmentFormOpening(data) {
+                                    const { form } = data;
+                                    form.option('items', [{
+                                        label: {
+                                            text: 'Konu',
+                                        },
+                                        editorType: 'dxTextBox',
+                                        dataField: 'text',
+                                        editorOptions: {
+                                            width: '100%',
+                                            type: 'text',
+                                        },
+                                    }, {
+                                        label: {
+                                            text: 'Firma',
+                                        },
+                                        editorType: 'dxSelectBox',
+                                        dataField: 'customersId',
+                                        editorOptions: {
+                                            items: customersObj, placeholder: customersObj[0].text,
+                                            displayExpr: 'text',
+                                            valueExpr: 'id',
+                                        },
+                                    }, {
+                                        colSpan: 2,
+                                        label: {
+                                            text: 'Employee',
+                                        },
+                                        editorType: 'dxTagBox',
+                                        dataField: 'userId',
+                                        editorOptions: {
+                                            items: usersObj, placeholder: usersObj[0].text,
+                                            searchEnabled: true,
+                                            displayExpr: 'text',
+                                            valueExpr: 'userId',
+                                        },
+                                    }, {
+                                        label: {
+                                            text: 'Başlangıç Tarih',
+                                        },
+                                        dataField: 'startDate',
+                                        editorType: 'dxDateBox',
+                                        editorOptions: {
+                                            width: '100%',
+                                            type: 'datetime',
+                                        },
+                                    }, {
+                                        label: {
+                                            text: 'Bitiş Tarih',
+                                        },
+                                        dataField: 'endDate',
+                                        editorType: 'dxDateBox',
+                                        editorOptions: {
+                                            width: '100%',
+                                            type: 'datetime',
+                                        },
+                                     },{
+                                        colSpan: 2,
+                                        label: {
+                                            text: 'Açıklama',
+                                        },
+                                        dataField: 'description',
+                                        editorType: "dxTextArea",
+                                        editorOptions: {
+                                            width: '100%',
+                                        },
+                                    },
+                                    ]);
+                                },
+                                /*appointmentTemplate(model) {
+
+                                    return $(`${"<div class='movie'>"
+                                        + "<img src='"}' />`
+                                        + `<div class='movie-text'></div>`
+                                        + '</div>');
+                                },*/
+                            }).dxScheduler('instance');
+                        });
+                    }
                 });
 
                  console.log(true);
-                 
 
-                const employees = [{
-                    text: 'John Heart',
-                    id: 1,
-                    color: '#56ca85',
-                    avatar: 'images/gym/coach-man.png',
-                    age: 27,
-                    discipline: 'ABS, Fitball, StepFit',
-                }, {
-                    text: 'Sandra Johnson',
-                    id: 2,
-                    color: '#ff9747',
-                    avatar: 'images/gym/coach-woman.png',
-                    age: 25,
-                    discipline: 'ABS, Fitball, StepFit',
-                }];
-                const company = [{
-                    text: 'John Heart',
-                    id: 1,
-                    color: '#56ca85',
-                    avatar: 'images/gym/coach-man.png',
-                    age: 27,
-                    discipline: 'ABS, Fitball, StepFit',
-                }, {
-                    text: 'Sandra Johnson',
-                    id: 2,
-                    color: '#ff9747',
-                    avatar: 'images/gym/coach-woman.png',
-                    age: 25,
-                    discipline: 'ABS, Fitball, StepFit',
-                }];
-                const data = [
-                    {
-                        id:1,
-                        text: 'Website Re-Design Plan',
-                        startDate: new Date('2021-03-29T16:30:00.000Z'),
-                        endDate: new Date('2021-03-29T18:30:00.000Z'),
-                    }, {
-                        id: 2,
-                        text: 'Book Flights to San Fran for Sales Trip',
-                        startDate: new Date('2021-03-29T19:00:00.000Z'),
-                        endDate: new Date('2021-03-29T20:00:00.000Z'),
-                        allDay: true,
-                    }, {
-                        id: 3,
-                        text: 'Install New Router in Dev Room',
-                        startDate: new Date('2021-03-29T21:30:00.000Z'),
-                        endDate: new Date('2021-03-29T22:30:00.000Z'),
-                    }, {
-                        id: 4,
-                        text: 'Approve Personal Computer Upgrade Plan',
-                        startDate: new Date('2021-03-30T17:00:00.000Z'),
-                        endDate: new Date('2021-03-30T18:00:00.000Z'),
-                    }, {
-                        id: 5,
-                        text: 'Final Budget Review',
-                        startDate: new Date('2021-03-30T19:00:00.000Z'),
-                        endDate: new Date('2021-03-30T20:35:00.000Z'),
-                    }, {
-                        id: 6,
-                        text: 'New Brochures',
-                        startDate: new Date('2021-03-30T21:30:00.000Z'),
-                        endDate: new Date('2021-03-30T22:45:00.000Z'),
-                    }, {
-                        id: 7,
-                        text: 'Install New Database',
-                        startDate: new Date('2021-03-31T16:45:00.000Z'),
-                        endDate: new Date('2021-03-31T18:15:00.000Z'),
-                    }, {
-                        id: 8,
-                        text: 'Approve New Online Marketing Strategy',
-                        startDate: new Date('2021-03-31T19:00:00.000Z'),
-                        endDate: new Date('2021-03-31T21:00:00.000Z'),
-                    }, {
-                        id: 9,
-                        text: 'Upgrade Personal Computers',
-                        startDate: new Date('2021-03-31T22:15:00.000Z'),
-                        endDate: new Date('2021-03-31T23:30:00.000Z'),
-                    }, {
-                        id: 10,
-                        text: 'Customer Workshop',
-                        startDate: new Date('2021-04-01T18:00:00.000Z'),
-                        endDate: new Date('2021-04-01T19:00:00.000Z'),
-                        allDay: true,
-                    }, {
-                        id: 11,
-                        text: 'Prepare 2021 Marketing Plan',
-                        startDate: new Date('2021-04-01T18:00:00.000Z'),
-                        endDate: new Date('2021-04-01T20:30:00.000Z'),
-                    }, {
-                        id: 12,
-                        text: 'Brochure Design Review',
-                        startDate: new Date('2021-04-01T21:00:00.000Z'),
-                        endDate: new Date('2021-04-01T22:30:00.000Z'),
-                    }, {
-                        id: 13,
-                        text: 'Create Icons for Website',
-                        startDate: new Date('2021-04-02T17:00:00.000Z'),
-                        endDate: new Date('2021-04-02T18:30:00.000Z'),
-                    }, {
-                        id: 14,
-                        text: 'Upgrade Server Hardware',
-                        startDate: new Date('2021-04-02T21:30:00.000Z'),
-                        endDate: new Date('2021-04-02T23:00:00.000Z'),
-                    }, {
-                        id: 15,
-                        text: 'Submit New Website Design',
-                        startDate: new Date('2021-04-02T23:30:00.000Z'),
-                        endDate: new Date('2021-04-03T01:00:00.000Z'),
-                    }, {
-                        id: 16,
-                        text: 'Launch New Website',
-                        startDate: new Date('2021-04-02T19:20:00.000Z'),
-                        endDate: new Date('2021-04-02T21:00:00.000Z'),
-                    },
-                ];
+
+
+                
 
             </script>
         }

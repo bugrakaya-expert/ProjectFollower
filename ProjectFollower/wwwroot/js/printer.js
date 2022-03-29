@@ -16,6 +16,7 @@ let focuser = setInterval(() => window.dispatchEvent(new Event('focus')), 500);
 let font = ""
 
 function printScheduler(data) {
+alert(data);
     printJS({
         printable: 'scheduler',
         type: 'html',
