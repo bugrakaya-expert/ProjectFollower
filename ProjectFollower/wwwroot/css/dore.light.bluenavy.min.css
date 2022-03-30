@@ -1385,6 +1385,26 @@ button {
     animation: none;
 }
 
+.notification-read i {
+    transition: all ease 0.2s;
+    animation: none;
+}
+
+.notification-read .count {
+    transition: all ease 0.2s;
+    animation: none;
+}
+
+.notification-read:hover .count {
+    transition: all ease 0.2s;
+    animation: none;
+}
+
+.notification-read:hover i {
+    transition: all ease 0.2s;
+    animation: none;
+}
+
 @keyframes color-change-wshadow {
     0% {
         color: #8f8f8f;

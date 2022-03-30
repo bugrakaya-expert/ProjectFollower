@@ -22,179 +22,172 @@
                 }
                 DevExpress.localization.locale(navigator.language);
                 var customerNamePublic = "";
-                $.ajax({
-                    timeZone: 'Turkey',
-                    type: "GET",
-                    url: "/api/getMeetings",
-                    contentType: "application/json",
-                    dataType: "json",
-                    success: function (data) {
-                        var meetingsObj = data.meetings;
-                        var customersObj = data.customer;
-                        var usersObj = data.responsibleMeetings;
-                        const now = new Date();
-                        /*
-                        const now = new Date();
-                        var scheduler = data.scheduler;
-                        var schedulerPriorityObj = data.schedulerPriority;
-                        customerNamePublic = data.customers[0].text;*/
-                        console.log(data);
-                        $(() => {
-                            $('#scheduler').dxScheduler({
-                                dataSource: meetingsObj,
-                                views: ['workWeek', 'month'],
-                                currentView: 'workWeek',
-                                currentDate: now,
-                                startDayHour: 8,
-                                endDayHour: 18,
-                                showAllDayPanel: false,
-                                allDay: false,
-                                height: 700,
-                                onAppointmentAdded(e) {
-                                    $.ajax({
-                                         type: "POST",
-                                         url: "/api/addMeetings",
-                                         data: JSON.stringify(e.appointmentData),
-                                         contentType: "application/json; charset=utf-8",
-                                         dataType: "json",
-                                         success: function (response) {
-                                             showToast('Oluşturuldu', e.appointmentData.text, 'success');
-                                         },
-                                         failure: function (response) {
-                                             alert("Kayıt başarısız! - Failure response");
-                                         },
-                                         error: function (response) {
-                                             alert("Kayıt başarısız! - Error response");
-                                         }
-                                     });
+                meet();                
+                function meet() {
+                    $.ajax({
+                        timeZone: 'Turkey',
+                        type: "GET",
+                        url: "/api/getMeetings",
+                        contentType: "application/json",
+                        dataType: "json",
+                        success: function (data) {
+                            var meetingsObj = data.meetings;
+                            var customersObj = data.customer;
+                            var usersObj = data.responsibleMeetings;
+                            const now = new Date();
+                            $(() => {
+                                $('#scheduler').dxScheduler({
+                                    dataSource: meetingsObj,
+                                    views: ['month', 'week', 'agenda'],
+                                    currentView: 'month',
+                                    currentDate: now,
+                                    startDayHour: 8,
+                                    endDayHour: 18,
+                                    showAllDayPanel: false,
+                                    allDay: false,
+                                    height: 700,
+                                    onAppointmentAdded(e) {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "/api/addMeetings",
+                                            data: JSON.stringify(e.appointmentData),
+                                            contentType: "application/json; charset=utf-8",
+                                            dataType: "json",
+                                            success: function (response) {
+                                                showToast('Oluşturuldu', e.appointmentData.text, 'success');
+                                                meet();
+                                            },
+                                            failure: function (response) {
+                                                alert("Kayıt başarısız! - Failure response");
+                                            },
+                                            error: function (response) {
+                                                alert("Kayıt başarısız! - Error response");
+                                            }
+                                        });
 
-                                },
-                                onAppointmentUpdated(e) {
-                                    showToast('Güncellendi', e.appointmentData.text, 'info');
-                                    console.log(e.appointmentData);
-                                    $.ajax({
-                                        type: "POST",
-                                        url: "/api/updateMeetings",
-                                        data: JSON.stringify(e.appointmentData),
-                                        contentType: "application/json; charset=utf-8",
-                                        dataType: "json",
-                                        success: function (response) {
-                                            showToast('Güncellendi', e.appointmentData.text, 'info');
-                                        },
-                                        failure: function (response) {
-                                            alert("Kayıt başarısız! - Failure response");
-                                        },
-                                        error: function (response) {
-                                            alert("Kayıt başarısız! - Error response");
-                                        }
-                                    });
-                                },
-                                onAppointmentDeleted(e) {
-                                    showToast('Silindi', e.appointmentData.text, 'error');
-                                    $.ajax({
-                                        type: "POST",
-                                        url: "/api/removeMeetings",
-                                        data: JSON.stringify(e.appointmentData),
-                                        contentType: "application/json; charset=utf-8",
-                                        dataType: "json",
-                                        success: function (response) {
-                                            showToast('Silindi', e.appointmentData.text, 'error');
-                                        },
-                                        failure: function (response) {
-                                            alert("Kayıt başarısız! - Failure response");
-                                        },
-                                        error: function (response) {
-                                            alert("Kayıt başarısız! - Error response");
-                                        }
-                                    });
-                                },
-
-                                onAppointmentFormOpening(data) {
-                                    const { form } = data;
-                                    form.option('items', [{
-                                        label: {
-                                            text: 'Konu',
-                                        },
-                                        editorType: 'dxTextBox',
-                                        dataField: 'text',
-                                        editorOptions: {
-                                            width: '100%',
-                                            type: 'text',
-                                        },
-                                    }, {
-                                        label: {
-                                            text: 'Firma',
-                                        },
-                                        editorType: 'dxSelectBox',
-                                        dataField: 'customersId',
-                                        editorOptions: {
-                                            items: customersObj, placeholder: customersObj[0].text,
-                                            displayExpr: 'text',
-                                            valueExpr: 'id',
-                                        },
-                                    }, {
-                                        colSpan: 2,
-                                        label: {
-                                            text: 'Employee',
-                                        },
-                                        editorType: 'dxTagBox',
-                                        dataField: 'userId',
-                                        editorOptions: {
-                                            items: usersObj, placeholder: usersObj[0].text,
-                                            searchEnabled: true,
-                                            displayExpr: 'text',
-                                            valueExpr: 'userId',
-                                        },
-                                    }, {
-                                        label: {
-                                            text: 'Başlangıç Tarih',
-                                        },
-                                        dataField: 'startDate',
-                                        editorType: 'dxDateBox',
-                                        editorOptions: {
-                                            width: '100%',
-                                            type: 'datetime',
-                                        },
-                                    }, {
-                                        label: {
-                                            text: 'Bitiş Tarih',
-                                        },
-                                        dataField: 'endDate',
-                                        editorType: 'dxDateBox',
-                                        editorOptions: {
-                                            width: '100%',
-                                            type: 'datetime',
-                                        },
-                                     },{
-                                        colSpan: 2,
-                                        label: {
-                                            text: 'Açıklama',
-                                        },
-                                        dataField: 'description',
-                                        editorType: "dxTextArea",
-                                        editorOptions: {
-                                            width: '100%',
-                                        },
                                     },
-                                    ]);
-                                },
-                                /*appointmentTemplate(model) {
+                                    onAppointmentUpdated(e) {
+                                        showToast('Güncellendi', e.appointmentData.text, 'info');
+                                        console.log(e.appointmentData);
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "/api/updateMeetings",
+                                            data: JSON.stringify(e.appointmentData),
+                                            contentType: "application/json; charset=utf-8",
+                                            dataType: "json",
+                                            success: function (response) {
+                                                showToast('Güncellendi', e.appointmentData.text, 'info');
+                                                meet();
+                                            },
+                                            failure: function (response) {
+                                                alert("Kayıt başarısız! - Failure response");
+                                            },
+                                            error: function (response) {
+                                                alert("Kayıt başarısız! - Error response");
+                                            }
+                                        });
+                                    },
+                                    onAppointmentDeleted(e) {
+                                        showToast('Silindi', e.appointmentData.text, 'error');
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "/api/removeMeetings",
+                                            data: JSON.stringify(e.appointmentData),
+                                            contentType: "application/json; charset=utf-8",
+                                            dataType: "json",
+                                            success: function (response) {
+                                                showToast('Silindi', e.appointmentData.text, 'error');
+                                                meet();
+                                            },
+                                            failure: function (response) {
+                                                alert("Kayıt başarısız! - Failure response");
+                                            },
+                                            error: function (response) {
+                                                alert("Kayıt başarısız! - Error response");
+                                            }
+                                        });
+                                    },
 
-                                    return $(`${"<div class='movie'>"
-                                        + "<img src='"}' />`
-                                        + `<div class='movie-text'></div>`
-                                        + '</div>');
-                                },*/
-                            }).dxScheduler('instance');
-                        });
-                    }
-                });
-
-                 console.log(true);
-
-
-
-                
-
+                                    onAppointmentFormOpening(data) {
+                                        const { form } = data;
+                                        form.option('items', [{
+                                            label: {
+                                                text: 'Konu',
+                                            },
+                                            editorType: 'dxTextBox',
+                                            dataField: 'text',
+                                            editorOptions: {
+                                                width: '100%',
+                                                type: 'text',
+                                            },
+                                        }, {
+                                            label: {
+                                                text: 'Firma',
+                                            },
+                                            editorType: 'dxSelectBox',
+                                            dataField: 'customersId',
+                                            editorOptions: {
+                                                items: customersObj, placeholder: customersObj[0].text,
+                                                displayExpr: 'text',
+                                                valueExpr: 'id',
+                                            },
+                                        }, {
+                                            colSpan: 2,
+                                            label: {
+                                                text: 'Kişiler',
+                                            },
+                                            editorType: 'dxTagBox',
+                                            dataField: 'userId',
+                                            editorOptions: {
+                                                items: usersObj, placeholder: usersObj[0].text,
+                                                searchEnabled: true,
+                                                displayExpr: 'text',
+                                                valueExpr: 'userId',
+                                            },
+                                        }, {
+                                            label: {
+                                                text: 'Başlangıç Tarih',
+                                            },
+                                            dataField: 'startDate',
+                                            editorType: 'dxDateBox',
+                                            editorOptions: {
+                                                width: '100%',
+                                                type: 'datetime',
+                                            },
+                                        }, {
+                                            label: {
+                                                text: 'Bitiş Tarih',
+                                            },
+                                            dataField: 'endDate',
+                                            editorType: 'dxDateBox',
+                                            editorOptions: {
+                                                width: '100%',
+                                                type: 'datetime',
+                                            },
+                                        }, {
+                                            colSpan: 2,
+                                            label: {
+                                                text: 'Açıklama',
+                                            },
+                                            dataField: 'description',
+                                            editorType: "dxTextArea",
+                                            editorOptions: {
+                                                width: '100%',
+                                            },
+                                        },
+                                        ]);
+                                    },
+                                    /*appointmentTemplate(model) {
+    
+                                        return $(`${"<div class='movie'>"
+                                            + "<img src='"}' />`
+                                            + `<div class='movie-text'></div>`
+                                            + '</div>');
+                                    },*/
+                                }).dxScheduler('instance');
+                            });
+                        }
+                    });
+                }
             </script>
         }

@@ -4086,61 +4086,6 @@ $.dore = function (element, options) {
     }
 
       /*03.35. Context Menu */
-    $(function () {
-        $.contextMenu({
-            selector: ".notification-item",
-            delay: 500,
-            autoHide: true,
-            callback: function (key, options) {
-                var m = "clicked: " + key;
-                var y = key;
-                if (y == "archive") {
-                    var id = this.attr('id');
-                    $.ajax({
-                        url: "jsonresult/getprojectdetail/" + id,
-                        type: "GET",
-                        contentType: "application/json",
-                        dataType: "json",
-                        success: function (data) {
-                            Swal.fire({
-                                title: 'Bildirim başarıyla okundu olarak işaretlendi',
-                                icon: 'success',
-                                confirmButtonText: 'Tamam',
-                            })
-                        }
-                    });
-                }
-                if (y == "delete") {
-                    var id = this.attr('id');
-                    $.ajax({
-                        url: "jsonresult/getprojectdetail/" + id,
-                        type: "GET",
-                        contentType: "application/json",
-                        dataType: "json",
-                        success: function (data) {
-                            Swal.fire({
-                                title: 'Bildirim başarıyla silindi',
-                                icon: 'success',
-                                confirmButtonText: 'Tamam',
-                            })
-                        }
-                    });
-                }
-            },
-            events: {
-                show: function (options) {
-                    var $list = options.$trigger.parents(".list");
-                    if ($list && $list.length > 0) {
-                        $list.data("shiftSelectable").rightClick(options.$trigger);
-                    }
-                }
-            },
-            items: {
-                archive: { name: "Okundu olarak işaretle", className: "simple-icon-check" },
-                delete: { name: "Sil", className: "simple-icon-trash" },
-            },
-        });
-    });
     if ($().contextMenu) {
       $.contextMenu({
         selector: ".list .cardd",

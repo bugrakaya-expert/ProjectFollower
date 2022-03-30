@@ -79,7 +79,7 @@ namespace ProjectFollower.Controllers
                 var _meetingItem = new Meetings()
                 {
                     Id = item.Id,
-                    Customers = item.Customers,
+                    //Customers = item.Customers,
                     StartDate = item.StartDate,
                     EndDate = item.EndDate,
                     AllDay = item.AllDay,
@@ -105,7 +105,7 @@ namespace ProjectFollower.Controllers
         {
 
             var customer = _uow.Customers.GetFirstOrDefault(i => i.Id == meetings.CustomersId);
-            meetings.Customers = customer;
+            //meetings.Customers = customer;
             _uow.Meeting.Add(meetings);
             foreach (var item in meetings.UserId)
             {
@@ -123,7 +123,7 @@ namespace ProjectFollower.Controllers
         public JsonResult Update([FromBody] Meetings meetings)
         {
             var customer = _uow.Customers.GetFirstOrDefault(i => i.Id == meetings.CustomersId);
-            meetings.Customers = customer;
+            //meetings.Customers = customer;
             _uow.Meeting.Update(meetings);/*
             foreach (var item in meetings.UserId)
             {
@@ -155,7 +155,7 @@ namespace ProjectFollower.Controllers
         public JsonResult Remove([FromBody] Meetings meetings)
         {
             var customer = _uow.Customers.GetFirstOrDefault(i => i.Id == meetings.CustomersId);
-            meetings.Customers = customer;
+            //meetings.Customers = customer;
             var meeting = _uow.ResponsibleMeeting.GetAll(i => i.MeetingId == meetings.Id.ToString());
             _uow.ResponsibleMeeting.RemoveRange(meeting);
             _uow.Save();

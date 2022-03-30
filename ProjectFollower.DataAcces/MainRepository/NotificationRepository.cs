@@ -11,8 +11,7 @@ namespace ProjectFollower.DataAcces.MainRepository
     {
         private readonly ApplicationDbContext _db;
 
-        public NotificationRepository(ApplicationDbContext db)
-            : base(db)
+        public NotificationRepository(ApplicationDbContext db) : base(db)
         {
             _db = db;
         }

@@ -310,8 +310,8 @@ namespace ProjectFollower.Controllers
                 {
                     UserId = User.Id,
                     Date = DateTime.Now.ToString("dd/MM/yyyy"),
-                    Title = "Yeni Proje",
-                    Message = "Adınıza yeni bir proje açıldı. Detaylar için <a href='/proje-detaylari/" + Project.Id + "'>tıklayınız</a>"
+                    Title = "Yeni Bir Proje Eklendi",
+                    Message = "Adınıza yeni bir proje açıldı. Detaylar için tıklayınız."
                 };
                 NotificationVMs.Add(_notify);
                 _uow.ResponsibleUsers.Add(ResponsibleUser);
@@ -403,17 +403,17 @@ namespace ProjectFollower.Controllers
                     Message = item.Message,
                     Title = item.Title,
                     UserId = item.UserId,
-                    ProjectId=Project.Id.ToString()
+                    ProjectId = Project.Id.ToString()
                 };
                 _uow.Notifications.Add(_notify);
             }
             //_uow.Notifications.AddRange((IEnumerable<Notifications>)NotificationVMs); TEST
             _uow.Save();
 
-            
+
             WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
-            await WebSocAct.SendNotification_WebSocket(GetClaim(),INotifications);
-            
+            await WebSocAct.SendNotification_WebSocket(GetClaim(), INotifications);
+
             //return NoContent();
 
             return Redirect("/dashboard?status=true");
@@ -923,7 +923,7 @@ namespace ProjectFollower.Controllers
         }
 
         [HttpPost("jsonresult/addcomment/")]
-        public JsonResult AddComments(ProjectComments projectComments)
+        public async Task<JsonResult> AddComments(ProjectComments projectComments)
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var Claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
@@ -951,7 +951,27 @@ namespace ProjectFollower.Controllers
                     FullName = AppUser.FirstName + " " + AppUser.Lastname,
                     UserEmail = AppUser.Email
                 };
+                var respUsers = _uow.ResponsibleUsers.GetAll(i => i.ProjectId== projectComments.ProjectsId);
+                List<NotificationVM> _notificationList = new List<NotificationVM>();
+                foreach (var item in respUsers)
+                {
+                    if(AppUser.Id != item.UserId.ToString())
+                    {
+                        var _notify = new NotificationVM()
+                        {
+                            UserId = item.UserId.ToString(),
+                            Date = DateTime.Now.ToString("dd/MM/yyyy"),
+                            ProjectId= projectComments.ProjectsId.ToString(),
+                            Title = "Yeni Bir Yorum Eklendi",
+                            Message = "Bulunduğunuz bir projeye birisi yorum yaptı."
+                        };
+                        _notificationList.Add(_notify);
+                    }
+                }
+                WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
+                await WebSocAct.SendNotification_WebSocket(GetClaim(), _notificationList);
                 _uow.Save();
+
                 return Json(Comment);
 
                 //_uow.ProjectComments.Add(ProjectComments);
@@ -1137,7 +1157,26 @@ namespace ProjectFollower.Controllers
         public async Task<IEnumerable<Notifications>> GetNotifications()
         {
             await Task.Delay(1);
-            return _uow.Notifications.GetAll(i => i.UserId == GetClaim().Value);
+            return _uow.Notifications.GetAll(i => i.UserId == GetClaim().Value).OrderBy(o=>o.Readed);
+
+        }
+        [HttpPost("api/updatenotify")]
+        public JsonResult UpdateNotifications([FromBody] IEnumerable<Notifications> notification)
+        {
+            foreach (var item in notification)
+            {
+                _uow.Notifications.Update(item);
+            }
+            _uow.Save();
+            return Json(null);
+
+        }
+        [HttpPost("api/removenotify")]
+        public JsonResult RemoveNotifications([FromBody] IEnumerable<Notifications> notification)
+        {
+            _uow.Notifications.RemoveRange(notification);
+            _uow.Save();
+            return Json(null);
 
         }
         #endregion API

@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-var connection = new signalR.HubConnectionBuilder().withUrl("/homeHub").build();
+var connection = new signalR.HubConnectionBuilder().configureLogging(signalR.LogLevel.Error).withUrl("./homeHub").build();
 //var connection = new signalR.HubConnectionBuilder().configureLogging(signalR.LogLevel.None).withUrl("/homeHub").build();
 //connection.start();
 

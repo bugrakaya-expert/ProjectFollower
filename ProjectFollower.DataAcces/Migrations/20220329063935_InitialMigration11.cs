@@ -18,15 +18,10 @@ namespace ProjectFollower.DataAcces.Migrations
                     EndDate = table.Column<DateTime>(nullable: false),
                     AllDay = table.Column<bool>(nullable: false)
                 },
+                
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Meetings", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Meetings_Customer_CustomersId",
-                        column: x => x.CustomersId,
-                        principalTable: "Customer",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

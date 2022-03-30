@@ -1,12 +1,15 @@
 ﻿"use strict";
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/homeHub").build();
+//var connection = new signalR.HubConnectionBuilder().configureLogging(signalR.LogLevel.Error).withUrl("./homeHub").build();
 var cookie = $.cookie('_nb59x45k9');
-function showNotification(placementFrom, placementAlign, type, message, title) {
+function showNotification(placementFrom, placementAlign, type, message, title, projectId) {
+    alert("func: "+projectId);
     $.notify(
         {
             title: title,
             message: message,
+            url: "/proje-detaylari/"+projectId,
             target: "_blank"
         },
         {
@@ -55,7 +58,8 @@ connection.on("SendNotification", function (notifyData) {
     var dataStr = JSON.stringify(notifyData);
 
     if (notifyData.userId == cookie) {
-        showNotification("top", "right", "primary", notifyData.message, notifyData.title);
+        showNotification("top", "right", "primary", notifyData.message, notifyData.title, notifyData.projectId);
+
     }
 });
 

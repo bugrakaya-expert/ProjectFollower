@@ -23,8 +23,8 @@
                                 <span class="sr-only">Toggle Dropdown</span>
                             </button>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#" id="check-readed">Seçilenleri okundu olarak işaretle</a>
-                                <a class="dropdown-item" href="#">Seçilenleri sil</a>
+                                <a class="dropdown-item" id="check-readed">Seçilenleri okundu olarak işaretle</a>
+                                <a class="dropdown-item" id="check-delete">Seçilenleri sil</a>
                             </div>
                         </div>
                     </div>
@@ -47,28 +47,6 @@
         <div class="row">
             <div class="col-12 list" data-check-all="checkAll">
 
-                <div class="card d-flex flex-row mb-3 card-notification">
-                    <a class="d-flex" href="Pages.Product.Detail.html">
-                        <img src="img/products/fat-rascal-thumb.jpg" alt="Fat Rascal"
-                             class="list-thumbnail responsive border-0 card-img-left" />
-                    </a>
-                    <div class="pl-2 d-flex flex-grow-1 min-width-zero">
-                        <div class="card-body align-self-center d-flex flex-column flex-lg-row justify-content-between min-width-zero align-items-lg-center">
-                            <a href="Pages.Product.Detail.html" class="w-15 w-sm-100">
-                                <p class="list-item-heading mb-0 truncate">Fat Rascal</p>
-                            </a>
-                            <p class="mb-0 text-muted text-small w-40 w-sm-100">Cupcakes</p>
-                            <p class="mb-0 text-muted text-small w-15 w-sm-100">13.04.2018</p>
-                            <div class="w-15 w-sm-100">
-                                <span class="badge badge-pill badge-primary">OKUNDU</span>
-                            </div>
-                        </div>
-                        <label class="custom-control custom-checkbox mb-1 align-self-center pr-4">
-                            <input type="checkbox" class="custom-control-input">
-                            <span class="custom-control-label">&nbsp;</span>
-                        </label>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -103,7 +81,7 @@
                             <div class="w-15 w-sm-100">` + readeditem + `</div>
                         </div>
                         <label class="custom-control custom-checkbox mb-1 align-self-center pr-4">
-                            <input type="checkbox" class="custom-control-input notifyvalue" id=`+value.id+` >
+                            <input type="checkbox" class="custom-control-input notifyvalue" data-userid=`+ value.userId + ` data-projectid=`+ value.projectId + ` data-title="`+ value.title + `" data-date=`+ value.date + ` data-message="`+ value.message +`" id=`+value.id+` >
                             <span class="custom-control-label">&nbsp;</span>
                         </label>
                     </div>
@@ -121,33 +99,33 @@
             var formdata = [];
             $('.notifyvalue:checkbox').each(function () {
                 if ($(this).is(":checked")) {
-
                     var item = {};
                     //here the item name should be the same as your model
                     item['id'] = this.id,
-                    item['done'] = $(this).is(':checked')
-                    formdata.push(item);
+                    item['date'] = $(this).data("date"),
+                    item['message'] = $(this).data("message"),
+                    item['userid'] = $(this).data("userid"),
+                    item['projectid'] = $(this).data("projectid"),
+                    item['title'] = $(this).data("title"),
+                    item['readed'] = $(this).is(':checked')
+                    formdata.push(item); 
                 }
             });
 
             //here the model should be the same as your controller parameter name
             formdata = JSON.stringify(formdata);
-            console.log(formdata);
-            /*$.ajax({
-                //contentType: 'application/json; charset=utf-8',//this statement should be added
-                url: "/api/getnotify",
+            updateAction(formdata);
+        });
+        function updateAction(formdata) {
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',//this statement should be added
+                url: "/api/updatenotify",
                 type: "POST",
                 dataType: "json",
                 contentType: "application/json",
                 traditional: true,
-                
-                data: {
-                    projectId: 'Model.Project.Id',
-                    projectTasks: "",
-                },
-                */
-               /* data: formdata,
-                //dataType: "json",
+                data: formdata,
+                dataType: "json",
                 success: function (received) {
                     Swal.fire({
                         title: "Güncelleme başarılı.",
@@ -155,10 +133,54 @@
                         icon: "success",
                         confirmButtonText: 'Tamam',
                     }).then((result) => {
-                        location.reload();
+                        window.location.href = "/notification";
                     });
                 }
-            });*/
+            });
+        };
+        /* Notification Delete */
+        $(document).on("click", "#check-delete", function () {
+            var formdata = [];
+            $('.notifyvalue:checkbox').each(function () {
+                if ($(this).is(":checked")) {
+                    var item = {};
+                    //here the item name should be the same as your model
+                    item['id'] = this.id,
+                    item['date'] = $(this).data("date"),
+                    item['message'] = $(this).data("message"),
+                    item['userid'] = $(this).data("userid"),
+                    item['projectid'] = $(this).data("projectid"),
+                    item['title'] = $(this).data("title"),
+                    item['readed'] = $(this).is(':checked')
+                    formdata.push(item);
+                }
+            });
+
+            //here the model should be the same as your controller parameter name
+            formdata = JSON.stringify(formdata);
+            deleteAction(formdata);
         });
+        function deleteAction(formdata) {
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',//this statement should be added
+                url: "/api/removenotify",
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json",
+                traditional: true,
+                data: formdata,
+                dataType: "json",
+                success: function (received) {
+                    Swal.fire({
+                        title: "Güncelleme başarılı.",
+                        showCancelButton: false,
+                        icon: "success",
+                        confirmButtonText: 'Tamam',
+                    }).then((result) => {
+                        window.location.href = "/notification";
+                    });
+                }
+            });
+        };
     </script>
 } 
