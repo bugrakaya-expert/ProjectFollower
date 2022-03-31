@@ -1,5 +1,8 @@
 ﻿
 @{ ViewData["Title"] = "Index";
+    var _year = DateTime.Now.Year;
+    var _month = DateTime.Now.Month;
+    var _day = DateTime.Now.Day;
 }
 <style>
     .dx-textarea .dx-texteditor-input {
@@ -22,6 +25,8 @@
                 }
                 DevExpress.localization.locale(navigator.language);
                 var customerNamePublic = "";
+                const now = new Date();
+                console.log((now).toISOString().split('T')[0]);
                 meet();                
                 function meet() {
                     $.ajax({
@@ -34,12 +39,12 @@
                             var meetingsObj = data.meetings;
                             var customersObj = data.customer;
                             var usersObj = data.responsibleMeetings;
-                            const now = new Date();
+                            
                             $(() => {
                                 $('#scheduler').dxScheduler({
                                     dataSource: meetingsObj,
                                     views: ['month', 'week', 'agenda'],
-                                    currentView: 'month',
+                                    currentView: 'week',
                                     currentDate: now,
                                     startDayHour: 8,
                                     endDayHour: 18,
@@ -77,6 +82,7 @@
                                             dataType: "json",
                                             success: function (response) {
                                                 showToast('Güncellendi', e.appointmentData.text, 'info');
+                                                console.log(e.appointmentData.startDate);
                                                 meet();
                                             },
                                             failure: function (response) {
