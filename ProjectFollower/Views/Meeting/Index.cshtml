@@ -8,6 +8,9 @@
     .dx-textarea .dx-texteditor-input {
         min-height: 15rem;
     }
+    .dx-scheduler-appointment-title{
+        text-align:left;
+    }
 </style>
 <main>
     <div class="row">
@@ -44,7 +47,7 @@
                                 $('#scheduler').dxScheduler({
                                     dataSource: meetingsObj,
                                     views: ['month', 'week', 'agenda'],
-                                    currentView: 'week',
+                                    currentView: 'agenda',
                                     currentDate: now,
                                     startDayHour: 8,
                                     endDayHour: 18,

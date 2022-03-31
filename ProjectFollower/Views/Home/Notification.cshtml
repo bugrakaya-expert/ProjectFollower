@@ -44,7 +44,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row notify-row">
             <div class="col-12 list" data-check-all="checkAll">
 
             </div>
@@ -60,34 +60,42 @@
             type : 'GET',
             dataType:'json',
             success: function (data) {
-                $.each(data, function (key, value) {
-                    if (value.readed == true) {
-                        readeditem = `<span class="badge badge-pill badge-primary">OKUNDU</span>`
-                    } else {
-                        readeditem =`<span class="badge badge-pill badge-info">YENİ</span>`
-                    }
-                    var item = `<div class="card d-flex flex-row mb-3 card-notification">
-                    <a class="d-flex" href="Pages.Product.Detail.html">
+                if (data.length == 0) {
+                    var item = `<div class="col-12">
+                            <h3>Gösterilecek yeni bir bildirim yok...</h3>
+                        </div>`
+                    $(".notify-row").append(item)
+                } else {
+                    $.each(data, function (key, value) {
+                        if (value.readed == true) {
+                            readeditem = `<span class="badge badge-pill badge-primary">OKUNDU</span>`
+                        } else {
+                            readeditem = `<span class="badge badge-pill badge-info">YENİ</span>`
+                        }
+                        var item = `<div class="card d-flex flex-row mb-3 card-notification">
+                    <a class="d-flex" href="/proje-detaylari/`+ value.projectId +`">
                         <img src="img/products/fat-rascal-thumb.jpg" alt="Fat Rascal"
                              class="list-thumbnail responsive border-0 card-img-left" />
                     </a>
                     <div class="pl-2 d-flex flex-grow-1 min-width-zero">
                         <div class="card-body align-self-center d-flex flex-column flex-lg-row justify-content-between min-width-zero align-items-lg-center">
-                            <a href="Pages.Product.Detail.html" class="w-15 w-sm-100">
-                                <p class="list-item-heading mb-0 truncate">`+ value.title +`</p>
+                            <a href="/proje-detaylari/`+ value.projectId +`" class="w-15 w-sm-100">
+                                <p class="list-item-heading mb-0 truncate">`+ value.title + `</p>
                             </a>
-                            <p class="mb-0 text-muted text-small w-40 w-sm-100">`+ value.message +`</p>
-                            <p class="mb-0 text-muted text-small w-15 w-sm-100">`+ value.date +`</p>
+                            <p class="mb-0 text-muted text-small w-40 w-sm-100">`+ value.message + `</p>
+                            <p class="mb-0 text-muted text-small w-15 w-sm-100">`+ value.date + `</p>
                             <div class="w-15 w-sm-100">` + readeditem + `</div>
                         </div>
                         <label class="custom-control custom-checkbox mb-1 align-self-center pr-4">
-                            <input type="checkbox" class="custom-control-input notifyvalue" data-userid=`+ value.userId + ` data-projectid=`+ value.projectId + ` data-title="`+ value.title + `" data-date=`+ value.date + ` data-message="`+ value.message +`" id=`+value.id+` >
+                            <input type="checkbox" class="custom-control-input notifyvalue" data-userid=`+ value.userId + ` data-projectid=` + value.projectId + ` data-title="` + value.title + `" data-date=` + value.date + ` data-message="` + value.message + `" id=` + value.id + ` >
                             <span class="custom-control-label">&nbsp;</span>
                         </label>
                     </div>
                 </div>`
-                    $(".list").append(item)
-                });
+                        $(".list").append(item)
+                    });
+                }
+
             },
             error : function(request,error)
             {
