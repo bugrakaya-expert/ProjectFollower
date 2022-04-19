@@ -450,7 +450,7 @@
                         @if (User.IsInRole(UserRoles.Admin))
                         {
                             <label class="form-group has-top-label gorev-players pb-1">
-                                <select class="form-control select2-multiple" multiple="multiple" data-width="100%" id="mission-players" asp-for="UserId">
+                                <select class="form-control select2-multiple" required multiple="multiple" data-width="100%" id="mission-players" asp-for="UserId">
                                     <optgroup label="Görev Üyeleri">
                                         @foreach (var item in Model.Users)
                                         {

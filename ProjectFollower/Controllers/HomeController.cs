@@ -922,6 +922,18 @@ namespace ProjectFollower.Controllers
             return Json(null);
         }
 
+        [Authorize(Roles = UserRoles.Admin)]
+        [HttpGet("jsonresult/changeToCancelState/{id}")]
+        public JsonResult ChangetoCancel(string id)
+        {
+            var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
+            _project.Status = 4;
+            _project.Archived = true;
+            _uow.Project.Update(_project);
+            _uow.Save();
+            return Json(null);
+        }
+
         [HttpPost("jsonresult/addcomment/")]
         public async Task<JsonResult> AddComments(ProjectComments projectComments)
         {

@@ -4321,6 +4321,54 @@ $.dore = function (element, options) {
                     }
                 })
             }
+            if (y == "status5") {
+                Swal.fire({
+                    title: 'Bu projeyi iptal etmek istediğinize emin misiniz?',
+                    showCancelButton: true,
+                    icon: 'info',
+                    confirmButtonText: 'Tamam',
+                    cancelButtonText: `İptal Et`,
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        var id = this.attr('id');
+                        $.ajax({
+                            url: "jsonresult/changeToCancelState/" + id,
+                            type: "GET",
+                            contentType: "application/json",
+                            dataType: "json",
+                            success: function (data) {
+                                Swal.fire({
+                                    title: 'Proje başarıyla güncellendi',
+                                    icon: 'success',
+                                    confirmButtonText: 'Tamam',
+                                }).then((result) => {
+                                    $.ajax({
+                                        url: "jsonresult/refreshpage_socket/",
+                                        type: "GET",
+                                        contentType: "application/json",
+                                        dataType: "json",
+                                    });
+                                    return data;
+                                })
+
+                            },
+                            error: function (data) {
+                                Swal.fire({
+                                    title: 'Projeyi iptal etme statüsüne alma yetkiniz bulunmamaktadır',
+                                    icon: 'error',
+                                    confirmButtonText: 'Tamam',
+                                }).then((result) => {
+                                    return data;
+                                })
+
+                            }
+                        });
+
+
+                    }
+                })
+            }
             if (y == "delete") {
                 var id = this.attr('id');
                 $.ajax({
@@ -4396,7 +4444,8 @@ $.dore = function (element, options) {
                   status1 : { "name": "Yeni" },
                   status2: { "name": "Yapım Aşamasında" },
                   status3: { "name": "Müşteri Onayında" },
-                  status4: { "name": "Tamamlandı" }
+                  status4: { "name": "Tamamlandı" },
+                  status5: { "name": "İptal" }
               }
 
             }
