@@ -37,7 +37,7 @@
                 <div class="mb-2">
                     <a class="btn pt-0 pl-0 d-inline-block d-md-none" data-toggle="collapse" href="#displayOptions"
                        role="button" aria-expanded="true" aria-controls="displayOptions">
-                        Display Options
+                        Seçenekleri Göster
                         <i class="simple-icon-arrow-down align-middle"></i>
                     </a>
                     <div class="collapse d-md-block" id="displayOptions">
@@ -227,7 +227,7 @@
                 ]
             });
         };*@
-        
+
         function voidAjx() {
             var completed = 0;
             $.ajax({
@@ -276,6 +276,10 @@
 
                         if (item.status == 4) {
                             status = `<span class="badge badge-pill badge-primary" style="background-color: #008aff !important;"><i class="fas fa-archive"></i>&nbsp;&nbsp;ARŞİVLENMİŞ</span>`;
+
+                        }
+                        if (item.status == 5) {
+                            status = `<span class="badge badge-pill badge-primary" style="background-color: #e64f1f !important;"><i class="fas fa-ban"></i>&nbsp;&nbsp;İPTAL</span>`;
 
                         }
                         var trcls = "";
@@ -327,7 +331,7 @@
                 }
             });
         }
-        
+
         $(document).on("click", ".filter-status", function () {
             var completed = 0;
             var userId = this.id;
@@ -381,6 +385,10 @@
 
                         if (item.status == 4) {
                             status = `<span class="badge badge-pill badge-primary" style="background-color: #008aff !important;"><i class="fas fa-archive"></i>&nbsp;&nbsp;ARŞİVLENMİŞ</span>`;
+
+                        }
+                        if (item.status == 5) {
+                            status = `<span class="badge badge-pill badge-primary" style="background-color: #e64f1f !important;"><i class="fas fa-ban"></i>&nbsp;&nbsp;İPTAL</span>`;
 
                         }
 
@@ -488,6 +496,10 @@
                             status = `<span class="badge badge-pill badge-primary" style="background-color: #008aff !important;"><i class="fas fa-archive"></i>&nbsp;&nbsp;ARŞİVLENMİŞ</span>`;
 
                         }
+                        if (item.status == 5) {
+                            status = `<span class="badge badge-pill badge-primary" style="background-color: #e64f1f !important;"><i class="fas fa-ban"></i>&nbsp;&nbsp;İPTAL</span>`;
+
+                        }
 
                         var htmlstr = `
                                                 <tr class="cardd" id="`+ id + `">
@@ -537,8 +549,8 @@
             });
             }
         });
-        
-            
+
+
         $(document).ready(function () {
             $("#tbody").html("");
             voidAjx();
@@ -559,13 +571,13 @@
                 });
             };
 
-            if ($('#archived').is(":checked")) {
-            }
 
             $('#archived').change(function () {
                 if (this.checked) {
+
                     archived = true;
                     changeArcStatus();
+                    console.log('@archived');
                 } else {
                     archived = false;
                     changeArcStatus();
