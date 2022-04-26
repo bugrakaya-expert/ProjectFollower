@@ -2,10 +2,9 @@
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/homeHub").build();
 console.clear();
+var nowt = new Date();
 
 connection.on("SchedulerQuery", function (id) {
-    console.log("WebSocket Working Id: "+id);
-    console.log("Working on CustomerId:" + CustomerId);
     if (CustomerId == id) {
         var customerNamePublic = "";
         $.ajax({
@@ -24,7 +23,7 @@ connection.on("SchedulerQuery", function (id) {
                         type: 'date',
                         views: ['month'],
                         currentView: 'month',
-                        currentDate: new Date($.now()),
+                        currentDate: nowt,
                         showAllDayPanel: false,
                         maxAppointmentsPerCell: 5,
                         allDay: true,
@@ -40,8 +39,6 @@ connection.on("SchedulerQuery", function (id) {
                             allowDragging: true,
                         },
                         onAppointmentAdded(e) {
-                            const endDate = new Date(2099, 4, 10, 13, 0)
-                            e.appointmentData.endDate = endDate;
                             $.ajax({
                                 type: "POST",
                                 url: "/postscheduler",
@@ -56,7 +53,7 @@ connection.on("SchedulerQuery", function (id) {
                                         contentType: "application/json",
                                         dataType: "json",
                                         success: function (data) {
-                                            console.log("Web Socket Requets Sended from scheduler. Id: " + id);
+                                            nowt = e.appointmentData.endDate;
                                         }
                                     });
                                 },
@@ -84,7 +81,7 @@ connection.on("SchedulerQuery", function (id) {
                                         contentType: "application/json",
                                         dataType: "json",
                                         success: function (data) {
-                                            console.log("Web Socket Requets Sended from scheduler. Id: " + id);
+                                            nowt = e.appointmentData.endDate;
                                         }
                                     });
                                 },
@@ -103,6 +100,7 @@ connection.on("SchedulerQuery", function (id) {
                                 contentType: "application/json; charset=utf-8",
                                 dataType: "json",
                                 success: function (response) {
+                                    nowt = e.appointmentData.endDate;
                                     showToast('Silindi', e.appointmentData.text, 'info');
                                 },
                                 failure: function (response) {

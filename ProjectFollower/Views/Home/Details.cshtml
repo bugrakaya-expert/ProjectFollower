@@ -7,6 +7,9 @@
     string TaskIdString = "";
     var customerpath = DIR_Users_Main;
     int playercount = 0;
+    int completedTask = 0;
+    int top = -12;
+    string bgteraz = "";
 }
 @model ProjectFollower.Models.ViewModels.ProjectDetailVM
 @using static ProjectFollower.Utility.ProjectConstant
@@ -33,287 +36,295 @@
 
         <div class="row">
             <div class="col-12 col-md-12 col-xl-8 col-left">
-                <div class="card">
-                    <div class="card-header">
-                        <ul class="nav nav-tabs card-header-tabs " role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="first-tab" data-toggle="tab" href="#first" role="tab"
-                                   aria-controls="first" aria-selected="true">Proje Görevleri</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="second-tab" data-toggle="tab" href="#second" role="tab"
-                                   aria-controls="second" aria-selected="false">Dosyalar(@Model.ProjectDocuments.Count())</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="third-tab" data-toggle="tab" href="#third" role="tab"
-                                   aria-controls="third" aria-selected="false">Proje Detay</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="card-body">
-                        <div class="tab-content">
-                            <div class="tab-pane fade show active" id="first" role="tabpanel"
-                                 aria-labelledby="first-tab">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <p class="font-weight-bold">Görevler</p>
-                                    </div>
-                                    <div class="col-3">
-                                        <p class="font-weight-bold" style="text-align:end">Görevliler</p>
-                                    </div>
+            <div class="card">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs " role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="first-tab" data-toggle="tab" href="#first" role="tab"
+                               aria-controls="first" aria-selected="true">Proje Görevleri</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="second-tab" data-toggle="tab" href="#second" role="tab"
+                               aria-controls="second" aria-selected="false">Dosyalar(@Model.ProjectDocuments.Count())</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="third-tab" data-toggle="tab" href="#third" role="tab"
+                               aria-controls="third" aria-selected="false">Proje Detay</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="first" role="tabpanel"
+                             aria-labelledby="first-tab">
+                            <div class="row">
+                                <div class="col-6">
+                                    <p class="font-weight-bold">Görevler</p>
                                 </div>
+                                <div class="col-3">
+                                    <p class="font-weight-bold" style="text-align:end">Görevliler</p>
+                                </div>
+                            </div>
 
 
-                                @*<form action="/proje-detaylari/gorev-degistir/@Model.Project.Id" method="get">*@
-                                <form id="sectionTasks">
-                                    @foreach (var item in Model.ProjectTasks)
-                                    {
-                                        playercount = 0;
-                                        TaskLength++;
-                                        TaskIdString = "control-mission" + TaskLength.ToString();
+                            @*<form action="/proje-detaylari/gorev-degistir/@Model.Project.Id" method="get">*@
+                            <form id="sectionTasks">
+                                @foreach (var item in Model.ProjectTasks)
+                                {
+                                    playercount = 0;
+                                    TaskLength++;
+                                    TaskIdString = "control-mission" + TaskLength.ToString();
 
-                                        <div class="row mb-4  d-flex align-items-center justify-content-end">
-                                            <div class="col-6">
-                                                @if (item.Done)
+                                    <div class="row mb-4  d-flex align-items-center justify-content-end">
+                                        <div class="col-6">
+                                            @if (item.Done)
+                                            {
+                                                completedTask++;
+                                                <p class="mission-completed m-0">@item.Description</p>
+                                            }
+                                            else
+                                            {
+                                                <p class="m-0">@item.Description</p>
+                                            }
+
+                                        </div>
+
+                                        <div class="col-3 d-flex align-items-center justify-content-end">
+                                            <p class="m-0">
+                                                @foreach (var playerItem in item.TaskPlayers)
                                                 {
-                                                    <p class="mission-completed m-0">@item.Description</p>
-                                                }
-                                                else
-                                                {
-                                                    <p class="m-0">@item.Description</p>
-                                                }
-
-                                            </div>
-
-                                            <div class="col-3 d-flex align-items-center justify-content-end">
-                                                <p class="m-0">
-                                                    @foreach (var playerItem in item.TaskPlayers)
+                                                    if (item.TaskPlayers.Count() == playercount + 1)
                                                     {
-                                                        if (item.TaskPlayers.Count() == playercount + 1)
-                                                        {
-                                                            <span>@playerItem.FirstName</span>
-                                                        }
-                                                        else
-                                                        {
-                                                            <span>@playerItem.FirstName</span>
-
-                                                            <text>,</text>
-                                                        }
-                                                        playercount++;
-                                                    }
-                                                </p>
-
-
-                                            </div>
-
-
-                                            <div class="col-3 text-end d-flex justify-content-center align-items-center">
-                                                <div class="custom-control custom-checkbox" style="display:inline-block">
-                                                    @*<input value="@item.Done.ToString()" id="@item.Id" type="text" class="taskvalue" />*@
-
-                                                    <input type="checkbox" class="custom-control-input taskvalue" id="@item.Id" name="[@TaskLength].RightsCode" value="@item.Done" checked="@item.Done">
-
-
-                                                    @if (item.Done)
-                                                    {
-                                                        <label class="custom-control-label" for="@item.Id">Tamamlandı</label>
+                                                        <span>@playerItem.FirstName</span>
                                                     }
                                                     else
                                                     {
-                                                        <label class="custom-control-label" for="@item.Id">Tamamlanmadı</label>
+                                                        <span>@playerItem.FirstName</span>
+
+                                                        <text>,</text>
                                                     }
+                                                    playercount++;
+                                                }
+                                            </p>
 
-                                                </div>
 
-                                                @*<a type="button" href="/proje-detaylari/gorev-kaldir/@item.Id" class="glyph-icon simple-icon-trash ml-4 remove-task" style="font-size: 16px; text-align: right;" id="@item.Id"></a>*@
-                                                <a type="button" class="glyph-icon simple-icon-trash ml-4 remove-task" style="font-size: 16px; text-align: right;" id="@item.Id"></a>
-                                            </div>
                                         </div>
 
-                                    }
-                                    <div class="row mb-4">
-                                        <div class="col-12 text-right">
-                                            <button type="button" data-toggle="modal" data-target="#add-mission" class="btn btn-secondary mb-0 mr-1">Görev Ekle</button>
-                                            <button type="button" class="btn btn-primary btn-sm mb-0" id="taskbtn">Görevleri Düzenlemeyi Kaydet</button>
-                                        </div>
-                                    </div>
-                                </form>
-                                @*
-                                    <table class="table table-borderless">
-                                    <thead>
-                                    <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Görev</th>
-                                    <th scope="col">Durum</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach (var item in Model.ProjectTasks)
-                                    {
-                                    TaskLength++;
-                                    TaskIdString = "control-mission" + TaskLength.ToString();
-                                    }
-                                    <tr>
 
-                                    <th scope="row">1</th>
-                                    <td>Emre</td>
-                                    <td>Websitesi Tasarımı</td>
-                                    </tr>
-                                    <tr>
-                                    <th scope="row">2</th>
-                                    <td>Buğra</td>
-                                    <td>Database</td>
+                                        <div class="col-3 text-end d-flex justify-content-center align-items-center">
+                                            <div class="custom-control custom-checkbox" style="display:inline-block">
+                                                @*<input value="@item.Done.ToString()" id="@item.Id" type="text" class="taskvalue" />*@
 
-                                    </tr>
-                                    </tbody>
-                                    </table>
-                                *@
+                                                <input type="checkbox" class="custom-control-input taskvalue" id="@item.Id" name="[@TaskLength].RightsCode" value="@item.Done" checked="@item.Done">
 
-                                <div class="separator mb-5"></div>
 
-                                <p class="font-weight-bold">Yorumlar</p>
-                                <div class="scroll dashboard-list-with-user" id="comments">
-
-                                    @if (Model.CommentVM.Count() > 0)
-                                    {
-                                        @foreach (var item in Model.CommentVM)
-                                        {
-                                            <div class="d-flex flex-row mb-3 border-bottom justify-content-between">
-                                                <a href="#">
-                                                    <img src="@item.Img" alt="@item.FullName"
-                                                 class="img-thumbnail border-0 rounded-circle list-thumbnail align-self-center xsmall" />
-                                                </a>
-                                                <div class="pl-3 flex-grow-1">
-                                                    <p class="font-weight-medium mb-0">@item.FullName</p>
-                                                    <p class="text-muted mb-0 text-small">@item.CommentTime</p>
-                                                    <p class="mt-3">
-                                                        @item.Comment
-                                                    </p>
-                                                </div>
-                                                @if (item.UserEmail == User.Identity.Name || User.IsInRole(UserRoles.Admin))
+                                                @if (item.Done)
                                                 {
-                                                    <div class="dropleft">
-                                                        <div class="glyph-icon simple-icon-options" type="button"
-                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></div>
-                                                        <div class="dropdown-menu">
-                                                            <a class="dropdown-item" style="cursor: default; color: #b2b2b2; " href="javascript:void(0)">Düzenle</a>
-                                                            <form asp-controller="Home" asp-action="DeleteComment" method="post" asp-route-id="@item.Id">
-                                                                @*<input hidden value="@item.Id" />*@
-                                                                <button class="dropdown-item" type="submit">Sil</button>
-                                                            </form>
-
-                                                        </div>
-                                                    </div>
+                                                    <label class="custom-control-label" for="@item.Id">Tamamlandı</label>
+                                                }
+                                                else
+                                                {
+                                                    <label class="custom-control-label" for="@item.Id">Tamamlanmadı</label>
                                                 }
 
                                             </div>
-                                        }
-                                    }
-                                    else
-                                    {
-                                        <h5>Henüz yorum yapılmamış..</h5>
-                                    }
-                                </div>
 
-                                <div class="comment-contaiener">
-                                    <div class="input-group" id="comment-section">
-                                        <input type="text" class="form-control" placeholder="Yorum Ekle" id="comment-input">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-secondary" type="button" id="comment-button">
-                                                <span class="d-inline-block">Paylaş</span> <i class="simple-icon-arrow-right ml-2"></i>
-                                            </button>
+                                            @*<a type="button" href="/proje-detaylari/gorev-kaldir/@item.Id" class="glyph-icon simple-icon-trash ml-4 remove-task" style="font-size: 16px; text-align: right;" id="@item.Id"></a>*@
+                                            <a type="button" class="glyph-icon simple-icon-trash ml-4 remove-task" style="font-size: 16px; text-align: right;" id="@item.Id"></a>
                                         </div>
                                     </div>
+
+                                }
+                                <div class="row mb-4">
+                                    <div class="col-12 text-right">
+                                        <button type="button" data-toggle="modal" data-target="#add-mission" class="btn btn-secondary mb-0 mr-1">Görev Ekle</button>
+                                        <button type="button" class="btn btn-primary btn-sm mb-0" id="taskbtn">Görevleri Düzenlemeyi Kaydet</button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="tab-pane fade" id="second" role="tabpanel" aria-labelledby="second-tab">
-                                @{
-                                    if (Model.ProjectDocuments.Count() > 0)
-                                    {
-                                        foreach (var item in Model.ProjectDocuments)
-                                        {
-                                            string link = LocFilePaths.DIR_Projects_Doc + item.Projects.Id + "/" + item.FileName;
-                                            <div class="d-flex flex-row mb-3 border-bottom">
-                                                <div class="p-0 position-relative tab-icon">
-                                                    <div class="preview-container">
-                                                        <img data-dz-thumbnail="" class="img-thumbnail border-0">
-                                                        <i class="simple-icon-doc preview-icon"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="pl-3 w-90 dz-details position-relative">
-                                                    <div>
-                                                        <span data-dz-name="">@item.FileName</span>
-                                                    </div>
-                                                    <div class="text-primary text-extra-small" data-dz-size="">
-                                                        <strong>0</strong> KB
-                                                    </div>
-                                                </div>
-                                                <a href="@link" class="download-icon" data-dz-remove="" download>
-                                                    <i class="glyph-icon simple-icon-cloud-download"></i>
-                                                </a>
-                                                @if (User.IsInRole(UserRoles.Admin))
-                                                {
+                            </form>
+                            @*
+                    <table class="table table-borderless">
+                    <thead>
+                    <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Görev</th>
+                    <th scope="col">Durum</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model.ProjectTasks)
+                    {
+                    TaskLength++;
+                    TaskIdString = "control-mission" + TaskLength.ToString();
+                    }
+                    <tr>
 
-                                                    <a href="/proje-detaylari/dokuman-kaldir/@item.Id" class="download-icon ml-4" data-dz-remove="">
-                                                        <i class="glyph-icon simple-icon-trash"></i>
-                                                    </a>
-                                                }
+                    <th scope="row">1</th>
+                    <td>Emre</td>
+                    <td>Websitesi Tasarımı</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">2</th>
+                    <td>Buğra</td>
+                    <td>Database</td>
+
+                    </tr>
+                    </tbody>
+                    </table>
+                            *@
+
+                            <div class="separator mb-5"></div>
+
+                            <p class="font-weight-bold">Yorumlar</p>
+                            <div class="scroll dashboard-list-with-user" id="comments">
+
+                                @if (Model.CommentVM.Count() > 0)
+                                {
+                                    @foreach (var item in Model.CommentVM)
+                                    {
+                                        <div class="d-flex flex-row mb-3 border-bottom justify-content-between">
+                                            <a href="#">
+                                                <img src="@item.Img" alt="@item.FullName"
+                                                     class="img-thumbnail border-0 rounded-circle list-thumbnail align-self-center xsmall" />
+                                            </a>
+                                            <div class="pl-3 flex-grow-1">
+                                                <p class="font-weight-medium mb-0">@item.FullName</p>
+                                                <p class="text-muted mb-0 text-small">@item.CommentTime</p>
+                                                <p class="mt-3">
+                                                    @item.Comment
+                                                </p>
                                             </div>
-                                        }
+                                            @if (item.UserEmail == User.Identity.Name || User.IsInRole(UserRoles.Admin))
+                                            {
+                                                <div class="dropleft">
+                                                    <div class="glyph-icon simple-icon-options" type="button"
+                                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></div>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" style="cursor: default; color: #b2b2b2; " href="javascript:void(0)">Düzenle</a>
+                                                        <form asp-controller="Home" asp-action="DeleteComment" method="post" asp-route-id="@item.Id">
+                                                            @*<input hidden value="@item.Id" />*@
+                                                            <button class="dropdown-item" type="submit">Sil</button>
+                                                        </form>
 
-                                    }
-                                    else
-                                    {
-                                        <h4>Henüz projeye ait bir dosya yüklenmemiş..</h4>
+                                                    </div>
+                                                </div>
+                                            }
+
+                                        </div>
                                     }
                                 }
+                                else
+                                {
+                                    <h5>Henüz yorum yapılmamış..</h5>
+                                }
+                            </div>
 
-                                <form asp-action="UpdateDocuments" asp-controller="Home" method="post" enctype="multipart/form-data" data-pasley-validate>
-                                    <input type="text" asp-for="Project.Id" value="@Model.Project.Id" hidden />
-                                    <div class="d-flex flex-row mb-3">
-                                        <div class="col-12">
-                                            <div class="input-group mb-3 file-avatar">
-                                                <label class="custom-select custom-select-label file-new-uploads-text" for="file-upload" style="height:auto; line-height:inherit;"></label>
-                                                <input type="file" class="d-none file-new-uploads" name="file-upload" id="file-upload" multiple>
-                                                <div class="input-group-append">
-                                                    <label class="input-group-text" for="file-upload" value="Fotoğraf Yükle">Dosya Yükle</label>
+                            <div class="comment-contaiener">
+                                <div class="input-group" id="comment-section">
+                                    <input type="text" class="form-control" placeholder="Yorum Ekle" id="comment-input">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-secondary" type="button" id="comment-button">
+                                            <span class="d-inline-block">Paylaş</span> <i class="simple-icon-arrow-right ml-2"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="second" role="tabpanel" aria-labelledby="second-tab">
+                            @{
+                                if (Model.ProjectDocuments.Count() > 0)
+                                {
+                                    foreach (var item in Model.ProjectDocuments)
+                                    {
+                                        string link = LocFilePaths.DIR_Projects_Doc + item.Projects.Id + "/" + item.FileName;
+                                        <div class="d-flex flex-row mb-3 border-bottom">
+                                            <div class="p-0 position-relative tab-icon">
+                                                <div class="preview-container">
+                                                    <img data-dz-thumbnail="" class="img-thumbnail border-0">
+                                                    <i class="simple-icon-doc preview-icon"></i>
                                                 </div>
                                             </div>
-                                            <div class="text-zero top-right-button-container">
-                                                <button type="submit" class="btn btn-primary top-right-button mr-1">Yeni Dosya Ekle</button>
+                                            <div class="pl-3 w-90 dz-details position-relative">
+                                                <div>
+                                                    <span data-dz-name="">@item.FileName</span>
+                                                </div>
+                                                <div class="text-primary text-extra-small" data-dz-size="">
+                                                    <strong>0</strong> KB
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </form>
+                                            <a href="@link" class="download-icon" data-dz-remove="" download>
+                                                <i class="glyph-icon simple-icon-cloud-download"></i>
+                                            </a>
+                                            @if (User.IsInRole(UserRoles.Admin))
+                                            {
 
-                            </div>
-                            <div class="tab-pane fade" id="third" role="tabpanel" aria-labelledby="third-tab">
-                                <div class="row">
-                                    <div class="col-8">
-                                        <p class="font-weight-bold">Proje Açıklaması</p>
-                                    </div>
-                                    @if (User.IsInRole(UserRoles.Admin))
-                                    {
-                                        <div class="col-4 text-right">
-                                            <button data-toggle="modal" data-target="#project-details" class="btn btn-primary btn-sm mb-0">Projeyi Düzenle</button>
+                                                <a href="/proje-detaylari/dokuman-kaldir/@item.Id" class="download-icon ml-4" data-dz-remove="">
+                                                    <i class="glyph-icon simple-icon-trash"></i>
+                                                </a>
+                                            }
                                         </div>
                                     }
-                                </div><div id="desc">@Html.Raw(Model.Project.Description)</div>
-                            </div>
+
+                                }
+                                else
+                                {
+                                    <h4>Henüz projeye ait bir dosya yüklenmemiş..</h4>
+                                }
+                            }
+
+                            <form asp-action="UpdateDocuments" asp-controller="Home" method="post" enctype="multipart/form-data" data-pasley-validate>
+                                <input type="text" asp-for="Project.Id" value="@Model.Project.Id" hidden />
+                                <div class="d-flex flex-row mb-3">
+                                    <div class="col-12">
+                                        <div class="input-group mb-3 file-avatar">
+                                            <label class="custom-select custom-select-label file-new-uploads-text" for="file-upload" style="height:auto; line-height:inherit;"></label>
+                                            <input type="file" class="d-none file-new-uploads" name="file-upload" id="file-upload" multiple>
+                                            <div class="input-group-append">
+                                                <label class="input-group-text" for="file-upload" value="Fotoğraf Yükle">Dosya Yükle</label>
+                                            </div>
+                                        </div>
+                                        <div class="text-zero top-right-button-container">
+                                            <button type="submit" class="btn btn-primary top-right-button mr-1">Yeni Dosya Ekle</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                        <div class="tab-pane fade" id="third" role="tabpanel" aria-labelledby="third-tab">
+                            <div class="row">
+                                <div class="col-8">
+                                    <p class="font-weight-bold">Proje Açıklaması</p>
+                                </div>
+                                @if (User.IsInRole(UserRoles.Admin))
+                                {
+                                    <div class="col-4 text-right">
+                                        <button data-toggle="modal" data-target="#project-details" class="btn btn-primary btn-sm mb-0">Projeyi Düzenle</button>
+                                    </div>
+                                }
+                            </div><div id="desc">@Html.Raw(Model.Project.Description)</div>
                         </div>
                     </div>
                 </div>
             </div>
 
+            </div>
+
             <div class="col-12 col-md-12 col-xl-4 col-right">
                 <div class="card mb-4">
+                    @foreach (var item in Model.Users)
+                    {
+                        string img = item.ImageUrl;
+                        <img alt="@item.FullName" class="img-thumbnail border-0 rounded-circle mb-4 list-thumbnail mx-auto" style="position: absolute; top:@top%; left: -4%;" src="@img" title="@item.FullName">
+                        top += 23;
+                    }
                     <div class="card-body">
                         <div class="row">
                             <div class="col-8 p-0 m-0 d-flex justify-content-center align-items-center">
                                 <h1 class="p-0 m-0">@Model.Project.Customers.Name</h1>
                             </div>
                             <div class="col-4">
-                                <img src="/assets/customers/@Model.Project.Customers.Id/img/@Model.Project.Customers.ImageUrl" alt="@Model.Project.Customers.Name" class="list-thumbnail responsive border-0 card-img-left ml-2" />
+                                <img src="/assets/customers/@Model.Project.Customers.Id/img/@Model.Project.Customers.ImageUrl" alt="@Model.Project.Customers.Name" style="border-radius:0;" class="list-thumbnail responsive border-0 card-img-left ml-2" />
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -322,23 +333,27 @@
                                 <p class="mb-3">
                                     @if (Model.Project.Status == 0)
                                     {
-                                        <span class="badge badge-pill badge-info mb-1">YENİ</span>
+                                        <span class="badge badge-pill badge-info mb-1"><i class="fas fa-bahai"></i>&nbsp;&nbsp;YENİ</span>
                                     }
                                     @if (Model.Project.Status == 1)
                                     {
-                                        <span class="badge badge-pill badge-warning mb-1">YAPIM AŞAMASINDA</span>
+                                        <span class="badge badge-pill badge-warning mb-1"><i class="fas fa-business-time"></i>&nbsp;&nbsp;YAPIM AŞAMASINDA</span>
                                     }
                                     @if (Model.Project.Status == 2)
                                     {
-                                        <span class="badge badge-pill badge-secondary mb-1">MÜŞTERİ ONAYINDA</span>
+                                        <span class="badge badge-pill badge-secondary mb-1"><i class="fas fa-ellipsis-h"></i>&nbsp;&nbsp;MÜŞTERİ ONAYINDA</span>
                                     }
                                     @if (Model.Project.Status == 3)
                                     {
-                                        <span class="badge badge-pill badge-primary mb-1">TAMAMLANDI</span>
+                                        <span class="badge badge-pill badge-primary mb-1"><i class="fas fa-check-double"></i>&nbsp;&nbsp;TAMAMLANDI</span>
                                     }
                                     @if (Model.Project.Status == 4)
                                     {
                                         <span class="badge badge-pill badge-primary" style="background-color: #008aff !important;"><i class="fas fa-archive"></i>&nbsp;&nbsp;ARŞİVLENMİŞ</span>
+                                    }
+                                    @if (Model.Project.Status == 5)
+                                    {
+                                        <span class="badge badge-pill badge-primary" style="background-color: #e64f1f !important;"><i class="fas fa-ban"></i>&nbsp;&nbsp;İPTAL</span>
                                     }
 
 
@@ -361,14 +376,78 @@
                         </div>
                     </div>
                 </div>
-                <div class="card mb-4">
-                    <div class="card-body text-center pt-5 pb-5">
-                        @foreach (var item in Model.Users)
+                <div class="row">
+                    <div class="col-12">
+                        @if (Model.Project.Status == 5)
                         {
-                            string img = item.ImageUrl;
-                            <img alt="@item.FullName" class="img-thumbnail border-0 rounded-circle mb-4 list-thumbnail mx-auto" src="@img" title="@item.FullName">
+                            <div class="card mb-4 progress-banner" style="background-image: url(https://i.giphy.com/media/1oETSTTe9nkRP9bi2Z/giphy.webp); background-position: center; ">
+                                <div class="card-body justify-content-between d-flex flex-row align-items-center">
+                                    <div>
+                                        <i class="iconsminds-close mr-2 text-white align-text-bottom d-inline-block"></i>
+                                        <div>
+                                            <p class="lead text-white">İptal</p>
+                                            <p class="text-small text-white">Proje ertelenmiş veya askıya alınmış</p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div role="progressbar"
+                                             class="progress-bar-circle progress-bar-banner position-relative"
+                                             data-color="white" data-trail-color="rgba(255,255,255,0.2)"
+                                             aria-valuenow="0" aria-valuemax="0" data-show-percent="false">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         }
+                        else
+                        {
+                            @if (completedTask < TaskLength)
+                            {
+                                <div class="card mb-4 progress-banner" style="background-image: url(https://i.giphy.com/media/U3qYN8S0j3bpK/giphy.webp);">
+                                    <div class="card-body justify-content-between d-flex flex-row align-items-center">
+                                        <div>
+                                            <i class="iconsminds-box-with-folders mr-2 text-white align-text-bottom d-inline-block"></i>
+                                            <div>
+                                                <p class="lead text-white">Görevler</p>
+                                                <p class="text-small text-white">Bitmek için bekliyor</p>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div role="progressbar"
+                                                 class="progress-bar-circle progress-bar-banner position-relative"
+                                                 data-color="white" data-trail-color="rgba(255,255,255,0.2)"
+                                                 aria-valuenow="@completedTask" aria-valuemax="@TaskLength" data-show-percent="false">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="card mb-4 progress-banner" style="background-image: url(https://media2.giphy.com/media/3ohhwznSVuwXu6RnEY/giphy.gif?cid=ecf05e4786be22848a49f2386157f33bdcb63e6664bed3d2&rid=giphy.gif&ct=s);">
+                                    <div class="card-body justify-content-between d-flex flex-row align-items-center">
+                                        <div>
+                                            <i class="iconsminds-crown-2 mr-2 text-white align-text-bottom d-inline-block"></i>
+                                            <div>
+                                                <p class="lead text-white">Görevler Tamamlandı</p>
+                                                <p class="text-small text-white">Tebrikler</p>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div role="progressbar"
+                                                 class="progress-bar-circle progress-bar-banner position-relative"
+                                                 data-color="white" data-trail-color="rgba(255,255,255,0.2)"
+                                                 aria-valuenow="@completedTask" aria-valuemax="@TaskLength" data-show-percent="false">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+
                     </div>
+
                 </div>
             </div>
         </div>

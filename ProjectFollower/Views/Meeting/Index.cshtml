@@ -29,8 +29,7 @@
                 }
                 DevExpress.localization.locale(navigator.language);
                 var customerNamePublic = "";
-                const now = new Date();
-                console.log((now).toISOString().split('T')[0]);
+                var nowt = new Date();
                 meet();                
                 function meet() {
                     $.ajax({
@@ -49,7 +48,7 @@
                                     dataSource: meetingsObj,
                                     views: ['month', 'week', 'agenda'],
                                     currentView: 'month',
-                                    currentDate: now,
+                                    currentDate: nowt,
                                     startDayHour: 8,
                                     endDayHour: 18,
                                     showAllDayPanel: false,
@@ -63,6 +62,7 @@
                                             contentType: "application/json; charset=utf-8",
                                             dataType: "json",
                                             success: function (response) {
+                                                nowt = e.appointmentData.endDate;
                                                 showToast('Oluşturuldu', e.appointmentData.text, 'success');
                                                 meet();
                                             },
@@ -85,8 +85,8 @@
                                             contentType: "application/json; charset=utf-8",
                                             dataType: "json",
                                             success: function (response) {
+                                                nowt = e.appointmentData.endDate;
                                                 showToast('Güncellendi', e.appointmentData.text, 'info');
-                                                console.log(e.appointmentData.startDate);
                                                 meet();
                                             },
                                             failure: function (response) {
@@ -106,6 +106,7 @@
                                             contentType: "application/json; charset=utf-8",
                                             dataType: "json",
                                             success: function (response) {
+                                                nowt = e.appointmentData.endDate;
                                                 showToast('Silindi', e.appointmentData.text, 'error');
                                                 meet();
                                             },

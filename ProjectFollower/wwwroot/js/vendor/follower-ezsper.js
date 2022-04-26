@@ -119,7 +119,7 @@
                                 <div class="pl-3">
                                     <a href="/proje-detaylari/`+ value.projectId +`">
                                         <p class="font-weight-bold mb-1">`+ value.title + `</p>
-                                        <p class="font-weight-medium mb-1">`+ value.message + `</p>
+                                        <p class="mb-1">`+ value.message + `</p>
                                         <p class="text-muted mb-0 text-small">`+ value.date + `</p>
                                     </a>
                                 </div>
@@ -135,7 +135,7 @@
             });
             if (totalnot == 0) {
                 var item = `<div class="d-flex flex-row align-items-center justify-content-center p-2 border-bottom">
-                                <p class="font-weight-bold mb-1">Yeni bir bildirim yok</p>
+                                <p class="mb-1">Yeni bir bildirim yok</p>
                             </div>`
                 $(".notification-list").append(item);
                 $("#notificationButton").removeClass("notification-unread");
