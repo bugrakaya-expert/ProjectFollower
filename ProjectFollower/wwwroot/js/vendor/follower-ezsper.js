@@ -166,6 +166,25 @@
         formdata = JSON.stringify(formdata);
         updateOnAction(formdata);
     });
+    $(document).on("click", ".not-click", function () {
+        var formdata = [];
+        $(this).find('input').each(function () {
+            var item = {};
+            //here the item name should be the same as your model
+            item['id'] = this.id,
+                item['date'] = $(this).data("date"),
+                item['message'] = $(this).data("message"),
+                item['userid'] = $(this).data("userid"),
+                item['projectid'] = $(this).data("projectid"),
+                item['title'] = $(this).data("title"),
+                item['readed'] = true
+            formdata.push(item);
+        });
+        //here the model should be the same as your controller parameter name
+        formdata = JSON.stringify(formdata);
+        updateOnAction(formdata);
+    });
+   
     function updateOnAction(formdata) {
         $.ajax({
             contentType: 'application/json; charset=utf-8',//this statement should be added

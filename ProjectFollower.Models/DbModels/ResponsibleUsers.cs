@@ -11,6 +11,8 @@ namespace ProjectFollower.Models.DbModels
         [Key]
         public Guid Id { get; set; }
         public Guid ProjectId { get; set; }
+
+        public string Title { get; set; }
         public Guid UserId { get; set; }
     }
 }

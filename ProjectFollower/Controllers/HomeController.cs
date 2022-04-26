@@ -286,7 +286,6 @@ namespace ProjectFollower.Controllers
 
             ProjectVM.Customers = _uow.Customers.GetFirstOrDefault(i => i.Id == ProjectVM.CustomersId);
             ProjectVM.CreationDate = DateTime.Now.ToString("dd/MM/yyyy");
-
             var Project = new Projects()
             {
                 CreationDate = ProjectVM.CreationDate,
@@ -310,7 +309,7 @@ namespace ProjectFollower.Controllers
                 {
                     UserId = User.Id,
                     Date = DateTime.Now.ToString("dd/MM/yyyy"),
-                    Title = "Yeni Bir Proje Eklendi",
+                    Title = Project.Name,
                     Message = "Adınıza yeni bir proje açıldı. Detaylar için tıklayınız."
                 };
                 NotificationVMs.Add(_notify);
@@ -928,6 +927,7 @@ namespace ProjectFollower.Controllers
         {
             var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
             _project.Status = 5;
+            _project.Archived = true;
             _uow.Project.Update(_project);
             _uow.Save();
             return Json(null);

@@ -23,6 +23,7 @@
         @section scripts
 {
             <script>
+
                 function showToast(event, value, type) {
                     DevExpress.ui.notify(`${event} "${value}" `, type, 800);
                 }
@@ -185,6 +186,18 @@
                                             },
                                         },
                                         ]);
+                                    },
+                                    appointmentTemplate(model) {
+                                        var customerid = model.targetedAppointmentData.customersId;
+                                        data.customer.forEach(customerFunc);
+                                        function customerFunc(item, index) {
+                                            if (customerid == item.id) {
+                                                subject = item.text;
+                                            }
+                                        }
+                                        return $(`${"<div class='showtime-preview'>"
+                                            + '<div>'}${model.targetedAppointmentData.text} - ${subject}</div>`
+                                            + '</div>');
                                     },
                                     /*appointmentTemplate(model) {
     
