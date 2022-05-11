@@ -311,7 +311,8 @@ namespace ProjectFollower.Controllers
                     UserId = User.Id,
                     Date = DateTime.Now.ToString("dd/MM/yyyy"),
                     Title = "Yeni Bir Proje Eklendi",
-                    Message = "Adınıza yeni bir proje açıldı. Detaylar için tıklayınız."
+                    Message = "Adınıza yeni bir proje açıldı. Detaylar için tıklayınız.",
+                    ProjectId=ProjectVM.Id.ToString()
                 };
                 NotificationVMs.Add(_notify);
                 _uow.ResponsibleUsers.Add(ResponsibleUser);
@@ -414,9 +415,9 @@ namespace ProjectFollower.Controllers
             WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
             await WebSocAct.SendNotification_WebSocket(GetClaim(), INotifications);
 
-            //return NoContent();
+            return NoContent();
 
-            return Redirect("/dashboard?status=true");
+            //return Redirect("/dashboard?status=true");
         }
 
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
@@ -558,8 +559,9 @@ namespace ProjectFollower.Controllers
                     _uow.TaskPlayers.Add(player);
                 }
             }
-            _uow.Save();
-            return Redirect("/proje-detaylari/" + projectDetailVM.ProjectsId);
+            //_uow.Save();
+            //return Redirect("/proje-detaylari/" + projectDetailVM.ProjectsId);
+            return NoContent();
         }
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [HttpGet("proje-detaylari/gorev-kaldir/{id}")]
