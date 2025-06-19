@@ -286,7 +286,6 @@ namespace ProjectFollower.Controllers
 
             ProjectVM.Customers = _uow.Customers.GetFirstOrDefault(i => i.Id == ProjectVM.CustomersId);
             ProjectVM.CreationDate = DateTime.Now.ToString("dd/MM/yyyy");
-
             var Project = new Projects()
             {
                 CreationDate = ProjectVM.CreationDate,
@@ -309,11 +308,17 @@ namespace ProjectFollower.Controllers
                 var _notify = new NotificationVM()
                 {
                     UserId = User.Id,
+<<<<<<< HEAD
                     Date = DateTime.Now.ToString("dd/MM/yyyy HH:mm"),
                     Title = "Yeni Bir Proje Eklendi",
                     Message = "Adınıza yeni bir proje açıldı. Detaylar için tıklayınız.",
                     ProjectId = ProjectVM.Id.ToString(),
                     Url = "/proje-detaylari/" + ProjectVM.Id,
+=======
+                    Date = DateTime.Now.ToString("dd/MM/yyyy"),
+                    Title = Project.Name,
+                    Message = "Adınıza yeni bir proje açıldı. Detaylar için tıklayınız."
+>>>>>>> 908055d269205e5f90321e945e19f6feddfb3e1a
                 };
                 NotificationVMs.Add(_notify);
                 _uow.ResponsibleUsers.Add(ResponsibleUser);
@@ -1027,6 +1032,23 @@ namespace ProjectFollower.Controllers
             _uow.Save();
             return Json(null);
         }
+<<<<<<< HEAD
+=======
+
+        [Authorize(Roles = UserRoles.Admin)]
+        [HttpGet("jsonresult/changeToCancelState/{id}")]
+        public JsonResult ChangetoCancel(string id)
+        {
+            var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
+            _project.Status = 5;
+            _project.Archived = true;
+            _uow.Project.Update(_project);
+            _uow.Save();
+            return Json(null);
+        }
+
+
+>>>>>>> 908055d269205e5f90321e945e19f6feddfb3e1a
         [HttpPost("jsonresult/addcomment/")]
         public async Task<JsonResult> AddComments(ProjectComments projectComments)
         {

@@ -4325,19 +4325,32 @@ $.dore = function (element, options) {
                     }
                 })
             }
+<<<<<<< HEAD
             if (y == "status6") {
                 Swal.fire({
                     title: 'Bu projeyi Beklemeye almak istediğinize emin misiniz?',
                     showCancelButton: true,
                     icon: 'info',
                     confirmButtonText: 'Güncelle',
+=======
+            if (y == "status5") {
+                Swal.fire({
+                    title: 'Bu projeyi iptal etmek istediğinize emin misiniz?',
+                    showCancelButton: true,
+                    icon: 'info',
+                    confirmButtonText: 'Tamam',
+>>>>>>> 908055d269205e5f90321e945e19f6feddfb3e1a
                     cancelButtonText: `İptal Et`,
                 }).then((result) => {
                     /* Read more about isConfirmed, isDenied below */
                     if (result.isConfirmed) {
                         var id = this.attr('id');
                         $.ajax({
+<<<<<<< HEAD
                             url: "jsonresult/changeToAwait/" + id,
+=======
+                            url: "jsonresult/changeToCancelState/" + id,
+>>>>>>> 908055d269205e5f90321e945e19f6feddfb3e1a
                             type: "GET",
                             contentType: "application/json",
                             dataType: "json",
@@ -4359,7 +4372,11 @@ $.dore = function (element, options) {
                             },
                             error: function (data) {
                                 Swal.fire({
+<<<<<<< HEAD
                                     title: 'Projeyi beklemeye alma yetkiniz bulunmamaktadır',
+=======
+                                    title: 'Projeyi iptal etme statüsüne alma yetkiniz bulunmamaktadır',
+>>>>>>> 908055d269205e5f90321e945e19f6feddfb3e1a
                                     icon: 'error',
                                     confirmButtonText: 'Tamam',
                                 }).then((result) => {
@@ -4369,6 +4386,10 @@ $.dore = function (element, options) {
                             }
                         });
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 908055d269205e5f90321e945e19f6feddfb3e1a
                     }
                 })
             }
@@ -4444,6 +4465,7 @@ $.dore = function (element, options) {
               name: "Proje Durumu",
               className: "simple-icon-settings",
               items: {
+<<<<<<< HEAD
                   status1: { "name":"YENİ", className:"yeni_item" },
                   /*status1: {
                       "name": $(`<div></div>`).html()},}*/
@@ -4451,6 +4473,13 @@ $.dore = function (element, options) {
                   status3: { "name": "Müşteri Onayında", className: "musteriony_item"  },
                   status6: { "name": "Beklemede", className: "beklemede_item"  },
                   status4: { "name": "Tamamlandı", className: "tamamlandi_item"  }
+=======
+                  status1 : { "name": "Yeni" },
+                  status2: { "name": "Yapım Aşamasında" },
+                  status3: { "name": "Müşteri Onayında" },
+                  status4: { "name": "Tamamlandı" },
+                  status5: { "name": "İptal" }
+>>>>>>> 908055d269205e5f90321e945e19f6feddfb3e1a
               }
 
             }

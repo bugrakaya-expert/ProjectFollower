@@ -117,8 +117,14 @@
                                             class="img-thumbnail list-thumbnail xsmall border-0 rounded-circle" />
                                 </a>
                                 <div class="pl-3">
+<<<<<<< HEAD
                                     <a href="`+ value.url + `">
                                         <p class="mb-1">`+ value.title + `</p>
+=======
+                                    <a href="/proje-detaylari/`+ value.projectId +`">
+                                        <p class="font-weight-bold mb-1">`+ value.title + `</p>
+                                        <p class="mb-1">`+ value.message + `</p>
+>>>>>>> 908055d269205e5f90321e945e19f6feddfb3e1a
                                         <p class="text-muted mb-0 text-small">`+ value.date + `</p>
                                     </a>
                                 </div>
@@ -134,7 +140,7 @@
             });
             if (totalnot == 0) {
                 var item = `<div class="d-flex flex-row align-items-center justify-content-center p-2 border-bottom">
-                                <p class="font-weight-bold mb-1">Yeni bir bildirim yok</p>
+                                <p class="mb-1">Yeni bir bildirim yok</p>
                             </div>`
                 $(".notification-list").append(item);
                 $("#notificationButton").removeClass("notification-unread");
@@ -165,6 +171,25 @@
         formdata = JSON.stringify(formdata);
         updateOnAction(formdata);
     });
+    $(document).on("click", ".not-click", function () {
+        var formdata = [];
+        $(this).find('input').each(function () {
+            var item = {};
+            //here the item name should be the same as your model
+            item['id'] = this.id,
+                item['date'] = $(this).data("date"),
+                item['message'] = $(this).data("message"),
+                item['userid'] = $(this).data("userid"),
+                item['projectid'] = $(this).data("projectid"),
+                item['title'] = $(this).data("title"),
+                item['readed'] = true
+            formdata.push(item);
+        });
+        //here the model should be the same as your controller parameter name
+        formdata = JSON.stringify(formdata);
+        updateOnAction(formdata);
+    });
+   
     function updateOnAction(formdata) {
         $.ajax({
             contentType: 'application/json; charset=utf-8',//this statement should be added

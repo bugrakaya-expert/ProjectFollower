@@ -8,6 +8,9 @@
     .dx-textarea .dx-texteditor-input {
         min-height: 15rem;
     }
+    .dx-scheduler-appointment-title{
+        text-align:left;
+    }
 </style>
 <main>
     <div class="row">
@@ -20,13 +23,13 @@
         @section scripts
 {
             <script>
+
                 function showToast(event, value, type) {
                     DevExpress.ui.notify(`${event} "${value}" `, type, 800);
                 }
                 DevExpress.localization.locale(navigator.language);
                 var customerNamePublic = "";
-                const now = new Date();
-                console.log((now).toISOString().split('T')[0]);
+                var nowt = new Date();
                 meet();                
                 function meet() {
                     $.ajax({
@@ -45,8 +48,8 @@
                                 $('#scheduler').dxScheduler({
                                     dataSource: meetingsObj,
                                     views: ['month', 'week', 'agenda'],
-                                    currentView: 'week',
-                                    currentDate: now,
+                                    currentView: 'month',
+                                    currentDate: nowt,
                                     startDayHour: 8,
                                     endDayHour: 18,
                                     showAllDayPanel: false,
@@ -60,6 +63,7 @@
                                             contentType: "application/json; charset=utf-8",
                                             dataType: "json",
                                             success: function (response) {
+                                                nowt = e.appointmentData.endDate;
                                                 showToast('Oluşturuldu', e.appointmentData.text, 'success');
                                                 meet();
                                             },
@@ -82,8 +86,8 @@
                                             contentType: "application/json; charset=utf-8",
                                             dataType: "json",
                                             success: function (response) {
+                                                nowt = e.appointmentData.endDate;
                                                 showToast('Güncellendi', e.appointmentData.text, 'info');
-                                                console.log(e.appointmentData.startDate);
                                                 meet();
                                             },
                                             failure: function (response) {
@@ -103,6 +107,7 @@
                                             contentType: "application/json; charset=utf-8",
                                             dataType: "json",
                                             success: function (response) {
+                                                nowt = e.appointmentData.endDate;
                                                 showToast('Silindi', e.appointmentData.text, 'error');
                                                 meet();
                                             },
@@ -187,6 +192,28 @@
                                         },
                                         ]);
                                     },
+<<<<<<< HEAD
+=======
+                                    appointmentTemplate(model) {
+                                        var customerid = model.targetedAppointmentData.customersId;
+                                        data.customer.forEach(customerFunc);
+                                        function customerFunc(item, index) {
+                                            if (customerid == item.id) {
+                                                subject = item.text;
+                                            }
+                                        }
+                                        return $(`${"<div class='showtime-preview'>"
+                                            + '<div>'}${model.targetedAppointmentData.text} - ${subject}</div>`
+                                            + '</div>');
+                                    },
+                                    /*appointmentTemplate(model) {
+    
+                                        return $(`${"<div class='movie'>"
+                                            + "<img src='"}' />`
+                                            + `<div class='movie-text'></div>`
+                                            + '</div>');
+                                    },*/
+>>>>>>> 908055d269205e5f90321e945e19f6feddfb3e1a
                                 }).dxScheduler('instance');
                             });
                         }

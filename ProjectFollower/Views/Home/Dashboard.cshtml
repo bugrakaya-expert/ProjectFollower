@@ -28,7 +28,11 @@
                     <div class="text-zero top-right-button-container">
                         @if (User.IsInRole(Admin))
                         {
+<<<<<<< HEAD
                             <a asp-controller="Home" asp-action="ProjectNew" type="button" class="btn btn-primary btn-lg top-right-button mr-1">YENİ PROJE EKLE</a>
+=======
+                        <a asp-controller="Home" asp-action="ProjectNew" type="button" class="btn btn-primary btn-lg top-right-button">YENİ PROJE EKLE</a>
+>>>>>>> 908055d269205e5f90321e945e19f6feddfb3e1a
                         }
 
                     </div>
@@ -37,17 +41,17 @@
                 <div class="mb-2">
                     <a class="btn pt-0 pl-0 d-inline-block d-md-none" data-toggle="collapse" href="#displayOptions"
                        role="button" aria-expanded="true" aria-controls="displayOptions">
-                        Display Options
+                        Seçenekleri Göster
                         <i class="simple-icon-arrow-down align-middle"></i>
                     </a>
                     <div class="collapse d-md-block" id="displayOptions">
                         <div class="d-block d-md-inline-block">
 
-                            <div class="search-sm d-inline-block float-md-left mr-1 mb-1 align-top">
+                            <div class="search-sm d-inline-block float-md-left mb-1 align-top">
                                 <input placeholder="Ara..." id="tableSearch">
                             </div>
                         </div>
-                        <div class="float-md-right">
+                        <div class="float-md-right d-none">
                             <div class="form-group row mb-1">
                                 <label class=" d-flex align-items-center text-muted mr-2"><b>Arşivlenmiş Projeler</b></label>
                                 <div class="custom-switch custom-switch-secondary-inverse mb-2 mr-2">
@@ -67,7 +71,7 @@
                         </div>
                         @if (User.IsInRole(Admin))
                         {
-                            <div class="float-md-right mr-5">
+                            <div class="float-md-right">
 
                                 <button class="btn btn-outline-dark btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Kişi Filterelemesi</button>
                                 <div class="dropdown-menu dropdown-menu-right " x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(1291px, 96px, 0px);" id="user-filter">
@@ -75,8 +79,7 @@
                                 </div>
                             </div>
                         }
-                        @if (User.IsInRole(Admin))
-                        {
+
                             <div class="float-md-right mr-2">
 
                                 <button class="btn btn-outline-dark btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Durum Filtrelemesi</button>
@@ -87,11 +90,13 @@
                                     <a type="button" class="dropdown-item filter-status" href="#" id="6">Beklemede</a>
                                     <a type="button" class="dropdown-item filter-status" href="#" id="3">Tamamlandı</a>
                                     <a type="button" class="dropdown-item filter-status" href="#" id="4">Arşivlendi</a>
-                                    <a type="button" class="dropdown-item filter-status" href="#" id="5">Tümünü Göster</a>
+                                    <a type="button" class="dropdown-item filter-status" href="#" id="5">İptal Edilen Projeler</a>
+                                    <a type="button" class="dropdown-item filter-status" href="#" id="6">Gecikmiş Projeler</a>
+                                    <a type="button" class="dropdown-item filter-status" href="#" id="7">Tümünü Göster</a>
 
                                 </div>
                             </div>
-                        }
+
 
 
                     </div>
@@ -118,6 +123,7 @@
                         </thead>
                         <tbody class="list" id="tbody">
                             @*
+<<<<<<< HEAD
                                 <tr class="cardd">
                                     <td>
                                         <img src="img/orj/firmalar/elitdijital.png" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
@@ -200,6 +206,90 @@
                                         <a asp-controller="Home" asp-Action="Details" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
                                     </td>
                                 </tr>
+=======
+        <tr class="cardd">
+            <td>
+                <img src="img/orj/firmalar/elitdijital.png" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
+            </td>
+            <td>
+                <p class="list-item-heading">Elit Dijital Logo Tasarımı</p>
+            </td>
+            <td>
+                <p>Elit Dijital</p>
+            </td>
+            <td>
+                <p>05.01.2022</p>
+            </td>
+            <td>
+                <p class="d-none">3</p><span class="badge badge-pill badge-primary"><i class="fas fa-check-double"></i>&nbsp;&nbsp;TAMAMLANDI</span>
+            </td>
+            <td class="text-center">
+                <a href="#" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
+            </td>
+        </tr>
+
+        <tr class="cardd">
+            <td>
+                <img src="img/orj/firmalar/poligon.jpg" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
+            </td>
+            <td>
+                <p class="list-item-heading">Poligon Logo Tasarımı</p>
+            </td>
+            <td>
+                <p>Poligon Mühendislik</p>
+            </td>
+            <td>
+                <p>08.02.2022</p>
+            </td>
+            <td>
+                <p class="d-none">2</p><span class="badge badge-pill badge-secondary"><i class="fas fa-ellipsis-h"></i>&nbsp;&nbsp;MÜŞTERİ ONAYINDA</span>
+            </td>
+            <td class="text-center">
+                <a asp-controller="Home" asp-Action="Details" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
+
+            </td>
+        </tr>
+        <tr class="cardd">
+            <td>
+                <img src="img/orj/firmalar/manypoints.png" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
+            </td>
+            <td>
+                <p class="list-item-heading">Many Points Post</p>
+            </td>
+            <td>
+                <p>Many Points</p>
+            </td>
+            <td>
+                <p>07.01.2022</p>
+            </td>
+            <td>
+                <p class="d-none">1</p><span class="badge badge-pill badge-warning"><i class="fas fa-business-time"></i>&nbsp;&nbsp;YAPIM AŞAMASINDA</span><span class="badge badge-pill badge-danger ml-3">Proje Gecikmiş!</span>
+            </td>
+            <td class="text-center">
+                <a asp-controller="Home" asp-Action="Details" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
+            </td>
+        </tr>
+        <tr class="cardd">
+            <td>
+                <img src="img/orj/firmalar/poligon.jpg" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
+            </td>
+            <td>
+                <p class="list-item-heading">Poligon Video Tasarımı</p>
+            </td>
+            <td>
+                <p>Poligon Mühendislik</p>
+            </td>
+            <td>
+                <p>10.01.2022</p>
+            </td>
+            <td>
+                <p class="d-none">1</p><span class="badge badge-pill badge-info"><i class="fas fa-bahai"></i>&nbsp;&nbsp;YENİ</span>
+            </td>
+            <td class="text-center">
+                <a asp-controller="Home" asp-Action="Details" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
+            </td>
+        </tr>
+>>>>>>> 908055d269205e5f90321e945e19f6feddfb3e1a
                             *@
                         </tbody>
                     </table>
@@ -254,7 +344,7 @@
                         var img = "/assets/customers/" + custid + custImage;
                         var delayedspan = '';
                         if (isDelayed == true) {
-                            delayedspan = `<span class="badge badge-pill badge-danger ml-3">PROJE GECİKMİŞ!</span>`;
+                            delayedspan = `<span class="badge badge-pill badge-danger ml-3"><i class="fas fa-hourglass-end"></i>&nbsp;&nbsp;PROJE GECİKMİŞ!</span>`;
                             if (item.status < 2)
                                 completed++;
                         }
@@ -264,22 +354,32 @@
                         var dateSequence = item.sequanceDate;
 
                         if (item.status == 0) {
-                            status = `<span class="badge badge-pill badge-info">YENİ</span>` + delayedspan;
+                            status = `<span class="badge badge-pill badge-info"><i class="fas fa-bahai"></i>&nbsp;&nbsp;YENİ</span>` + delayedspan;
                         }
                         if (item.status == 1) {
-                            status = `<span class="badge badge-pill badge-warning">YAPIM AŞAMASINDA</span>` + delayedspan;
+                            status = `<span class="badge badge-pill badge-warning"><i class="fas fa-business-time"></i>&nbsp;&nbsp;YAPIM AŞAMASINDA</span>` + delayedspan;
                         }
                         if (item.status == 2) {
-                            status = `<span class="badge badge-pill badge-secondary">MÜŞTERİ ONAYINDA</span>`;
+                            status = `<span class="badge badge-pill badge-secondary"><i class="fas fa-ellipsis-h"></i>&nbsp;&nbsp;MÜŞTERİ ONAYINDA</span>`;
                         }
+<<<<<<< HEAD
                         if (item.status == 6) {
                             status = `<span class="badge badge-pill badge-primary">BEKLEMEDE</span>`;
                         }
                         if (item.status == 3) {
                             status = `<span class="badge badge-pill badge-success">TAMAMLANDI</span>`;
+=======
+                        if (item.status == 3) {
+
+                            status = `<span class="badge badge-pill badge-primary"><i class="fas fa-check-double"></i>&nbsp;&nbsp;TAMAMLANDI</span>`;
+>>>>>>> 908055d269205e5f90321e945e19f6feddfb3e1a
                         }
                         if (item.status == 4) {
                             status = `<span class="badge badge-pill badge-primary" style="background-color: #008aff !important;"><i class="fas fa-archive"></i>&nbsp;&nbsp;ARŞİVLENMİŞ</span>`;
+                        }
+                        if (item.status == 5) {
+                            status = `<span class="badge badge-pill badge-primary" style="background-color: #e64f1f !important;"><i class="fas fa-ban"></i>&nbsp;&nbsp;İPTAL</span>`;
+
                         }
                         var trcls = "";
                         if (i % 2 == 0) {
@@ -332,12 +432,127 @@
             changeMenuStyle();
         }
 
+<<<<<<< HEAD
+=======
+
+        function delayedAjx() {
+            var completed = 0;
+            $.ajax({
+                type: "GET",
+                url: "/jsonresult/getprojectlist/" + archived,
+                contentType: "application/json",
+                dataType: "json",
+                success: function (data) {
+                    $("#tbody").text("");
+
+                    $.each(data.projects, function (i, item) {
+
+                        var name = item.name;
+                        var id = item.id;
+                        var status = "";
+                        var isDelayed = item.isDelayed;
+                        var endingData = item.endingDate;
+                        var createDate = item.creationDate;
+                        var custImage = item.customers.imageUrl;
+                        var custid = item.customers.id + '/img/';
+                        var img = "/assets/customers/" + custid + custImage;
+                        var delayedspan = '';
+                        if (isDelayed == true) {
+                            delayedspan = `<span class="badge badge-pill badge-danger ml-3"><i class="fas fa-hourglass-end"></i>&nbsp;&nbsp;PROJE GECİKMİŞ!</span>`;
+                            if (item.status < 2)
+                                completed++;
+                        }
+
+                        var custName = item.customers.name;
+                        var sequence = item.projectSequence;
+                        var dateSequence = item.sequanceDate;
+
+                        if (item.status == 0) {
+                            status = `<span class="badge badge-pill badge-info"><i class="fas fa-bahai"></i>&nbsp;&nbsp;YENİ</span>` + delayedspan;
+                        }
+                        if (item.status == 1) {
+                            status = `<span class="badge badge-pill badge-warning"><i class="fas fa-business-time"></i>&nbsp;&nbsp;YAPIM AŞAMASINDA</span>` + delayedspan;
+                        }
+                        if (item.status == 2) {
+                            status = `<span class="badge badge-pill badge-secondary"><i class="fas fa-ellipsis-h"></i>&nbsp;&nbsp;MÜŞTERİ ONAYINDA</span>`;
+                        }
+                        if (item.status == 3) {
+
+                            status = `<span class="badge badge-pill badge-primary"><i class="fas fa-check-double"></i>&nbsp;&nbsp;TAMAMLANDI</span>`;
+                        }
+
+                        if (item.status == 4) {
+                            status = `<span class="badge badge-pill badge-primary" style="background-color: #008aff !important;"><i class="fas fa-archive"></i>&nbsp;&nbsp;ARŞİVLENMİŞ</span>`;
+
+                        }
+                        if (item.status == 5) {
+                            status = `<span class="badge badge-pill badge-primary" style="background-color: #e64f1f !important;"><i class="fas fa-ban"></i>&nbsp;&nbsp;İPTAL</span>`;
+
+                        }
+                        var trcls = "";
+                        if (i % 2 == 0) {
+                            trcls = 'odd';
+                        }
+                        else {
+                            trcls = 'even';
+                        }
+                        if (isDelayed == true && item.status == 0 || item.status == 1) {
+                            var htmlstr = `
+                                                <tr class="cardd `+ trcls + `" id="` + id + `" role="row">
+                                                    <td tabindex="0">
+                                                        <img src="`+ img + `" alt="` + name + `" class="list-thumbnail responsive border-0 card-img-left" />
+                                                    </td>
+                                                    <td class="sorting_1">
+                                                        <p>` + custName + `</p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="list-item-heading">`+ name + `</p>
+                                                    </td>
+                                                    <td>
+                                                         <p class="d-none">`+ createDate.split(".").reverse().join("") + `</p><p>` + createDate + `</p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="d-none">`+ endingData.split(".").reverse().join("") + `</p> <p>` + endingData + `</p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="d-none">`+ item.status + `</p>` + status + `
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <a href="/proje-detaylari/`+ item.id + `" type="button" class="btn btn-secondary btn-sm mb-1" target="_blank"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
+                                                    </td>
+                                                </tr>`;
+                        }
+                        
+
+                        $("#tbody").append(htmlstr);
+
+
+                    });
+
+                    var alertstr = `
+                    <div class="alert alert-danger alert-dismissible fade show rounded mb-4" role="alert"><strong>Dikkat!</strong> Termini geçmiş `+ completed + ` adet projeniz bulunmakta. <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></div>
+`;
+
+                    if (completed > 0)
+                        $("#mp-attention").html(alertstr);
+
+                    $(".sorting").removeClass("sorting");
+                }
+            });
+        }
+
+
+
+>>>>>>> 908055d269205e5f90321e945e19f6feddfb3e1a
         $(document).on("click", ".filter-status", function () {
             var completed = 0;
             var userId = this.id;
-            if (userId == 5) {
+            if (userId == 7) {
                 voidAjx();
-            } else {
+            } else if (userId == 6) {
+                delayedAjx();
+            }
+            else {
             $.ajax({
                 type: "GET",
                 url: "/jsonresult/getstatusbyfilter/" + userId,
@@ -357,7 +572,7 @@
                         var img = "/assets/customers/" + custid + custImage;
                         var delayedspan = '';
                         if (isDelayed == true) {
-                            delayedspan = `<span class="badge badge-pill badge-danger ml-3">PROJE GECİKMİŞ!</span>`;
+                            delayedspan = `<span class="badge badge-pill badge-danger ml-3"><i class="fas fa-hourglass-end"></i>&nbsp;&nbsp;PROJE GECİKMİŞ!</span>`;
                             if (item.status < 2) {
                                 completed++;
                             }
@@ -370,24 +585,32 @@
                         var dateSequence = item.sequanceDate;
                         //var comptype = item.companyType.name;
                         if (item.status == 0) {
-                            status = `<span class="badge badge-pill badge-info">YENİ</span>` + delayedspan;
+                            status = `<span class="badge badge-pill badge-info"><i class="fas fa-bahai"></i>&nbsp;&nbsp;YENİ</span>` + delayedspan;
                         }
                         if (item.status == 1) {
-                            status = `<span class="badge badge-pill badge-warning">YAPIM AŞAMASINDA</span>` + delayedspan;
+                            status = `<span class="badge badge-pill badge-warning"><i class="fas fa-business-time"></i>&nbsp;&nbsp;YAPIM AŞAMASINDA</span>` + delayedspan;
                         }
                         if (item.status == 2) {
-                            status = `<span class="badge badge-pill badge-secondary">MÜŞTERİ ONAYINDA</span>`;
+                            status = `<span class="badge badge-pill badge-secondary"><i class="fas fa-ellipsis-h"></i>&nbsp;&nbsp;MÜŞTERİ ONAYINDA</span>`;
                         }
                         if (item.status == 6) {
                             status = `<span class="badge badge-pill badge-primary">BEKLEMEDE</span>`;
                         }
                         if (item.status == 3) {
 
+<<<<<<< HEAD
                             status = `<span class="badge badge-pill badge-success">TAMAMLANDI</span>`;
+=======
+                            status = `<span class="badge badge-pill badge-primary"><i class="fas fa-check-double"></i>&nbsp;&nbsp;TAMAMLANDI</span>`;
+>>>>>>> 908055d269205e5f90321e945e19f6feddfb3e1a
                         }
 
                         if (item.status == 4) {
                             status = `<span class="badge badge-pill badge-primary" style="background-color: #008aff !important;"><i class="fas fa-archive"></i>&nbsp;&nbsp;ARŞİVLENMİŞ</span>`;
+
+                        }
+                        if (item.status == 5) {
+                            status = `<span class="badge badge-pill badge-primary" style="background-color: #e64f1f !important;"><i class="fas fa-ban"></i>&nbsp;&nbsp;İPTAL</span>`;
 
                         }
 
@@ -442,7 +665,7 @@
             var userId = this.id;
             if (userId == 5) {
                 voidAjx();
-            } else {
+            }else {
 
             $.ajax({
                 type: "GET",
@@ -478,24 +701,32 @@
                         var dateSequence = item.sequanceDate;
                         //var comptype = item.companyType.name;
                         if (item.status == 0) {
-                            status = `<span class="badge badge-pill badge-info">YENİ</span>` + delayedspan;
+                            status = `<span class="badge badge-pill badge-info"><i class="fas fa-bahai"></i>&nbsp;&nbsp;YENİ</span>` + delayedspan;
                         }
                         if (item.status == 1) {
-                            status = `<span class="badge badge-pill badge-warning">YAPIM AŞAMASINDA</span>` + delayedspan;
+                            status = `<span class="badge badge-pill badge-warning"><i class="fas fa-business-time"></i>&nbsp;&nbsp;YAPIM AŞAMASINDA</span>` + delayedspan;
                         }
                         if (item.status == 2) {
-                            status = `<span class="badge badge-pill badge-secondary">MÜŞTERİ ONAYINDA</span>`;
+                            status = `<span class="badge badge-pill badge-secondary"><i class="fas fa-ellipsis-h"></i>&nbsp;&nbsp;MÜŞTERİ ONAYINDA</span>`;
                         }
                         if (item.status == 6) {
                             status = `<span class="badge badge-pill badge-primary">BEKLEMEDE</span>`;
                         }
                         if (item.status == 3) {
 
+<<<<<<< HEAD
                             status = `<span class="badge badge-pill badge-success">TAMAMLANDI</span>`;
+=======
+                            status = `<span class="badge badge-pill badge-primary"><i class="fas fa-check-double"></i>&nbsp;&nbsp;TAMAMLANDI</span>`;
+>>>>>>> 908055d269205e5f90321e945e19f6feddfb3e1a
                         }
 
                         if (item.status == 4) {
                             status = `<span class="badge badge-pill badge-primary" style="background-color: #008aff !important;"><i class="fas fa-archive"></i>&nbsp;&nbsp;ARŞİVLENMİŞ</span>`;
+
+                        }
+                        if (item.status == 5) {
+                            status = `<span class="badge badge-pill badge-primary" style="background-color: #e64f1f !important;"><i class="fas fa-ban"></i>&nbsp;&nbsp;İPTAL</span>`;
 
                         }
 
@@ -571,13 +802,13 @@
                 });
             };
 
-            if ($('#archived').is(":checked")) {
-            }
 
             $('#archived').change(function () {
                 if (this.checked) {
+
                     archived = true;
                     changeArcStatus();
+                    console.log('@archived');
                 } else {
                     archived = false;
                     changeArcStatus();

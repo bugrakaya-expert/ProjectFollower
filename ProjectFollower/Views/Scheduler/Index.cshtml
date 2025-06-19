@@ -154,7 +154,7 @@
 
     <script>
 
-
+        var nowt = new Date();
         const CustomerId = '@Model.Id';
         var now = new Date();
         var updating = false;
@@ -176,15 +176,20 @@
                     var schedulerPriorityObj = data.schedulerPriority;
                     var customersObj = data.customers;
                     customerNamePublic = data.customers[0].text;
+<<<<<<< HEAD
                     console.log(data);
 
+=======
+
+                    
+>>>>>>> 908055d269205e5f90321e945e19f6feddfb3e1a
                     $(() => {
                         $('#scheduler').dxScheduler({
                             dataSource: scheduler,
                             type: 'date',
                             views: ['month'],
                             currentView: 'month',
-                            currentDate: now,
+                            currentDate: nowt,
                             showAllDayPanel: false,
                             maxAppointmentsPerCell: 5,
                             allDay: true,
@@ -217,9 +222,13 @@
                                 </text>
                             }
                             onAppointmentAdded(e) {
+<<<<<<< HEAD
                                 updating = true;
                                 const endDate = new Date(2099, 4, 10, 13, 0)
                                 e.appointmentData.endDate = endDate;
+=======
+                                console.log(e.appointmentData.startDate);
+>>>>>>> 908055d269205e5f90321e945e19f6feddfb3e1a
                                 $.ajax({
                                     type: "POST",
                                     url: "/postscheduler",
@@ -234,6 +243,7 @@
                                             contentType: "application/json",
                                             dataType: "json",
                                             success: function (data) {
+                                                nowt = e.appointmentData.endDate; 
                                                 console.log("Web Socket Requets Sended from scheduler. Id: " + '@Model.Id')
                                             }
                                         });
@@ -262,8 +272,9 @@
                                             url: "/jsonresult/trigger_WebSocket/" + "@Model.Id",
                                             contentType: "application/json",
                                             dataType: "json",
-                                            success: function (data) {
-                                                console.log("Web Socket Requets Sended from scheduler. Id: " + '@Model.Id')
+                                                success: function (data) {
+                                                nowt = e.appointmentData.endDate;
+                                                console.log("Web Socket Requetss Sended from scheduler. Id: " + '@Model.Id')
                                             }
                                         });
                                     },
@@ -290,6 +301,7 @@
                                             contentType: "application/json",
                                             dataType: "json",
                                             success: function (data) {
+                                                nowt = e.appointmentData.endDate;
                                                 console.log("Web Socket Requets Sended from scheduler. Id: " + '@Model.Id')
                                             }
                                         });

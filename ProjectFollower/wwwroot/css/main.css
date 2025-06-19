@@ -1,78 +1,110 @@
 html {
-  width: 100%;
+    width: 100%;
 }
 
 body {
-  overflow-x: hidden !important;
+    overflow-x: hidden !important;
 }
 
-body.show-spinner>main {
-  overflow: hidden !important;
-}
+    body.show-spinner > main {
+        overflow: hidden !important;
+    }
 
-/* Hide everything under body tag */
-body.show-spinner>* {
-  opacity: 0;
-}
+    /* Hide everything under body tag */
+    body.show-spinner > * {
+        opacity: 0;
+    }
 
-/* Spinner */
-body.show-spinner::after {
-  content: " ";
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  border: 2px solid rgba(0, 0, 0, 0.2);
-  border-radius: 50%;
-  border-top-color: rgba(0, 0, 0, 0.3);
-  animation: spin 1s ease-in-out infinite;
-  -webkit-animation: spin 1s ease-in-out infinite;
-  left: calc(50% - 15px);
-  top: calc(50% - 15px);
-  position: fixed;
-  z-index: 1;
-}
+    /* Spinner */
+    body.show-spinner::after {
+        content: " ";
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border: 2px solid rgba(0, 0, 0, 0.2);
+        border-radius: 50%;
+        border-top-color: rgba(0, 0, 0, 0.3);
+        animation: spin 1s ease-in-out infinite;
+        -webkit-animation: spin 1s ease-in-out infinite;
+        left: calc(50% - 15px);
+        top: calc(50% - 15px);
+        position: fixed;
+        z-index: 1;
+    }
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 @-webkit-keyframes spin {
-  to {
-    -webkit-transform: rotate(360deg);
-  }
+    to {
+        -webkit-transform: rotate(360deg);
+    }
 }
 
-.projects .card.card-header{
-  background: transparent;
-  box-shadow: none;
-  padding-bottom: 0px;
+.projects .card.card-header {
+    background: transparent;
+    box-shadow: none;
+    padding-bottom: 0px;
 }
+
 @media only screen and (max-width: 992px) {
-  .projects .card.card-header{
-    display: none!important;
-  }
+    .projects .card.card-header {
+        display: none !important;
+    }
+
+    .box {
+        display: none;
+    }
+
+    .dx-button-has-icon .dx-button-content {
+        display: none;
+    }
+
+    select.form-control {
+        padding: 0px;
+    }
+
+    .dx-button-has-text .dx-button-content {
+        padding: 8px 0px;
+        text-align: left;
+    }
+
+    .dx-scheduler-header {
+        position: inherit !important;
+    }
 }
 
-.projects .card.card-header .card-body{
-  padding: 0px;
+.projects .card.card-header .card-body {
+    padding: 0px;
 }
-.project-creator .data-table-standard .list-item-heading{
-  white-space: pre-line;
+
+.project-creator .data-table-standard .list-item-heading {
+    white-space: pre-line;
 }
-.tab-icon{
-  font-size: 25px;
+
+.tab-icon {
+    font-size: 25px;
 }
-.download-icon{
-  font-size: 25px;
+
+.download-icon {
+    font-size: 25px;
 }
+
 ul.context-menu-list.simple-icon-settings::before {
     display: none;
 }
-.mission-completed{
+
+#user-filter {
+    z-index: 9999;
+}
+
+.mission-completed {
     text-decoration: line-through;
 }
+
 .alert ul {
     margin: 0px;
     list-style: none;
