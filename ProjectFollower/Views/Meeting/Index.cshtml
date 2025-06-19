@@ -39,6 +39,7 @@
                             var meetingsObj = data.meetings;
                             var customersObj = data.customer;
                             var usersObj = data.responsibleMeetings;
+
                             
                             $(() => {
                                 $('#scheduler').dxScheduler({
@@ -122,6 +123,7 @@
                                             },
                                             editorType: 'dxTextBox',
                                             dataField: 'text',
+                                            isRequired: true,
                                             editorOptions: {
                                                 width: '100%',
                                                 type: 'text',
@@ -132,6 +134,7 @@
                                             },
                                             editorType: 'dxSelectBox',
                                             dataField: 'customersId',
+                                            isRequired: true,
                                             editorOptions: {
                                                 items: customersObj, placeholder: customersObj[0].text,
                                                 displayExpr: 'text',
@@ -143,6 +146,7 @@
                                                 text: 'Kişiler',
                                             },
                                             editorType: 'dxTagBox',
+                                            isRequired: true,
                                             dataField: 'userId',
                                             editorOptions: {
                                                 items: usersObj, placeholder: usersObj[0].text,
@@ -183,13 +187,6 @@
                                         },
                                         ]);
                                     },
-                                    /*appointmentTemplate(model) {
-    
-                                        return $(`${"<div class='movie'>"
-                                            + "<img src='"}' />`
-                                            + `<div class='movie-text'></div>`
-                                            + '</div>');
-                                    },*/
                                 }).dxScheduler('instance');
                             });
                         }

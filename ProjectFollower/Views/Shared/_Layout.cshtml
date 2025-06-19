@@ -43,6 +43,34 @@
     <link rel="stylesheet" href="~/css/main.css" />
     <link rel="shortcut icon" href="~/logos/black.svg" />
     <link rel="stylesheet" href="~/css/print/print.min.css" type="text/css" />
+    <style>
+        .mp-scrollbar::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+            background-color: #F5F5F5;
+        }
+
+        .mp-scrollbar::-webkit-scrollbar {
+            width: 8px;
+            background-color: #F5F5F5;
+        }
+
+        .mp-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #2596be;
+        }
+
+        .mp-scrollbar {
+            float: left;
+            height: 250px;
+            overflow-y: scroll;
+            margin-bottom: 25px;
+        }
+
+        .area-scroolbar {
+            min-height: 450px;
+            padding: 5px 10px;
+            line-height: 1.3em;
+        }
+    </style>
 </head>
 <body id="app-container" class="menu-hidden show-spinner">
     <nav class="navbar fixed-top">
@@ -358,6 +386,50 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Version Bilgisi -->
+
+    <div class="modal fade" id="versioninformation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 style="font-weight:900;">Son Güncelleme Ver: 0.7.27</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="mp-scrollbar">
+                        <div class="area-scroolbar">
+                            <h6 style="font-weight:900;">Ver: 0.7.27 sürümünde değişiklikler</h6>
+                            <ul>
+                                <li class="mb-2">Takvime Video ve Reklam kategorileri eklendi.</li>
+                                <li class="mb-2">Takvimde kayıt değişiklikleri yapıldığında başlıktaki renk tanımlamaları anlık kayboluyordu. Bu promlem düzeltildi.</li>
+                            </ul>
+                            <hr />
+                            <h6 style="font-weight:900;">Ver: 0.7.26 sürümünde değişiklikler</h6>
+                            <ul>
+                                <li class="mb-2">Kullanıcının kendi görevi olmadığı halde görevi güncelleyebiliyordu. Görev güncelleme ile ilgili yetki problemleri düzeltildi.</li>
+                                <li class="mb-2">Kullanıcının kendi görevi olmadığı halde görevi kaldırabiliyordu. Görev kaldırma ile ilgili yetki problemleri düzeltildi.</li>
+                            </ul>
+                            <hr />
+                            <h6 style="font-weight:900;">Ver: 0.7.25 sürümünde değişiklikler</h6>
+                            <ul>
+                                <li class="mb-2">Bildirimler veritabanın da en fazla 3 gün tutulmaktadır, sonrasında otomatik olarak silinmektedir.</li>
+                                <li class="mb-2">Bildirim ikonları eklenmiştir.</li>
+                                <li class="mb-2">Bildirim çubuğu değiştirildi.</li>
+                                <li class="mb-2">Yeni bir toplantı açıldığında açıklama hariç bütün alanlar için zorunluluk kuralı eklendi.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tamam</button>
+                </div>
+            </div>
+        </div>
+    </div>
     @await Component.InvokeAsync("SchedulerModal")
     @*@Html.Partial("_SchedulerModal.cshtml");*@
     @*
@@ -398,11 +470,16 @@
         <div class="footer-content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-12 col-sm-6">
-                        <p class="mb-0 text-muted">Sürüm Tarihi: 21.03.2022</p>
-                    </div>
                     <div class="col-12 col-sm-12">
-                        <p class="mb-0 text-muted">All rights reserved. &copy; Many Points 2022.</p>
+                        <p class="mb-0 text-muted">All rights reserved. &copy; Many Points 2022</p>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <small class="mb-0 text-muted">Ver: 0.7.27</small>   
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <a href="#verbilgisi" onclick="togglevernmodal()"><small class="mb-0 text-muted">Release Notes</small></a>
                     </div>
                 </div>
             </div>

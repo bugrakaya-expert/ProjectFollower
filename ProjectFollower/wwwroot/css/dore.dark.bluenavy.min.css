@@ -55,7 +55,7 @@ Table of Contents
 /* 00.Variables and Imports */
 /* nunito-300  */
 @font-face {
-  font-family: 'Nunito';
+  font-family: 'Tahoma';
   font-style: normal;
   font-weight: 300;
   src: url("/font/nunito/nunito-300.eot");
@@ -65,7 +65,7 @@ Table of Contents
 
 /* nunito-regular  */
 @font-face {
-  font-family: 'Nunito';
+  font-family: 'Tahoma';
   font-style: normal;
   font-weight: 400;
   src: url("/font/nunito/nunito-regular.eot");
@@ -75,7 +75,7 @@ Table of Contents
 
 /* nunito-600  */
 @font-face {
-  font-family: 'Nunito';
+  font-family: 'Tahoma';
   font-style: normal;
   font-weight: 600;
   src: url("/font/nunito/nunito-600.eot");
@@ -85,7 +85,7 @@ Table of Contents
 
 /* nunito-italic  */
 @font-face {
-  font-family: 'Nunito';
+  font-family: 'Tahoma';
   font-style: italic;
   font-weight: 400;
   src: url("/font/nunito/nunito-italic.eot");
@@ -95,7 +95,7 @@ Table of Contents
 
 /* nunito-700  */
 @font-face {
-  font-family: 'Nunito';
+  font-family: 'Tahoma';
   font-style: normal;
   font-weight: 700;
   src: url("/font/nunito/nunito-700.eot");
@@ -127,11 +127,12 @@ html {
   --separator-color: #424242; }
 
 body {
-  font-family: "Nunito", sans-serif;
-  font-size: 0.8rem;
-  font-weight: 400;
-  color: #8f8f8f;
-  background: #18191b; }
+    font-family: "Tahoma", sans-serif;
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: #8f8f8f;
+    background: #18191b;
+}
   body.background {
     height: 100%; }
     body.background main {
@@ -395,7 +396,7 @@ a {
 p {
   font-size: 0.85rem;
   line-height: 1.3rem;
-  font-family: "Nunito", sans-serif; }
+  font-family: "Tahoma", sans-serif; }
 
 .text-large {
   font-size: 1.9rem !important; }
@@ -1321,11 +1322,138 @@ button {
     display: flex;
     flex-grow: 1;
     justify-content: space-between; }
-  .navbar #notificationDropdown {
-    width: 260px;
-    padding: 1.5rem;
-    height: 280px;
-    right: 15px; }
+    .navbar #notificationDropdown {
+        width: 260px;
+        right: 15px;
+    }
+
+        .navbar #notificationDropdown .notification-item:hover {
+            background: #2e8eff3d;
+            cursor: pointer;
+        }
+
+            .navbar #notificationDropdown .notification-item:hover a {
+                color: #36a0e7;
+            }
+
+        .navbar #notificationDropdown .notification-all:hover {
+            background: #2e8eff3d;
+            cursor: pointer;
+        }
+
+#notificationDropdown h3 {
+    color: #8f8f8f;
+}
+.notification-unread i {
+    transition: all ease 0.2s;
+    animation: color-change-wshadow 6s infinite;
+}
+
+.notification-unread .count {
+    transition: all ease 0.2s;
+    animation: color-change 6s infinite;
+}
+
+.notification-unread:hover .count {
+    transition: all ease 0.2s;
+    animation: none;
+}
+
+.notification-unread:hover i {
+    transition: all ease 0.2s;
+    animation: none;
+}
+
+.notification-read i {
+    transition: all ease 0.2s;
+    animation: none;
+}
+
+.notification-read .count {
+    transition: all ease 0.2s;
+    animation: none;
+}
+
+.notification-read:hover .count {
+    transition: all ease 0.2s;
+    animation: none;
+}
+
+.notification-read:hover i {
+    transition: all ease 0.2s;
+    animation: none;
+}
+
+@keyframes color-change-wshadow {
+    0% {
+        color: #8f8f8f;
+    }
+
+    15% {
+        color: #6e767a;
+    }
+
+    30% {
+        color: #4c7f97;
+    }
+
+    50% {
+        color: #1f83b1;
+    }
+
+    70% {
+        color: #4c7f97;
+    }
+
+    85% {
+        color: #6e767a;
+    }
+
+    100% {
+        color: #8f8f8f;
+    }
+}
+
+@keyframes color-change {
+    0% {
+        border-color: #8f8f8f;
+        color: #8f8f8f;
+    }
+
+    15% {
+        border-color: #6e767a;
+        color: #6e767a;
+    }
+
+    30% {
+        border-color: #4c7f97;
+        color: #4c7f97;
+    }
+
+    50% {
+        border-color: #1f83b1;
+        color: #1f83b1;
+    }
+
+    70% {
+        border-color: #4c7f97;
+        color: #4c7f97;
+    }
+
+    85% {
+        border-color: #6e767a;
+        color: #6e767a;
+    }
+
+    100% {
+        border-color: #8f8f8f;
+        color: #8f8f8f;
+    }
+}
+
+.navbar #notificationDropdown .notification-all:hover a {
+    color: #36a0e7;
+}
   .navbar #iconMenuDropdown {
     width: 240px;
     padding: 1.5rem;
@@ -2105,6 +2233,18 @@ button {
   text-align: center;
   color: #236591; }
 
+.card-notification.card {
+    height: 50px;
+}
+
+.card-notification.card .icon-bar {
+    font-size: 21px;
+    padding: 14px;
+}
+
+.card-notification.card .title-bar {
+    min-width: 160px;
+}
 /* 16.Main*/
 main {
   margin-left: 410px;
@@ -5106,7 +5246,7 @@ a.ck.ck-button.ck-on:not(.ck-disabled):hover {
     background-color: #18191b; }
 
 .context-menu-item span {
-  font-family: "Nunito", sans-serif;
+  font-family: "Tahoma", sans-serif;
   font-size: 0.8rem;
   font-weight: 400;
   margin-left: 0.5rem;

@@ -181,7 +181,7 @@
                                             <div class="d-flex flex-row mb-3 border-bottom justify-content-between">
                                                 <a href="#">
                                                     <img src="@item.Img" alt="@item.FullName"
-                                                 class="img-thumbnail border-0 rounded-circle list-thumbnail align-self-center xsmall" />
+                                                         class="img-thumbnail border-0 rounded-circle list-thumbnail align-self-center xsmall" />
                                                 </a>
                                                 <div class="pl-3 flex-grow-1">
                                                     <p class="font-weight-medium mb-0">@item.FullName</p>
@@ -194,7 +194,7 @@
                                                 {
                                                     <div class="dropleft">
                                                         <div class="glyph-icon simple-icon-options" type="button"
-                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></div>
+                                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></div>
                                                         <div class="dropdown-menu">
                                                             <a class="dropdown-item" style="cursor: default; color: #b2b2b2; " href="javascript:void(0)">Düzenle</a>
                                                             <form asp-controller="Home" asp-action="DeleteComment" method="post" asp-route-id="@item.Id">
@@ -459,7 +459,7 @@
 
                                         }
                                     </optgroup>
-                                    
+
                                 </select>
                                 <span>Görev Üyeleri</span>
                             </label>
@@ -489,9 +489,9 @@
 
 @section scripts
 {
-<script src="/js/vendor/quill.min.js"></script>
+    <script src="/js/vendor/quill.min.js"></script>
 
-<script>
+    <script>
             function test() {
                 //alert("I am here");
             }
@@ -655,7 +655,7 @@
 
 
 
-</script>
+    </script>
 
 
 }

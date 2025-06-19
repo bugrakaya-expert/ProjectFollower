@@ -2,7 +2,7 @@
 @{
 }
 @using static ProjectFollower.Utility.ProjectConstant
-@model ProjectFollower.Models.DbModels.Customers
+@model ProjectFollower.Models.ViewModels.SchedulerAuthVM
 <style>
     .dx-scheduler-work-space-both-scrollbar .dx-scheduler-date-table {
         float: none;
@@ -29,7 +29,7 @@
         background-color: #D94A4A;
         border-radius:50px;
     }
-    .normal {
+    .post {
         width: 15px;
         padding: 10px;
         margin: 5px;
@@ -51,6 +51,22 @@
         margin: 5px;
         margin-left: 27px;
         background-color: #F2D335;
+        border-radius: 50px;
+    }
+    .reklamm {
+        width: 15px;
+        padding: 10px;
+        margin: 5px;
+        margin-left: 27px;
+        background-color: #F59542;
+        border-radius: 50px;
+    }
+    .video {
+        width: 15px;
+        padding: 10px;
+        margin: 5px;
+        margin-left: 27px;
+        background-color: #A442F5;
         border-radius: 50px;
     }
     .tamamlandi {
@@ -140,6 +156,8 @@
 
 
         const CustomerId = '@Model.Id';
+        var now = new Date();
+        var updating = false;
         DevExpress.localization.locale(navigator.language);
         function showToast(event, value, type) {
             DevExpress.ui.notify(`${event} "${value}" `, type, 800);
@@ -153,13 +171,13 @@
                 contentType: "application/json",
                 dataType: "json",
                 success: function (data) {
-                    const now = new Date();
+
                     var scheduler = data.scheduler;
                     var schedulerPriorityObj = data.schedulerPriority;
                     var customersObj = data.customers;
                     customerNamePublic = data.customers[0].text;
                     console.log(data);
-                    
+
                     $(() => {
                         $('#scheduler').dxScheduler({
                             dataSource: scheduler,
@@ -174,7 +192,7 @@
                             crossScrollingEnabled: true,
                             cellDuration: 20,
                             startDayHour: 15,
-                            @if(User.IsInRole(UserRoles.Admin))
+                            @if(User.IsInRole(UserRoles.Admin) || Model.SchedulerAuth)
                             {
                                 <text>
                                 editing: {
@@ -199,6 +217,7 @@
                                 </text>
                             }
                             onAppointmentAdded(e) {
+                                updating = true;
                                 const endDate = new Date(2099, 4, 10, 13, 0)
                                 e.appointmentData.endDate = endDate;
                                 $.ajax({
@@ -229,6 +248,7 @@
 
                             },
                             onAppointmentUpdated(e) {
+                                updating = true;
                                 $.ajax({
                                     type: "POST",
                                     url: "/updatescheduler",
@@ -256,6 +276,7 @@
                                 });
                             },
                             onAppointmentDeleted(e) {
+                                updating = true;
                                 $.ajax({
                                     type: "GET",
                                     url: "/deletescheduler/" + JSON.stringify(e.appointmentData.id),
@@ -281,7 +302,18 @@
                                     }
                                 });
                             },
+                            onOptionChanged: function (e) {
 
+                                if (e.name == 'currentDate' && e.component.option('currentView') == 'month' && updating == false) {
+                                    console.clear();
+                                    now = e.value;
+                                    console.clear();
+                                    console.log("Date updated");
+                                    console.log(now);
+                                }
+                                /*console.log("changed: ");
+                                console.log(e);*/
+                            },
                             onAppointmentFormOpening(data) {
                                 const { form } = data;
                                 console.log(customersObj[0].id);
@@ -358,6 +390,7 @@
                 }
 
             }).done(function (result) {
+                
                 $(document).ready(function () {
                     $(".dx-toolbar-items-container").append(`
 <div class="dx-toolbar-after pr-2"><select class="form-control select-single mt-2" data-width="100%" name="Id" id="customer-scheduler-alt">
@@ -365,15 +398,8 @@
 </select></div>
 
 `);
-                    $(".dx-toolbar-center").append(`
-<div class="row">
-<div class="box"><div class="acil"></div><p>Acil</p></div>
-<div class="box"><div class="normal"></div><p>Normal</p></div>
-<div class="box"><div class="story"></div><p>Story</p></div>
-<div class="box"><div class="hazirlik"></div><p>Hazırlık</p></div>
-<div class="box"><div class="tamamlandi"></div><p>Tamamlandı</p></div>
-</div>
-`)
+
+                    setToolbarCenter();
                     $.ajax({
                         url: "/getCustomersforScheduler",
                         type: "GET",
@@ -393,13 +419,13 @@
                         $('#customer-scheduler-alt').on('change', function () {
                             window.location.replace("/Scheduler?Id="+this.value);
                         });
-                       
+
                     });
 
                 });
             });
 
-            
+
             $("#export-btn").click(function () {
                 var selectedate = $(".dx-button-text").html();
                 $("#scheduler-date").val(selectedate);
@@ -408,7 +434,19 @@
             });
         });
 
-
+        function setToolbarCenter() {
+            $(".dx-toolbar-center").append(`
+<div class="row">
+<div class="box"><div class="acil"></div><p>Acil</p></div>
+<div class="box"><div class="post"></div><p>Post</p></div>
+<div class="box"><div class="story"></div><p>Story</p></div>
+<div class="box"><div class="hazirlik"></div><p>Hazırlık</p></div>
+<div class="box"><div class="reklamm"></div><p>Reklam</p></div>
+<div class="box"><div class="video"></div><p>Video</p></div>
+<div class="box"><div class="tamamlandi"></div><p>Tamamlandı</p></div>
+</div>
+`);
+        }
     </script>
 }
 

@@ -1,5 +1,5 @@
 @font-face {
-    font-family: Nunito;
+    font-family: Tahoma;
     font-style: normal;
     font-weight: 300;
     src: url(../../font/nunito/nunito-300.eot);
@@ -7,7 +7,7 @@
         url(../../font/nunito/nunito-300.ttf) format("truetype"), url(../../font/nunito/nunito-300.svg#Nunito) format("svg");
 }
 @font-face {
-    font-family: Nunito;
+    font-family: Tahoma;
     font-style: normal;
     font-weight: 400;
     src: url(../../font/nunito/nunito-regular.eot);
@@ -15,7 +15,7 @@
         url(../../font/nunito/nunito-regular.ttf) format("truetype"), url(../../font/nunito/nunito-regular.svg#Nunito) format("svg");
 }
 @font-face {
-    font-family: Nunito;
+    font-family: Tahoma;
     font-style: normal;
     font-weight: 600;
     src: url(../../font/nunito/nunito-600.eot);
@@ -23,7 +23,7 @@
         url(../../font/nunito/nunito-600.ttf) format("truetype"), url(../../font/nunito/nunito-600.svg#Nunito) format("svg");
 }
 @font-face {
-    font-family: Nunito;
+    font-family: Tahoma;
     font-style: italic;
     font-weight: 400;
     src: url(../../font/nunito/nunito-italic.eot);
@@ -31,7 +31,7 @@
         url(../../font/nunito/nunito-italic.ttf) format("truetype"), url(../../font/nunito/nunito-italic.svg#Nunito) format("svg");
 }
 @font-face {
-    font-family: Nunito;
+    font-family: Tahoma;
     font-style: normal;
     font-weight: 700;
     src: url(../../font/nunito/nunito-700.eot);
@@ -61,7 +61,7 @@ html {
     --separator-color: #d7d7d7;
 }
 body {
-    font-family: Nunito, sans-serif;
+    font-family: "Tahoma", sans-serif;
     font-size: 0.8rem;
     font-weight: 400;
     color: #3a3a3a;
@@ -364,7 +364,7 @@ a:hover {
 p {
     font-size: 0.85rem;
     line-height: 1.3rem;
-    font-family: Nunito, sans-serif;
+    font-family: "Tahoma", sans-serif;
 }
 .text-large {
     font-size: 1.9rem !important;
@@ -1370,11 +1370,11 @@ button {
 }
 .notification-unread i {
     transition: all ease 0.2s;
-    animation: color-change-wshadow 6s infinite;
+    animation: color-change-wshadow 8s ease-in-out infinite;
 }
 .notification-unread .count {
     transition: all ease 0.2s;
-    animation: color-change 6s infinite;
+    animation: color-change 8s ease-in-out infinite;
 }
 .notification-unread:hover .count {
     transition:all ease 0.2s;
@@ -1411,23 +1411,24 @@ button {
     }
 
     15% {
-        color: #6e767a;
+        color: #511845;
     }
 
     30% {
-        color: #4c7f97;
+        color: #900C3F;
     }
 
-    50% {
-        color: #1f83b1;
+    45% {
+        color: #C70039;
     }
 
-    70% {
-        color: #4c7f97;
+
+    60% {
+        color: #C70039;
     }
 
-    85% {
-        color: #6e767a;
+    75% {
+        color: #900C3F;
     }
 
     100% {
@@ -1436,38 +1437,38 @@ button {
 }
 @keyframes color-change {
     0% {
-        border-color: #8f8f8f;
         color: #8f8f8f;
+        border-color: #8f8f8f;
     }
 
     15% {
-        border-color: #6e767a;
-        color: #6e767a;
+        color: #511845;
+        border-color: #511845;
     }
 
     30% {
-        border-color: #4c7f97;
-        color: #4c7f97;
+        color: #900C3F;
+        border-color: #900C3F;
     }
 
-    50% {
-        border-color: #1f83b1;
-        color: #1f83b1;
+    45% {
+        color: #C70039;
+        border-color: #C70039;
     }
 
-    70% {
-        border-color: #4c7f97;
-        color: #4c7f97;
+    60% {
+        color: #C70039;
+        border-color: #C70039;
     }
 
-    85% {
-        border-color: #6e767a;
-        color: #6e767a;
+    75% {
+        color: #900C3F;
+        border-color: #900C3F;
     }
 
     100% {
-        border-color: #8f8f8f;
         color: #8f8f8f;
+        border-color: #8f8f8f;
     }
 }
 
@@ -1663,7 +1664,7 @@ button {
     }
 }
 .navbar .header-icon {
-    font-size: 16px;
+    font-size: 20px;
     color: #8f8f8f;
     padding-left: 0.6rem;
     padding-right: 0.6rem;
@@ -1680,19 +1681,20 @@ button {
     display: none;
 }
 .navbar .header-icon#notificationButton .count {
-    font-size: 9px;
+    font-size: 13px;
     color: #8f8f8f;
     border: 1px solid #8f8f8f;
-    border-radius: 10px;
+    border-radius: 50%;
     position: absolute;
-    width: 18px;
-    height: 15px;
+    width: 22px;
+    height: 21px;
     text-align: center;
     font-weight: 700;
-    top: -4px;
-    right: 2px;
-    line-height: 14px;
+    top: -8px;
+    right: -5px;
+    line-height: 22px;
 }
+
 @media (max-width: 575px) {
     .navbar .header-icon#notificationButton .count {
         right: -1px;
@@ -2555,8 +2557,16 @@ main .container-fluid {
     border-radius: 0.1rem;
     box-shadow: 0 1px 15px rgba(0, 0, 0, 0.04), 0 1px 6px rgba(0, 0, 0, 0.04);
 }
+
 .card-notification.card{
     height:50px;
+}
+.card-notification.card .icon-bar {
+    font-size: 21px;
+    padding: 14px;
+}
+.card-notification.card .title-bar {
+    min-width:160px;
 }
 .card .card-header .card-icon {
     right: 5px;
@@ -2565,6 +2575,11 @@ main .container-fluid {
 .card .card-header .card-icon i {
     font-size: 12px;
     color: #d7d7d7;
+}
+.created-sign {
+    position: absolute;
+    bottom: 5%;
+    color: #c9c9c9;
 }
 .card .card-header .handle {
     cursor: default;

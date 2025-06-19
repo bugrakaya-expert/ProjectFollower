@@ -21,10 +21,13 @@ namespace ProjectFollower.Models.DbModels
         public Department Department { get; set; }
         public string UserRole { get; set; }
         public bool Active { get; set; }
+        public bool InfoVerModal { get; set; }
 
         [NotMapped]
         public string Role { get; set; }
         [NotMapped]
         public bool IsResponsible { get; set; }
+
+        public bool SchedulerAuth { get; set; }
     }
 }

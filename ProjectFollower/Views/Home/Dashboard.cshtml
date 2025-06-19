@@ -28,7 +28,7 @@
                     <div class="text-zero top-right-button-container">
                         @if (User.IsInRole(Admin))
                         {
-                        <a asp-controller="Home" asp-action="ProjectNew" type="button" class="btn btn-primary btn-lg top-right-button mr-1">YENİ PROJE EKLE</a>
+                            <a asp-controller="Home" asp-action="ProjectNew" type="button" class="btn btn-primary btn-lg top-right-button mr-1">YENİ PROJE EKLE</a>
                         }
 
                     </div>
@@ -84,6 +84,7 @@
                                     <a type="button" class="dropdown-item filter-status" href="#" id="0">Yeni</a>
                                     <a type="button" class="dropdown-item filter-status" href="#" id="1">Yapım Aşamasında</a>
                                     <a type="button" class="dropdown-item filter-status" href="#" id="2">Müşteri Onayında</a>
+                                    <a type="button" class="dropdown-item filter-status" href="#" id="6">Beklemede</a>
                                     <a type="button" class="dropdown-item filter-status" href="#" id="3">Tamamlandı</a>
                                     <a type="button" class="dropdown-item filter-status" href="#" id="4">Arşivlendi</a>
                                     <a type="button" class="dropdown-item filter-status" href="#" id="5">Tümünü Göster</a>
@@ -103,102 +104,102 @@
             <div class="col-12">
                 <div class="data-table-rows data-tables-hide-filter">
                     <table id="datatableRow" class="data-table data-tables-pagination responsive nowrap"
-                            style="width:100%">
+                           style="width:100%">
                         <thead>
                             <tr>
                                 <th style="visibility: hidden;"></th>
-                                <th >Firma Adı</th>
-                                <th >Proje Adı</th>
-                                <th >Oluşturma Tarihi</th>
-                                <th >Deadline</th>
-                                <th >Durum</th>
+                                <th>Firma Adı</th>
+                                <th>Proje Adı</th>
+                                <th>Oluşturma Tarihi</th>
+                                <th>Deadline</th>
+                                <th>Durum</th>
                                 <th style="visibility: hidden;"></th>
                             </tr>
                         </thead>
                         <tbody class="list" id="tbody">
                             @*
-        <tr class="cardd">
-            <td>
-                <img src="img/orj/firmalar/elitdijital.png" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
-            </td>
-            <td>
-                <p class="list-item-heading">Elit Dijital Logo Tasarımı</p>
-            </td>
-            <td>
-                <p>Elit Dijital</p>
-            </td>
-            <td>
-                <p>05.01.2022</p>
-            </td>
-            <td>
-                <p class="d-none">3</p><span class="badge badge-pill badge-primary">TAMAMLANDI</span>
-            </td>
-            <td class="text-center">
-                <a href="#" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
-            </td>
-        </tr>
+                                <tr class="cardd">
+                                    <td>
+                                        <img src="img/orj/firmalar/elitdijital.png" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
+                                    </td>
+                                    <td>
+                                        <p class="list-item-heading">Elit Dijital Logo Tasarımı</p>
+                                    </td>
+                                    <td>
+                                        <p>Elit Dijital</p>
+                                    </td>
+                                    <td>
+                                        <p>05.01.2022</p>
+                                    </td>
+                                    <td>
+                                        <p class="d-none">3</p><span class="badge badge-pill badge-primary">TAMAMLANDI</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="#" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
+                                    </td>
+                                </tr>
 
-        <tr class="cardd">
-            <td>
-                <img src="img/orj/firmalar/poligon.jpg" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
-            </td>
-            <td>
-                <p class="list-item-heading">Poligon Logo Tasarımı</p>
-            </td>
-            <td>
-                <p>Poligon Mühendislik</p>
-            </td>
-            <td>
-                <p>08.02.2022</p>
-            </td>
-            <td>
-                <p class="d-none">2</p><span class="badge badge-pill badge-secondary">MÜŞTERİ ONAYINDA</span>
-            </td>
-            <td class="text-center">
-                <a asp-controller="Home" asp-Action="Details" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
+                                <tr class="cardd">
+                                    <td>
+                                        <img src="img/orj/firmalar/poligon.jpg" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
+                                    </td>
+                                    <td>
+                                        <p class="list-item-heading">Poligon Logo Tasarımı</p>
+                                    </td>
+                                    <td>
+                                        <p>Poligon Mühendislik</p>
+                                    </td>
+                                    <td>
+                                        <p>08.02.2022</p>
+                                    </td>
+                                    <td>
+                                        <p class="d-none">2</p><span class="badge badge-pill badge-secondary">MÜŞTERİ ONAYINDA</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <a asp-controller="Home" asp-Action="Details" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
 
-            </td>
-        </tr>
-        <tr class="cardd">
-            <td>
-                <img src="img/orj/firmalar/manypoints.png" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
-            </td>
-            <td>
-                <p class="list-item-heading">Many Points Post</p>
-            </td>
-            <td>
-                <p>Many Points</p>
-            </td>
-            <td>
-                <p>07.01.2022</p>
-            </td>
-            <td>
-                <p class="d-none">1</p><span class="badge badge-pill badge-warning">YAPIM AŞAMASINDA</span><span class="badge badge-pill badge-danger ml-3">Proje Gecikmiş!</span>
-            </td>
-            <td class="text-center">
-                <a asp-controller="Home" asp-Action="Details" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
-            </td>
-        </tr>
-        <tr class="cardd">
-            <td>
-                <img src="img/orj/firmalar/poligon.jpg" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
-            </td>
-            <td>
-                <p class="list-item-heading">Poligon Video Tasarımı</p>
-            </td>
-            <td>
-                <p>Poligon Mühendislik</p>
-            </td>
-            <td>
-                <p>10.01.2022</p>
-            </td>
-            <td>
-                <p class="d-none">1</p><span class="badge badge-pill badge-info">YENİ</span>
-            </td>
-            <td class="text-center">
-                <a asp-controller="Home" asp-Action="Details" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
-            </td>
-        </tr>
+                                    </td>
+                                </tr>
+                                <tr class="cardd">
+                                    <td>
+                                        <img src="img/orj/firmalar/manypoints.png" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
+                                    </td>
+                                    <td>
+                                        <p class="list-item-heading">Many Points Post</p>
+                                    </td>
+                                    <td>
+                                        <p>Many Points</p>
+                                    </td>
+                                    <td>
+                                        <p>07.01.2022</p>
+                                    </td>
+                                    <td>
+                                        <p class="d-none">1</p><span class="badge badge-pill badge-warning">YAPIM AŞAMASINDA</span><span class="badge badge-pill badge-danger ml-3">Proje Gecikmiş!</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <a asp-controller="Home" asp-Action="Details" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
+                                    </td>
+                                </tr>
+                                <tr class="cardd">
+                                    <td>
+                                        <img src="img/orj/firmalar/poligon.jpg" alt="Fat Rascal" class="list-thumbnail responsive border-0 card-img-left" />
+                                    </td>
+                                    <td>
+                                        <p class="list-item-heading">Poligon Video Tasarımı</p>
+                                    </td>
+                                    <td>
+                                        <p>Poligon Mühendislik</p>
+                                    </td>
+                                    <td>
+                                        <p>10.01.2022</p>
+                                    </td>
+                                    <td>
+                                        <p class="d-none">1</p><span class="badge badge-pill badge-info">YENİ</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <a asp-controller="Home" asp-Action="Details" type="button" class="btn btn-secondary btn-sm mb-1"><i class="glyph-icon simple-icon-info mr-1"></i>Detaylar</a>
+                                    </td>
+                                </tr>
                             *@
                         </tbody>
                     </table>
@@ -207,6 +208,7 @@
         </div>
     </div>
 </main>
+
 @section scripts
 {
     <script src="/js/vendor/jquery.validate/jquery.validate.min.js"></script>
@@ -227,7 +229,7 @@
                 ]
             });
         };*@
-        
+
         function voidAjx() {
             var completed = 0;
             $.ajax({
@@ -236,6 +238,7 @@
                 contentType: "application/json",
                 dataType: "json",
                 success: function (data) {
+                    changeMenuStyle();
                     $("#tbody").text("");
 
                     $.each(data.projects, function (i, item) {
@@ -269,14 +272,14 @@
                         if (item.status == 2) {
                             status = `<span class="badge badge-pill badge-secondary">MÜŞTERİ ONAYINDA</span>`;
                         }
-                        if (item.status == 3) {
-
-                            status = `<span class="badge badge-pill badge-primary">TAMAMLANDI</span>`;
+                        if (item.status == 6) {
+                            status = `<span class="badge badge-pill badge-primary">BEKLEMEDE</span>`;
                         }
-
+                        if (item.status == 3) {
+                            status = `<span class="badge badge-pill badge-success">TAMAMLANDI</span>`;
+                        }
                         if (item.status == 4) {
                             status = `<span class="badge badge-pill badge-primary" style="background-color: #008aff !important;"><i class="fas fa-archive"></i>&nbsp;&nbsp;ARŞİVLENMİŞ</span>`;
-
                         }
                         var trcls = "";
                         if (i % 2 == 0) {
@@ -326,8 +329,9 @@
                     $(".sorting").removeClass("sorting");
                 }
             });
+            changeMenuStyle();
         }
-        
+
         $(document).on("click", ".filter-status", function () {
             var completed = 0;
             var userId = this.id;
@@ -374,9 +378,12 @@
                         if (item.status == 2) {
                             status = `<span class="badge badge-pill badge-secondary">MÜŞTERİ ONAYINDA</span>`;
                         }
+                        if (item.status == 6) {
+                            status = `<span class="badge badge-pill badge-primary">BEKLEMEDE</span>`;
+                        }
                         if (item.status == 3) {
 
-                            status = `<span class="badge badge-pill badge-primary">TAMAMLANDI</span>`;
+                            status = `<span class="badge badge-pill badge-success">TAMAMLANDI</span>`;
                         }
 
                         if (item.status == 4) {
@@ -479,9 +486,12 @@
                         if (item.status == 2) {
                             status = `<span class="badge badge-pill badge-secondary">MÜŞTERİ ONAYINDA</span>`;
                         }
+                        if (item.status == 6) {
+                            status = `<span class="badge badge-pill badge-primary">BEKLEMEDE</span>`;
+                        }
                         if (item.status == 3) {
 
-                            status = `<span class="badge badge-pill badge-primary">TAMAMLANDI</span>`;
+                            status = `<span class="badge badge-pill badge-success">TAMAMLANDI</span>`;
                         }
 
                         if (item.status == 4) {
@@ -536,10 +546,12 @@
                 }
             });
             }
+            changeMenuStyle();
         });
-        
-            
+
+
         $(document).ready(function () {
+
             $("#tbody").html("");
             voidAjx();
 
@@ -600,7 +612,15 @@
             });*/
 
 
+            changeMenuStyle();
         });
+        function changeMenuStyle() {
+            $('.yeni_item').html('<span class="badge badge-pill badge-info" style="font-size: x-small;">YENİ</span>');
+            $('.yapim_item').html('<span class="badge badge-pill badge-warning" style="font-size: x-small;">YAPIM AŞAMASINDA</span>');
+            $('.musteriony_item').html('<span class="badge badge-pill badge-secondary" style="font-size: x-small;">MÜŞTERİ ONAYINDA</span>');
+            $('.beklemede_item').html('<span class="badge badge-pill badge-primary" style="font-size: x-small;">BEKLEMEDE</span>');
+            $('.tamamlandi_item').html('<span class="badge badge-pill badge-success" style="font-size: x-small;">TAMAMLANDI</span>');
 
+        }
     </script>
 }

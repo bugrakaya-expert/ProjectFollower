@@ -12,6 +12,7 @@ namespace ProjectFollower.Models.ViewModels
         public string Date { get; set; }
         public string Title { get; set; }
         public string Message { get; set; }
+        public string Url { get; set; }
         public bool Readed { get; set; }
     }
 }

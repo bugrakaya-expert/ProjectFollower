@@ -1,10 +1,10 @@
-/* Dore Main Script 
+/* 
 
 Table of Contents
 
 01. Utils
 02. Shift Select
-03. Dore Main Plugin
+03. Main Plugin
   03.01. Getting Colors from CSS
   03.02. Resize
   03.03. Search
@@ -4290,18 +4290,22 @@ $.dore = function (element, options) {
                                 contentType: "application/json",
                                 dataType: "json",
                                 success: function (data) {
+
                                     Swal.fire({
-                                        title: 'Proje başarıyla güncellendi',
-                                        icon: 'success',
+                                        title: data.message,
+                                        icon: data.icon,
                                         confirmButtonText: 'Tamam',
                                     }).then((result) => {
-                                        $.ajax({
-                                            url: "jsonresult/refreshpage_socket/",
-                                            type: "GET",
-                                            contentType: "application/json",
-                                            dataType: "json",
-                                        });
-                                        return data;
+                                        if (data.status) {
+                                            $.ajax({
+                                                url: "jsonresult/refreshpage_socket/",
+                                                type: "GET",
+                                                contentType: "application/json",
+                                                dataType: "json",
+                                            });
+                                            return data;
+                                        }
+
                                     })
 
                                 },
@@ -4318,6 +4322,53 @@ $.dore = function (element, options) {
                             });
                         
                        
+                    }
+                })
+            }
+            if (y == "status6") {
+                Swal.fire({
+                    title: 'Bu projeyi Beklemeye almak istediğinize emin misiniz?',
+                    showCancelButton: true,
+                    icon: 'info',
+                    confirmButtonText: 'Güncelle',
+                    cancelButtonText: `İptal Et`,
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        var id = this.attr('id');
+                        $.ajax({
+                            url: "jsonresult/changeToAwait/" + id,
+                            type: "GET",
+                            contentType: "application/json",
+                            dataType: "json",
+                            success: function (data) {
+                                Swal.fire({
+                                    title: 'Proje başarıyla güncellendi',
+                                    icon: 'success',
+                                    confirmButtonText: 'Tamam',
+                                }).then((result) => {
+                                    $.ajax({
+                                        url: "jsonresult/refreshpage_socket/",
+                                        type: "GET",
+                                        contentType: "application/json",
+                                        dataType: "json",
+                                    });
+                                    return data;
+                                })
+
+                            },
+                            error: function (data) {
+                                Swal.fire({
+                                    title: 'Projeyi beklemeye alma yetkiniz bulunmamaktadır',
+                                    icon: 'error',
+                                    confirmButtonText: 'Tamam',
+                                }).then((result) => {
+                                    return data;
+                                })
+
+                            }
+                        });
+
                     }
                 })
             }
@@ -4393,10 +4444,13 @@ $.dore = function (element, options) {
               name: "Proje Durumu",
               className: "simple-icon-settings",
               items: {
-                  status1 : { "name": "Yeni" },
-                  status2: { "name": "Yapım Aşamasında" },
-                  status3: { "name": "Müşteri Onayında" },
-                  status4: { "name": "Tamamlandı" }
+                  status1: { "name":"YENİ", className:"yeni_item" },
+                  /*status1: {
+                      "name": $(`<div></div>`).html()},}*/
+                  status2: { "name": "Yapım Aşamasında", className: "yapim_item"  },
+                  status3: { "name": "Müşteri Onayında", className: "musteriony_item"  },
+                  status6: { "name": "Beklemede", className: "beklemede_item"  },
+                  status4: { "name": "Tamamlandı", className: "tamamlandi_item"  }
               }
 
             }

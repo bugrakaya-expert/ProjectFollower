@@ -60,6 +60,29 @@ Mevcut Profil Fotoğrafı<br />
     });
 
 
+    $.ajax({
+        url: "/api/checknotify",
+        type: "GET"
+    });
+
+    setTimeout(
+        function () {
+            //do something special
+
+
+            $.ajax({
+                url: "/api/release-note-readed",
+                type: "GET",
+                contentType: "application/json",
+                dataType: "json",
+                success: function (data) {
+                    if (!(data))
+                        $("#versioninformation").modal();
+                }
+            });
+
+
+        }, 1000);
 });
 function editUserFunc() {
     $("#modalsubmit").prop('disabled', true);
@@ -117,6 +140,10 @@ function editUserFunc() {
 
 
 
+}
+
+function togglevernmodal() {
+    $("#versioninformation").modal();
 }
 
 /*

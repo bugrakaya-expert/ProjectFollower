@@ -64,7 +64,19 @@ namespace ProjectFollower.Controllers
                 var customerid = _customer.Id.ToString();
                 var ApplicationUser = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == Claims.Value);
                 var customer = _uow.Customers.GetFirstOrDefault(i => i.Id == _customer.Id);
-                return View(customer);//Go Dashboard
+                var schedulerVM = new SchedulerAuthVM
+                {
+                    Id = customer.Id,
+                    AuthorizedName = customer.AuthorizedName,
+                    Description = customer.Description,
+                    Email = customer.Email,
+                    ImageUrl = customer.ImageUrl,
+                    Name = customer.Name,
+                    Phone = customer.Phone,
+                    SchedulerEnabled = customer.SchedulerEnabled,
+                    SchedulerAuth = ApplicationUser.SchedulerAuth
+                };
+                return View(schedulerVM);//Go Dashboard
             }
 
             #endregion Authentication Index
@@ -186,7 +198,6 @@ namespace ProjectFollower.Controllers
             await WebSocAct.SchedulerQuery_WebSocket(GetClaim(), id);
             return Json(null);
         }
-
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [HttpGet("getscheduler/{id}")]
         public JsonResult GetScheduler(string id)
@@ -194,7 +205,7 @@ namespace ProjectFollower.Controllers
             List<SchedulerCustomerVM> schedulerCustomer = new List<SchedulerCustomerVM>();
             var companies = _uow.Customers.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
             var scheduler = _uow.Scheduler.GetAll(i => i.CustomersId == Guid.Parse(id));
-            var schedulerpriorities = _uow.SchedulerPriority.GetAll();
+            var schedulerpriorities = _uow.SchedulerPriority.GetAll().OrderBy(i=>i.Sorting);
 
             /*
             foreach (var item in companies)
@@ -232,7 +243,7 @@ namespace ProjectFollower.Controllers
             return Json(customers);
         }
 
-        [Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [HttpPost("postscheduler")]
         public JsonResult SetScheduler([FromBody] Scheduler scheduler)
         {
@@ -241,7 +252,7 @@ namespace ProjectFollower.Controllers
             return Json(scheduler);
         }
 
-        [Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [HttpPost("updatescheduler")]
         public JsonResult UpdateScheduler([FromBody] Scheduler scheduler)
         {

@@ -309,10 +309,11 @@ namespace ProjectFollower.Controllers
                 var _notify = new NotificationVM()
                 {
                     UserId = User.Id,
-                    Date = DateTime.Now.ToString("dd/MM/yyyy"),
+                    Date = DateTime.Now.ToString("dd/MM/yyyy HH:mm"),
                     Title = "Yeni Bir Proje Eklendi",
                     Message = "Adınıza yeni bir proje açıldı. Detaylar için tıklayınız.",
-                    ProjectId=ProjectVM.Id.ToString()
+                    ProjectId = ProjectVM.Id.ToString(),
+                    Url = "/proje-detaylari/" + ProjectVM.Id,
                 };
                 NotificationVMs.Add(_notify);
                 _uow.ResponsibleUsers.Add(ResponsibleUser);
@@ -401,10 +402,11 @@ namespace ProjectFollower.Controllers
                 var _notify = new Notifications()
                 {
                     Date = item.Date,
-                    Message = item.Message,
+                    Message = "Adınıza " + ProjectVM.Customers.Name + " Firmasına ait " + ProjectVM.Name + " adında bir proje açıldı. <a href='/proje-detaylari/" + Project.Id.ToString() + "'>Projeye git</a>",
                     Title = item.Title,
                     UserId = item.UserId,
-                    ProjectId = Project.Id.ToString()
+                    ProjectId = Project.Id.ToString(),
+                    Url = "/proje-detaylari/" + ProjectVM.Id,
                 };
                 _uow.Notifications.Add(_notify);
             }
@@ -415,9 +417,9 @@ namespace ProjectFollower.Controllers
             WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
             await WebSocAct.SendNotification_WebSocket(GetClaim(), INotifications);
 
-            return NoContent();
+            //return NoContent();
 
-            //return Redirect("/dashboard?status=true");
+            return Redirect("/dashboard?status=true");
         }
 
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
@@ -519,8 +521,9 @@ namespace ProjectFollower.Controllers
 
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [HttpPost]
-        public IActionResult AddTask(ProjectDetailVM projectDetailVM)
+        public async Task<IActionResult> AddTask(ProjectDetailVM projectDetailVM)
         {
+            List<NotificationVM> notificationVMs = new List<NotificationVM>();
             var _appUserId = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == GetClaim().Value).Id;
             /*
             if (!(User.IsInRole(UserRoles.Admin)))
@@ -546,6 +549,7 @@ namespace ProjectFollower.Controllers
                     UserId = _appUserId,
                 };
                 _uow.TaskPlayers.Add(player);
+                _uow.Save();
             }
             else
             {
@@ -556,23 +560,57 @@ namespace ProjectFollower.Controllers
                         ProjectTaskId = projectTask.Id.ToString(),
                         UserId = item
                     };
+                    var _notify = new Notifications()
+                    {
+                        UserId = player.UserId,
+                        Date = DateTime.Now.ToString("dd/MM/yyyy HH:mm"),
+                        Title = "Yeni Bir Görev Eklendi",
+                        Message = "Adınıza yeni bir görev eklendi. Detaylar için tıklayınız.",
+                        ProjectId = projectTask.ProjectsId.ToString(),
+                        Url = "/proje-detaylari/" + projectDetailVM.ProjectsId.ToString()
+                    };
+                    var _notifyVM = new NotificationVM()
+                    {
+                        UserId = _notify.UserId,
+                        Date = _notify.Date,
+                        Title = _notify.Title,
+                        Message = _notify.Message,
+                        ProjectId = _notify.ProjectId,
+                        Url = "/proje-detaylari/" + projectDetailVM.ProjectsId.ToString()
+
+                    };
+                    _uow.Notifications.Add(_notify);
                     _uow.TaskPlayers.Add(player);
+                    notificationVMs.Add(_notifyVM);
                 }
+                _uow.Save();
+                WebSocketActionExtensions WebSocAct = new WebSocketActionExtensions(_context, _uow);
+                await WebSocAct.SendNotification_WebSocket(GetClaim(), notificationVMs);
             }
-            //_uow.Save();
-            //return Redirect("/proje-detaylari/" + projectDetailVM.ProjectsId);
-            return NoContent();
+            return Redirect("/proje-detaylari/" + projectDetailVM.ProjectsId);
+            //return NoContent();
         }
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Manager + "," + UserRoles.Personel)]
         [HttpGet("proje-detaylari/gorev-kaldir/{id}")]
         public IActionResult RemoveTask(string id)
         {
+            var authorized = false;
             var task = _uow.ProjectTasks.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
             var players = _uow.TaskPlayers.GetAll(i => i.ProjectTaskId == task.Id.ToString());
             var project = _uow.Project.GetFirstOrDefault(i => i.Id == task.ProjectsId);
-            _uow.TaskPlayers.RemoveRange(players);
-            _uow.ProjectTasks.Remove(task);
-            _uow.Save();
+            var _user = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == GetClaim().Value);
+            foreach (var item in players)
+            {
+                if (item.UserId == _user.Id || _user.UserRole == "Yönetici")
+                    authorized = true;
+            }
+            if (authorized)
+            {
+                _uow.TaskPlayers.RemoveRange(players);
+                _uow.ProjectTasks.Remove(task);
+                _uow.Save();
+            }
+
             return Redirect("/proje-detaylari/" + project.Id);
         }
 
@@ -817,16 +855,41 @@ namespace ProjectFollower.Controllers
         [HttpPost("jsonresult/updateTasks")]
         public JsonResult UpdateTasks([FromBody] List<ProjectTasks> projectTasks)
         {
+            bool authorized = false;
+            bool authorizedByOne = false;
+            var user = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == GetClaim().Value);
             var ProjectId = _uow.ProjectTasks.GetFirstOrDefault(i => i.Id == projectTasks[0].Id).ProjectsId;
             List<ProjectTasks> projectTasksList = new List<ProjectTasks>();
             foreach (var item in projectTasks)
             {
                 var _projectTask = _uow.ProjectTasks.GetFirstOrDefault(i => i.Id == item.Id);
-                _projectTask.Done = item.Done;
-                projectTasksList.Add(_projectTask);
+                var _taskplayers = _uow.TaskPlayers.GetAll(i => i.ProjectTaskId == item.Id.ToString());
+                authorized = false;
+                foreach (var _taskplayer in _taskplayers)
+                {
+                    if (_taskplayer.UserId == GetClaim().Value || user.UserRole == "Yönetici")
+                    {
+                        authorizedByOne = true;
+                        authorized = true;
+                    }
+
+                }
+                if (authorized)
+                {
+                    _projectTask.Done = item.Done;
+                    projectTasksList.Add(_projectTask);
+                }
             }
-            _uow.ProjectTasks.UpdateRange(projectTasksList);
-            _uow.Save();
+            if (authorizedByOne)
+            {
+                _uow.ProjectTasks.UpdateRange(projectTasksList);
+                _uow.Save();
+            }
+            else
+            {
+                return Json("Görevler üzerinde değişiklik yapma yetkiniz bulunmamaktadır!");
+            }
+
 
             return Json(projectTasksList);
         }
@@ -916,14 +979,54 @@ namespace ProjectFollower.Controllers
         [HttpGet("jsonresult/changeToDoneState/{id}")]
         public JsonResult ChangetoDone(string id)
         {
+            int s = 0;
             var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
-            _project.Status = 3;
+            var _tasks = _uow.ProjectTasks.GetAll(i => i.ProjectsId == _project.Id);
+            foreach (var item in _tasks)
+            {
+                if (item.Done)
+                    s++;
+            }
+            if (_tasks.Count() == s)
+            {
+
+                _project.Status = 3;
+                _project.Archived = false;
+                _uow.Project.Update(_project);
+                _uow.Save();
+                var _message = new ModalMessageVM()
+                {
+                    Icon = "success",
+                    Status = true,
+                    Message = "Proje başarıyla güncellendi."
+                };
+                return Json(_message);
+            }
+            else
+            {
+                var _message = new ModalMessageVM()
+                {
+                    Icon = "warning",
+                    Status = false,
+                    Message = "Görevler tamamlanmadan proje tamamlandı statüsüne alınamaz!"
+                };
+                return Json(_message);
+            }
+
+
+        }
+
+        [Authorize(Roles = UserRoles.Admin)]
+        [HttpGet("jsonresult/changeToAwait/{id}")]
+        public JsonResult ChangetoAwait(string id)
+        {
+            var _project = _uow.Project.GetFirstOrDefault(i => i.Id == Guid.Parse(id));
+            _project.Status = 6;
             _project.Archived = false;
             _uow.Project.Update(_project);
             _uow.Save();
             return Json(null);
         }
-
         [HttpPost("jsonresult/addcomment/")]
         public async Task<JsonResult> AddComments(ProjectComments projectComments)
         {
@@ -953,17 +1056,17 @@ namespace ProjectFollower.Controllers
                     FullName = AppUser.FirstName + " " + AppUser.Lastname,
                     UserEmail = AppUser.Email
                 };
-                var respUsers = _uow.ResponsibleUsers.GetAll(i => i.ProjectId== projectComments.ProjectsId);
+                var respUsers = _uow.ResponsibleUsers.GetAll(i => i.ProjectId == projectComments.ProjectsId);
                 List<NotificationVM> _notificationList = new List<NotificationVM>();
                 foreach (var item in respUsers)
                 {
-                    if(AppUser.Id != item.UserId.ToString())
+                    if (AppUser.Id != item.UserId.ToString())
                     {
                         var _notify = new NotificationVM()
                         {
                             UserId = item.UserId.ToString(),
-                            Date = DateTime.Now.ToString("dd/MM/yyyy"),
-                            ProjectId= projectComments.ProjectsId.ToString(),
+                            Date = DateTime.Now.ToString("dd/MM/yyyy HH:mm"),
+                            ProjectId = projectComments.ProjectsId.ToString(),
                             Title = "Yeni Bir Yorum Eklendi",
                             Message = "Bulunduğunuz bir projeye birisi yorum yaptı."
                         };
@@ -1159,7 +1262,7 @@ namespace ProjectFollower.Controllers
         public async Task<IEnumerable<Notifications>> GetNotifications()
         {
             await Task.Delay(1);
-            return _uow.Notifications.GetAll(i => i.UserId == GetClaim().Value).OrderBy(o=>o.Readed);
+            return _uow.Notifications.GetAll(i => i.UserId == GetClaim().Value).OrderByDescending(d => DateTime.Parse(d.Date)).OrderBy(o => o.Readed);
 
         }
         [HttpPost("api/updatenotify")]
@@ -1180,6 +1283,28 @@ namespace ProjectFollower.Controllers
             _uow.Save();
             return Json(null);
 
+        }
+        [HttpGet("api/checknotify")]
+        public JsonResult CheckNotification()
+        {
+            _uow.Notifications.RemoveRange(_uow.Notifications.GetAll()
+                .Where(d => DateTime.Parse(d.Date) <
+                (DateTime.Now.AddDays(-4))).ToList());
+
+            _uow.Save();
+            return Json(null);
+        }
+        [HttpGet("api/release-note-readed")]
+        public JsonResult VersionInformation()
+        {
+            var _user = _uow.ApplicationUser.GetFirstOrDefault(i => i.Id == GetClaim().Value);
+            if (_user.InfoVerModal)
+                return Json(_user.InfoVerModal);
+
+            _user.InfoVerModal = true;
+            _uow.ApplicationUser.Update(_user);
+            _uow.Save();
+            return Json(false);
         }
         #endregion API
 

@@ -55,7 +55,7 @@ Table of Contents
 /* 00.Variables and Imports */
 /* nunito-300  */
 @font-face {
-  font-family: 'Nunito';
+  font-family: 'Tahoma';
   font-style: normal;
   font-weight: 300;
   src: url("../font/nunito/nunito-300.eot");
@@ -65,7 +65,7 @@ Table of Contents
 
 /* nunito-regular  */
 @font-face {
-  font-family: 'Nunito';
+  font-family: 'Tahoma';
   font-style: normal;
   font-weight: 400;
   src: url("../font/nunito/nunito-regular.eot");
@@ -75,7 +75,7 @@ Table of Contents
 
 /* nunito-600  */
 @font-face {
-  font-family: 'Nunito';
+  font-family: 'Tahoma';
   font-style: normal;
   font-weight: 600;
   src: url("../font/nunito/nunito-600.eot");
@@ -85,7 +85,7 @@ Table of Contents
 
 /* nunito-italic  */
 @font-face {
-  font-family: 'Nunito';
+  font-family: 'Tahoma';
   font-style: italic;
   font-weight: 400;
   src: url("../font/nunito/nunito-italic.eot");
@@ -95,7 +95,7 @@ Table of Contents
 
 /* nunito-700  */
 @font-face {
-  font-family: 'Nunito';
+  font-family: 'Tahoma';
   font-style: normal;
   font-weight: 700;
   src: url("../font/nunito/nunito-700.eot");
@@ -127,11 +127,12 @@ html {
   --separator-color: #424242; }
 
 body {
-  font-family: "Nunito", sans-serif;
-  font-size: 0.8rem;
-  font-weight: 400;
-  color: #8f8f8f;
-  background: #1b1919; }
+    font-family: "Tahoma", sans-serif;
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: #8f8f8f;
+    background: #1b1919;
+}
   body.background {
     height: 100%; }
     body.background main {

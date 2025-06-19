@@ -112,14 +112,13 @@
                     if (value.readed == false) {
                         var item = `<div class="d-flex flex-row align-items-center notification-item p-2 border-bottom">
                                 <input type="checkbox" class="custom-control-input notifyvalue d-none" data-userid=`+ value.userId + ` data-projectid=` + value.projectId + ` data-title="` + value.title + `" data-date=` + value.date + ` data-message="` + value.message + `" id=` + value.id +` >
-                                <a href="/proje-detaylari/`+value.projectId+`">
+                                <a href="`+ value.url + `">
                                     <img src="/assets/customers/b1ba221f-0aff-466c-a2c7-08d9f60b54f2/img/412a889e-1af4-4a1b-a29a-3e22717a8248.jpg" alt="Notification Image"
                                             class="img-thumbnail list-thumbnail xsmall border-0 rounded-circle" />
                                 </a>
                                 <div class="pl-3">
-                                    <a href="/proje-detaylari/`+ value.projectId +`">
-                                        <p class="font-weight-bold mb-1">`+ value.title + `</p>
-                                        <p class="font-weight-medium mb-1">`+ value.message + `</p>
+                                    <a href="`+ value.url + `">
+                                        <p class="mb-1">`+ value.title + `</p>
                                         <p class="text-muted mb-0 text-small">`+ value.date + `</p>
                                     </a>
                                 </div>

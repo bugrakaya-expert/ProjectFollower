@@ -1,0 +1,12 @@
+﻿- takvimde normal -> post olarak değişecek.
+
+- Takvimde kaydedildikten sonra aynı ayda kalmıyor. Bu problem çözülmeli.
+
+- Projelerde durum kısmına BEKLEMEDE durumu eklenecek. TAMAMLANDI yeşil olup TAMAMLANDI rengini BEKLEMEDE durumuna alabiliriz.
+
+- SQL DB de SchedulerPriority deki TEXT - "Normal" to "Post" olacak
+
+
+
+admin id:   admin@many-points.com
+admin pass: 2<sWq{xLC,wg

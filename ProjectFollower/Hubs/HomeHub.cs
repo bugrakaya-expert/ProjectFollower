@@ -38,6 +38,11 @@ namespace ProjectFollower.Hubs
         {
             await Clients.All.SendAsync("ReceiveMessage", message);
         }
+        public async Task SendTrigger(string url)
+        {
+            await Clients.All.SendAsync("ReceiveMessage", url);
+        }
+        
         public async Task SendDataTable(ProjectListVM ProjectList)
         {
             //await Clients.All("SendData", ProjectList);

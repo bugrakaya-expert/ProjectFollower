@@ -24,7 +24,8 @@ connection.on("SchedulerQuery", function (id) {
                         type: 'date',
                         views: ['month'],
                         currentView: 'month',
-                        currentDate: new Date($.now()),
+                        //currentDate: new Date($.now()),
+                        currentDate: now,
                         showAllDayPanel: false,
                         maxAppointmentsPerCell: 5,
                         allDay: true,
@@ -186,6 +187,7 @@ connection.on("SchedulerQuery", function (id) {
                 });
             }
         }).done(function (result) {
+
             $(document).ready(function () {
                 $(".dx-toolbar-items-container").append(`
 <div class="dx-toolbar-after pr-2"><select class="form-control select-single mt-2" data-width="100%" name="Id" id="customer-scheduler-alt">
@@ -193,13 +195,14 @@ connection.on("SchedulerQuery", function (id) {
 </select></div>
 
 `);
+
                 $.ajax({
                     url: "/getCustomersforScheduler",
                     type: "GET",
                     contentType: "application/json",
                     dataType: "json",
                     success: function (data) {
-
+                        setToolbarCenter();
                         $.each(data, function (i, item) {
 
                             $('#customer-scheduler-alt').append($('<option>', {
@@ -213,9 +216,12 @@ connection.on("SchedulerQuery", function (id) {
 
                         window.location.replace("/Scheduler?Id=" + this.value);
                     });
+                    
+                    console.log("setTopolbarCenter");
                 });
 
             });
+
         });
     }
 

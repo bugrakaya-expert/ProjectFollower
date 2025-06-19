@@ -61,28 +61,31 @@
             dataType:'json',
             success: function (data) {
                 $.each(data, function (key, value) {
+                    date = value.date;
+                    date = date.replaceAll("\\s+", "")
                     if (value.readed == true) {
                         readeditem = `<span class="badge badge-pill badge-primary">OKUNDU</span>`
+                        readedicon = `<div class="glyph-icon simple-icon-envelope-open"></div>`
                     } else {
-                        readeditem =`<span class="badge badge-pill badge-info">YENİ</span>`
+                        readeditem = `<span class="badge badge-pill badge-info">YENİ</span>`
+                        readedicon = `<div class="glyph-icon simple-icon-envelope"></div>`
                     }
                     var item = `<div class="card d-flex flex-row mb-3 card-notification">
-                    <a class="d-flex" href="Pages.Product.Detail.html">
-                        <img src="img/products/fat-rascal-thumb.jpg" alt="Fat Rascal"
-                             class="list-thumbnail responsive border-0 card-img-left" />
+                    <a class="icon-bar" href="`+ value.url + `">
+                        `+ readedicon +`
                     </a>
                     <div class="pl-2 d-flex flex-grow-1 min-width-zero">
                         <div class="card-body align-self-center d-flex flex-column flex-lg-row justify-content-between min-width-zero align-items-lg-center">
-                            <a href="Pages.Product.Detail.html" class="w-15 w-sm-100">
+                            <a class="title-bar" href="`+ value.url + `">
                                 <p class="list-item-heading mb-0 truncate">`+ value.title +`</p>
                             </a>
                             <p class="mb-0 text-muted text-small w-40 w-sm-100">`+ value.message +`</p>
-                            <p class="mb-0 text-muted text-small w-15 w-sm-100">`+ value.date +`</p>
+                            <p class="mb-0 text-muted text-small w-15 w-sm-100">`+ date +`</p>
                             <div class="w-15 w-sm-100">` + readeditem + `</div>
                         </div>
                         <label class="custom-control custom-checkbox mb-1 align-self-center pr-4">
-                            <input type="checkbox" class="custom-control-input notifyvalue" data-userid=`+ value.userId + ` data-projectid=`+ value.projectId + ` data-title="`+ value.title + `" data-date=`+ value.date + ` data-message="`+ value.message +`" id=`+value.id+` >
-                            <span class="custom-control-label">&nbsp;</span>
+                            <input type="checkbox" class="custom-control-input notifyvalue" data-userid=`+ value.userId + ` data-projectid=`+ value.projectId + ` data-title='`+ value.title + `' data-date="`+ date + `" data-message="`+ value.message +`" id=`+value.id+` >
+                            <span class="custom-control-label"></span>
                         </label>
                     </div>
                 </div>`
